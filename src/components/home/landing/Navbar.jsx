@@ -1,8 +1,8 @@
-"use client"
+
 import React from "react"
 import { Button } from "@/components/ui/button"
-import { useTheme } from "next-themes"
-import { Sun, Moon } from "lucide-react"
+
+
 import Logo from "@/components/Logo/Logo"
 import { Tornado } from 'lucide-react';
 import {
@@ -14,11 +14,12 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import Link from "next/link"
+import Toggle from "@/components/themes/Toggle";
 
 
 // Header: logo, nav links, theme toggle, auth buttons
 export default function Header() {
-    const { theme, setTheme } = useTheme()
+    
 
 
     return (
@@ -43,13 +44,7 @@ export default function Header() {
 
 
                     {/* theme toggle */}
-                    <Button
-                        aria-label="toggle theme"
-                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                        className="p-2 rounded-full hover:bg-white/5"
-                    >
-                        {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                    </Button>
+                    <Toggle />
                     {/* mobile menu */}
                     <nav className="flex md:hidden">
                         <Sheet>
