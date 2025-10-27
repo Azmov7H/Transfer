@@ -23,6 +23,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar"
+import { Button } from "../ui/button"
 
 export default function AppSidebar() {
   const pathname = usePathname()
@@ -35,9 +36,9 @@ export default function AppSidebar() {
 
   const links = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/users", label: "User Management", icon: Users },
-    { href: "/ship", label: "Shipments", icon: Truck },
-    { href: "/settings", label: "Settings", icon: Settings },
+    { href: "/dashboard/users", label: "User Management", icon: Users },
+    { href: "/dashboard/ship", label: "Shipments", icon: Truck },
+    { href: "/dashboard/settings", label: "Settings", icon: Settings },
   ]
 
   return (
@@ -59,7 +60,7 @@ export default function AppSidebar() {
                         href={href}
                         className={`flex items-center gap-2 p-2 rounded-md transition ${
                           active
-                            ? "bg-primary text-primary-foreground"
+                            ? "bg-[#f0f0f08a] text-primary-foreground"
                             : "hover:bg-muted"
                         }`}
                       >
@@ -76,13 +77,13 @@ export default function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t p-3">
-        <button
+        <Button
           onClick={handleLogout}
           className="flex items-center gap-2 w-full text-sm text-red-500 hover:text-red-600"
         >
           <LogOut className="h-4 w-4" />
           Logout
-        </button>
+        </Button>
       </SidebarFooter>
     </Sidebar>
   )
