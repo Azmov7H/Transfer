@@ -1,6 +1,8 @@
 import { Bahiana, Marhey } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider"
+
 import "./globals.css";
+import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const marhey = Marhey({
   variable: "--font-geist-sans",
@@ -29,6 +31,7 @@ export default function RootLayout({ children }) {
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
+            <Toaster richColors position="top-right" />
           {children}
         </ThemeProvider>
       </body>

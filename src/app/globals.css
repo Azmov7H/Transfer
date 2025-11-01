@@ -2,6 +2,32 @@
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 
+
+/* === macOS style inputs === */
+input,
+textarea,
+select {
+  @apply w-full rounded-md bg-white/60 dark:bg-white/10 border border-black/10 dark:border-white/10 
+         px-3 py-2 text-sm text-foreground shadow-sm transition-all focus-visible:outline-none 
+         focus-visible:ring-2 focus-visible:ring-[oklch(0.1845_0.0443_260.95)] 
+         focus-visible:border-transparent placeholder:text-muted-foreground;
+  backdrop-filter: blur(12px);
+}
+
+/* لجعل الترانزيشن أنعم */
+input:focus,
+textarea:focus,
+select:focus {
+  transform: scale(1.01);
+}
+
+/* زر شبيه بـ macOS */
+button {
+  @apply rounded-md bg-[oklch(0.1845_0.0443_260.95)] text-white 
+         hover:opacity-90 transition-all shadow-sm;
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
