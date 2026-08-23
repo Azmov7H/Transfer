@@ -63,10 +63,10 @@ export async function fetcher(url, options = {}) {
         finalUrl = `${baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl}${finalUrl}`;
     }
 
-    // 3. Request Deduplication
+    // 3. Request Deduplication (GET only — mutations must never be coalesced)
     const requestKey = getRequestKey(finalUrl, fetchOptions);
-    const mutationMethods = ['POST', 'PUT', 'DELETE', 'PATCH'];
-    const shouldDeduplicate = !skipDeduplication && mutationMethods.includes(fetchOptions.method);
+    const isGet = !fetchOptions.method || fetchOptions.method === 'GET';
+    const shouldDeduplicate = !skipDeduplication && isGet;
 
     if (shouldDeduplicate && pendingRequests.has(requestKey)) {
         return pendingRequests.get(requestKey).promise;
