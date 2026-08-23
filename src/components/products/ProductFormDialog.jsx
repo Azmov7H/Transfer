@@ -217,7 +217,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, formData, setFormD
                                             </div>
                                         </div>
                                         <p className="text-[10px] text-muted-foreground font-medium bg-emerald-500/5 p-2 rounded-lg leading-relaxed">
-                                            💡 هذه هي الكميات التي يتم تسجيلها لأول مرة عند استلام المحل للنظام. سيتم إنشاء حركة "رصيد افتتاحي" آلياً بهذه القيم.
+                                            💡 هذه هي الكميات التي يتم تسجيلها لأول مرة عند استلام المحل للنظام. سيتم إنشاء حركة &quot;رصيد افتتاحي&quot; آلياً بهذه القيم.
                                         </p>
                                     </div>
                                 )}

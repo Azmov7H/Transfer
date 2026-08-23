@@ -158,7 +158,7 @@ export default function ExpensesPage() {
 
                 <div className="max-w-4xl mx-auto glass-card p-8 rounded-3xl border border-white/10 border-dashed text-center">
                     <p className="text-lg font-bold text-white/30 italic">
-                        تنبيه: سيظهر هذا المصروف في إجمالي "مصاريف اليوم" ويؤثر على "صافي الربح" في لوحة التحكم.
+                        تنبيه: سيظهر هذا المصروف في إجمالي &quot;مصاريف اليوم&quot; ويؤثر على &quot;صافي الربح&quot; في لوحة التحكم.
                     </p>
                 </div>
             </div>

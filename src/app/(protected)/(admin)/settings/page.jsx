@@ -431,7 +431,7 @@ export default function SettingsPage() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label className="text-xl font-black text-amber-100 block">حد المخزون الحرج</Label>
-                                        <p className="text-sm font-bold text-amber-500/50 leading-relaxed">أقل كمية للمنتج قبل إطلاق تنبيه "نقص المخزون"</p>
+                                        <p className="text-sm font-bold text-amber-500/50 leading-relaxed">أقل كمية للمنتج قبل إطلاق تنبيه &quot;نقص المخزون&quot;</p>
                                     </div>
                                     <div className="flex items-center gap-4 bg-black/20 p-4 rounded-2xl">
                                         <Input
@@ -518,7 +518,7 @@ export default function SettingsPage() {
                                             />
                                             <span className="font-black text-white/40 uppercase text-xs tracking-[0.3em]">ج.م</span>
                                         </div>
-                                        <p className="text-[11px] text-white/20 font-bold leading-relaxed px-2">ملاحظة: تفعيل خيار "نقطة لكل 100 ج.م" يعني أن كل 100 جنيه عُملة فاتورة تمنح العميل نقطة واحدة.</p>
+                                        <p className="text-[11px] text-white/20 font-bold leading-relaxed px-2">ملاحظة: تفعيل خيار &quot;نقطة لكل 100 ج.م&quot; يعني أن كل 100 جنيه عُملة فاتورة تمنح العميل نقطة واحدة.</p>
                                     </div>
 
                                     <div className="group space-y-6 p-8 rounded-[2.5rem] bg-emerald-500/5 border border-white/5 shadow-inner">
@@ -577,7 +577,7 @@ export default function SettingsPage() {
                                             <Zap size={24} className="fill-current" /> معلومة ذكية
                                         </div>
                                         <p className="text-sm leading-relaxed text-white/40 font-bold">
-                                            يتم تذكيرك تلقائياً في صفحة "الإشعارات" عند وصول العميل لهذا الحد، مما يساعدك على التواصل معهم وتقديم عروض تحفيزية لاستعادة نشاطهم.
+                                            يتم تذكيرك تلقائياً في صفحة &quot;الإشعارات&quot; عند وصول العميل لهذا الحد، مما يساعدك على التواصل معهم وتقديم عروض تحفيزية لاستعادة نشاطهم.
                                         </p>
                                     </div>
                                 </div>
