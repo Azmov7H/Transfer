@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogT
 import { ArrowLeftRight, Loader2, Plus, Trash2, Package, Layers, AlertCircle, Search } from 'lucide-react';
 import { cn } from '@/utils';
 import { useProducts } from '@/hooks/useProducts';
-import { ProductSelectorDialog } from '@/components/products/ProductSelectorDialog';
+import { ProductSelector } from '@/components/products/ProductSelector';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting }) {
@@ -278,7 +278,8 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                 </form>
             </DialogContent>
 
-            <ProductSelectorDialog
+            <ProductSelector
+                showFilters={false}
                 open={isProductSelectorOpen}
                 onOpenChange={setIsProductSelectorOpen}
                 onSelect={(product) => {

@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils';
-import { ProductSelectorModal } from './ProductSelectorModal';
+import { ProductSelector } from '@/components/products/ProductSelector';
 import { useInvoiceItems } from '@/hooks/useInvoiceItems';
 
 export function InvoiceItemsManager({ items, setItems, onReportShortage, defaultSource = 'shop' }) {
@@ -110,14 +110,14 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                 </div>
             </div>
 
-            <ProductSelectorModal
+            <ProductSelector
                 open={showProductModal}
                 onOpenChange={setShowProductModal}
+                multiple
                 onSelect={(product) => {
                     addItem(product);
                     toast.success(`تم إضافة ${product.name}`);
                 }}
-                defaultSource={defaultSource}
             />
 
             {/* Service Item Dialog */}
