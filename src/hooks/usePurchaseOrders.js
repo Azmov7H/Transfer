@@ -5,9 +5,9 @@ import { toast } from 'sonner';
 export function usePurchaseOrders(params = {}) {
     return useQuery({
         queryKey: ['purchase-orders', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/purchase-orders?${searchParams.toString()}`);
+            return await api.get(`/api/purchase-orders?${searchParams.toString()}`, undefined, { signal });
         }
     });
 }
@@ -15,8 +15,8 @@ export function usePurchaseOrders(params = {}) {
 export function usePurchaseOrder(id) {
     return useQuery({
         queryKey: ['purchase-orders', id],
-        queryFn: async () => {
-            return await api.get(`/api/purchase-orders/${id}`);
+        queryFn: async ({ signal }) => {
+            return await api.get(`/api/purchase-orders/${id}`, undefined, { signal });
         },
         enabled: !!id
     });

@@ -7,8 +7,8 @@ export function useUsers() {
 
     const usersQuery = useQuery({
         queryKey: ['users'],
-        queryFn: async () => {
-            return await api.get('/api/users');
+        queryFn: async ({ signal }) => {
+            return await api.get('/api/users', undefined, { signal });
         },
     });
 

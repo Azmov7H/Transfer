@@ -16,8 +16,8 @@ export function usePhysicalInventory(id = null) {
 
         return useQuery({
             queryKey: ['physical-inventory', filters],
-            queryFn: async () => {
-                const res = await ApiClient.get(`/api/physical-inventory?${params.toString()}`);
+            queryFn: async ({ signal }) => {
+                const res = await ApiClient.get(`/api/physical-inventory?${params.toString()}`, undefined, { signal });
                 // The backend returns an array directly wrapped by routeHandler
                 // So res (from api-utils) is { success, data: [...] }
                 return res.data || [];
@@ -29,8 +29,8 @@ export function usePhysicalInventory(id = null) {
     const useCount = (countId) => {
         return useQuery({
             queryKey: ['physical-inventory', countId],
-            queryFn: async () => {
-                const res = await ApiClient.get(`/api/physical-inventory/${countId}`);
+            queryFn: async ({ signal }) => {
+                const res = await ApiClient.get(`/api/physical-inventory/${countId}`, undefined, { signal });
                 // The backend returns the count object directly
                 return res.data || null;
             },
@@ -80,8 +80,8 @@ export function usePhysicalInventory(id = null) {
     const useRecentMovements = (countId) => {
         return useQuery({
             queryKey: ['physical-inventory', countId, 'movements'],
-            queryFn: async () => {
-                const res = await ApiClient.get(`/api/physical-inventory/${countId}/recent-movements`);
+            queryFn: async ({ signal }) => {
+                const res = await ApiClient.get(`/api/physical-inventory/${countId}/recent-movements`, undefined, { signal });
                 return res.data.movements;
             },
             enabled: !!countId

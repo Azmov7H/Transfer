@@ -4,8 +4,8 @@ import { api } from '@/lib/api-utils';
 export function useDashboard() {
     const { data: response, isLoading, refetch } = useQuery({
         queryKey: ['dashboard-unified'],
-        queryFn: async () => {
-            return await api.get('/api/dashboard');
+        queryFn: async ({ signal }) => {
+            return await api.get('/api/dashboard', undefined, { signal });
         },
         staleTime: 30 * 1000, // 30 seconds - reduces re-fetching
         refetchOnWindowFocus: false, // Prevents unnecessary API calls

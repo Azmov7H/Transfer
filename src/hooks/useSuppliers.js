@@ -7,13 +7,13 @@ export function useSuppliers(params = {}) {
 
     const query = useQuery({
         queryKey: ['suppliers', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams();
             if (params.search) searchParams.append('search', params.search);
             if (params.page) searchParams.append('page', params.page);
             if (params.limit) searchParams.append('limit', params.limit);
 
-            return await api.get(`/api/suppliers?${searchParams.toString()}`);
+            return await api.get(`/api/suppliers?${searchParams.toString()}`, undefined, { signal });
         }
     });
 
@@ -55,8 +55,8 @@ export function useSuppliers(params = {}) {
 export function useSupplier(id) {
     return useQuery({
         queryKey: ['suppliers', id],
-        queryFn: async () => {
-            const res = await api.get(`/api/suppliers/${id}`);
+        queryFn: async ({ signal }) => {
+            const res = await api.get(`/api/suppliers/${id}`, undefined, { signal });
             return res.supplier;
         },
         enabled: !!id

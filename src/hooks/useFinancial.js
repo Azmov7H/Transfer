@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 export function useTreasury(params = {}) {
     return useQuery({
         queryKey: ['treasury', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/financial/treasury?${searchParams}`);
+            return await api.get(`/api/financial/treasury?${searchParams}`, undefined, { signal });
         }
     });
 }
@@ -39,9 +39,9 @@ export function useDeleteTransaction() {
 export function useDebts(params = {}) {
     return useQuery({
         queryKey: ['debts', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/financial/debts?${searchParams}`);
+            return await api.get(`/api/financial/debts?${searchParams}`, undefined, { signal });
         }
     });
 }
@@ -49,9 +49,9 @@ export function useDebts(params = {}) {
 export function useDebtors(params = {}) {
     return useQuery({
         queryKey: ['debtors', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/financial/debtors?${searchParams}`);
+            return await api.get(`/api/financial/debtors?${searchParams}`, undefined, { signal });
         }
     });
 }
@@ -59,8 +59,8 @@ export function useDebtors(params = {}) {
 export function useDebtOverview() {
     return useQuery({
         queryKey: ['debt-overview'],
-        queryFn: async () => {
-            return await api.get('/api/financial/debt-overview');
+        queryFn: async ({ signal }) => {
+            return await api.get('/api/financial/debt-overview', undefined, { signal });
         }
     });
 }
@@ -81,8 +81,8 @@ export function useAddPayment() {
 export function useDebtInstallments(debtId) {
     return useQuery({
         queryKey: ['debt-installments', debtId],
-        queryFn: async () => {
-            return await api.get(`/api/financial/debts/${debtId}/installments`);
+        queryFn: async ({ signal }) => {
+            return await api.get(`/api/financial/debts/${debtId}/installments`, undefined, { signal });
         },
         enabled: !!debtId
     });
@@ -104,9 +104,9 @@ export function useCreateInstallments() {
 export function useReceivables(params = {}) {
     return useQuery({
         queryKey: ['receivables', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/payments?${searchParams}`);
+            return await api.get(`/api/payments?${searchParams}`, undefined, { signal });
         }
     });
 }
@@ -157,9 +157,9 @@ export function useCustomerTotalPayment() {
 export function usePartnerTransactions(partnerId, params = {}) {
     return useQuery({
         queryKey: ['partner-transactions', partnerId, params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/financial/partner/${partnerId}/transactions?${searchParams}`);
+            return await api.get(`/api/financial/partner/${partnerId}/transactions?${searchParams}`, undefined, { signal });
         },
         enabled: !!partnerId
     });

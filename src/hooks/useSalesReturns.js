@@ -5,9 +5,9 @@ import { toast } from 'sonner';
 export function useSalesReturns(params = {}) {
     return useQuery({
         queryKey: ['sales-returns', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams(params);
-            const res = await api.get(`/api/sales-returns?${searchParams.toString()}`);
+            const res = await api.get(`/api/sales-returns?${searchParams.toString()}`, undefined, { signal });
             return res.data;
         }
     });
@@ -16,9 +16,9 @@ export function useSalesReturns(params = {}) {
 export function useInvoiceReturns(invoiceId) {
     return useQuery({
         queryKey: ['invoice-returns', invoiceId],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             if (!invoiceId) return { returns: [] };
-            const res = await api.get(`/api/invoices/${invoiceId}/returns`);
+            const res = await api.get(`/api/invoices/${invoiceId}/returns`, undefined, { signal });
             return res.data;
         },
         enabled: !!invoiceId

@@ -47,8 +47,8 @@ export default function CustomerClient({ id }) {
     // Fetch Customer Details
     const { data: customer, isLoading } = useQuery({
         queryKey: ['customer', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/customers/${id}`);
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`/api/customers/${id}`, { signal });
             if (!res.ok) throw new Error('Failed to fetch customer');
             const json = await res.json();
             return json.data;
@@ -58,8 +58,8 @@ export default function CustomerClient({ id }) {
     // Fetch Custom Prices
     const { data: pricingData } = useQuery({
         queryKey: ['customer-pricing', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/customers/${id}/pricing`);
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`/api/customers/${id}/pricing`, { signal });
             const json = await res.json();
             return json.data;
         }
@@ -68,8 +68,8 @@ export default function CustomerClient({ id }) {
     // Fetch Products for dropdown
     const { data: productsData } = useQuery({
         queryKey: ['products'],
-        queryFn: async () => {
-            const res = await fetch('/api/products?limit=100');
+        queryFn: async ({ signal }) => {
+            const res = await fetch('/api/products?limit=100', { signal });
             const json = await res.json();
             return json.data;
         },
@@ -79,8 +79,8 @@ export default function CustomerClient({ id }) {
     // Fetch Customer Invoices (History)
     const { data: historyData, isLoading: isHistoryLoading } = useQuery({
         queryKey: ['customer-history', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/invoices?customerId=${id}`);
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`/api/invoices?customerId=${id}`, { signal });
             const json = await res.json();
             return json.data;
         }
@@ -89,8 +89,8 @@ export default function CustomerClient({ id }) {
     // Fetch Financial Statement
     const { data: statementData, isLoading: isStatementLoading } = useQuery({
         queryKey: ['customer-statement', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/customers/${id}/statement`);
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`/api/customers/${id}/statement`, { signal });
             const json = await res.json();
             return json.data;
         }

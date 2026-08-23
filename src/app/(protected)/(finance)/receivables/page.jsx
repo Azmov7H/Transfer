@@ -45,8 +45,8 @@ export default function ReceivablesPage() {
     // Fetch Customer Name for header if customerId is present
     const { data: customerData } = useQuery({
         queryKey: ['customer-basic', customerId],
-        queryFn: async () => {
-            const res = await fetch(`/api/customers/${customerId}`);
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`/api/customers/${customerId}`, { signal });
             const json = await res.json();
             return json.data;
         },

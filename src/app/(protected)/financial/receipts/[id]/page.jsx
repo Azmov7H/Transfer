@@ -16,8 +16,8 @@ export default function ReceiptPage() {
 
     const { data: receiptData, isLoading, error } = useQuery({
         queryKey: ['receipt', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/financial/receipts/${id}`);
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`/api/financial/receipts/${id}`, { signal });
             const json = await res.json();
             if (!res.ok) throw new Error(json.error || 'Failed to fetch receipt');
             return json.data;

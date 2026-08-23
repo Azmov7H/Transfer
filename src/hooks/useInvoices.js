@@ -10,7 +10,7 @@ import { useFilters } from './useFilters';
 export function useInvoices(params = {}) {
     return useQuery({
         queryKey: ['invoices', params],
-        queryFn: () => api.get('/api/invoices', params)
+        queryFn: ({ signal }) => api.get('/api/invoices', params, { signal })
     });
 }
 

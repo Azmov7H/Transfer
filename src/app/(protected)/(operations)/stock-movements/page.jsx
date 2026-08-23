@@ -23,13 +23,14 @@ export default function StockMovementsPage() {
 
     const { data: movementsData, isLoading } = useQuery({
         queryKey: ['stock-movements', days],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const endDate = new Date();
             const startDate = new Date();
             startDate.setDate(startDate.getDate() - days);
 
             const res = await fetch(
-                `/api/stock/movements?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`
+                `/api/stock/movements?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`,
+                { signal }
             );
             if (!res.ok) throw new Error('Failed to fetch');
             const json = await res.json();

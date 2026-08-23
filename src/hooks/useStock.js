@@ -5,9 +5,9 @@ import { toast } from 'sonner';
 export function useStockMovements(params = {}) {
     return useQuery({
         queryKey: ['stock-movements', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/stock/movements?${searchParams.toString()}`);
+            return await api.get(`/api/stock/movements?${searchParams.toString()}`, undefined, { signal });
         }
     });
 }
@@ -15,9 +15,9 @@ export function useStockMovements(params = {}) {
 export function useStockStatus(params = {}) {
     return useQuery({
         queryKey: ['stock-status', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/stock?${searchParams.toString()}`);
+            return await api.get(`/api/stock?${searchParams.toString()}`, undefined, { signal });
         }
     });
 }

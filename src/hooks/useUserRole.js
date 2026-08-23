@@ -4,9 +4,9 @@ import { api } from '@/lib/api-utils';
 export function useUserRole() {
     const { data, isLoading, isError, error, refetch } = useQuery({
         queryKey: ['user-session'],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             try {
-                const response = await api.get('/api/auth/session');
+                const response = await api.get('/api/auth/session', undefined, { signal });
                 console.log('[useUserRole] Session Response:', response);
                 return response;
             } catch (err) {

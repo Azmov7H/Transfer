@@ -37,8 +37,8 @@ export default function DebtDetailPage({ params }) {
     // Fetch Debt Details
     const { data: debtData, isLoading } = useQuery({
         queryKey: ['debt', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/financial/debts?_id=${id}`);
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`/api/financial/debts?_id=${id}`, { signal });
             if (!res.ok) throw new Error('Failed to fetch debt');
             const json = await res.json();
             return json.data.debts[0];
@@ -48,8 +48,8 @@ export default function DebtDetailPage({ params }) {
     // Fetch Payment History
     const { data: paymentsData } = useQuery({
         queryKey: ['payments', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/financial/payments?debtId=${id}`);
+        queryFn: async ({ signal }) => {
+            const res = await fetch(`/api/financial/payments?debtId=${id}`, { signal });
             if (!res.ok) throw new Error('Failed to fetch payments');
             return res.json();
         },

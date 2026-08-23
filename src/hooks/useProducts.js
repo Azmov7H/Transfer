@@ -5,11 +5,11 @@ import { toast } from 'sonner';
 export function useProducts(params = {}, options = {}) {
     return useQuery({
         queryKey: ['products', params],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             // Filter out internal options from query params
             const queryData = { ...params };
             const searchParams = new URLSearchParams(queryData);
-            return await api.get(`/api/products?${searchParams.toString()}`);
+            return await api.get(`/api/products?${searchParams.toString()}`, undefined, { signal });
         },
         placeholderData: (previousData) => previousData,
         ...options
@@ -55,8 +55,8 @@ export function useDeleteProduct() {
 export function useProductMetadata() {
     return useQuery({
         queryKey: ['products-metadata'],
-        queryFn: async () => {
-            return await api.get('/api/products/metadata');
+        queryFn: async ({ signal }) => {
+            return await api.get('/api/products/metadata', undefined, { signal });
         },
         staleTime: 1000 * 60 * 30, // 30 minutes
     });

@@ -9,8 +9,8 @@ export function useNotifications() {
 
     const { data: listData, isLoading, refetch } = useQuery({
         queryKey: ['notifications', 'list'],
-        queryFn: async () => {
-            return await api.get('/api/notifications?limit=20');
+        queryFn: async ({ signal }) => {
+            return await api.get('/api/notifications?limit=20', undefined, { signal });
         },
         refetchInterval: 30000,
         refetchIntervalInBackground: false // Stop polling when tab is hidden

@@ -15,7 +15,7 @@ export function useCustomers() {
 
     const query = useQuery({
         queryKey: ['customers', queryContext],
-        queryFn: () => api.get('/api/customers', queryContext)
+        queryFn: ({ signal }) => api.get('/api/customers', queryContext, { signal })
     });
 
     const addMutation = useMutation({
