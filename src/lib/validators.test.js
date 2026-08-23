@@ -1,4 +1,4 @@
-import { expenseSchema, invoiceSchema, productSchema } from './validators';
+import { expenseSchema, invoiceSchema, productSchema } from '@/validations/validators';
 import { z } from 'zod';
 
 describe('Validators Sanity Check', () => {
