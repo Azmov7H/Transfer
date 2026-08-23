@@ -14,7 +14,7 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                 <div className="relative h-32 bg-primary/10 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
                     <div className="absolute -right-10 -top-10 h-40 w-40 bg-primary/20 blur-3xl rounded-full" />
-                    <div className="absolute right-8 bottom-0 translate-y-1/2 p-4 bg-[#0f172a] rounded-3xl border border-white/10 shadow-2xl">
+                    <div className="absolute right-8 bottom-0 translate-y-1/2 p-4 bg-slate-900 rounded-3xl border border-white/10 shadow-2xl">
                         <Barcode className="h-12 w-12 text-primary" />
                     </div>
                 </div>

@@ -78,7 +78,7 @@ export default function StockMovementsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0f172a]/20 space-y-6 p-1 md:p-6" dir="rtl">
+        <div className="min-h-screen bg-slate-900/20 space-y-6 p-1 md:p-6" dir="rtl">
             {/* Header Area */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <motion.div

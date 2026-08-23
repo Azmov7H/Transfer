@@ -45,18 +45,18 @@ export function CustomerDetailsSheet({
 
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
-            <SheetContent side="left" className="w-full sm:max-w-xl p-0 border-r border-white/10 bg-[#0f172a] text-foreground flex flex-col" dir="rtl">
+            <SheetContent side="left" className="w-full sm:max-w-xl p-0 border-r border-white/10 bg-slate-900 text-foreground flex flex-col" dir="rtl">
                 {/* Header Section */}
                 <div className="bg-gradient-to-b from-white/5 to-transparent p-8 pb-10">
                     <div className="flex flex-col items-center text-center gap-6">
                         <div className="relative">
-                            <Avatar className="h-24 w-24 border-4 border-[#0f172a] shadow-2xl ring-2 ring-primary/20">
+                            <Avatar className="h-24 w-24 border-4 border-slate-900 shadow-2xl ring-2 ring-primary/20">
                                 <AvatarFallback className="bg-gradient-to-tr from-primary to-blue-600 text-white text-3xl font-black">
                                     {customer.name.charAt(0)}
                                 </AvatarFallback>
                             </Avatar>
                             <div className={cn(
-                                "absolute bottom-1 right-1 w-6 h-6 rounded-full border-4 border-[#0f172a]",
+                                "absolute bottom-1 right-1 w-6 h-6 rounded-full border-4 border-slate-900",
                                 customer.isActive ? "bg-emerald-500" : "bg-rose-500"
                             )} />
                         </div>
@@ -129,7 +129,7 @@ export function CustomerDetailsSheet({
                 </ScrollArea>
 
                 {/* Footer Actions */}
-                <div className="absolute bottom-0 left-0 right-0 p-8 bg-[#0f172a] border-t border-white/10 shadow-[0_-20px_40px_rgba(0,0,0,0.5)] z-50">
+                <div className="absolute bottom-0 left-0 right-0 p-8 bg-slate-900 border-t border-white/10 shadow-[0_-20px_40px_rgba(0,0,0,0.5)] z-50">
                     <div className="flex gap-4">
                         <Button
                             variant="ghost"
