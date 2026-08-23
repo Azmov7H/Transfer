@@ -14,8 +14,12 @@ const cairo = Cairo({
 
 
 export const metadata = {
-  title: 'مخازن الجماز',
+  title: {
+    default: 'مخازن الجماز',
+    template: '%s | مخازن الجماز',
+  },
   description: 'نظام إدارة المخازن المتكامل',
+  robots: { index: false, follow: false },
 };
 
 import { ThemeProvider } from "@/components/theme-provider";
