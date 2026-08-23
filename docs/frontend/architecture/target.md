@@ -43,3 +43,19 @@ No cycles; utils/validations/lib are leaves.
 
 ## Non-Goals
 TypeScript migration (deferred, ladder documented in 12-typescript-audit.md) · Tailwind 4 · E2E framework (documented future work) · Redux/zustand.
+
+---
+
+# Decision Log
+
+| # | Decision | Rationale | Consequences | Status |
+|---|---|---|---|---|
+| D1 | Client-first rendering retained; TanStack Query stays the server-state engine | Existing investment is sound; RSC conversion only on measured wins (FE-PERF-003) | Next.js server capabilities used for metadata/boundaries only | Accepted |
+| D2 | Layered data access enforced: UI → hooks → services → fetcher | Single source of truth per endpoint contract (ARCH-002/DATA-005) | `api` imports outside services/lib become violations; grep-enforced in Sprint 02 | Accepted |
+| D3 | One primitive per UI concept (selector, confirm dialog, state primitives, chart lib, form pattern) | Eliminates drift (COMP-001, UX-001) | Legacy duplicates deleted in Sprint 10 | Accepted |
+| D4 | Authorization UX via `<RoleGate>` + permissions lib only | Phantom-role bug class (AUTH-002); stringly comparisons banned | Hidden nav items are never treated as enforcement | Accepted |
+| D5 | Failure is always visible and recoverable | ERR-001/AUTH-001 | Root error.jsx, global-error.jsx, Arabic not-found.jsx shipped in Sprint 01; global 401 redirect lands Sprint 03 | Implemented |
+| D6 | Package manager is **pnpm**, pinned via `packageManager` field | Matches install reality; ended DX-001 split-brain | npm lockfile removed; installs via pnpm only | Implemented |
+| D7 | ESLint runs native flat config; new react-hooks v7 compiler rules downgraded to **warn** until their refactors land | Baseline gate must be runnable without behavior change | Warnings are tracked remediation targets mapped to Sprints 02/04/05; must not be re-downgraded after their sprint completes | Transitional |
+| D8 | `components/ErrorBoundary.jsx` is retired | Route-level boundaries (root/segment/global-error) now cover all recovery paths; widget-level isolation has no current consumer | Deletion scheduled in FE-CLEAN-002 (Sprint 10) | Decided |
+| D9 | Internal tool: `robots: noindex`, no OG/sitemap/structured data | Public discoverability irrelevant (SEO-001) | Per-section Arabic titles shipped instead | Implemented |
