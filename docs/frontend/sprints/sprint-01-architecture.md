@@ -50,3 +50,21 @@ Standard DoD.
 
 ## Expected Result
 Safe refactor environment for Sprints 02–05.
+
+---
+
+## Execution Record (completed)
+
+Branch: `feat/frontend-sprint-01-architecture` (stacked on Sprint 00)
+
+| Task | Commit | Result |
+|---|---|---|
+| FE-ARCH-001 | `c7a8f82` | Root `error.jsx`, self-contained `global-error.jsx`, RTL Arabic `not-found.jsx`; ErrorBoundary retirement decided (D8) |
+| FE-NEXT-001 | `70d142b` | Title template + noindex in root; 15 section-title server layouts (client pages cannot export metadata) |
+| FE-ARCH-002 | (this commit) | Decision Log D1–D9 committed to architecture/target.md |
+
+Gates: lint ✅ (0 errors) · test ✅ (3/3) · build ✅ (35 routes after new layouts)
+
+Notes:
+- Build initially failed: global-error.css import used wrong relative path (`../` → `./`) — caught by gate, fixed before commit.
+- Manual verification pending PR review: throw-in-page → root error UI; bogus URL → Arabic 404; distinct `<title>` per section.
