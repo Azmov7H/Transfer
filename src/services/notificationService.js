@@ -1,38 +1,28 @@
 /**
- * Notification Service (Client-Side)
- * Connects to Backend API
+ * Notification Service — owns the /api/notifications endpoint contract.
+ * UI/hooks must not hardcode these URLs (FE-DATA-005, D2/D10).
  */
+import { api } from '@/lib/api-utils';
+
+/**
+ * @typedef {Object} Notification
+ * @property {string} _id
+ * @property {string} title
+ * @property {string} [message]
+ * @property {boolean} isRead
+ */
+
+/** @param {{signal?: AbortSignal}} [options] @returns {Promise<{notifications: Notification[], unreadCount: number}>} */
+export const getNotifications = (options) => api.get('/api/notifications?limit=20', undefined, options);
+
+/** @param {string[]|'all'} ids @returns {Promise<*>} */
+export const markNotificationsRead = (ids = 'all') => api.patch('/api/notifications/mark-read', { ids });
+
+/** @param {string} id @returns {Promise<*>} */
+export const deleteNotification = (id) => api.delete(`/api/notifications/${id}`);
+
+/** Legacy namespace kept for existing consumers. */
 export const NotificationService = {
-    async getAll(params = {}) {
-        const query = new URLSearchParams(params).toString();
-        const res = await fetch(`/api/notifications?${query}`);
-        if (!res.ok) throw new Error('Failed to fetch notifications');
-        return res.json();
-    },
-
-    async markAsRead(id) {
-        const res = await fetch(`/api/notifications/${id}/read`, {
-            method: 'PUT'
-        });
-        if (!res.ok) throw new Error('Failed to mark notification as read');
-        return res.json();
-    },
-
-    async markAllAsRead() {
-        const res = await fetch('/api/notifications/read-all', {
-            method: 'PUT'
-        });
-        if (!res.ok) throw new Error('Failed to mark all as read');
-        return res.json();
-    },
-
-    async getUnreadCount() {
-        // Backend logic suggests using getAll with unread=true filter effectively or a specific count endpoint if exists.
-        // Assuming getAll({ unread: true }) returns a list, and we count length, or backend metadata.
-        // Or if backend has /count endpoint. Let's assume params for now.
-        const res = await fetch('/api/notifications?unread=true');
-        if (!res.ok) return 0;
-        const data = await res.json();
-        return data.length || data.count || 0;
-    }
+    getAll: getNotifications,
+    markAsRead: markNotificationsRead,
 };

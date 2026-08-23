@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
-import { toast } from 'sonner';
+import { getInvoices, createInvoice, deleteInvoice } from '@/services/invoiceService';
+import { withMutationFeedback } from '@/lib/mutation-feedback';
 import { useFilters } from './useFilters';
 
 /**
@@ -10,7 +10,7 @@ import { useFilters } from './useFilters';
 export function useInvoices(params = {}) {
     return useQuery({
         queryKey: ['invoices', params],
-        queryFn: () => api.get('/api/invoices', params)
+        queryFn: ({ signal }) => getInvoices(params, { signal })
     });
 }
 
@@ -21,18 +21,16 @@ export function useCreateInvoice() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (data) => {
-            return await api.post('/api/invoices', data);
+            return await createInvoice(data);
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['invoices'] });
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-        },
-        onError: (error) => {
-            toast.error(error.message || 'فشل في إنشاء الفاتورة', {
-                duration: 5000,
-                important: true
-            });
-        }
+        ...withMutationFeedback({
+            fallbackErrorMessage: 'فشل في إنشاء الفاتورة',
+            errorOptions: { duration: 5000, important: true },
+            afterSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['invoices'] });
+                queryClient.invalidateQueries({ queryKey: ['products'] });
+            }
+        })
     });
 }
 
@@ -42,15 +40,15 @@ export function useCreateInvoice() {
 export function useDeleteInvoice() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (id) => api.delete(`/api/invoices/${id}`),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['invoices'] });
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-            toast.success('تم حذف الفاتورة بنجاح');
-        },
-        onError: (error) => {
-            toast.error(error.message || 'فشل في حذف الفاتورة');
-        }
+        mutationFn: (id) => deleteInvoice(id),
+        ...withMutationFeedback({
+            successMessage: 'تم حذف الفاتورة بنجاح',
+            fallbackErrorMessage: 'فشل في حذف الفاتورة',
+            afterSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['invoices'] });
+                queryClient.invalidateQueries({ queryKey: ['products'] });
+            }
+        })
     });
 }
 

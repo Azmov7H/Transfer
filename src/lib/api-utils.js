@@ -27,6 +27,8 @@ function getRequestKey(url, options = {}) {
     return `${method}:${url}:${body}`;
 }
 
+export const DEFAULT_TIMEOUT_MS = 30000;
+
 export async function fetcher(url, options = {}) {
     const {
         params, // New: Support for query parameters as object
@@ -34,6 +36,8 @@ export async function fetcher(url, options = {}) {
         revalidate = undefined,
         tags = [],
         skipDeduplication = false,
+        timeout = DEFAULT_TIMEOUT_MS,
+        signal: externalSignal,
         ...fetchOptions
     } = options;
 
@@ -63,10 +67,11 @@ export async function fetcher(url, options = {}) {
         finalUrl = `${baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl}${finalUrl}`;
     }
 
-    // 3. Request Deduplication
+    // 3. Request Deduplication (GET only — mutations must never be coalesced)
     const requestKey = getRequestKey(finalUrl, fetchOptions);
-    const mutationMethods = ['POST', 'PUT', 'DELETE', 'PATCH'];
-    const shouldDeduplicate = !skipDeduplication && mutationMethods.includes(fetchOptions.method);
+    const isGet = !fetchOptions.method || fetchOptions.method === 'GET';
+    // Never share a deduplicated promise when a caller signal exists — an abort would leak to all waiters
+    const shouldDeduplicate = !skipDeduplication && isGet && !externalSignal;
 
     if (shouldDeduplicate && pendingRequests.has(requestKey)) {
         return pendingRequests.get(requestKey).promise;
@@ -94,10 +99,27 @@ export async function fetcher(url, options = {}) {
         }
     };
 
-    // 5. Execution
+    // 5. Execution (caller signal + timeout composed into one controller)
     const fetchPromise = (async () => {
+        const controller = new AbortController();
+        let timedOut = false;
+
+        const onExternalAbort = () => controller.abort(externalSignal.reason);
+        if (externalSignal) {
+            if (externalSignal.aborted) {
+                controller.abort(externalSignal.reason);
+            } else {
+                externalSignal.addEventListener('abort', onExternalAbort, { once: true });
+            }
+        }
+
+        const timeoutId = setTimeout(() => {
+            timedOut = true;
+            controller.abort();
+        }, timeout);
+
         try {
-            const res = await fetch(finalUrl, config);
+            const res = await fetch(finalUrl, { ...config, signal: controller.signal });
 
             // Handle Global Auth Failure (401/403)
             if (res.status === 401 || res.status === 403) {
@@ -132,7 +154,19 @@ export async function fetcher(url, options = {}) {
             }
 
             return response;
+        } catch (err) {
+            if (timedOut || (err && err.name === 'TimeoutError')) {
+                throw Object.assign(
+                    new JammazApiError('انتهت مهلة الاتصال بالخادم', 408),
+                    { isTimeout: true }
+                );
+            }
+            throw err;
         } finally {
+            clearTimeout(timeoutId);
+            if (externalSignal) {
+                externalSignal.removeEventListener('abort', onExternalAbort);
+            }
             if (shouldDeduplicate) pendingRequests.delete(requestKey);
         }
     })();

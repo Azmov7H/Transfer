@@ -22,7 +22,7 @@ export default function PriceHistoryPage() {
 
     const { data: history = [], isLoading } = useQuery({
         queryKey: ['price-history'],
-        queryFn: () => ReportService.getAllPriceHistory()
+        queryFn: ({ signal }) => ReportService.getAllPriceHistory({ signal })
     });
 
     // Client-side filtering

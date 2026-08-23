@@ -20,20 +20,19 @@ import { ar } from 'date-fns/locale';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { StatCard } from '@/components/ui/StatCard';
 import { cn } from '@/utils';
-import { api } from '@/lib/api-utils';
+import { DailySalesService } from '@/services/dailySalesService';
 import {
     Loader2, DollarSign, CreditCard,
     TrendingUp, Calendar, ShoppingBag,
     Package
 } from 'lucide-react';
-import { DailySalesService } from '@/services/dailySalesService';
 
 export default function DailySalesPage() {
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
     const { data: summary = {}, isLoading } = useQuery({
         queryKey: ['daily-sales', date],
-        queryFn: ({ queryKey }) => DailySalesService.getDailySales(queryKey[1])
+        queryFn: ({ queryKey, signal }) => DailySalesService.getDailySales(queryKey[1], { signal })
     });
 
     const invoices = summary.invoices || [];

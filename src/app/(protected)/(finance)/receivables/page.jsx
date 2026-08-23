@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { getCustomerById } from '@/services/customerService';
 import {
     Search, Wallet, Loader2,
     Calendar, User, AlertCircle, CheckCircle2,
@@ -45,11 +46,7 @@ export default function ReceivablesPage() {
     // Fetch Customer Name for header if customerId is present
     const { data: customerData } = useQuery({
         queryKey: ['customer-basic', customerId],
-        queryFn: async () => {
-            const res = await fetch(`/api/customers/${customerId}`);
-            const json = await res.json();
-            return json.data;
-        },
+        queryFn: ({ signal }) => getCustomerById(customerId, { signal }),
         enabled: !!customerId
     });
 

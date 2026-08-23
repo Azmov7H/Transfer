@@ -15,7 +15,7 @@ import Link from "next/link"
 import { ar } from 'date-fns/locale';
 import { useSuppliers } from '@/hooks/useSuppliers';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { api } from '@/lib/api-utils';
+import { addPayment as addPaymentApi } from '@/services/financeService';
 import { useQueryClient } from '@tanstack/react-query';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TrendingUp, AlertTriangle } from 'lucide-react';
@@ -95,7 +95,7 @@ export default function FinancialPage() {
             };
 
             // We use the useAddPayment hook for this
-            api.post('/api/financial/payments', paymentData).then(() => {
+            addPaymentApi(paymentData).then(() => {
                 queryClient.invalidateQueries({ queryKey: ['treasury'] });
                 setIsDialogOpen(false);
                 setFormData({ amount: '', description: '', type: 'INCOME', category: 'other', supplierId: '', method: 'cash' });

@@ -1,13 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
-import { toast } from 'sonner';
+import {
+    getPurchaseOrders,
+    getPurchaseOrderById,
+    createPurchaseOrder,
+    updatePurchaseOrderStatus
+} from '@/services/purchaseOrderService';
+import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 export function usePurchaseOrders(params = {}) {
     return useQuery({
         queryKey: ['purchase-orders', params],
-        queryFn: async () => {
-            const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/purchase-orders?${searchParams.toString()}`);
+        queryFn: async ({ signal }) => {
+            return await getPurchaseOrders(params, { signal });
         }
     });
 }
@@ -15,8 +19,8 @@ export function usePurchaseOrders(params = {}) {
 export function usePurchaseOrder(id) {
     return useQuery({
         queryKey: ['purchase-orders', id],
-        queryFn: async () => {
-            return await api.get(`/api/purchase-orders/${id}`);
+        queryFn: async ({ signal }) => {
+            return await getPurchaseOrderById(id, { signal });
         },
         enabled: !!id
     });
@@ -25,24 +29,25 @@ export function usePurchaseOrder(id) {
 export function useCreatePO() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (data) => api.post('/api/purchase-orders', data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['purchase-orders'] });
-            toast.success('تم إنشاء طلب الشراء بنجاح');
-        },
-        onError: (error) => toast.error(error.message)
+        mutationFn: (data) => createPurchaseOrder(data),
+        ...withMutationFeedback({
+            successMessage: 'تم إنشاء طلب الشراء بنجاح',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['purchase-orders'] })
+        })
     });
 }
 
 export function useUpdatePOStatus() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: ({ id, ...data }) => api.patch(`/api/purchase-orders/${id}`, data),
-        onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ['purchase-orders'] });
-            queryClient.invalidateQueries({ queryKey: ['products'] }); // Stock might have changed
-            toast.success(res.message || 'تم تحديث الحالة');
-        },
-        onError: (error) => toast.error(error.message)
+        mutationFn: ({ id, ...data }) => updatePurchaseOrderStatus(id, data),
+        ...withMutationFeedback({
+            successMessage: (res) => res.message || 'تم تحديث الحالة',
+            afterSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['purchase-orders'] });
+                // Stock might have changed
+                queryClient.invalidateQueries({ queryKey: ['products'] });
+            }
+        })
     });
 }

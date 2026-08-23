@@ -37,6 +37,14 @@ import { UnifiedPaymentDialog } from '@/components/financial/UnifiedPaymentDialo
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { cn } from '@/utils';
+import {
+    getCustomerById,
+    getCustomerPricing,
+    getCustomerStatement,
+} from '@/services/customerService';
+import { getProducts } from '@/services/productService';
+import { getInvoices } from '@/services/invoiceService';
+
 export default function CustomerClient({ id }) {
     const queryClient = useQueryClient();
     const [isAddPriceOpen, setIsAddPriceOpen] = useState(false);
@@ -47,53 +55,32 @@ export default function CustomerClient({ id }) {
     // Fetch Customer Details
     const { data: customer, isLoading } = useQuery({
         queryKey: ['customer', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/customers/${id}`);
-            if (!res.ok) throw new Error('Failed to fetch customer');
-            const json = await res.json();
-            return json.data;
-        }
+        queryFn: ({ signal }) => getCustomerById(id, { signal })
     });
 
     // Fetch Custom Prices
     const { data: pricingData } = useQuery({
         queryKey: ['customer-pricing', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/customers/${id}/pricing`);
-            const json = await res.json();
-            return json.data;
-        }
+        queryFn: ({ signal }) => getCustomerPricing(id, { signal })
     });
 
     // Fetch Products for dropdown
     const { data: productsData } = useQuery({
         queryKey: ['products'],
-        queryFn: async () => {
-            const res = await fetch('/api/products?limit=100');
-            const json = await res.json();
-            return json.data;
-        },
+        queryFn: ({ signal }) => getProducts({ limit: 100 }, { signal }),
         enabled: isAddPriceOpen
     });
 
     // Fetch Customer Invoices (History)
     const { data: historyData, isLoading: isHistoryLoading } = useQuery({
         queryKey: ['customer-history', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/invoices?customerId=${id}`);
-            const json = await res.json();
-            return json.data;
-        }
+        queryFn: ({ signal }) => getInvoices({ customerId: id }, { signal })
     });
 
     // Fetch Financial Statement
     const { data: statementData, isLoading: isStatementLoading } = useQuery({
         queryKey: ['customer-statement', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/customers/${id}/statement`);
-            const json = await res.json();
-            return json.data;
-        }
+        queryFn: ({ signal }) => getCustomerStatement(id, { signal })
     });
 
     // Mutations

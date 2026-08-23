@@ -1,61 +1,50 @@
 /**
- * Customer Service (Client-Side)
- * Connects to Backend API
+ * Customer Service — owns the /api/customers endpoint contract.
+ * UI/hooks must not hardcode these URLs (FE-DATA-005, D2/D10).
  */
+import { api } from '@/lib/api-utils';
+
+/**
+ * @typedef {Object} Customer
+ * @property {string} _id
+ * @property {string} name
+ * @property {string} [phone]
+ * @property {string} [priceType] - pricing tier ('retail' | 'wholesale' | custom)
+ * @property {*} [data]
+ */
+
+/**
+ * @typedef {Object} PaginatedResult
+ * @property {Array<Customer>} [customers]
+ * @property {{ total: number, pages: number, page: number, limit: number }} [pagination]
+ */
+
+/** @param {object} params @param {{signal?: AbortSignal}} [options] @returns {Promise<PaginatedResult|Customer[]>} */
+export const getCustomers = (params = {}, options) => api.get('/api/customers', params, options);
+
+/** @param {string} id @param {{signal?: AbortSignal}} [options] @returns {Promise<{data: Customer}>} */
+export const getCustomerById = (id, options) => api.get(`/api/customers/${id}`, undefined, options);
+
+/** @param {Partial<Customer>} data @returns {Promise<Customer>} */
+export const createCustomer = (data) => api.post('/api/customers', data);
+
+/** @param {string} id @param {Partial<Customer>} data @returns {Promise<Customer>} */
+export const updateCustomer = (id, data) => api.put(`/api/customers/${id}`, data);
+
+/** @param {string} id @returns {Promise<*>} */
+export const deleteCustomer = (id) => api.delete(`/api/customers/${id}`);
+
+/** @param {string} id @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} custom per-product pricing */
+export const getCustomerPricing = (id, options) => api.get(`/api/customers/${id}/pricing`, undefined, options);
+
+/** @param {string} id @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} financial statement */
+export const getCustomerStatement = (id, options) => api.get(`/api/customers/${id}/statement`, undefined, options);
+
+/** Legacy namespace kept for existing consumers. */
 export const CustomerService = {
-    async getAll(params = {}) {
-        const query = new URLSearchParams(params).toString();
-        const res = await fetch(`/api/customers?${query}`);
-        if (!res.ok) throw new Error('Failed to fetch customers');
-        return res.json();
-    },
-
-    async getById(id) {
-        const res = await fetch(`/api/customers/${id}`);
-        if (!res.ok) throw new Error('Failed to fetch customer');
-        return res.json();
-    },
-
-    async create(data) {
-        const res = await fetch('/api/customers', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (!res.ok) {
-            const result = await res.json();
-            throw new Error(result.message || 'Failed to create customer');
-        }
-        return res.json();
-    },
-
-    async update(id, data) {
-        const res = await fetch(`/api/customers/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (!res.ok) {
-            const result = await res.json();
-            throw new Error(result.message || 'Failed to update customer');
-        }
-        return res.json();
-    },
-
-    async delete(id) {
-        const res = await fetch(`/api/customers/${id}`, {
-            method: 'DELETE'
-        });
-        if (!res.ok) {
-            const result = await res.json();
-            throw new Error(result.message || 'Failed to delete customer');
-        }
-        return res.json();
-    },
-
-    async getFinancials(id) {
-        const res = await fetch(`/api/customers/${id}/financials`);
-        if (!res.ok) throw new Error('Failed to fetch customer financials');
-        return res.json();
-    }
+    getAll: getCustomers,
+    getById: getCustomerById,
+    create: createCustomer,
+    update: updateCustomer,
+    delete: deleteCustomer,
 };

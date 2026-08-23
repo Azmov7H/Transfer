@@ -13,6 +13,7 @@ import {
     ArrowLeftRight, AlertCircle, CheckCircle2, History
 } from 'lucide-react';
 import { cn } from '@/utils';
+import { getStockMovements } from '@/services/stockService';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
@@ -23,17 +24,15 @@ export default function StockMovementsPage() {
 
     const { data: movementsData, isLoading } = useQuery({
         queryKey: ['stock-movements', days],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             const endDate = new Date();
             const startDate = new Date();
             startDate.setDate(startDate.getDate() - days);
 
-            const res = await fetch(
-                `/api/stock/movements?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`
-            );
-            if (!res.ok) throw new Error('Failed to fetch');
-            const json = await res.json();
-            return json.data;
+            return await getStockMovements({
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString()
+            }, { signal });
         }
     });
 

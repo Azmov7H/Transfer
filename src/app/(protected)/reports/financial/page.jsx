@@ -17,7 +17,7 @@ export default function FinancialReportPage() {
 
     const { data: response = {}, isLoading, refetch } = useQuery({
         queryKey: ['financial-report', startDate, endDate],
-        queryFn: () => ReportService.getFinancialReport(startDate, endDate)
+        queryFn: ({ signal }) => ReportService.getFinancialReport(startDate, endDate, { signal })
     });
 
     const financials = response?.financials || {};

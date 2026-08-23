@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { useSidebar } from '@/providers/SidebarProvider';
 import { useUserRole } from '@/hooks/useUserRole';
-import { api } from '@/lib/api-utils';
+import { logout as logoutApi } from '@/services/authService';
 
 export function useHeader() {
     const { theme, setTheme } = useTheme();
@@ -20,7 +20,7 @@ export function useHeader() {
 
     const handleLogout = async () => {
         try {
-            await api.post('/api/auth/logout');
+            await logoutApi();
             window.location.href = '/login';
         } catch (err) {
             console.error('Logout failed:', err);

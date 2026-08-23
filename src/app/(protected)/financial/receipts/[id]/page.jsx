@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { cn } from '@/utils';
 import Image from 'next/image';
+import { getReceipt } from '@/services/financeService';
 
 export default function ReceiptPage() {
     const { id } = useParams();
@@ -16,12 +17,7 @@ export default function ReceiptPage() {
 
     const { data: receiptData, isLoading, error } = useQuery({
         queryKey: ['receipt', id],
-        queryFn: async () => {
-            const res = await fetch(`/api/financial/receipts/${id}`);
-            const json = await res.json();
-            if (!res.ok) throw new Error(json.error || 'Failed to fetch receipt');
-            return json.data;
-        }
+        queryFn: ({ signal }) => getReceipt(id, { signal })
     });
 
     const handlePrint = () => {

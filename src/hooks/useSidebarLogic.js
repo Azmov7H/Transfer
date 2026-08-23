@@ -4,7 +4,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { hasPermission } from '@/lib/permissions';
 import { useSidebar } from '@/providers/SidebarProvider';
 import { navigationConfig } from '@/config/navigation';
-import { api } from '@/lib/api-utils';
+import { logout as logoutApi } from '@/services/authService';
 
 export function useSidebarLogic() {
     const pathname = usePathname();
@@ -32,7 +32,7 @@ export function useSidebarLogic() {
 
     const handleLogout = async () => {
         try {
-            await api.post('/api/auth/logout');
+            await logoutApi();
             window.location.href = '/login';
         } catch (err) {
             console.error('Logout failed:', err);

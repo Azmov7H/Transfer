@@ -1,7 +1,9 @@
 /**
- * Accounting Service (Client-Side)
- * Connects to Backend API
+ * Accounting Service — owns the /api/accounting endpoint contract.
+ * UI/hooks must not hardcode these URLs (FE-DATA-005, D2/D10).
  */
+import { api } from '@/lib/api-utils';
+
 export const ACCOUNTS = {
     // Assets
     CASH: 'الخزينة / النقدية',
@@ -29,54 +31,18 @@ export const ACCOUNTS = {
     WALLET: 'محفظة كاش'
 };
 
+/** @param {string|number} limit @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *[]}>} */
+export const getAccountingEntries = (limit = 500, options) => api.get(`/api/accounting/entries?limit=${limit}`, undefined, options);
+
+/** @param {string} account @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} */
+export const getLedger = (account, options) => api.get(`/api/accounting/ledger?account=${encodeURIComponent(account)}`, undefined, options);
+
+/** @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} */
+export const getTrialBalance = (options) => api.get('/api/accounting/trial-balance', undefined, options);
+
+/** Legacy namespace kept for existing consumers. */
 export const AccountingService = {
-    async getLedger(account, startDate, endDate) {
-        const params = new URLSearchParams({ account });
-        if (startDate) params.append('startDate', startDate);
-        if (endDate) params.append('endDate', endDate);
-
-        const res = await fetch(`/api/accounting/ledger?${params.toString()}`);
-        if (!res.ok) throw new Error('Failed to fetch ledger');
-        return res.json();
-    },
-
-    async getTrialBalance(date) {
-        const params = new URLSearchParams();
-        if (date) params.append('date', date);
-
-        const res = await fetch(`/api/accounting/trial-balance?${params.toString()}`);
-        if (!res.ok) throw new Error('Failed to fetch trial balance');
-        return res.json();
-    },
-
-    async getEntries(params = {}) {
-        const query = new URLSearchParams();
-        Object.keys(params).forEach(key => {
-            if (params[key]) query.append(key, params[key]);
-        });
-
-        const res = await fetch(`/api/accounting/entries?${query.toString()}`);
-        if (!res.ok) throw new Error('Failed to fetch entries');
-        return res.json();
-    },
-
-    async createExpenseEntry(amount, category, description, date) {
-        const res = await fetch('/api/accounting/entries/expense', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ amount, category, description, date })
-        });
-        if (!res.ok) throw new Error('Failed to create expense entry');
-        return res.json();
-    },
-
-    async createIncomeEntry(amount, description, date) {
-        const res = await fetch('/api/accounting/entries/income', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ amount, description, date })
-        });
-        if (!res.ok) throw new Error('Failed to create income entry');
-        return res.json();
-    }
+    getLedger,
+    getTrialBalance,
+    getEntries: getAccountingEntries,
 };
