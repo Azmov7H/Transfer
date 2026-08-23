@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { SmartCombobox } from '@/components/ui/smart-combobox';
 import { QuickAddProductDialog } from '@/components/products/QuickAddProductDialog';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 export default function PurchaseOrdersPage() {
     const searchParams = useSearchParams();
@@ -108,12 +109,20 @@ export default function PurchaseOrdersPage() {
         });
     };
 
+    const [receiveTargetId, setReceiveTargetId] = useState(null);
+
     const handleReceive = (id) => {
         if (updateMutation.isPending) {
             return;
         }
-        if (!confirm('هل وصلت البضاعة؟ سيتم زيادة المخزون تلقائياً.')) return;
-        updateMutation.mutate({ id, status: 'RECEIVED' });
+        setReceiveTargetId(id);
+    };
+
+    const handleConfirmReceive = () => {
+        if (receiveTargetId) {
+            updateMutation.mutate({ id: receiveTargetId, status: 'RECEIVED' });
+        }
+        setReceiveTargetId(null);
     };
 
     return (
@@ -276,6 +285,16 @@ export default function PurchaseOrdersPage() {
                 onOpenChange={setQuickAddOpen}
                 initialName={quickAddName}
                 onSuccess={handleProductAdded}
+            />
+
+            <ConfirmDialog
+                open={receiveTargetId !== null}
+                onOpenChange={(open) => !open && setReceiveTargetId(null)}
+                title="استلام البضاعة"
+                description="هل وصلت البضاعة؟ سيتم زيادة المخزون تلقائياً."
+                confirmLabel="تأكيد الاستلام"
+                destructive={false}
+                onConfirm={handleConfirmReceive}
             />
         </div>
     );

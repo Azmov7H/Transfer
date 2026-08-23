@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { useTreasury, useAddTransaction, useDeleteTransaction } from '@/hooks/useFinancial';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -83,7 +85,7 @@ export default function FinancialPage() {
         // If it's an expense and category is 'supplier', we use the generic payments API
         if (formData.type === 'EXPENSE' && formData.category === 'supplier') {
             if (!formData.supplierId) {
-                alert('يرجى اختيار مورد');
+                toast.error('يرجى اختيار مورد');
                 return;
             }
 
@@ -101,7 +103,7 @@ export default function FinancialPage() {
                 setFormData({ amount: '', description: '', type: 'INCOME', category: 'other', supplierId: '', method: 'cash' });
             }).catch(err => {
                 console.error(err);
-                alert('فشل تسجيل الدفعة للمورد');
+                toast.error(err.message || 'فشل تسجيل الدفعة للمورد');
             });
             return;
         }
@@ -114,10 +116,17 @@ export default function FinancialPage() {
         });
     };
 
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
+
     const handleDelete = (id) => {
-        if (window.confirm('هل أنت متأكد من التراجع عن هذه المعاملة؟')) {
-            deleteTransaction(id);
+        setDeleteTargetId(id);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteTargetId) {
+            deleteTransaction(deleteTargetId);
         }
+        setDeleteTargetId(null);
     };
 
     const fetchDailyDetails = async (date) => {
@@ -859,6 +868,15 @@ export default function FinancialPage() {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            <ConfirmDialog
+                open={deleteTargetId !== null}
+                onOpenChange={(open) => !open && setDeleteTargetId(null)}
+                title="التراجع عن المعاملة"
+                description="هل أنت متأكد من التراجع عن هذه المعاملة؟ لا يمكن التراجع عن هذا الإجراء."
+                confirmLabel="تراجع"
+                onConfirm={handleConfirmDelete}
+            />
         </div>
     );
 }

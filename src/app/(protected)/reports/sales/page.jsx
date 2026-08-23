@@ -56,7 +56,7 @@ export default function SalesReportPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0f172a]/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
                 <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />

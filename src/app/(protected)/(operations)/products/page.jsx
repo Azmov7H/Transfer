@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useDeferredValue } from 'react';
+import React, { useState, useDeferredValue } from 'react';
 import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,6 +39,7 @@ import { ErrorState } from '@/components/common/ErrorState';
 import { ProductRow } from '@/components/products/ProductRow';
 import { ProductStatsCards } from '@/components/products/ProductStats';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 // Dynamic Imports for Heavy Dialogs
 const ProductFormDialog = dynamic(() => import('@/components/products/ProductFormDialog').then(mod => mod.ProductFormDialog), {
@@ -61,8 +62,8 @@ export default function ProductsPage() {
         isEditDialogOpen, setIsEditDialogOpen,
         isViewDialogOpen, setIsViewDialogOpen,
         selectedProduct,
-        addFormData, setAddFormData,
-        editFormData, setEditFormData,
+        addFormData,
+        editFormData,
         filteredProducts,
         stats,
         isLoading,
@@ -81,14 +82,21 @@ export default function ProductsPage() {
     // Use deferred value for search to improve responsiveness
     const deferredSearch = useDeferredValue(search);
 
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
+
     const handleDelete = (id) => {
-        if (window.confirm('هل أنت متأكد من حذف هذا المنتج نهائياً؟ لا يمكن التراجع عن هذا الإجراء.')) {
-            deleteMutation.mutate(id);
+        setDeleteTargetId(id);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteTargetId) {
+            deleteMutation.mutate(deleteTargetId);
         }
+        setDeleteTargetId(null);
     };
 
     return (
-        <div className="min-h-screen bg-[#0f172a]/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
                 <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
@@ -316,8 +324,7 @@ export default function ProductsPage() {
                             : (open) => { if (!open) setIsEditDialogOpen(false); }
                     }
                     mode={isAddDialogOpen ? 'add' : 'edit'}
-                    formData={isAddDialogOpen ? addFormData : editFormData}
-                    setFormData={isAddDialogOpen ? setAddFormData : setEditFormData}
+                    defaultValues={isAddDialogOpen ? addFormData : editFormData}
                     onSubmit={isAddDialogOpen ? handleAddSubmit : handleEditSubmit}
                     isPending={isAddDialogOpen ? addMutation.isPending : updateMutation.isPending}
                     metadata={metadata}
@@ -332,6 +339,15 @@ export default function ProductsPage() {
                     product={selectedProduct}
                 />
             )}
+
+            <ConfirmDialog
+                open={deleteTargetId !== null}
+                onOpenChange={(open) => !open && setDeleteTargetId(null)}
+                title="حذف المنتج"
+                description="هل أنت متأكد من حذف هذا المنتج نهائياً؟ لا يمكن التراجع عن هذا الإجراء."
+                confirmLabel="حذف نهائي"
+                onConfirm={handleConfirmDelete}
+            />
         </div>
     );
 }

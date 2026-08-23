@@ -426,7 +426,7 @@ export default function NewInvoicePage() {
                             </DialogDescription>
                         </DialogHeader>
                     </div>
-                    <div className="p-6 space-y-4 bg-[#0f172a]">
+                    <div className="p-6 space-y-4 bg-slate-900">
                         <p className="text-sm text-muted-foreground font-medium">هل تود إبلاغ المالك ومدير المخزن عن هذا النقص؟</p>
                         <div className="space-y-2">
                             <Label className="font-bold">ملاحظات إضافية (اختياري)</Label>
@@ -438,7 +438,7 @@ export default function NewInvoicePage() {
                             />
                         </div>
                     </div>
-                    <DialogFooter className="p-6 pt-0 bg-[#0f172a] gap-3">
+                    <DialogFooter className="p-6 pt-0 bg-slate-900 gap-3">
                         <Button
                             variant="outline"
                             onClick={() => setShortageDialog({ ...shortageDialog, open: false })}

@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogT
 import { ArrowLeftRight, Loader2, Plus, Trash2, Package, Layers, AlertCircle, Search } from 'lucide-react';
 import { cn } from '@/utils';
 import { useProducts } from '@/hooks/useProducts';
-import { ProductSelectorDialog } from '@/components/products/ProductSelectorDialog';
+import { ProductSelector } from '@/components/products/ProductSelector';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting }) {
@@ -76,7 +76,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                     {/* Operation Type Selector */}
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-transparent rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                        <div className="relative bg-[#0f172a]/40 backdrop-blur-xl p-6 rounded-[1.5rem] border border-white/10 space-y-4">
+                        <div className="relative bg-slate-900/40 backdrop-blur-xl p-6 rounded-[1.5rem] border border-white/10 space-y-4">
                             <div className="flex items-center justify-between">
                                 <Label className="text-sm font-black text-primary uppercase tracking-widest flex items-center gap-2">
                                     <Layers size={14} className="opacity-50" />
@@ -89,10 +89,10 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                 value={formData.type}
                                 onChange={e => setFormData({ ...formData, type: e.target.value })}
                             >
-                                <option value="IN" className="bg-[#1e293b]">وارد: شراء / توريد (للمخزن)</option>
-                                <option value="OUT" className="bg-[#1e293b]">صادر: صرف / تالف (من المخزن)</option>
-                                <option value="TRANSFER_TO_SHOP" className="bg-[#1e293b]">تحويل: من المخزن للمحل</option>
-                                <option value="TRANSFER_TO_WAREHOUSE" className="bg-[#1e293b]">إرجاع: من المحل للمخزن</option>
+                                <option value="IN" className="bg-slate-800">وارد: شراء / توريد (للمخزن)</option>
+                                <option value="OUT" className="bg-slate-800">صادر: صرف / تالف (من المخزن)</option>
+                                <option value="TRANSFER_TO_SHOP" className="bg-slate-800">تحويل: من المخزن للمحل</option>
+                                <option value="TRANSFER_TO_WAREHOUSE" className="bg-slate-800">إرجاع: من المحل للمخزن</option>
                             </select>
                         </div>
                     </div>
@@ -278,7 +278,8 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                 </form>
             </DialogContent>
 
-            <ProductSelectorDialog
+            <ProductSelector
+                showFilters={false}
                 open={isProductSelectorOpen}
                 onOpenChange={setIsProductSelectorOpen}
                 onSelect={(product) => {

@@ -210,7 +210,7 @@ export default function StockPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a]/20 space-y-8 p-4 md:p-8" dir="rtl">
+    <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8" dir="rtl">
       {/* Dynamic Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <motion.div

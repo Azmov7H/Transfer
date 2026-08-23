@@ -12,6 +12,7 @@ import Link from "next/link"
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowUpRight, User, FileText, Coins, Phone, Loader2 } from 'lucide-react';
+import { TableEmptyState } from '@/components/common/EmptyState';
 import { useRouter } from 'next/navigation';
 
 export function DebtorTable({ debtors, onUnifiedCollection }) {
@@ -93,14 +94,7 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
                         </TableRow>
                     ))}
                     {debtors.length === 0 && (
-                        <TableRow>
-                            <TableCell colSpan={5} className="h-64 text-center text-muted-foreground font-black opacity-50">
-                                <div className="flex flex-col items-center gap-4">
-                                    <User size={48} />
-                                    <p>لا يوجد عملاء مديونين حالياً</p>
-                                </div>
-                            </TableCell>
-                        </TableRow>
+                        <TableEmptyState colSpan={5} icon={User} title="لا يوجد عملاء مديونين حالياً" />
                     )}
                 </TableBody>
             </Table>

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,58 +17,64 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Wallet, Loader2, Truck } from 'lucide-react';
 
+import { FormField, mapServerFieldErrors } from '@/components/forms/FormField';
+import { zodResolver } from '@/components/forms/zodResolver';
+import { customerSchema } from '@/validations/customer.schema';
+
+const DEFAULT_VALUES = {
+    name: '',
+    phone: '',
+    priceType: 'retail',
+    address: '',
+    creditLimit: '',
+    notes: '',
+    financialTrackingEnabled: true,
+    collectionDay: 'None',
+    paymentTerms: 0,
+    openingBalance: '',
+    openingBalanceType: 'debit',
+    shippingCompany: ''
+};
+
 export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialData, onSubmit, isPending }) {
-    const [formData, setFormData] = useState({
-        name: '',
-        phone: '',
-        priceType: 'retail',
-        address: '',
-        creditLimit: '',
-        notes: '',
-        financialTrackingEnabled: true,
-        collectionDay: 'None',
-        paymentTerms: 0,
-        openingBalance: '',
-        openingBalanceType: 'debit',
-        shippingCompany: ''
+    const {
+        register,
+        handleSubmit,
+        control,
+        reset,
+        setError,
+        formState: { errors, isSubmitting }
+    } = useForm({
+        resolver: zodResolver(customerSchema),
+        defaultValues: DEFAULT_VALUES
     });
 
     useEffect(() => {
+        if (!open) return;
         if (mode === 'edit' && initialData) {
-            setFormData({
-                name: initialData.name || '',
-                phone: initialData.phone || '',
-                priceType: initialData.priceType || 'retail',
-                address: initialData.address || '',
-                creditLimit: initialData.creditLimit || '',
-                notes: initialData.notes || '',
-                financialTrackingEnabled: initialData.financialTrackingEnabled !== undefined ? initialData.financialTrackingEnabled : true,
+            reset({
+                ...DEFAULT_VALUES,
+                ...initialData,
+                creditLimit: initialData.creditLimit ?? '',
+                paymentTerms: initialData.paymentTerms ?? 0,
                 collectionDay: initialData.collectionDay || 'None',
-                paymentTerms: initialData.paymentTerms || 0,
-                shippingCompany: initialData.shippingCompany || ''
             });
-        } else if (mode === 'add' && open) {
-            // Reset on fresh open
-            setFormData({
-                name: '',
-                phone: '',
-                priceType: 'retail',
-                address: '',
-                creditLimit: '',
-                notes: '',
-                financialTrackingEnabled: true,
-                collectionDay: 'None',
-                paymentTerms: 0,
-                openingBalance: '',
-                openingBalanceType: 'debit',
-                shippingCompany: ''
-            });
+        } else if (mode === 'add') {
+            reset(DEFAULT_VALUES);
         }
-    }, [mode, initialData, open]);
+    }, [mode, initialData, open, reset]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(formData);
+    const onValid = async (values) => {
+        try {
+            await onSubmit(values);
+        } catch (err) {
+            const serverErrors = mapServerFieldErrors(err);
+            if (serverErrors) {
+                Object.entries(serverErrors).forEach(([field, error]) => setError(field, error));
+            } else {
+                throw err;
+            }
+        }
     };
 
     return (
@@ -76,81 +83,57 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
                 <DialogHeader>
                     <DialogTitle>{mode === 'edit' ? 'تعديل بيانات العميل' : 'إضافة عميل جديد'}</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4 py-2">
+                <form onSubmit={handleSubmit(onValid)} noValidate className="space-y-4 py-2">
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <Label>اسم العميل *</Label>
+                        <FormField label="اسم العميل" required error={errors.name}>
                             <Input
-                                required
-                                value={formData.name}
-                                onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                {...register('name')}
+                                aria-invalid={!!errors.name}
                             />
-                        </div>
-                        <div className="space-y-2">
-                            <Label>رقم الهاتف *</Label>
+                        </FormField>
+                        <FormField label="رقم الهاتف" required error={errors.phone}>
                             <Input
-                                required
-                                value={formData.phone}
-                                onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                                {...register('phone')}
+                                aria-invalid={!!errors.phone}
                             />
-                        </div>
+                        </FormField>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <Label>نوع التسعير</Label>
-                            <Select
-                                value={formData.priceType}
-                                onValueChange={val => setFormData({ ...formData, priceType: val })}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="retail">قطاعي (عادي)</SelectItem>
-                                    <SelectItem value="wholesale">جملة</SelectItem>
-                                    <SelectItem value="special">خاص</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-2">
-                            <Label>حد الائتمان (الديون) <span className="text-[10px] text-primary">(0 = مفتوح)</span></Label>
+                        <FormField label="نوع التسعير" error={errors.priceType}>
+                            <SelectField control={control} name="priceType">
+                                <SelectItem value="retail">قطاعي (عادي)</SelectItem>
+                                <SelectItem value="wholesale">جملة</SelectItem>
+                                <SelectItem value="special">خاص</SelectItem>
+                            </SelectField>
+                        </FormField>
+                        <FormField label="حد الائتمان (الديون)" hint="(0 = مفتوح)" error={errors.creditLimit}>
                             <Input
                                 type="number"
-                                value={formData.creditLimit}
-                                onChange={e => setFormData({ ...formData, creditLimit: e.target.value })}
+                                {...register('creditLimit')}
                                 placeholder="أدخل الحد الأقصى للديون (0 للمفتوح)"
                             />
-                        </div>
+                        </FormField>
                     </div>
 
-                    <div className="space-y-2">
-                        <Label>العنوان</Label>
-                        <Input
-                            value={formData.address}
-                            onChange={e => setFormData({ ...formData, address: e.target.value })}
-                        />
-                    </div>
+                    <FormField label="العنوان" error={errors.address}>
+                        <Input {...register('address')} />
+                    </FormField>
 
-                    <div className="space-y-2">
-                        <Label>ملاحظات</Label>
-                        <Input
-                            value={formData.notes}
-                            onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                        />
-                    </div>
+                    <FormField label="ملاحظات" error={errors.notes}>
+                        <Input {...register('notes')} />
+                    </FormField>
 
-                    <div className="space-y-2">
+                    <FormField error={errors.shippingCompany}>
                         <Label className="flex items-center gap-2">
                             <Truck className="w-4 h-4 text-primary" />
                             شركة الشحن (اختياري)
                         </Label>
                         <Input
-                            value={formData.shippingCompany}
-                            onChange={e => setFormData({ ...formData, shippingCompany: e.target.value })}
+                            {...register('shippingCompany')}
                             placeholder="اسم شركة الشحن المفضلة..."
                         />
-                    </div>
+                    </FormField>
 
                     <Separator />
                     <div className="bg-primary/5 p-4 rounded-xl space-y-4 border border-primary/10">
@@ -158,49 +141,24 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
                             <Wallet size={14} /> التحكم في المديونية والتحصيل
                         </h4>
 
-                        <div className="flex items-center justify-between">
-                            <div className="space-y-0.5">
-                                <Label className="text-sm">تفعيل التتبع المالي</Label>
-                                <p className="text-[10px] text-muted-foreground">توليد إشعارات تحصيل لهذا العميل</p>
-                            </div>
-                            <Switch
-                                checked={formData.financialTrackingEnabled}
-                                onCheckedChange={checked => setFormData({ ...formData, financialTrackingEnabled: checked })}
-                            />
-                        </div>
+                        <SwitchField control={control} name="financialTrackingEnabled" />
 
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label className="text-xs">يوم التحصيل المفضل</Label>
-                                <Select
-                                    value={formData.collectionDay}
-                                    onValueChange={val => setFormData({ ...formData, collectionDay: val })}
-                                >
-                                    <SelectTrigger className="h-9 text-xs">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="None">غير محدد</SelectItem>
-                                        <SelectItem value="Saturday">السبت</SelectItem>
-                                        <SelectItem value="Sunday">الأحد</SelectItem>
-                                        <SelectItem value="Monday">الاثنين</SelectItem>
-                                        <SelectItem value="Tuesday">الثلاثاء</SelectItem>
-                                        <SelectItem value="Wednesday">الأربعاء</SelectItem>
-                                        <SelectItem value="Thursday">الخميس</SelectItem>
-                                        <SelectItem value="Friday">الجمعة</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-2">
-                                <Label className="text-xs">فترة السداد الخاصة (يوم)</Label>
-                                <Input
-                                    type="number"
-                                    className="h-9 text-xs"
-                                    value={formData.paymentTerms}
-                                    onChange={e => setFormData({ ...formData, paymentTerms: parseInt(e.target.value) || 0 })}
-                                    placeholder="0 = الافتراضي"
-                                />
-                            </div>
+                            <FormField label="يوم التحصيل المفضل" error={errors.collectionDay} className="[&_>span]:text-xs">
+                                <SelectField control={control} name="collectionDay" triggerClassName="h-9 text-xs">
+                                    <SelectItem value="None">غير محدد</SelectItem>
+                                    <SelectItem value="Saturday">السبت</SelectItem>
+                                    <SelectItem value="Sunday">الأحد</SelectItem>
+                                    <SelectItem value="Monday">الاثنين</SelectItem>
+                                    <SelectItem value="Tuesday">الثلاثاء</SelectItem>
+                                    <SelectItem value="Wednesday">الأربعاء</SelectItem>
+                                    <SelectItem value="Thursday">الخميس</SelectItem>
+                                    <SelectItem value="Friday">الجمعة</SelectItem>
+                                </SelectField>
+                            </FormField>
+                            <FormField label="فترة السداد الخاصة (يوم)" hint="0 = الافتراضي" error={errors.paymentTerms}>
+                                <Input type="number" className="h-9 text-xs" {...register('paymentTerms')} />
+                            </FormField>
                         </div>
                     </div>
 
@@ -208,31 +166,20 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
                         <div className="bg-muted p-4 rounded-xl border border-border space-y-4">
                             <Label className="text-xs font-bold text-primary">الرصيد الافتتاحي (ديون سابقة)</Label>
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-bold">المبلغ</Label>
+                                <FormField label="المبلغ" error={errors.openingBalance}>
                                     <Input
                                         type="number"
                                         className="h-10 text-sm"
                                         placeholder="0.00"
-                                        value={formData.openingBalance}
-                                        onChange={e => setFormData({ ...formData, openingBalance: e.target.value })}
+                                        {...register('openingBalance')}
                                     />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-bold">نوع الرصيد</Label>
-                                    <Select
-                                        value={formData.openingBalanceType}
-                                        onValueChange={val => setFormData({ ...formData, openingBalanceType: val })}
-                                    >
-                                        <SelectTrigger className="h-10 text-sm">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="debit">عليه (مدين لنا)</SelectItem>
-                                            <SelectItem value="credit">له (دائن لنا)</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
+                                </FormField>
+                                <FormField label="نوع الرصيد" error={errors.openingBalanceType}>
+                                    <SelectField control={control} name="openingBalanceType" triggerClassName="h-10 text-sm">
+                                        <SelectItem value="debit">عليه (مدين لنا)</SelectItem>
+                                        <SelectItem value="credit">له (دائن لنا)</SelectItem>
+                                    </SelectField>
+                                </FormField>
                             </div>
                         </div>
                     )}
@@ -242,7 +189,7 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                             إلغاء
                         </Button>
-                        <Button type="submit" disabled={isPending}>
+                        <Button type="submit" disabled={isPending || isSubmitting}>
                             {isPending && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
                             حفظ البيانات
                         </Button>
@@ -250,5 +197,42 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
                 </form>
             </DialogContent>
         </Dialog >
+    );
+}
+
+/* RHF ↔ shadcn bindings used by this dialog (canonical examples for the pattern doc) */
+
+function SelectField({ control, name, children, triggerClassName }) {
+    return (
+        <Controller
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <Select value={field.value ?? ''} onValueChange={field.onChange}>
+                    <SelectTrigger className={triggerClassName}>
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>{children}</SelectContent>
+                </Select>
+            )}
+        />
+    );
+}
+
+function SwitchField({ control, name }) {
+    return (
+        <Controller
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                        <Label className="text-sm">تفعيل التتبع المالي</Label>
+                        <p className="text-[10px] text-muted-foreground">توليد إشعارات تحصيل لهذا العميل</p>
+                    </div>
+                    <Switch checked={!!field.value} onCheckedChange={field.onChange} />
+                </div>
+            )}
+        />
     );
 }

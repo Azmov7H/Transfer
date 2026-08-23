@@ -133,7 +133,7 @@ export default function ReceivablesPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0f172a]/20 space-y-8 p-6" dir="rtl">
+        <div className="min-h-screen bg-slate-900/20 space-y-8 p-6" dir="rtl">
             {/* Header Area */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <motion.div
@@ -341,7 +341,7 @@ export default function ReceivablesPage() {
             {/* Premium Payment Dialog */}
             <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
                 <DialogContent className="sm:max-w-[480px]  border-white/10 p-0 rounded-[2.5rem] overflow-hidden" dir="rtl">
-                    <div className="bg-[#0f172a] p-6 border-b border-white/10">
+                    <div className="bg-slate-900 p-6 border-b border-white/10">
                         <DialogHeader>
                             <DialogTitle className="text-xl font-black flex items-center gap-2">
                                 <span className="p-2 rounded-xl bg-primary/10 text-primary"><Wallet className="h-5 w-5" /></span>
@@ -353,7 +353,7 @@ export default function ReceivablesPage() {
                         </DialogHeader>
                     </div>
 
-                    <div className="p-6 space-y-6 bg-gradient-to-b from-[#0f172a] to-[#0f172a]/95">
+                    <div className="p-6 space-y-6 bg-gradient-to-b from-slate-900 to-slate-900/95">
                         {/* Short Info */}
                         <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center">
                             <div>
@@ -391,7 +391,7 @@ export default function ReceivablesPage() {
                                     <SelectTrigger className="h-14 rounded-2xl bg-white/5 border-white/5 font-bold">
                                         <SelectValue />
                                     </SelectTrigger>
-                                    <SelectContent className="rounded-2xl border-white/10 bg-[#1e293b]">
+                                    <SelectContent className="rounded-2xl border-white/10 bg-slate-800">
                                         <SelectItem value="cash" className="font-bold"><span className="flex items-center gap-2"><Banknote className="h-4 w-4" /> نقداً (الخزينة)</span></SelectItem>
                                         <SelectItem value="bank" className="font-bold"><span className="flex items-center gap-2"><Building2 className="h-4 w-4" /> تحويل بنكي</span></SelectItem>
                                         <SelectItem value="check" className="font-bold"><span className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> شيك</span></SelectItem>

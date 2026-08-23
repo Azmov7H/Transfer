@@ -42,6 +42,7 @@ import {
     PaginationEllipsis
 } from '@/components/ui/pagination';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 export default function CustomersPage() {
     const router = useRouter();
@@ -148,10 +149,17 @@ export default function CustomersPage() {
         }
     };
 
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
+
     const handleDelete = (id) => {
-        if (window.confirm('هل أنت متأكد من حذف هذا العميل نهائياً؟ لا يمكن التراجع عن هذا الإجراء.')) {
-            deleteMutation.mutate(id);
+        setDeleteTargetId(id);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteTargetId) {
+            deleteMutation.mutate(deleteTargetId);
         }
+        setDeleteTargetId(null);
     };
 
     const handleUnifiedCollection = (customer, balance) => {
@@ -180,7 +188,7 @@ export default function CustomersPage() {
     } = LABELS.customers;
 
     return (
-        <div className="min-h-screen bg-[#0f172a]/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
                 <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
@@ -471,6 +479,15 @@ export default function CustomersPage() {
                 open={isHistoryOpen}
                 onOpenChange={setIsHistoryOpen}
                 partner={detailCustomer}
+            />
+
+            <ConfirmDialog
+                open={deleteTargetId !== null}
+                onOpenChange={(open) => !open && setDeleteTargetId(null)}
+                title="حذف العميل"
+                description="هل أنت متأكد من حذف هذا العميل نهائياً؟ لا يمكن التراجع عن هذا الإجراء."
+                confirmLabel="حذف نهائي"
+                onConfirm={handleConfirmDelete}
             />
         </div>
     );
