@@ -9,8 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "seed": "node scripts/seed.js"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",
