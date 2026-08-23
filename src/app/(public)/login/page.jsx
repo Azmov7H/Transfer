@@ -27,8 +27,7 @@ export default function LoginPage() {
         setError('');
 
         try {
-            const data = await loginApi(formData);
-            console.log('[Login] Success Response:', data);
+            await loginApi(formData);
             await queryClient.invalidateQueries({ queryKey: ['user-session'] });
 
             toast.success('تم تسجيل الدخول بنجاح');
