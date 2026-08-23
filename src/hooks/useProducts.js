@@ -1,15 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import {
+    getProducts,
+    getProductMetadata,
+    createProduct,
+    updateProduct,
+    deleteProduct
+} from '@/services/productService';
 import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 export function useProducts(params = {}, options = {}) {
     return useQuery({
         queryKey: ['products', params],
         queryFn: async ({ signal }) => {
-            // Filter out internal options from query params
-            const queryData = { ...params };
-            const searchParams = new URLSearchParams(queryData);
-            return await api.get(`/api/products?${searchParams.toString()}`, undefined, { signal });
+            return await getProducts(params, { signal });
         },
         placeholderData: (previousData) => previousData,
         ...options
@@ -19,7 +22,7 @@ export function useProducts(params = {}, options = {}) {
 export function useAddProduct() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (data) => api.post('/api/products', data),
+        mutationFn: (data) => createProduct(data),
         ...withMutationFeedback({
             successMessage: 'تم إضافة المنتج بنجاح',
             afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
@@ -30,7 +33,7 @@ export function useAddProduct() {
 export function useUpdateProduct() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (data) => api.put(`/api/products/${data._id}`, data),
+        mutationFn: (data) => updateProduct(data._id, data),
         ...withMutationFeedback({
             successMessage: 'تم تعديل المنتج بنجاح',
             afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
@@ -41,7 +44,7 @@ export function useUpdateProduct() {
 export function useDeleteProduct() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (id) => api.delete(`/api/products/${id}`),
+        mutationFn: (id) => deleteProduct(id),
         ...withMutationFeedback({
             successMessage: 'تم حذف المنتج بنجاح',
             afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
@@ -52,9 +55,7 @@ export function useDeleteProduct() {
 export function useProductMetadata() {
     return useQuery({
         queryKey: ['products-metadata'],
-        queryFn: async ({ signal }) => {
-            return await api.get('/api/products/metadata', undefined, { signal });
-        },
+        queryFn: ({ signal }) => getProductMetadata({ signal }),
         staleTime: 1000 * 60 * 30, // 30 minutes
     });
 }

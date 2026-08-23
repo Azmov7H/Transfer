@@ -1,5 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import {
+    getCustomers,
+    createCustomer,
+    updateCustomer,
+    deleteCustomer
+} from '@/services/customerService';
 import { withMutationFeedback } from '@/lib/mutation-feedback';
 import { useFilters } from './useFilters';
 
@@ -15,11 +20,11 @@ export function useCustomers() {
 
     const query = useQuery({
         queryKey: ['customers', queryContext],
-        queryFn: ({ signal }) => api.get('/api/customers', queryContext, { signal })
+        queryFn: ({ signal }) => getCustomers(queryContext, { signal })
     });
 
     const addMutation = useMutation({
-        mutationFn: (data) => api.post('/api/customers', data),
+        mutationFn: (data) => createCustomer(data),
         ...withMutationFeedback({
             successMessage: 'تمت إضافة العميل بنجاح',
             fallbackErrorMessage: 'فشل في إضافة العميل',
@@ -28,7 +33,7 @@ export function useCustomers() {
     });
 
     const updateMutation = useMutation({
-        mutationFn: ({ id, data }) => api.put(`/api/customers/${id}`, data),
+        mutationFn: ({ id, data }) => updateCustomer(id, data),
         ...withMutationFeedback({
             successMessage: 'تم تحديث بيانات العميل',
             fallbackErrorMessage: 'فشل في تحديث العميل',
@@ -37,7 +42,7 @@ export function useCustomers() {
     });
 
     const deleteMutation = useMutation({
-        mutationFn: (id) => api.delete(`/api/customers/${id}`),
+        mutationFn: (id) => deleteCustomer(id),
         ...withMutationFeedback({
             successMessage: 'تم تعطيل حساب العميل',
             fallbackErrorMessage: 'فشل في حذف العميل',
