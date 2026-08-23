@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, FileText } from 'lucide-react';
+import { RoleGate } from '@/components/auth/RoleGate';
 
 export default function LogsPage() {
     const [logs, setLogs] = useState([]);
@@ -29,6 +30,7 @@ export default function LogsPage() {
     };
 
     return (
+        <RoleGate permission="activity:view">
         <div className="space-y-6">
             <div className="flex items-center gap-3">
                 <FileText className="w-6 h-6 md:w-8 md:h-8 text-primary" />
@@ -94,5 +96,6 @@ export default function LogsPage() {
                 </CardContent>
             </Card>
         </div>
+        </RoleGate>
     );
 }

@@ -11,11 +11,13 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { ArrowRightLeft, Search, Box, ClipboardEdit, AlertCircle, Loader2 } from 'lucide-react';
 import { useUserRole } from '@/hooks/useUserRole';
+import { RoleGate } from '@/components/auth/RoleGate';
+import { hasRole, ROLES } from '@/lib/permissions';
 import { cn } from '@/utils';
 
 export default function AuditPage() {
     const { role } = useUserRole();
-    const canAudit = role === 'manager' || role === 'owner' || role === 'admin';
+    const canAudit = hasRole(role, [ROLES.OWNER, ROLES.MANAGER]);
 
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -144,6 +146,7 @@ export default function AuditPage() {
     };
 
     return (
+        <RoleGate roles={[ROLES.OWNER, ROLES.MANAGER, ROLES.WAREHOUSE]}>
         <div className="space-y-6">
             <div className="flex items-center gap-3">
                 <Box className="w-6 h-6 md:w-8 md:h-8 text-primary" />
@@ -351,5 +354,6 @@ export default function AuditPage() {
                 </DialogContent>
             </Dialog>
         </div>
+        </RoleGate>
     );
 }

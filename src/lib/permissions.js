@@ -46,18 +46,32 @@ export const PERMISSIONS = {
 
 /**
  * Check if a role has a specific permission
- * @param {string} role 
- * @param {string} permission 
+ * @param {string} role
+ * @param {string} permission
  * @returns {boolean}
  */
 export function hasPermission(role, permission) {
     if (!role) return false;
-    if (role === 'owner') return true;
+    if (role === ROLES.OWNER) return true;
 
     const rolePermissions = PERMISSIONS[role] || [];
     if (rolePermissions.includes('*')) return true;
 
     return rolePermissions.includes(permission);
+}
+
+/** Short alias used across UI guards */
+export const can = hasPermission;
+
+/**
+ * Check if a role is one of the given roles
+ * @param {string} role
+ * @param {string[]} roles
+ * @returns {boolean}
+ */
+export function hasRole(role, roles) {
+    if (!role || !Array.isArray(roles)) return false;
+    return roles.includes(role);
 }
 
 /**
@@ -66,7 +80,7 @@ export function hasPermission(role, permission) {
  * @returns {object} Mongoose filter object
  */
 export function getProductFilterInternal(role) {
-    if (role === 'owner' || role === 'manager') return {}; // All products
+    if (role === ROLES.OWNER || role === ROLES.MANAGER) return {}; // All products
     if (role === 'warehouse') return {}; // Warehouse sees all? Or maybe just warehouse? Usually all to know what's coming.
     if (role === 'cashier') return { shopQty: { $gt: -1 } }; // Cashier needs to see shop products.
     return {};
@@ -94,7 +108,7 @@ export function requirePermission(user, permission) {
  * @returns {boolean}
  */
 export function canManage(user) {
-    return user && (user.role === 'owner' || user.role === 'manager');
+    return user && (user.role === ROLES.OWNER || user.role === ROLES.MANAGER);
 }
 
 /**

@@ -38,6 +38,7 @@ import {
 import { toast } from 'sonner';
 import { cn } from '@/utils';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { RoleGate } from '@/components/auth/RoleGate';
 
 export default function SettingsPage() {
     const [loading, setLoading] = useState(false);
@@ -124,6 +125,7 @@ export default function SettingsPage() {
     );
 
     return (
+        <RoleGate permission="settings:manage">
         <div className="min-h-screen bg-[#0f172a]/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
@@ -690,5 +692,6 @@ export default function SettingsPage() {
                 </TabsContent>
             </Tabs>
         </div >
+        </RoleGate>
     );
 }

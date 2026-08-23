@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { useUserRole } from '@/hooks/useUserRole';
-import { hasPermission } from '@/lib/permissions';
+import { hasPermission, ROLES } from '@/lib/permissions';
 import { useSidebar } from '@/providers/SidebarProvider';
 import { navigationConfig } from '@/config/navigation';
 import { logout as logoutApi } from '@/services/authService';
@@ -14,7 +14,6 @@ export function useSidebarLogic() {
     const isAllowed = (item) => {
         if (loading) return true; // Show while loading
         if (!role) return false;
-        if (role === 'owner') return true;
         if (!item.permission) return true;
         return hasPermission(role, item.permission);
     };
@@ -22,10 +21,10 @@ export function useSidebarLogic() {
     const getRoleDisplay = () => {
         if (loading) return 'جاري التحميل...';
         switch (role) {
-            case 'owner': return 'المالك';
-            case 'manager': return 'مدير فرع';
-            case 'cashier': return 'كاشير';
-            case 'warehouse': return 'أمين مستودع';
+            case ROLES.OWNER: return 'المالك';
+            case ROLES.MANAGER: return 'مدير فرع';
+            case ROLES.CASHIER: return 'كاشير';
+            case ROLES.WAREHOUSE: return 'أمين مستودع';
             default: return 'مستخدم';
         }
     };
