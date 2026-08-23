@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { cn } from '@/utils';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 export default function InvoiceViewPage({ params }) {
     const { id } = use(params);
@@ -33,6 +34,7 @@ export default function InvoiceViewPage({ params }) {
     const [refundMethod, setRefundMethod] = useState('cash');
     const [isReturning, setIsReturning] = useState(false);
     const [returns, setReturns] = useState([]);
+    const [deleteOpen, setDeleteOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -131,8 +133,6 @@ export default function InvoiceViewPage({ params }) {
     };
 
     const handleDelete = async () => {
-        if (!confirm('هل أنت متأكد من حذف هذه الفاتورة نهائياً؟ سيتم استرجاع الكميات.')) return;
-
         try {
             const res = await fetch(`/api/invoices/${id}`, { method: 'DELETE' });
             if (res.ok) {
@@ -385,7 +385,7 @@ export default function InvoiceViewPage({ params }) {
                     <Button onClick={handlePrint} className="gap-2 bg-primary">
                         <Printer size={16} /> طباعة / PDF
                     </Button>
-                    <Button variant="destructive" onClick={handleDelete} className="gap-2 bg-red-600 hover:bg-red-700 text-white shadow-lg">
+                    <Button variant="destructive" onClick={() => setDeleteOpen(true)} className="gap-2 bg-red-600 hover:bg-red-700 text-white shadow-lg">
                         <Trash2 size={16} /> حذف
                     </Button>
                 </div>

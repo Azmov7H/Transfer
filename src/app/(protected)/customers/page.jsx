@@ -42,6 +42,7 @@ import {
     PaginationEllipsis
 } from '@/components/ui/pagination';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 export default function CustomersPage() {
     const router = useRouter();
@@ -148,10 +149,17 @@ export default function CustomersPage() {
         }
     };
 
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
+
     const handleDelete = (id) => {
-        if (window.confirm('هل أنت متأكد من حذف هذا العميل نهائياً؟ لا يمكن التراجع عن هذا الإجراء.')) {
-            deleteMutation.mutate(id);
+        setDeleteTargetId(id);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteTargetId) {
+            deleteMutation.mutate(deleteTargetId);
         }
+        setDeleteTargetId(null);
     };
 
     const handleUnifiedCollection = (customer, balance) => {
@@ -471,6 +479,15 @@ export default function CustomersPage() {
                 open={isHistoryOpen}
                 onOpenChange={setIsHistoryOpen}
                 partner={detailCustomer}
+            />
+
+            <ConfirmDialog
+                open={deleteTargetId !== null}
+                onOpenChange={(open) => !open && setDeleteTargetId(null)}
+                title="حذف العميل"
+                description="هل أنت متأكد من حذف هذا العميل نهائياً؟ لا يمكن التراجع عن هذا الإجراء."
+                confirmLabel="حذف نهائي"
+                onConfirm={handleConfirmDelete}
             />
         </div>
     );

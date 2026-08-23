@@ -72,7 +72,6 @@ export function useInvoicesPageManager() {
     const deleteMutation = useDeleteInvoice();
 
     const handleDelete = (id) => {
-        if (!confirm('هل أنت متأكد من حذف الفاتورة؟ سيتم استرجاع الكميات للمخزن.')) return;
         deleteMutation.mutate(id);
     };
 

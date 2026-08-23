@@ -1,10 +1,11 @@
 'use client';
 
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { Calendar, User, Trash2, Receipt, Banknote, CreditCard, ArrowLeft, ArrowRightLeft, Landmark, Wallet, Ticket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/utils';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import Link from 'next/link';
@@ -12,6 +13,7 @@ import { useRouter } from 'next/navigation';
 
 export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete }) {
     const router = useRouter();
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const paymentType = invoice.paymentType || 'cash';
     const isCash = paymentType === 'cash';
 
@@ -150,9 +152,7 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                         size="icon"
                         onClick={(e) => {
                             e.stopPropagation();
-                            if (window.confirm('هل أنت متأكد من حذف هذه الفاتورة نهائياً؟')) {
-                                onDelete(invoice._id);
-                            }
+                            setConfirmDeleteOpen(true);
                         }}
                         className="h-12 w-12 rounded-2xl hover:bg-rose-500/10 text-white/10 hover:text-rose-500 transition-all duration-300 md:opacity-0 md:group-hover:opacity-100"
                     >
@@ -163,6 +163,18 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                     </div>
                 </div>
             </div>
+
+            <ConfirmDialog
+                open={confirmDeleteOpen}
+                onOpenChange={setConfirmDeleteOpen}
+                title="حذف الفاتورة"
+                description="هل أنت متأكد من حذف هذه الفاتورة نهائياً؟ سيتم استرجاع الكميات."
+                confirmLabel="حذف نهائي"
+                onConfirm={() => {
+                    setConfirmDeleteOpen(false);
+                    onDelete(invoice._id);
+                }}
+            />
         </div>
     );
 });

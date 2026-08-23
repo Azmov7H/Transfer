@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useDeferredValue } from 'react';
+import React, { useState, useDeferredValue } from 'react';
 import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,6 +39,7 @@ import { ErrorState } from '@/components/common/ErrorState';
 import { ProductRow } from '@/components/products/ProductRow';
 import { ProductStatsCards } from '@/components/products/ProductStats';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 // Dynamic Imports for Heavy Dialogs
 const ProductFormDialog = dynamic(() => import('@/components/products/ProductFormDialog').then(mod => mod.ProductFormDialog), {
@@ -81,10 +82,17 @@ export default function ProductsPage() {
     // Use deferred value for search to improve responsiveness
     const deferredSearch = useDeferredValue(search);
 
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
+
     const handleDelete = (id) => {
-        if (window.confirm('هل أنت متأكد من حذف هذا المنتج نهائياً؟ لا يمكن التراجع عن هذا الإجراء.')) {
-            deleteMutation.mutate(id);
+        setDeleteTargetId(id);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteTargetId) {
+            deleteMutation.mutate(deleteTargetId);
         }
+        setDeleteTargetId(null);
     };
 
     return (
@@ -332,6 +340,15 @@ export default function ProductsPage() {
                     product={selectedProduct}
                 />
             )}
+
+            <ConfirmDialog
+                open={deleteTargetId !== null}
+                onOpenChange={(open) => !open && setDeleteTargetId(null)}
+                title="حذف المنتج"
+                description="هل أنت متأكد من حذف هذا المنتج نهائياً؟ لا يمكن التراجع عن هذا الإجراء."
+                confirmLabel="حذف نهائي"
+                onConfirm={handleConfirmDelete}
+            />
         </div>
     );
 }

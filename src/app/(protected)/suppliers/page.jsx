@@ -18,6 +18,7 @@ import { cn } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { KPICard } from '@/components/dashboard/KPICard';
 import { SupplierFormDialog } from '@/components/suppliers/SupplierFormDialog';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { SupplierDebtManager } from '@/components/suppliers/SupplierDebtManager';
@@ -64,10 +65,17 @@ export default function SuppliersPage() {
         }
     };
 
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
+
     const handleDelete = (id) => {
-        if (confirm('هل أنت متأكد من حذف هذا المورد؟')) {
-            deleteMutation.mutate(id);
+        setDeleteTargetId(id);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteTargetId) {
+            deleteMutation.mutate(deleteTargetId);
         }
+        setDeleteTargetId(null);
     };
 
     // Stats
@@ -317,6 +325,15 @@ export default function SuppliersPage() {
                 open={isHistoryOpen}
                 partner={selectedSupplier}
                 onOpenChange={setIsHistoryOpen}
+            />
+
+            <ConfirmDialog
+                open={deleteTargetId !== null}
+                onOpenChange={(open) => !open && setDeleteTargetId(null)}
+                title="حذف المورد"
+                description="هل أنت متأكد من حذف هذا المورد؟ لا يمكن التراجع عن هذا الإجراء."
+                confirmLabel="حذف"
+                onConfirm={handleConfirmDelete}
             />
         </div>
     );

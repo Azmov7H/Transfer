@@ -12,6 +12,7 @@ import { can, ROLES } from '@/lib/permissions';
 import { cn } from '@/utils';
 import { useUsers } from '@/hooks/useUsers';
 import { UserFormDialog } from '@/components/users/UserFormDialog';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 export default function UsersPage() {
     const { role, loading: isRoleLoading } = useUserRole();
@@ -50,9 +51,17 @@ export default function UsersPage() {
         }
     };
 
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
+
     const handleDelete = (id) => {
-        if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
-        deleteUser.mutate(id);
+        setDeleteTargetId(id);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteTargetId) {
+            deleteUser.mutate(deleteTargetId);
+        }
+        setDeleteTargetId(null);
     };
 
     const getRoleBadge = (r) => {
@@ -153,6 +162,15 @@ export default function UsersPage() {
                 user={selectedUser}
                 onSubmit={handleSubmit}
                 isPending={createUser.isPending || updateUser.isPending}
+            />
+
+            <ConfirmDialog
+                open={deleteTargetId !== null}
+                onOpenChange={(open) => !open && setDeleteTargetId(null)}
+                title="حذف المستخدم"
+                description="هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء."
+                confirmLabel="حذف"
+                onConfirm={handleConfirmDelete}
             />
         </div>
         </RoleGate>
