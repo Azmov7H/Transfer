@@ -59,3 +59,30 @@ Standard DoD.
 
 ## Expected Result
 Data layer is predictable and observable; pages can be decomposed safely next.
+
+---
+
+## Execution Record
+
+**Branch:** `feat/frontend-sprint-02-data-state` (stacked on sprint-01)
+**Status:** COMPLETE
+
+| Task | Commit | Summary |
+|---|---|---|
+| FE-DATA-001 | `97b82b3` | Dedup now GET-only; mutation coalescing removed; verified no callers used `skipDeduplication` |
+| FE-DATA-002 | `a8cafd6` | Composed AbortController (caller signal + 30s default, overridable); timeout → `JammazApiError` 408 with `isTimeout`; external-signal requests skip dedup; all queryFn sites (~40) pass `{ signal }` |
+| FE-STATE-001 | `78e6404` | `const user = data ?? null`; misleading comments/dead vars/console logs removed; config deviation documented (ADR-style comment) |
+| FE-DATA-004 | `81e3b87` | Notifications query gated on `enabled: !!user` via shared `['user-session']` cache |
+| FE-DATA-003 | `dde9d98` | `src/lib/mutation-feedback.js` (`withMutationFeedback`); 10 hook files migrated, Arabic copy verbatim; policy recorded as Decision **D10** in target.md |
+| FE-DATA-005 | `577488f` `2cbf5e6` `265290d` `50f3af6` `f8c6fc3` `f16d800` | Per-domain commits: customers/products → suppliers/users/auth → invoices/returns/stock/POs → financial → dashboard/notifications/physical-inventory/accounting → reports/daily-sales. Zero `@/lib/api-utils` imports outside services/lib |
+
+**Gates at completion:** lint 0 errors / 54 warnings (baseline), tests 3/3, build green.
+
+**Notes / deviations:**
+- Dead-code service modules that pointed at non-existent endpoints (`purchaseOrderService` → `/api/purchases`, treasury variants) were rewritten onto the real endpoints consumed by the UI rather than deleted (deletion belongs to Sprint 10 cleanup).
+- Timeout Arabic message uses `'انتهت مهلة الاتصال بالخادم'` (distinct from generic `'خطأ في الاتصال بالخادم'`) for diagnosability.
+- Legacy `XxxService` namespace objects retained alongside named exports for any untracked consumers.
+
+**Follow-ups filed for later sprints:**
+- Raw-fetch remnants audited — none remain; all pages consume services.
+- `useInvoiceItems` validation toasts and `useMutationLock` warning intentionally out of scope (FE-FORM-001 / lock UX).
