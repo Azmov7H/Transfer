@@ -34,6 +34,12 @@ export const updateCustomer = (id, data) => api.put(`/api/customers/${id}`, data
 /** @param {string} id @returns {Promise<*>} */
 export const deleteCustomer = (id) => api.delete(`/api/customers/${id}`);
 
+/** @param {string} id @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} custom per-product pricing */
+export const getCustomerPricing = (id, options) => api.get(`/api/customers/${id}/pricing`, undefined, options);
+
+/** @param {string} id @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} financial statement */
+export const getCustomerStatement = (id, options) => api.get(`/api/customers/${id}/statement`, undefined, options);
+
 /** Legacy namespace kept for existing consumers. */
 export const CustomerService = {
     getAll: getCustomers,

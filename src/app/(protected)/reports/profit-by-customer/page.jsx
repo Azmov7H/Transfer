@@ -25,7 +25,7 @@ export default function CustomerProfitReportPage() {
 
     const { data: report = [], isLoading } = useQuery({
         queryKey: ['customer-profit', dateRange],
-        queryFn: () => ReportService.getCustomerProfit(dateRange.start, dateRange.end)
+        queryFn: ({ signal }) => ReportService.getCustomerProfit(dateRange.start, dateRange.end, { signal })
     });
 
     const totalRevenue = report.reduce((acc, curr) => acc + curr.totalRevenue, 0);

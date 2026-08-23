@@ -13,6 +13,7 @@ import {
     ArrowLeftRight, AlertCircle, CheckCircle2, History
 } from 'lucide-react';
 import { cn } from '@/utils';
+import { getStockMovements } from '@/services/stockService';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
@@ -28,13 +29,10 @@ export default function StockMovementsPage() {
             const startDate = new Date();
             startDate.setDate(startDate.getDate() - days);
 
-            const res = await fetch(
-                `/api/stock/movements?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`,
-                { signal }
-            );
-            if (!res.ok) throw new Error('Failed to fetch');
-            const json = await res.json();
-            return json.data;
+            return await getStockMovements({
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString()
+            }, { signal });
         }
     });
 

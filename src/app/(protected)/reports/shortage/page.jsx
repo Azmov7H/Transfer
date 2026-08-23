@@ -16,7 +16,7 @@ export default function ShortageReportsPage() {
 
     const { data: reports = [], isLoading, refetch } = useQuery({
         queryKey: ['shortage-reports', filter],
-        queryFn: () => ReportService.getShortageReports(filter)
+        queryFn: ({ signal }) => ReportService.getShortageReports(filter, { signal })
     });
 
     const filterOptions = [

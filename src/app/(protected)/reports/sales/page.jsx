@@ -31,7 +31,7 @@ export default function SalesReportPage() {
 
     const { data: stats = {}, isLoading, refetch } = useQuery({
         queryKey: ['sales-report', startDateParam, endDateParam],
-        queryFn: () => DailySalesService.getSalesSummary(startDateParam, endDateParam)
+        queryFn: ({ signal }) => DailySalesService.getSalesSummary(startDateParam, endDateParam, { signal })
     });
 
     const handleFilter = () => {
