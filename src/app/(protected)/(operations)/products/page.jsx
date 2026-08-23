@@ -62,8 +62,8 @@ export default function ProductsPage() {
         isEditDialogOpen, setIsEditDialogOpen,
         isViewDialogOpen, setIsViewDialogOpen,
         selectedProduct,
-        addFormData, setAddFormData,
-        editFormData, setEditFormData,
+        addFormData,
+        editFormData,
         filteredProducts,
         stats,
         isLoading,
@@ -324,8 +324,7 @@ export default function ProductsPage() {
                             : (open) => { if (!open) setIsEditDialogOpen(false); }
                     }
                     mode={isAddDialogOpen ? 'add' : 'edit'}
-                    formData={isAddDialogOpen ? addFormData : editFormData}
-                    setFormData={isAddDialogOpen ? setAddFormData : setEditFormData}
+                    defaultValues={isAddDialogOpen ? addFormData : editFormData}
                     onSubmit={isAddDialogOpen ? handleAddSubmit : handleEditSubmit}
                     isPending={isAddDialogOpen ? addMutation.isPending : updateMutation.isPending}
                     metadata={metadata}

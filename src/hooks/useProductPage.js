@@ -66,7 +66,6 @@ export function useProductPage() {
     const handleEditClick = (product) => {
         setSelectedProduct(product);
         setEditFormData({
-            _id: product._id,
             name: product.name || '',
             code: product.code || '',
             retailPrice: product.retailPrice || product.sellPrice || '',
@@ -87,9 +86,8 @@ export function useProductPage() {
         setIsViewDialogOpen(true);
     };
 
-    const handleAddSubmit = (e) => {
-        e.preventDefault();
-        addMutation.mutate(addFormData, {
+    const handleAddSubmit = (values) => {
+        addMutation.mutate(values, {
             onSuccess: () => {
                 setIsAddDialogOpen(false);
                 setAddFormData({
@@ -101,9 +99,8 @@ export function useProductPage() {
         });
     };
 
-    const handleEditSubmit = (e) => {
-        e.preventDefault();
-        updateMutation.mutate(editFormData, {
+    const handleEditSubmit = (values) => {
+        updateMutation.mutate(values, {
             onSuccess: () => {
                 setIsEditDialogOpen(false);
                 setSelectedProduct(null);

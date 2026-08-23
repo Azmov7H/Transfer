@@ -1,36 +1,69 @@
 'use client';
 
 import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { SmartCombobox } from '@/components/ui/smart-combobox';
 import { Badge } from '@/components/ui/badge';
-import { Info, RefreshCw, ArrowUpRight, History, Barcode } from 'lucide-react';
-import { Loader2 } from 'lucide-react';
+import { Info, RefreshCw, ArrowUpRight, History, Barcode, Loader2 } from 'lucide-react';
+
+import { FormField, mapServerFieldErrors } from '@/components/forms/FormField';
+import { zodResolver } from '@/components/forms/zodResolver';
+import { productSchema } from '@/validations/product.schema';
 
 // Helper to generate EAN-13 style barcode
 const generateBarcode = () => {
     return Math.floor(Math.random() * 9000000000000) + 1000000000000; // 13 digits
 };
 
-export function ProductFormDialog({ open, onOpenChange, mode, formData, setFormData, onSubmit, isPending, metadata, productName }) {
-    // Auto-generate barcode on mount for new products
+export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onSubmit, isPending, metadata, productName }) {
+    const {
+        register,
+        handleSubmit,
+        control,
+        reset,
+        setValue,
+        watch,
+        setError,
+        formState: { errors, isSubmitting }
+    } = useForm({
+        resolver: zodResolver(productSchema),
+        defaultValues
+    });
+
     useEffect(() => {
-        if (open && mode === 'add' && !formData.code) {
-            setFormData(prev => ({ ...prev, code: generateBarcode().toString() }));
+        if (open) {
+            reset(defaultValues);
+            if (mode === 'add' && !watch('code')) {
+                setValue('code', generateBarcode().toString());
+            }
         }
-    }, [open, mode, setFormData, formData.code]);
+    }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleRegenerateBarcode = () => {
-        setFormData(prev => ({ ...prev, code: generateBarcode().toString() }));
+        setValue('code', generateBarcode().toString(), { shouldValidate: false });
+    };
+
+    const onValid = async (values) => {
+        try {
+            await onSubmit(values);
+        } catch (err) {
+            const serverErrors = mapServerFieldErrors(err);
+            if (serverErrors) {
+                Object.entries(serverErrors).forEach(([field, error]) => setError(field, error));
+            } else {
+                throw err;
+            }
+        }
     };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="w-[90vw] max-w-[90vw] sm:max-w-[800px] h-[90vh] md:h-[80vh] overflow-y-auto glass-card border-white/10 p-0 rounded-3xl" dir="rtl">
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleSubmit(onValid)} noValidate>
                     <div className="p-4 md:p-8 space-y-6 md:space-y-8">
                         <div className="space-y-2">
                             <DialogTitle className="text-2xl font-black">
@@ -50,27 +83,23 @@ export function ProductFormDialog({ open, onOpenChange, mode, formData, setFormD
                                     </h3>
 
                                     <div className="grid grid-cols-1 gap-4">
-                                        <div className="space-y-2">
-                                            <Label className="font-bold text-sm mr-1">اسم المنتج *</Label>
+                                        <FormField label="اسم المنتج" required error={errors.name}>
                                             <Input
-                                                required
+                                                {...register('name')}
                                                 className="h-12 rounded-xl bg-white/5 border-white/5 font-bold"
                                                 placeholder="اسم المنتج بالكامل..."
-                                                value={formData.name}
-                                                onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                                aria-invalid={!!errors.name}
                                             />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label className="font-bold text-sm mr-1">كود المنتج (الباركود) *</Label>
+                                        </FormField>
+                                        <FormField label="كود المنتج (الباركود)" required error={errors.code}>
                                             <div className="relative flex gap-2">
                                                 <div className="relative flex-1">
                                                     <Barcode className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                                     <Input
-                                                        required
+                                                        {...register('code')}
                                                         className="h-12 pr-12 rounded-xl bg-white/5 border-white/5 font-mono font-bold"
                                                         placeholder="امسح أو اكتب الكود..."
-                                                        value={formData.code}
-                                                        onChange={e => setFormData({ ...formData, code: e.target.value })}
+                                                        aria-invalid={!!errors.code}
                                                     />
                                                 </div>
                                                 <Button
@@ -84,51 +113,57 @@ export function ProductFormDialog({ open, onOpenChange, mode, formData, setFormD
                                                     <RefreshCw className="h-5 w-5" />
                                                 </Button>
                                             </div>
-                                        </div>
+                                        </FormField>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label className="font-bold text-sm mr-1">الماركة</Label>
-                                            <SmartCombobox
-                                                options={metadata.brands}
-                                                value={formData.brand}
-                                                onChange={(val) => setFormData({ ...formData, brand: val })}
-                                                onCreate={(val) => setFormData({ ...formData, brand: val })}
-                                                placeholder="اختر الماركة..."
-                                                className="h-12 rounded-xl"
+                                        <FormField label="الماركة" error={errors.brand}>
+                                            <Controller
+                                                control={control}
+                                                name="brand"
+                                                render={({ field }) => (
+                                                    <SmartCombobox
+                                                        options={metadata.brands}
+                                                        value={field.value ?? ''}
+                                                        onChange={field.onChange}
+                                                        onCreate={(val) => field.onChange(val)}
+                                                        placeholder="اختر الماركة..."
+                                                        className="h-12 rounded-xl"
+                                                    />
+                                                )}
                                             />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label className="font-bold text-sm mr-1">الفئة</Label>
-                                            <SmartCombobox
-                                                options={metadata.categories}
-                                                value={formData.category}
-                                                onChange={(val) => setFormData({ ...formData, category: val })}
-                                                onCreate={(val) => setFormData({ ...formData, category: val })}
-                                                placeholder="الفئة الرئيسية..."
-                                                className="h-12 rounded-xl"
+                                        </FormField>
+                                        <FormField label="الفئة" error={errors.category}>
+                                            <Controller
+                                                control={control}
+                                                name="category"
+                                                render={({ field }) => (
+                                                    <SmartCombobox
+                                                        options={metadata.categories}
+                                                        value={field.value ?? ''}
+                                                        onChange={field.onChange}
+                                                        onCreate={(val) => field.onChange(val)}
+                                                        placeholder="الفئة الرئيسية..."
+                                                        className="h-12 rounded-xl"
+                                                    />
+                                                )}
                                             />
-                                        </div>
+                                        </FormField>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label className="font-bold text-sm mr-1">القسم الفرعي</Label>
+                                        <FormField label="القسم الفرعي" error={errors.subsection}>
                                             <Input
+                                                {...register('subsection')}
                                                 className="h-12 rounded-xl bg-white/5 border-white/5"
-                                                value={formData.subsection}
-                                                onChange={e => setFormData({ ...formData, subsection: e.target.value })}
                                             />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label className="font-bold text-sm mr-1">الموسم</Label>
+                                        </FormField>
+                                        <FormField label="الموسم" error={errors.season}>
                                             <Input
+                                                {...register('season')}
                                                 className="h-12 rounded-xl bg-white/5 border-white/5"
-                                                value={formData.season}
-                                                onChange={e => setFormData({ ...formData, season: e.target.value })}
                                             />
-                                        </div>
+                                        </FormField>
                                     </div>
                                 </div>
                             </div>
@@ -141,46 +176,38 @@ export function ProductFormDialog({ open, onOpenChange, mode, formData, setFormD
                                     </h3>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label className="font-bold text-sm text-primary">سعر البيع (قطاعي) *</Label>
+                                        <FormField label="سعر البيع (قطاعي)" required error={errors.retailPrice}>
                                             <Input
                                                 type="number"
-                                                required
+                                                {...register('retailPrice')}
                                                 className="h-14 rounded-2xl bg-white/10 border-primary/20 text-center font-black text-xl text-primary"
-                                                value={formData.retailPrice}
-                                                onChange={e => setFormData({ ...formData, retailPrice: e.target.value })}
+                                                aria-invalid={!!errors.retailPrice}
                                             />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label className="font-bold text-sm opacity-80">سعر التكلفة</Label>
+                                        </FormField>
+                                        <FormField label="سعر التكلفة" error={errors.buyPrice}>
                                             <Input
                                                 type="number"
+                                                {...register('buyPrice')}
                                                 className="h-14 rounded-2xl bg-white/5 border-white/5 text-center font-bold text-lg"
-                                                value={formData.buyPrice}
-                                                onChange={e => setFormData({ ...formData, buyPrice: e.target.value })}
                                             />
-                                        </div>
+                                        </FormField>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label className="text-xs font-bold mr-1">هامش ربح أدنى (%)</Label>
+                                        <FormField label="هامش ربح أدنى (%)" error={errors.minProfitMargin}>
                                             <Input
                                                 type="number"
+                                                {...register('minProfitMargin')}
                                                 className="h-11 rounded-xl bg-white/5 border-white/5 text-center"
-                                                value={formData.minProfitMargin}
-                                                onChange={e => setFormData({ ...formData, minProfitMargin: e.target.value })}
                                             />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label className="text-xs font-bold mr-1">حد الطلب (Minimum)</Label>
+                                        </FormField>
+                                        <FormField label="حد الطلب (Minimum)" error={errors.minLevel}>
                                             <Input
                                                 type="number"
+                                                {...register('minLevel')}
                                                 className="h-11 rounded-xl bg-white/5 border-white/5 text-center"
-                                                value={formData.minLevel}
-                                                onChange={e => setFormData({ ...formData, minLevel: e.target.value })}
                                             />
-                                        </div>
+                                        </FormField>
                                     </div>
                                 </div>
 
@@ -195,26 +222,22 @@ export function ProductFormDialog({ open, onOpenChange, mode, formData, setFormD
                                         </div>
 
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div className="space-y-2">
-                                                <Label className="text-xs font-bold">الكمية بالمخزن</Label>
+                                            <FormField label="الكمية بالمخزن" error={errors.warehouseQty}>
                                                 <Input
                                                     type="number"
                                                     placeholder="0"
+                                                    {...register('warehouseQty')}
                                                     className="h-12 rounded-xl bg-white/5 border-emerald-500/20 text-center font-bold"
-                                                    value={formData.warehouseQty}
-                                                    onChange={e => setFormData({ ...formData, warehouseQty: e.target.value })}
                                                 />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <Label className="text-xs font-bold">الكمية بالمحل</Label>
+                                            </FormField>
+                                            <FormField label="الكمية بالمحل" error={errors.shopQty}>
                                                 <Input
                                                     type="number"
                                                     placeholder="0"
+                                                    {...register('shopQty')}
                                                     className="h-12 rounded-xl bg-white/5 border-emerald-500/20 text-center font-bold"
-                                                    value={formData.shopQty}
-                                                    onChange={e => setFormData({ ...formData, shopQty: e.target.value })}
                                                 />
-                                            </div>
+                                            </FormField>
                                         </div>
                                         <p className="text-[10px] text-muted-foreground font-medium bg-emerald-500/5 p-2 rounded-lg leading-relaxed">
                                             💡 هذه هي الكميات التي يتم تسجيلها لأول مرة عند استلام المحل للنظام. سيتم إنشاء حركة &quot;رصيد افتتاحي&quot; آلياً بهذه القيم.
@@ -233,7 +256,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, formData, setFormD
                                 <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="flex-1 sm:flex-none h-12 px-8 rounded-2xl border-white/10 hover:bg-white/5 font-bold">
                                     إلغاء
                                 </Button>
-                                <Button type="submit" disabled={isPending} className="flex-1 sm:flex-none h-12 px-12 rounded-2xl bg-primary text-primary-foreground font-black shadow-lg shadow-primary/20">
+                                <Button type="submit" disabled={isPending || isSubmitting} className="flex-1 sm:flex-none h-12 px-12 rounded-2xl bg-primary text-primary-foreground font-black shadow-lg shadow-primary/20">
                                     {isPending ? <Loader2 className="animate-spin" /> : (mode === 'add' ? 'إضافة المنتج' : 'حفظ التغييرات')}
                                 </Button>
                             </div>
