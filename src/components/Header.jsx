@@ -23,6 +23,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/utils';
 import { useNotificationCenter } from '@/context/NotificationContext';
 import { useNotifications } from '@/hooks/useNotifications';
+import { ROLES } from '@/lib/permissions';
 
 function NotificationTrigger() {
     const { setIsSidebarOpen } = useNotificationCenter();
@@ -125,7 +126,7 @@ export default function Header() {
                                         {loading ? '...' : user?.name}
                                     </span>
                                     <span className="text-[10px] font-bold text-primary/80 uppercase tracking-wider">
-                                        {role === 'owner' ? 'المالك' : 'مستخدم'}
+                                        {role === ROLES.OWNER ? 'المالك' : 'مستخدم'}
                                     </span>
                                 </div>
                                 <Avatar className="h-9 w-9 border-2 border-primary/20 shadow-xl group-hover:scale-110 transition-transform">

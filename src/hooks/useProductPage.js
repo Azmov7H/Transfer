@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useProducts, useProductMetadata, useAddProduct, useUpdateProduct, useDeleteProduct } from '@/hooks/useProducts';
 import { useUserRole } from '@/hooks/useUserRole';
+import { can } from '@/lib/permissions';
 import { useFilters } from './useFilters';
 
 export function useProductPage() {
@@ -38,7 +39,7 @@ export function useProductPage() {
     const deleteMutation = useDeleteProduct();
     const { role } = useUserRole();
 
-    const canManage = role === 'owner' || role === 'manager';
+    const canManage = can(role, 'products:manage');
 
     // Derived State
     const filteredProducts = useMemo(() => {

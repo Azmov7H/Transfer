@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Key, Loader2 } from 'lucide-react';
 import { useUserRole } from '@/hooks/useUserRole';
+import { ROLES } from '@/lib/permissions';
 
 export function UserFormDialog({ open, onOpenChange, user, onSubmit, isPending }) {
     const { role: currentUserRole } = useUserRole();
@@ -17,7 +18,7 @@ export function UserFormDialog({ open, onOpenChange, user, onSubmit, isPending }
         name: '',
         email: '',
         password: '',
-        role: 'cashier'
+        role: ROLES.CASHIER
     });
 
     useEffect(() => {
@@ -27,14 +28,14 @@ export function UserFormDialog({ open, onOpenChange, user, onSubmit, isPending }
                     name: user.name || '',
                     email: user.email || '',
                     password: '', // Don't show password
-                    role: user.role || 'cashier'
+                    role: user.role || ROLES.CASHIER
                 });
             } else {
                 setFormData({
                     name: '',
                     email: '',
                     password: '',
-                    role: 'cashier'
+                    role: ROLES.CASHIER
                 });
             }
         }
@@ -95,10 +96,10 @@ export function UserFormDialog({ open, onOpenChange, user, onSubmit, isPending }
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="cashier">كاشير (مبيعات فقط)</SelectItem>
-                                <SelectItem value="warehouse">أمين مخزن (مخزون فقط)</SelectItem>
-                                <SelectItem value="manager">مدير (صلاحيات كاملة)</SelectItem>
-                                {currentUserRole === 'owner' && <SelectItem value="owner">مالك (Owner)</SelectItem>}
+                                <SelectItem value={ROLES.CASHIER}>كاشير (مبيعات فقط)</SelectItem>
+                                <SelectItem value={ROLES.WAREHOUSE}>أمين مخزن (مخزون فقط)</SelectItem>
+                                <SelectItem value={ROLES.MANAGER}>مدير (صلاحيات كاملة)</SelectItem>
+                                {currentUserRole === ROLES.OWNER && <SelectItem value={ROLES.OWNER}>مالك (Owner)</SelectItem>}
                             </SelectContent>
                         </Select>
                     </div>

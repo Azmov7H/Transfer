@@ -14,20 +14,13 @@ export async function middleware(request) {
 
     if (isAuthRoute) return NextResponse.next();
 
-    // Debugging: If JWT_SECRET is missing, we might have an issue
-    if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
-        console.warn('Middleware: JWT_SECRET is not defined in production environment!');
-    }
-
     const token = request.cookies.get('token')?.value;
-    console.log(`[Middleware] Path: ${pathname}, HasToken: ${!!token}`);
 
     let payload = null;
     if (token) {
         try {
             const { payload: decoded } = await jwtVerify(token, JWT_SECRET);
             payload = decoded;
-            console.log(`[Middleware] Token Verified: UserID=${payload.userId}, Role=${payload.role}`);
         } catch (err) {
             console.warn(`[Middleware] Token verification failed: ${err.message}`);
         }

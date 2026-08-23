@@ -158,3 +158,21 @@
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out forwards;
 }
+/* Print scoping: when printing the partner transactions dialog, only #print-area is rendered */
+@media print {
+  body.printing-partner-transactions * {
+    visibility: hidden;
+  }
+
+  body.printing-partner-transactions #print-area,
+  body.printing-partner-transactions #print-area * {
+    visibility: visible;
+  }
+
+  body.printing-partner-transactions #print-area {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+  }
+}

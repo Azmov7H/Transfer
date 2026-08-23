@@ -55,3 +55,31 @@ Standard DoD.
 
 ## Expected Result
 Auth failures are recoverable; authorization UI is uniform; security log surface clean.
+
+---
+
+## Execution Record
+
+**Branch:** `feat/frontend-sprint-03-auth-security` (stacked on sprint-02)
+**Status:** COMPLETE
+
+| Task | Commit | Summary |
+|---|---|---|
+| FE-SEC-001 | `fcd46eb` | Removed middleware path+token-presence and userId+role logs; removed login response dump; kept payload-free error warns. `useUserRole` already clean via FE-STATE-001 |
+| FE-AUTH-001 | `de1f36a` | Fetcher 401 → single hard redirect to `/login?expired=1` (`window.location.replace`, guarded by module flag + `/login` path check; `/api/auth/*` excluded); 403 never redirects. Hard navigation clears React Query cache implicitly. Login page shows Arabic expired-session notice |
+| FE-AUTH-002 | `25451af` | New `<RoleGate permission|roles>` consuming cached session; wrapped `(finance)` + `(operations)` layouts and users/settings/logs/audit pages; phantom `'admin'` removed — audit adjust now owner+manager, page view adds warehouse; permissions lib gained `can` alias + `hasRole`; all raw string comparisons migrated to ROLES constants (`Header`, `useSidebarLogic`, `useProductPage`, `UserFormDialog`, `users/page`) |
+| FE-SEC-002 | `e16ff8a` | innerHTML swap + reload replaced by scoped print CSS (`body.printing-partner-transactions #print-area` visibility pattern in globals.css); dialog state survives printing |
+| FE-SEC-003 | `e1bbb77` | `window.open(..., 'noopener,noreferrer')` |
+
+**Gates at completion:** lint 0 errors / 55 warnings (54 baseline + 1 new `set-state-in-effect` from the expired-banner effect on login page), tests 3/3, build green.
+
+**Notes / deviations:**
+- `(admin)` group NOT gated at layout level: it mixes audiences (audit is stock-facing for warehouse; users/settings are manager+owner). Pages gated individually instead.
+- Audit page deep-link gate allows owner+manager+warehouse (stock roles); the adjust action stays owner+manager per task intent.
+- Redirect uses `location.replace` over `location.href`: avoids back-button trap into expired app and dodges a false-positive `no-location-assign-relative-destination` warning.
+- 401 redirect does not clear React Query cache explicitly — full document reload destroys all client state, making an import of QueryClient into the fetcher unnecessary.
+
+**Follow-ups filed for later sprints:**
+- Backend authorization enforcement unverified — documented as Frontend Integration Issue (client gates are UX only).
+- Manager role lacks `audit:manage` in PERMISSIONS matrix while physical-inventory nav requires it — matrix review deferred to Sprint 11 hardening.
+- New tracked lint warning: login page expired-banner `set-state-in-effect` (same class as existing baseline).

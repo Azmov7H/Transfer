@@ -7,14 +7,16 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Plus, UserCog, Trash2, Shield } from 'lucide-react';
 import { ExportButton } from '@/components/common/ExportButton';
 import { useUserRole } from '@/hooks/useUserRole';
+import { RoleGate } from '@/components/auth/RoleGate';
+import { can, ROLES } from '@/lib/permissions';
 import { cn } from '@/utils';
 import { useUsers } from '@/hooks/useUsers';
 import { UserFormDialog } from '@/components/users/UserFormDialog';
 
 export default function UsersPage() {
     const { role, loading: isRoleLoading } = useUserRole();
-    const canManage = role === 'owner' || role === 'manager';
-    const canDelete = role === 'owner';
+    const canManage = can(role, 'users:manage');
+    const canDelete = role === ROLES.OWNER;
 
     const { users, isLoading: isUsersLoading, createUser, updateUser, deleteUser } = useUsers();
 
@@ -64,20 +66,9 @@ export default function UsersPage() {
         return <Badge variant={config.variant} className={cn(config.className)}>{config.label}</Badge>;
     };
 
-    if (!canManage && !isLoading) {
-        return (
-            <div className="p-8 text-center animate-fade-in">
-                <div className="inline-block p-4 bg-red-50 rounded-full mb-4">
-                    <Shield className="w-12 h-12 text-destructive" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">غير مصرح</h3>
-                <p className="text-muted-foreground">ليس لديك صلاحية للوصول لهذه الصفحة</p>
-            </div>
-        );
-    }
-
     return (
-        <div className="space-y-6 animate-fade-in-up">
+        <RoleGate fallback={<UnauthorizedState />}>
+            <div className="space-y-6 animate-fade-in-up">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div className="animate-slide-in-right">
                     <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">إدارة المستخدمين</h1>
@@ -138,7 +129,7 @@ export default function UsersPage() {
                                         >
                                             <UserCog size={16} />
                                         </Button>
-                                        {canDelete && user.role !== 'owner' && (
+                                        {canDelete && user.role !== ROLES.OWNER && (
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
@@ -163,6 +154,19 @@ export default function UsersPage() {
                 onSubmit={handleSubmit}
                 isPending={createUser.isPending || updateUser.isPending}
             />
+        </div>
+        </RoleGate>
+    );
+}
+
+function UnauthorizedState() {
+    return (
+        <div className="p-8 text-center animate-fade-in">
+            <div className="inline-block p-4 bg-red-50 rounded-full mb-4">
+                <Shield className="w-12 h-12 text-destructive" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground mb-2">غير مصرح</h3>
+            <p className="text-muted-foreground">ليس لديك صلاحية للوصول لهذه الصفحة</p>
         </div>
     );
 }

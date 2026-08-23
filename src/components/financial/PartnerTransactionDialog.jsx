@@ -35,12 +35,9 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
     ) || [];
 
     const handlePrint = () => {
-        const printContent = document.getElementById('print-area');
-        const originalContent = document.body.innerHTML;
-        document.body.innerHTML = printContent.innerHTML;
+        document.body.classList.add('printing-partner-transactions');
         window.print();
-        document.body.innerHTML = originalContent;
-        window.location.reload(); // To restore React state
+        document.body.classList.remove('printing-partner-transactions');
     };
 
     return (

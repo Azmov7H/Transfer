@@ -21,6 +21,17 @@ export class JammazApiError extends Error {
 // Request deduplication map
 const pendingRequests = new Map();
 
+// Session-expiry redirect guard — ensures exactly one redirect per expired session
+let isRedirectingToLogin = false;
+
+function handleSessionExpiry() {
+    if (typeof window === 'undefined' || isRedirectingToLogin) return;
+    if (window.location.pathname.startsWith('/login')) return;
+    isRedirectingToLogin = true;
+    // Hard navigation: full remount clears the React Query cache along with all client state
+    window.location.replace('/login?expired=1');
+}
+
 function getRequestKey(url, options = {}) {
     const method = options.method || 'GET';
     const body = options.body || '';
@@ -121,12 +132,9 @@ export async function fetcher(url, options = {}) {
         try {
             const res = await fetch(finalUrl, { ...config, signal: controller.signal });
 
-            // Handle Global Auth Failure (401/403)
-            if (res.status === 401 || res.status === 403) {
-                if (typeof window !== 'undefined') {
-                    // Force refresh or redirect to login if session expired
-                    // Uncomment when routing is ready: window.location.href = '/login?expired=true';
-                }
+            // Handle Global Session Expiry (401 only — 403 is an authorization issue, not a session one)
+            if (res.status === 401 && !url.startsWith('/api/auth')) {
+                handleSessionExpiry();
             }
 
             let response;
