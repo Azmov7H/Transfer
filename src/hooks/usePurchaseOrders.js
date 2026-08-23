@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-utils';
-import { toast } from 'sonner';
+import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 export function usePurchaseOrders(params = {}) {
     return useQuery({
@@ -26,11 +26,10 @@ export function useCreatePO() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (data) => api.post('/api/purchase-orders', data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['purchase-orders'] });
-            toast.success('تم إنشاء طلب الشراء بنجاح');
-        },
-        onError: (error) => toast.error(error.message)
+        ...withMutationFeedback({
+            successMessage: 'تم إنشاء طلب الشراء بنجاح',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['purchase-orders'] })
+        })
     });
 }
 
@@ -38,11 +37,13 @@ export function useUpdatePOStatus() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: ({ id, ...data }) => api.patch(`/api/purchase-orders/${id}`, data),
-        onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ['purchase-orders'] });
-            queryClient.invalidateQueries({ queryKey: ['products'] }); // Stock might have changed
-            toast.success(res.message || 'تم تحديث الحالة');
-        },
-        onError: (error) => toast.error(error.message)
+        ...withMutationFeedback({
+            successMessage: (res) => res.message || 'تم تحديث الحالة',
+            afterSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['purchase-orders'] });
+                // Stock might have changed
+                queryClient.invalidateQueries({ queryKey: ['products'] });
+            }
+        })
     });
 }

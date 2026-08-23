@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-utils';
-import { toast } from 'sonner';
+import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 export function useSuppliers(params = {}) {
     const queryClient = useQueryClient();
@@ -19,29 +19,29 @@ export function useSuppliers(params = {}) {
 
     const addMutation = useMutation({
         mutationFn: (data) => api.post('/api/suppliers', data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
-            toast.success('تم إضافة المورد بنجاح');
-        },
-        onError: (err) => toast.error(err.message || 'فشل إضافة المورد')
+        ...withMutationFeedback({
+            successMessage: 'تم إضافة المورد بنجاح',
+            fallbackErrorMessage: 'فشل إضافة المورد',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['suppliers'] })
+        })
     });
 
     const updateMutation = useMutation({
         mutationFn: ({ id, data }) => api.put(`/api/suppliers/${id}`, data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
-            toast.success('تم تحديث بيانات المورد');
-        },
-        onError: (err) => toast.error(err.message || 'فشل تحديث البيانات')
+        ...withMutationFeedback({
+            successMessage: 'تم تحديث بيانات المورد',
+            fallbackErrorMessage: 'فشل تحديث البيانات',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['suppliers'] })
+        })
     });
 
     const deleteMutation = useMutation({
         mutationFn: (id) => api.delete(`/api/suppliers/${id}`),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
-            toast.success('تم حذف المورد بنجاح');
-        },
-        onError: (err) => toast.error(err.message || 'فشل الحذف')
+        ...withMutationFeedback({
+            successMessage: 'تم حذف المورد بنجاح',
+            fallbackErrorMessage: 'فشل الحذف',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['suppliers'] })
+        })
     });
 
     return {

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api as ApiClient } from '@/lib/api-utils';
-import { toast } from 'sonner';
+import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 /**
  * Hook for Physical Inventory operations
@@ -49,31 +49,31 @@ export function usePhysicalInventory(id = null) {
     // 4. Update Mutation (Patch Items)
     const updateMutation = useMutation({
         mutationFn: (data) => ApiClient.patch(`/api/physical-inventory/${id}`, data),
-        onSuccess: () => {
-            queryClient.invalidateQueries(['physical-inventory', id]);
-            toast.success('تم حفظ التغييرات بنجاح');
-        },
-        onError: (err) => toast.error(err.message || 'فشل الحفظ')
+        ...withMutationFeedback({
+            successMessage: 'تم حفظ التغييرات بنجاح',
+            fallbackErrorMessage: 'فشل الحفظ',
+            afterSuccess: () => queryClient.invalidateQueries(['physical-inventory', id])
+        })
     });
 
     // 5. Complete Mutation
     const completeMutation = useMutation({
         mutationFn: () => ApiClient.post(`/api/physical-inventory/${id}/complete`),
-        onSuccess: (res) => {
-            queryClient.invalidateQueries(['physical-inventory']);
-            toast.success(res.data.message || 'تم اعتماد الجرد بنجاح');
-        },
-        onError: (err) => toast.error(err.message || 'فشل الاعتماد')
+        ...withMutationFeedback({
+            successMessage: (res) => res.data.message || 'تم اعتماد الجرد بنجاح',
+            fallbackErrorMessage: 'فشل الاعتماد',
+            afterSuccess: () => queryClient.invalidateQueries(['physical-inventory'])
+        })
     });
 
     // 6. Unlock Mutation
     const unlockMutation = useMutation({
         mutationFn: (password) => ApiClient.post(`/api/physical-inventory/${id}/unlock`, { password }),
-        onSuccess: (res) => {
-            queryClient.invalidateQueries(['physical-inventory', id]);
-            toast.success(res.data.message || 'تم فتح الجرد للتعديل');
-        },
-        onError: (err) => toast.error(err.message || 'فشل فتح الجرد')
+        ...withMutationFeedback({
+            successMessage: (res) => res.data.message || 'تم فتح الجرد للتعديل',
+            fallbackErrorMessage: 'فشل فتح الجرد',
+            afterSuccess: () => queryClient.invalidateQueries(['physical-inventory', id])
+        })
     });
 
     // 7. Recent Movements

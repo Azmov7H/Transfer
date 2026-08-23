@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-utils';
-import { toast } from 'sonner';
+import { withMutationFeedback } from '@/lib/mutation-feedback';
 import { useFilters } from './useFilters';
 
 /**
@@ -23,16 +23,14 @@ export function useCreateInvoice() {
         mutationFn: async (data) => {
             return await api.post('/api/invoices', data);
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['invoices'] });
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-        },
-        onError: (error) => {
-            toast.error(error.message || 'فشل في إنشاء الفاتورة', {
-                duration: 5000,
-                important: true
-            });
-        }
+        ...withMutationFeedback({
+            fallbackErrorMessage: 'فشل في إنشاء الفاتورة',
+            errorOptions: { duration: 5000, important: true },
+            afterSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['invoices'] });
+                queryClient.invalidateQueries({ queryKey: ['products'] });
+            }
+        })
     });
 }
 
@@ -43,14 +41,14 @@ export function useDeleteInvoice() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (id) => api.delete(`/api/invoices/${id}`),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['invoices'] });
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-            toast.success('تم حذف الفاتورة بنجاح');
-        },
-        onError: (error) => {
-            toast.error(error.message || 'فشل في حذف الفاتورة');
-        }
+        ...withMutationFeedback({
+            successMessage: 'تم حذف الفاتورة بنجاح',
+            fallbackErrorMessage: 'فشل في حذف الفاتورة',
+            afterSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['invoices'] });
+                queryClient.invalidateQueries({ queryKey: ['products'] });
+            }
+        })
     });
 }
 

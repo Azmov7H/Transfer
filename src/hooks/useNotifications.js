@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-utils';
-import { toast } from 'sonner';
+import { withMutationFeedback } from '@/lib/mutation-feedback';
 import { useUserRole } from './useUserRole';
 
 export function useNotifications() {
@@ -33,10 +33,10 @@ export function useNotifications() {
 
     const deleteMutation = useMutation({
         mutationFn: (id) => api.delete(`/api/notifications/${id}`),
-        onSuccess: () => {
-            toast.success('تم الحذف');
-            queryClient.invalidateQueries({ queryKey: ['notifications'] });
-        }
+        ...withMutationFeedback({
+            successMessage: 'تم الحذف',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications'] })
+        })
     });
 
     return {

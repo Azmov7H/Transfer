@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-utils';
-import { toast } from 'sonner';
+import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 export function useProducts(params = {}, options = {}) {
     return useQuery({
@@ -20,11 +20,10 @@ export function useAddProduct() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (data) => api.post('/api/products', data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-            toast.success('تم إضافة المنتج بنجاح');
-        },
-        onError: (error) => toast.error(error.message)
+        ...withMutationFeedback({
+            successMessage: 'تم إضافة المنتج بنجاح',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
+        })
     });
 }
 
@@ -32,11 +31,10 @@ export function useUpdateProduct() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (data) => api.put(`/api/products/${data._id}`, data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-            toast.success('تم تعديل المنتج بنجاح');
-        },
-        onError: (error) => toast.error(error.message)
+        ...withMutationFeedback({
+            successMessage: 'تم تعديل المنتج بنجاح',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
+        })
     });
 }
 
@@ -44,11 +42,10 @@ export function useDeleteProduct() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (id) => api.delete(`/api/products/${id}`),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-            toast.success('تم حذف المنتج بنجاح');
-        },
-        onError: (error) => toast.error(error.message)
+        ...withMutationFeedback({
+            successMessage: 'تم حذف المنتج بنجاح',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
+        })
     });
 }
 

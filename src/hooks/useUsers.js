@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-utils';
-import { toast } from 'sonner';
+import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 export function useUsers() {
     const queryClient = useQueryClient();
@@ -14,29 +14,26 @@ export function useUsers() {
 
     const createUserMutation = useMutation({
         mutationFn: (data) => api.post('/api/users', data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users'] });
-            toast.success('تم إضافة المستخدم بنجاح');
-        },
-        onError: (error) => toast.error(error.message)
+        ...withMutationFeedback({
+            successMessage: 'تم إضافة المستخدم بنجاح',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+        })
     });
 
     const updateUserMutation = useMutation({
         mutationFn: ({ id, data }) => api.put(`/api/users/${id}`, data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users'] });
-            toast.success('تم تحديث المستخدم بنجاح');
-        },
-        onError: (error) => toast.error(error.message)
+        ...withMutationFeedback({
+            successMessage: 'تم تحديث المستخدم بنجاح',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+        })
     });
 
     const deleteUserMutation = useMutation({
         mutationFn: (id) => api.delete(`/api/users/${id}`),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users'] });
-            toast.success('تم حذف المستخدم بنجاح');
-        },
-        onError: (error) => toast.error(error.message)
+        ...withMutationFeedback({
+            successMessage: 'تم حذف المستخدم بنجاح',
+            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+        })
     });
 
     return {
