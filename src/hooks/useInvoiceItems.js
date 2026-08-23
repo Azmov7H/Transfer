@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { api } from '@/lib/api-utils';
+import { getProducts } from '@/services/productService';
 import { toast } from 'sonner';
 
 /**
@@ -24,7 +24,7 @@ export function useInvoiceItems({ items, setItems, onReportShortage, defaultSour
             return;
         }
         try {
-            const res = await api.get(`/api/products?search=${term}&limit=50`);
+            const res = await getProducts({ search: term, limit: 50 });
             const foundProducts = res.data?.products || [];
             setSearchResults(foundProducts);
 

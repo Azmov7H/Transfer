@@ -1,12 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import { getSalesReturns } from '@/services/salesReturnService';
+import { getInvoiceReturns } from '@/services/invoiceService';
 
 export function useSalesReturns(params = {}) {
     return useQuery({
         queryKey: ['sales-returns', params],
         queryFn: async ({ signal }) => {
-            const searchParams = new URLSearchParams(params);
-            const res = await api.get(`/api/sales-returns?${searchParams.toString()}`, undefined, { signal });
+            const res = await getSalesReturns(params, { signal });
             return res.data;
         }
     });
@@ -17,9 +17,10 @@ export function useInvoiceReturns(invoiceId) {
         queryKey: ['invoice-returns', invoiceId],
         queryFn: async ({ signal }) => {
             if (!invoiceId) return { returns: [] };
-            const res = await api.get(`/api/invoices/${invoiceId}/returns`, undefined, { signal });
+            const res = await getInvoiceReturns(invoiceId, { signal });
             return res.data;
         },
         enabled: !!invoiceId
     });
 }
+

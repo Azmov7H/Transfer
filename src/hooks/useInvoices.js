@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import { getInvoices, createInvoice, deleteInvoice } from '@/services/invoiceService';
 import { withMutationFeedback } from '@/lib/mutation-feedback';
 import { useFilters } from './useFilters';
 
@@ -10,7 +10,7 @@ import { useFilters } from './useFilters';
 export function useInvoices(params = {}) {
     return useQuery({
         queryKey: ['invoices', params],
-        queryFn: ({ signal }) => api.get('/api/invoices', params, { signal })
+        queryFn: ({ signal }) => getInvoices(params, { signal })
     });
 }
 
@@ -21,7 +21,7 @@ export function useCreateInvoice() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (data) => {
-            return await api.post('/api/invoices', data);
+            return await createInvoice(data);
         },
         ...withMutationFeedback({
             fallbackErrorMessage: 'فشل في إنشاء الفاتورة',
@@ -40,7 +40,7 @@ export function useCreateInvoice() {
 export function useDeleteInvoice() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (id) => api.delete(`/api/invoices/${id}`),
+        mutationFn: (id) => deleteInvoice(id),
         ...withMutationFeedback({
             successMessage: 'تم حذف الفاتورة بنجاح',
             fallbackErrorMessage: 'فشل في حذف الفاتورة',
