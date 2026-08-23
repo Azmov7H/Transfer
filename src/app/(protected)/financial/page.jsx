@@ -6,21 +6,16 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { useTreasury, useAddTransaction, useDeleteTransaction } from '@/hooks/useFinancial';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ArrowUpCircle, ArrowDownCircle, Wallet, Plus, Minus, Loader2, Trash2, Info, User, Clock, Tag, ExternalLink, Eye, ReceiptCent } from 'lucide-react';
-import { format } from 'date-fns';
-import Link from "next/link"
-import { ar } from 'date-fns/locale';
+import { Card } from '@/components/ui/card';
+import { Wallet, Loader2 } from 'lucide-react';
 import { useSuppliers } from '@/hooks/useSuppliers';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { addPayment as addPaymentApi } from '@/services/financeService';
 import { useQueryClient } from '@tanstack/react-query';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { TrendingUp, AlertTriangle } from 'lucide-react';
+import { TreasuryStatsCards } from '@/components/financial/TreasuryStatsCards';
+import { TransactionsTable } from '@/components/financial/TransactionsTable';
+import { TransactionDetailsDialog } from '@/components/financial/TransactionDetailsDialog';
+import { AddTransactionDialog } from '@/components/financial/AddTransactionDialog';
 
 export default function FinancialPage() {
     const [period, setPeriod] = useState('TODAY'); // TODAY, MONTH, YEAR, CUSTOM
@@ -38,9 +33,6 @@ export default function FinancialPage() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedTx, setSelectedTx] = useState(null);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-    const [isDailyOpen, setIsDailyOpen] = useState(false);
-    const [dailyData, setDailyData] = useState(null);
-    const [isDailyLoading, setIsDailyLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         amount: '',
@@ -96,7 +88,6 @@ export default function FinancialPage() {
                 note: formData.description
             };
 
-            // We use the useAddPayment hook for this
             addPaymentApi(paymentData).then(() => {
                 queryClient.invalidateQueries({ queryKey: ['treasury'] });
                 setIsDialogOpen(false);
@@ -127,21 +118,6 @@ export default function FinancialPage() {
             deleteTransaction(deleteTargetId);
         }
         setDeleteTargetId(null);
-    };
-
-    const fetchDailyDetails = async (date) => {
-        setIsDailyLoading(true);
-        setIsDailyOpen(true);
-        try {
-            const dateStr = format(new Date(date), 'yyyy-MM-dd');
-            const res = await fetch(`/api/financial/daily?date=${dateStr}`);
-            const json = await res.json();
-            setDailyData(json.data);
-        } catch (error) {
-            console.error('Failed to fetch daily details', error);
-        } finally {
-            setIsDailyLoading(false);
-        }
     };
 
     if (isLoading) {
@@ -225,7 +201,6 @@ export default function FinancialPage() {
                     >هذا الشهر</Button>
                     <Button
                         variant={period === 'YEAR' ? 'default' : 'ghost'}
-                        size="sm"
                         onClick={() => setPeriod('YEAR')}
                         className="text-xs h-8"
                     >هذه السنة</Button>
@@ -265,609 +240,39 @@ export default function FinancialPage() {
             )}
 
             {/* Balance and Period Stats Cards */}
-            <TooltipProvider>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
-                    {/* Total Balance Card */}
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Card className="bg-primary text-primary-foreground border-none shadow-md cursor-help">
-                                <CardHeader className="pb-2">
-                                    <CardTitle className="text-sm opacity-90">الرصيد الكلي</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="text-2xl font-bold">{balance.toLocaleString()} ج.م</div>
-                                    <div className="flex flex-col gap-0.5 mt-2 opacity-80 text-[10px]">
-                                        <div className="flex justify-between">
-                                            <span>كاش:</span>
-                                            <span>{(treasuryData?.breakdown?.cash || 0).toLocaleString()}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span>بنك:</span>
-                                            <span>{(treasuryData?.breakdown?.bank || 0).toLocaleString()}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span>محفظة:</span>
-                                            <span>{(treasuryData?.breakdown?.wallet || 0).toLocaleString()}</span>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TooltipTrigger>
-                        <TooltipContent>المبلغ المتوفر حالياً في الصندوق والبنك والمحافظ</TooltipContent>
-                    </Tooltip>
+            <TreasuryStatsCards balance={balance} treasuryData={treasuryData} periodStats={periodStats} />
 
-                    {/* Sales Profit Card */}
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-indigo-50 dark:bg-indigo-950/20 cursor-help">
-                                <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
-                                        <TrendingUp size={12} />
-                                        أرباح المبيعات
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-indigo-700 dark:text-indigo-400">
-                                        {periodStats.salesProfit.toLocaleString()}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TooltipTrigger>
-                        <TooltipContent>إجمالي الربح من الفواتير خلال الفترة المختارة</TooltipContent>
-                    </Tooltip>
-
-                    {/* Total Outstanding Debt */}
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-amber-50 dark:bg-amber-950/20 cursor-help">
-                                <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                                        <AlertTriangle size={12} />
-                                        إجمالي المديونيات
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-amber-700 dark:text-amber-400">
-                                        {periodStats.totalDebt.toLocaleString()}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TooltipTrigger>
-                        <TooltipContent>إجمالي المستحقات المتبقية عند العملاء (ديون نشطة)</TooltipContent>
-                    </Tooltip>
-
-                    {/* Period Income */}
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-green-50 dark:bg-green-950/20 cursor-help">
-                                <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-green-600 dark:text-green-400">إجمالي الإيرادات</CardTitle>
-                                </CardHeader>
-                                <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-green-700 dark:text-green-400">
-                                        +{periodStats.income.toLocaleString()}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TooltipTrigger>
-                        <TooltipContent>إجمالي المداخيل المالية خلال الفترة</TooltipContent>
-                    </Tooltip>
-
-                    {/* Supplier Payments */}
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-orange-50 dark:bg-orange-950/20 cursor-help">
-                                <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-orange-600 dark:text-orange-400">دفعات موردين</CardTitle>
-                                </CardHeader>
-                                <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-orange-700 dark:text-orange-400">
-                                        -{periodStats.supplierPayments.toLocaleString()}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TooltipTrigger>
-                        <TooltipContent>إجمالي المبالغ المدفوعة للموردين</TooltipContent>
-                    </Tooltip>
-
-                    {/* Period Shop Expense */}
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-red-50 dark:bg-red-950/20 cursor-help">
-                                <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-red-600 dark:text-red-400">مصروفات عامة</CardTitle>
-                                </CardHeader>
-                                <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-red-700 dark:text-red-400">
-                                        -{periodStats.shopExpenses.toLocaleString()}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TooltipTrigger>
-                        <TooltipContent>إجمالي المصاريف التشغيلية والرواتب وغيرها</TooltipContent>
-                    </Tooltip>
-
-                    {/* Period Net */}
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-blue-50 dark:bg-blue-950/20 cursor-help">
-                                <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-blue-600 dark:text-blue-400">صافي الفترة</CardTitle>
-                                </CardHeader>
-                                <CardContent className="px-4 pb-4">
-                                    <div className={`text-xl font-bold ${periodStats.net >= 0 ? 'text-blue-700 dark:text-blue-400' : 'text-red-700 dark:text-red-400'}`}>
-                                        {periodStats.net.toLocaleString()}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TooltipTrigger>
-                        <TooltipContent>صافي السيولة النقدية المحققة خلال الفترة</TooltipContent>
-                    </Tooltip>
-                </div>
-            </TooltipProvider>
-
-            {/* Action Buttons and Table */}
+            {/* Action Buttons */}
             <div className="grid grid-cols-1 gap-6">
                 <div className="flex gap-4">
-                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                        <DialogTrigger asChild>
-                            <Button
-                                className="flex-1 gap-2 bg-green-600 hover:bg-green-700 text-white"
-                                onClick={() => setFormData({ ...formData, type: 'INCOME' })}
-                            >
-                                <Plus size={18} />
-                                <span>إيداع / وارد</span>
-                            </Button>
-                        </DialogTrigger>
-                        <DialogTrigger asChild>
-                            <Button
-                                className="flex-1 gap-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-                                onClick={() => setFormData({ ...formData, type: 'EXPENSE' })}
-                            >
-                                <Minus size={18} />
-                                <span>مصروف / صادر</span>
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent dir="rtl">
-                            <DialogHeader>
-                                <DialogTitle>
-                                    {formData.type === 'INCOME' ? 'إيداع نقدي / إضافة رصيد' : 'تسجيل مصروف خارجي'}
-                                </DialogTitle>
-                            </DialogHeader>
-                            <div className="space-y-4 py-4">
-                                <div>
-                                    <Label>المبلغ (ج.م)</Label>
-                                    <Input
-                                        type="number"
-                                        value={formData.amount}
-                                        onChange={e => setFormData({ ...formData, amount: e.target.value })}
-                                        autoFocus
-                                    />
-                                </div>
-                                <div>
-                                    <Label>الوصف / السبب</Label>
-                                    <Input
-                                        value={formData.description}
-                                        onChange={e => setFormData({ ...formData, description: e.target.value })}
-                                        placeholder={formData.type === 'INCOME' ? 'مثال: رأس مال إضافي' : 'مثال: فاتورة كهرباء'}
-                                    />
-                                </div>
-                                <div>
-                                    <Label>وسيلة الدفع / الاستلام</Label>
-                                    <Select
-                                        value={formData.method}
-                                        onValueChange={v => setFormData({ ...formData, method: v })}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="اختر الوسيلة" />
-                                        </SelectTrigger>
-                                        <SelectContent dir="rtl">
-                                            <SelectItem value="cash">نقداً (كاش)</SelectItem>
-                                            <SelectItem value="bank">تحويل بنكي</SelectItem>
-                                            <SelectItem value="wallet">محفظة إلكترونية</SelectItem>
-                                            <SelectItem value="check">شيك</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                {formData.type === 'EXPENSE' && (
-                                    <>
-                                        <div>
-                                            <Label>تصنيف المصروف</Label>
-                                            <Select
-                                                value={formData.category}
-                                                onValueChange={v => setFormData({ ...formData, category: v })}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="اختر التصنيف" />
-                                                </SelectTrigger>
-                                                <SelectContent dir="rtl">
-                                                    <SelectItem value="other">مصروفات عامة</SelectItem>
-                                                    <SelectItem value="supplier">دفعة لمورد (دين / مقدم)</SelectItem>
-                                                    <SelectItem value="rent">إيجار</SelectItem>
-                                                    <SelectItem value="utilities">مرافق (كهرباء/ماء)</SelectItem>
-                                                    <SelectItem value="salaries">رواتب</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-
-                                        {formData.category === 'supplier' && (
-                                            <div>
-                                                <Label>المورد</Label>
-                                                <Select
-                                                    value={formData.supplierId}
-                                                    onValueChange={v => setFormData({ ...formData, supplierId: v })}
-                                                >
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="اختر المورد" />
-                                                    </SelectTrigger>
-                                                    <SelectContent dir="rtl">
-                                                        {suppliers?.suppliers?.map(s => (
-                                                            <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                            </div>
-                            <DialogFooter>
-                                <Button variant="outline" onClick={() => setIsDialogOpen(false)}>إلغاء</Button>
-                                <Button
-                                    onClick={handleSubmit}
-                                    className={formData.type === 'INCOME' ? 'bg-green-600 hover:bg-green-700' : ''}
-                                >
-                                    {isPending ? 'جاري الحفظ...' : 'حفظ المعاملة'}
-                                </Button>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
+                    <AddTransactionDialog
+                        open={isDialogOpen}
+                        onOpenChange={setIsDialogOpen}
+                        formData={formData}
+                        setFormData={setFormData}
+                        onSubmit={handleSubmit}
+                        isPending={isPending}
+                        suppliers={suppliers}
+                    />
                 </div>
 
                 {/* Transactions History */}
-                <Card className="border shadow-sm">
-                    <CardHeader className="border-b py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                        <CardTitle className="text-lg md:text-xl">سجل المعاملات ({filteredTransactions.length})</CardTitle>
-
-                        {/* Type Filter */}
-                        <div className="flex flex-wrap items-center gap-2 bg-muted p-1 rounded-lg">
-                            <Button
-                                variant={typeFilter === 'ALL' ? 'secondary' : 'ghost'}
-                                size="sm"
-                                onClick={() => setTypeFilter('ALL')}
-                                className="text-xs h-7 px-3"
-                            >الكل</Button>
-                            <Button
-                                variant={typeFilter === 'INCOME' ? 'secondary' : 'ghost'}
-                                size="sm"
-                                onClick={() => setTypeFilter('INCOME')}
-                                className="text-xs h-7 px-3 text-green-600"
-                            >إيرادات</Button>
-                            <Button
-                                variant={typeFilter === 'SUPPLIER_PAYMENTS' ? 'secondary' : 'ghost'}
-                                size="sm"
-                                onClick={() => setTypeFilter('SUPPLIER_PAYMENTS')}
-                                className="text-xs h-7 px-3 text-orange-600"
-                            >دفعات موردين</Button>
-                            <Button
-                                variant={typeFilter === 'SHOP_EXPENSES' ? 'secondary' : 'ghost'}
-                                size="sm"
-                                onClick={() => setTypeFilter('SHOP_EXPENSES')}
-                                className="text-xs h-7 px-3 text-red-600"
-                            >مصروفات</Button>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                        <div className="overflow-x-auto">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead className="text-right">نوع المعاملة</TableHead>
-                                        <TableHead className="text-right">الجهة / الطرف</TableHead>
-                                        <TableHead className="text-right">المبلغ</TableHead>
-                                        <TableHead className="text-right">الوسيلة</TableHead>
-                                        <TableHead className="text-right hidden md:table-cell">الوصف</TableHead>
-                                        <TableHead className="text-right hidden lg:table-cell">التاريخ</TableHead>
-                                        <TableHead className="text-right">إجراءات</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {filteredTransactions.length === 0 ? (
-                                        <TableRow>
-                                            <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                                                لا توجد معاملات مسجلة في هذه الفترة للفلتر المختار
-                                            </TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        filteredTransactions.map((tx) => (
-                                            <TableRow
-                                                key={tx._id}
-                                                className="cursor-pointer hover:bg-muted/50"
-                                                onClick={() => handleTxClick(tx)}
-                                            >
-                                                <TableCell>
-                                                    <Badge variant={tx.type === 'INCOME' ? 'default' : 'destructive'} className="gap-1 min-w-[70px] justify-center">
-                                                        {tx.type === 'INCOME' ? 'وارد' : 'صادر'}
-                                                    </Badge>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <div className="flex flex-col">
-                                                        <span className="font-medium">
-                                                            {tx.referenceType === 'Invoice' ? (
-                                                                tx.referenceId?.customer?._id ? (
-                                                                    <Link
-                                                                        href={`/customers/${tx.referenceId.customer._id}`}
-                                                                        className="hover:text-primary underline-offset-4 hover:underline"
-                                                                        onClick={(e) => e.stopPropagation()}
-                                                                    >
-                                                                        {tx.referenceId?.customer?.name || tx.referenceId?.customerName || 'عميل نقدي'}
-                                                                    </Link>
-                                                                ) : (tx.referenceId?.customerName || 'عميل نقدي')
-                                                            ) : tx.referenceType === 'PurchaseOrder' ? (
-                                                                tx.referenceId?.supplier?._id ? (
-                                                                    <Link
-                                                                        href={`/suppliers/${tx.referenceId.supplier._id}`}
-                                                                        className="hover:text-primary underline-offset-4 hover:underline"
-                                                                        onClick={(e) => e.stopPropagation()}
-                                                                    >
-                                                                        {tx.referenceId?.supplier?.name || 'مورد'}
-                                                                    </Link>
-                                                                ) : (tx.referenceId?.supplierName || 'مورد')
-                                                            ) : tx.referenceType === 'Debt' ? (
-                                                                tx.referenceId?.debtorId?._id ? (
-                                                                    <Link
-                                                                        href={tx.referenceId?.debtorType === 'Supplier' ? `/suppliers/${tx.referenceId.debtorId._id}` : `/customers/${tx.referenceId.debtorId._id}`}
-                                                                        className="hover:text-primary underline-offset-4 hover:underline"
-                                                                        onClick={(e) => e.stopPropagation()}
-                                                                    >
-                                                                        {tx.referenceId?.debtorId?.name || 'طرف مديون'}
-                                                                    </Link>
-                                                                ) : (tx.referenceId?.debtorId?.name || 'طرف مديون')
-                                                            ) : '---'}
-                                                        </span>
-                                                        <span className="text-[10px] text-muted-foreground">
-                                                            {tx.referenceType === 'Invoice' ? `فاتورة #${tx.referenceId?.number || ''}` :
-                                                                tx.referenceType === 'PurchaseOrder' ? `أمر شراء #${tx.referenceId?.poNumber || ''}` :
-                                                                    tx.referenceType === 'Debt' ? `دين / مطالبات` : ''}
-                                                        </span>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell className={`font-bold text-base ${tx.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}`}>
-                                                    {tx.amount.toLocaleString()} ج.م
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Badge variant="outline" className="text-[10px] bg-muted/30">
-                                                        {tx.method === 'bank' ? 'بنك' : tx.method === 'wallet' ? 'محفظة' : 'نقدي'}
-                                                    </Badge>
-                                                </TableCell>
-                                                <TableCell className="hidden md:table-cell">
-                                                    <div className="flex flex-col">
-                                                        <span>{tx.description}</span>
-                                                        <Badge variant="outline" className="text-[10px] w-fit mt-1 opacity-70">
-                                                            {tx.type === 'INCOME' ?
-                                                                (tx.referenceType === 'Invoice' ? 'مبيعات' : 'إيداع إضافي') :
-                                                                (tx.referenceType === 'PurchaseOrder' || (tx.referenceType === 'Debt' && tx.referenceId?.debtorType === 'Supplier') ? 'دفعة مورد' :
-                                                                    tx.referenceType === 'SalesReturn' ? 'مرتجع مبيعات' : 'مصاريف عامة')
-                                                            }
-                                                        </Badge>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell className="text-muted-foreground font-mono text-xs hidden lg:table-cell">
-                                                    {format(new Date(tx.date || tx.createdAt), 'dd/MM/yyyy HH:mm', { locale: ar })}
-                                                </TableCell>
-                                                <TableCell onClick={(e) => e.stopPropagation()}>
-                                                    <div className="flex items-center gap-2">
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            className="text-muted-foreground hover:text-primary h-8 w-8"
-                                                            onClick={() => handleTxClick(tx)}
-                                                        >
-                                                            <Info size={16} />
-                                                        </Button>
-
-                                                        {/* Quick Access Buttons */}
-                                                        {tx.referenceType === 'Invoice' && tx.referenceId?._id && (
-                                                            <Link href={`/invoices/${tx.referenceId._id}`} onClick={(e) => e.stopPropagation()}>
-                                                                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-blue-500 h-8 w-8">
-                                                                    <Eye size={16} />
-                                                                </Button>
-                                                            </Link>
-                                                        )}
-                                                        {tx.referenceType === 'PurchaseOrder' && tx.referenceId?._id && (
-                                                            <Link href={`/purchase-orders/${tx.referenceId._id}`} onClick={(e) => e.stopPropagation()}>
-                                                                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-orange-500 h-8 w-8">
-                                                                    <Eye size={16} />
-                                                                </Button>
-                                                            </Link>
-                                                        )}
-                                                        {(tx.type === 'INCOME' || tx.referenceType === 'UnifiedCollection') && (
-                                                            <Link href={`/financial/receipts/${tx._id}`} onClick={(e) => e.stopPropagation()}>
-                                                                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-green-500 h-8 w-8">
-                                                                    <ReceiptCent size={16} />
-                                                                </Button>
-                                                            </Link>
-                                                        )}
-
-                                                        {tx.referenceType === 'Manual' && (
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="text-muted-foreground hover:text-destructive h-8 w-8"
-                                                                onClick={() => handleDelete(tx._id)}
-                                                                disabled={isDeleting}
-                                                            >
-                                                                <Trash2 size={16} />
-                                                            </Button>
-                                                        )}
-                                                    </div>
-                                                </TableCell>
-                                            </TableRow>
-                                        ))
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </div>
-                    </CardContent>
-                </Card>
+                <TransactionsTable
+                    transactions={filteredTransactions}
+                    typeFilter={typeFilter}
+                    onTypeFilterChange={setTypeFilter}
+                    onTxClick={handleTxClick}
+                    onDelete={handleDelete}
+                    isDeleting={isDeleting}
+                />
             </div>
 
             {/* Transaction Details Dialog */}
-            <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-                <DialogContent dir="rtl" className="sm:max-w-[500px]">
-                    <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2 text-xl">
-                            <Info className="text-primary" />
-                            تفاصيل العملية المالية
-                        </DialogTitle>
-                    </DialogHeader>
-
-                    {selectedTx && (
-                        <div className="space-y-6 py-4">
-                            <div className="flex justify-between items-center p-4 bg-muted/50 rounded-xl">
-                                <div className="space-y-1">
-                                    <p className="text-sm text-muted-foreground">المبلغ</p>
-                                    <p className={`text-2xl font-bold ${selectedTx.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}`}>
-                                        {selectedTx.amount.toLocaleString()} ج.م
-                                    </p>
-                                </div>
-                                <Badge variant={selectedTx.type === 'INCOME' ? 'default' : 'destructive'} className="h-8 px-4 text-sm">
-                                    {selectedTx.type === 'INCOME' ? 'وارد' : 'صادر'}
-                                </Badge>
-                            </div>
-
-                            <div className="grid grid-cols-1 gap-4">
-                                <div className="flex items-start gap-3">
-                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                                        <Tag size={18} />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm font-medium text-muted-foreground">الوصف</p>
-                                        <p className="text-base">{selectedTx.description}</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-start gap-3">
-                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                                        <User size={18} />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm font-medium text-muted-foreground">المسؤول عن العملية</p>
-                                        <p className="text-base font-semibold">{selectedTx.createdBy?.name || 'غير معروف'}</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-start gap-3">
-                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                                        <Clock size={18} />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm font-medium text-muted-foreground">وقت وتاريخ العملية</p>
-                                        <p className="text-base">{format(new Date(selectedTx.date || selectedTx.createdAt), 'PPPP p', { locale: ar })}</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-start gap-3">
-                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                                        <Wallet size={18} />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm font-medium text-muted-foreground">وسيلة المعاملة</p>
-                                        <p className="text-base">
-                                            {selectedTx.method === 'bank' ? 'تحويل بنكي' :
-                                                selectedTx.method === 'wallet' ? 'محفظة إلكترونية' : 'نقداً (كاش)'}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {(selectedTx.referenceType === 'Invoice' || selectedTx.referenceType === 'PurchaseOrder' || selectedTx.referenceType === 'Debt') && (
-                                    <div className="flex items-start gap-3">
-                                        <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                                            <ExternalLink size={18} />
-                                        </div>
-                                        <div className="space-y-1 w-full">
-                                            <p className="text-sm font-medium text-muted-foreground">
-                                                {selectedTx.referenceType === 'Invoice' ? 'إلى العميل' :
-                                                    selectedTx.referenceType === 'PurchaseOrder' ? 'من المورد' : 'جهة المديونية'}
-                                            </p>
-                                            <div className="flex flex-col gap-1">
-                                                {selectedTx.referenceType === 'Invoice' && (
-                                                    <>
-                                                        <p className="font-semibold text-lg">
-                                                            {selectedTx.referenceId?.customer?.name ||
-                                                                selectedTx.referenceId?.customerName ||
-                                                                (selectedTx.description.includes('رصيد افتتاحي') ? 'عميل (رصيد سابق)' : 'عميل نقدي')}
-                                                        </p>
-                                                        {selectedTx.referenceId?.number && <Badge variant="outline" className="w-fit">فاتورة #{selectedTx.referenceId.number}</Badge>}
-                                                    </>
-                                                )}
-                                                {selectedTx.referenceType === 'PurchaseOrder' && (
-                                                    <>
-                                                        <p className="font-semibold text-lg">{selectedTx.referenceId?.supplier?.name || 'مورد'}</p>
-                                                        {selectedTx.referenceId?.poNumber && <Badge variant="outline" className="w-fit">أمر شراء #{selectedTx.referenceId.poNumber}</Badge>}
-                                                    </>
-                                                )}
-                                                {selectedTx.referenceType === 'Debt' && (
-                                                    <>
-                                                        <p className="font-semibold text-lg">{selectedTx.referenceId?.debtorId?.name || 'غير معروف'}</p>
-                                                        <Badge variant="outline" className="w-fit">معاملة دين</Badge>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                <div className="flex items-start gap-3">
-                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                                        <Info size={18} />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm font-medium text-muted-foreground">مرجع النظام</p>
-                                        <div className="flex flex-wrap items-center gap-2">
-                                            <Badge variant="outline" className="capitalize">
-                                                {selectedTx.referenceType === 'Manual' ? 'إدخال يدوي' :
-                                                    selectedTx.referenceType === 'Invoice' ? 'نظام المبيعات' :
-                                                        selectedTx.referenceType === 'PurchaseOrder' ? 'نظام المشتريات' :
-                                                            selectedTx.referenceType === 'Debt' ? 'نظام الديون والمديونيات' :
-                                                                selectedTx.referenceType === 'UnifiedCollection' ? 'تحصيل مجمع' : selectedTx.referenceType}
-                                            </Badge>
-
-                                            {/* Action Links in Dialog */}
-                                            {selectedTx.referenceType === 'Invoice' && selectedTx.referenceId?._id && (
-                                                <Link href={`/invoices/${selectedTx.referenceId._id}`} className="w-full sm:w-auto">
-                                                    <Button size="sm" variant="outline" className="w-full gap-2 border-primary/20 text-primary hover:bg-primary/10">
-                                                        <Eye size={14} /> فـاتحة الفاتورة
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                            {selectedTx.referenceType === 'PurchaseOrder' && selectedTx.referenceId?._id && (
-                                                <Link href={`/purchase-orders/${selectedTx.referenceId._id}`} className="w-full sm:w-auto">
-                                                    <Button size="sm" variant="outline" className="w-full gap-2 border-orange-500/20 text-orange-600 hover:bg-orange-50">
-                                                        <Eye size={14} /> فتح أمر الشراء
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                            {(selectedTx.type === 'INCOME' || selectedTx.referenceType === 'UnifiedCollection') && (
-                                                <Link href={`/financial/receipts/${selectedTx._id}`} className="w-full sm:w-auto">
-                                                    <Button size="sm" variant="outline" className="w-full gap-2 border-green-600/20 text-green-600 hover:bg-green-50">
-                                                        <ReceiptCent size={14} /> عرض سند التحصيل
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    <DialogFooter>
-                        <Button className="w-full" onClick={() => setIsDetailsOpen(false)}>إغلاق</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <TransactionDetailsDialog
+                transaction={selectedTx}
+                open={isDetailsOpen}
+                onOpenChange={setIsDetailsOpen}
+            />
 
             <ConfirmDialog
                 open={deleteTargetId !== null}
