@@ -19,6 +19,7 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { formatDate } from '@/utils';
+import { TableEmptyState } from '@/components/common/EmptyState';
 import { useRouter } from 'next/navigation';
 import { DebtEditDialog } from './DebtEditDialog';
 import { useState } from 'react';
@@ -177,14 +178,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                         </TableRow>
                     ))}
                     {debts.length === 0 && (
-                        <TableRow>
-                            <TableCell colSpan={6} className="h-64 text-center text-muted-foreground font-black opacity-50">
-                                <div className="flex flex-col items-center gap-4">
-                                    <FileText size={48} />
-                                    <p>لا توجد ديون مسجلة حالياً</p>
-                                </div>
-                            </TableCell>
-                        </TableRow>
+                        <TableEmptyState colSpan={6} icon={FileText} title="لا توجد ديون مسجلة حالياً" />
                     )}
                 </TableBody>
             </Table>
