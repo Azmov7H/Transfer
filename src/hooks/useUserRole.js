@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import { getSession } from '@/services/authService';
 
 export function useUserRole() {
     const { data, isLoading, isError, refetch } = useQuery({
         queryKey: ['user-session'],
-        queryFn: ({ signal }) => api.get('/api/auth/session', undefined, { signal }),
+        queryFn: ({ signal }) => getSession({ signal }),
         // Session deviates from global defaults deliberately: longer staleness avoids
         // redundant /api/auth/session calls, and focus refetch revalidates the session
         // when the user returns to the tab.

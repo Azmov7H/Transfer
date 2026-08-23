@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { LoginBackground } from '@/components/auth/LoginBackground';
 
-import { api } from '@/lib/api-utils';
+import { login as loginApi } from '@/services/authService';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function LoginPage() {
@@ -27,7 +27,7 @@ export default function LoginPage() {
         setError('');
 
         try {
-            const data = await api.post('/api/auth/login', formData);
+            const data = await loginApi(formData);
             console.log('[Login] Success Response:', data);
             await queryClient.invalidateQueries({ queryKey: ['user-session'] });
 

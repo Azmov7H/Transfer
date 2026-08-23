@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import { getUsers, createUser, updateUser, deleteUser } from '@/services/userService';
 import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 export function useUsers() {
@@ -7,13 +7,11 @@ export function useUsers() {
 
     const usersQuery = useQuery({
         queryKey: ['users'],
-        queryFn: async ({ signal }) => {
-            return await api.get('/api/users', undefined, { signal });
-        },
+        queryFn: ({ signal }) => getUsers({ signal }),
     });
 
     const createUserMutation = useMutation({
-        mutationFn: (data) => api.post('/api/users', data),
+        mutationFn: (data) => createUser(data),
         ...withMutationFeedback({
             successMessage: 'تم إضافة المستخدم بنجاح',
             afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
@@ -21,7 +19,7 @@ export function useUsers() {
     });
 
     const updateUserMutation = useMutation({
-        mutationFn: ({ id, data }) => api.put(`/api/users/${id}`, data),
+        mutationFn: ({ id, data }) => updateUser(id, data),
         ...withMutationFeedback({
             successMessage: 'تم تحديث المستخدم بنجاح',
             afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
@@ -29,7 +27,7 @@ export function useUsers() {
     });
 
     const deleteUserMutation = useMutation({
-        mutationFn: (id) => api.delete(`/api/users/${id}`),
+        mutationFn: (id) => deleteUser(id),
         ...withMutationFeedback({
             successMessage: 'تم حذف المستخدم بنجاح',
             afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })

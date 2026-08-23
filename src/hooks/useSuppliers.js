@@ -1,5 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import {
+    getSuppliers,
+    getSupplierById,
+    createSupplier,
+    updateSupplier,
+    deleteSupplier
+} from '@/services/supplierService';
 import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 export function useSuppliers(params = {}) {
@@ -8,17 +14,12 @@ export function useSuppliers(params = {}) {
     const query = useQuery({
         queryKey: ['suppliers', params],
         queryFn: async ({ signal }) => {
-            const searchParams = new URLSearchParams();
-            if (params.search) searchParams.append('search', params.search);
-            if (params.page) searchParams.append('page', params.page);
-            if (params.limit) searchParams.append('limit', params.limit);
-
-            return await api.get(`/api/suppliers?${searchParams.toString()}`, undefined, { signal });
+            return await getSuppliers(params, { signal });
         }
     });
 
     const addMutation = useMutation({
-        mutationFn: (data) => api.post('/api/suppliers', data),
+        mutationFn: (data) => createSupplier(data),
         ...withMutationFeedback({
             successMessage: 'تم إضافة المورد بنجاح',
             fallbackErrorMessage: 'فشل إضافة المورد',
@@ -27,7 +28,7 @@ export function useSuppliers(params = {}) {
     });
 
     const updateMutation = useMutation({
-        mutationFn: ({ id, data }) => api.put(`/api/suppliers/${id}`, data),
+        mutationFn: ({ id, data }) => updateSupplier(id, data),
         ...withMutationFeedback({
             successMessage: 'تم تحديث بيانات المورد',
             fallbackErrorMessage: 'فشل تحديث البيانات',
@@ -36,7 +37,7 @@ export function useSuppliers(params = {}) {
     });
 
     const deleteMutation = useMutation({
-        mutationFn: (id) => api.delete(`/api/suppliers/${id}`),
+        mutationFn: (id) => deleteSupplier(id),
         ...withMutationFeedback({
             successMessage: 'تم حذف المورد بنجاح',
             fallbackErrorMessage: 'فشل الحذف',
@@ -56,7 +57,7 @@ export function useSupplier(id) {
     return useQuery({
         queryKey: ['suppliers', id],
         queryFn: async ({ signal }) => {
-            const res = await api.get(`/api/suppliers/${id}`, undefined, { signal });
+            const res = await getSupplierById(id, { signal });
             return res.supplier;
         },
         enabled: !!id

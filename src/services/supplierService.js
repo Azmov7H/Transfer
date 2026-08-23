@@ -1,55 +1,37 @@
 /**
- * Supplier Service (Client-Side)
- * Connects to Backend API
+ * Supplier Service — owns the /api/suppliers endpoint contract.
+ * UI/hooks must not hardcode these URLs (FE-DATA-005, D2/D10).
  */
+import { api } from '@/lib/api-utils';
+
+/**
+ * @typedef {Object} Supplier
+ * @property {string} _id
+ * @property {string} name
+ * @property {string} [phone]
+ * @property {*} [data]
+ */
+
+/** @param {object} params @param {{signal?: AbortSignal}} [options] @returns {Promise<{suppliers?: Supplier[]}>} */
+export const getSuppliers = (params = {}, options) => api.get('/api/suppliers', params, options);
+
+/** @param {string} id @param {{signal?: AbortSignal}} [options] @returns {Promise<{supplier: Supplier}>} */
+export const getSupplierById = (id, options) => api.get(`/api/suppliers/${id}`, undefined, options);
+
+/** @param {Partial<Supplier>} data @returns {Promise<Supplier>} */
+export const createSupplier = (data) => api.post('/api/suppliers', data);
+
+/** @param {string} id @param {Partial<Supplier>} data @returns {Promise<Supplier>} */
+export const updateSupplier = (id, data) => api.put(`/api/suppliers/${id}`, data);
+
+/** @param {string} id @returns {Promise<*>} */
+export const deleteSupplier = (id) => api.delete(`/api/suppliers/${id}`);
+
+/** Legacy namespace kept for existing consumers. */
 export const SupplierService = {
-    async getAll(params = {}) {
-        const query = new URLSearchParams(params).toString();
-        const res = await fetch(`/api/suppliers?${query}`);
-        if (!res.ok) throw new Error('Failed to fetch suppliers');
-        return res.json();
-    },
-
-    async getById(id) {
-        const res = await fetch(`/api/suppliers/${id}`);
-        if (!res.ok) throw new Error('Failed to fetch supplier');
-        return res.json();
-    },
-
-    async create(data) {
-        const res = await fetch('/api/suppliers', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (!res.ok) {
-            const result = await res.json();
-            throw new Error(result.message || 'Failed to create supplier');
-        }
-        return res.json();
-    },
-
-    async update(id, data) {
-        const res = await fetch(`/api/suppliers/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (!res.ok) {
-            const result = await res.json();
-            throw new Error(result.message || 'Failed to update supplier');
-        }
-        return res.json();
-    },
-
-    async delete(id) {
-        const res = await fetch(`/api/suppliers/${id}`, {
-            method: 'DELETE'
-        });
-        if (!res.ok) {
-            const result = await res.json();
-            throw new Error(result.message || 'Failed to delete supplier');
-        }
-        return res.json();
-    }
+    getAll: getSuppliers,
+    getById: getSupplierById,
+    create: createSupplier,
+    update: updateSupplier,
+    delete: deleteSupplier,
 };

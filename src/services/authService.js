@@ -1,27 +1,38 @@
+/**
+ * Auth Service — owns the /api/auth endpoint contract.
+ * UI/hooks must not hardcode these URLs (FE-DATA-005, D2/D10).
+ */
 import { api } from '@/lib/api-utils';
 
 /**
- * Auth Service (Client-Side)
- * Connects to Backend API
+ * @typedef {Object} SessionUser
+ * @property {string} _id
+ * @property {string} name
+ * @property {string} role
  */
+
+/** @param {{email: string, password: string}} credentials @returns {Promise<SessionUser>} */
+export const login = ({ email, password }) => api.post('/api/auth/login', { email, password });
+
+/** @returns {Promise<*>} */
+export const logout = () => api.post('/api/auth/logout');
+
+/** @param {{signal?: AbortSignal}} [options] @returns {Promise<SessionUser|null>} unwrapped session user */
+export const getSession = (options) => api.get('/api/auth/session', undefined, options);
+
+/** @param {string} code @returns {Promise<*>} */
+export const handleGoogleCallback = (code) => api.post('/api/auth/google/callback', { code });
+
+/** Legacy namespace kept for existing consumers. */
 export const AuthService = {
-    async login({ email, password }) {
-        return await api.post('/api/auth/login', { email, password });
-    },
-
-    async logout() {
-        return await api.post('/api/auth/logout');
-    },
-
-    async getSession() {
+    login,
+    logout,
+    getSession: async () => {
         try {
-            return await api.get('/api/auth/session');
-        } catch (err) {
+            return await getSession();
+        } catch {
             return null;
         }
     },
-
-    async handleGoogleCallback(code) {
-        return await api.post('/api/auth/google/callback', { code });
-    }
+    handleGoogleCallback,
 };
