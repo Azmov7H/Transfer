@@ -14,12 +14,14 @@ import { useCreateInvoice } from '@/hooks/useInvoices';
 
 import { InvoiceCustomerSelect } from '@/components/invoices/InvoiceCustomerSelect';
 import { InvoiceItemsManager } from '@/components/invoices/InvoiceItemsManager';
+import { useUnsavedGuard } from '@/hooks/useUnsavedGuard';
 
 export default function NewInvoicePage() {
     const router = useRouter();
 
     // Invoice Items
     const [items, setItems] = useState([]);
+    const { disarm } = useUnsavedGuard(items.length > 0);
 
     // Customer State
     const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -141,6 +143,7 @@ export default function NewInvoicePage() {
                 if (invoiceId) {
                     // Set navigating state to keep button disabled during navigation
                     setIsNavigating(true);
+                    disarm();
                     toast.success('تم حفظ الفاتورة بنجاح');
 
                     // Navigate to invoice detail page for printing
