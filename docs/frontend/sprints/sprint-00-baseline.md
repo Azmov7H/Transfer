@@ -58,3 +58,24 @@ Standard DoD (see pr-strategy.md) + this sprint's additions recorded in PR descr
 
 ## Expected Result
 A trustworthy baseline: every subsequent PR can be mechanically validated.
+
+---
+
+## Execution Record (completed)
+
+Branch: `feat/frontend-sprint-00-baseline`
+
+| Task | Commit | Result |
+|---|---|---|
+| FE-CLEAN-001 | `984d027` | pnpm@11.15.1 pinned via `packageManager`; npm lockfile removed; fresh install OK |
+| FE-DX-001 | `b822db5` | Native flat config (`eslint-config-next/core-web-vitals` exports flat); 24 JSX quotes escaped; react-hooks v7 compiler rules downgraded to warn → **0 errors, 54 warnings, exit 0** |
+| FE-DX-002 | `bbfcc68` | Test import fixed to `@/validations/validators` → **3/3 pass** |
+| FE-DX-003 | `fced170` | `.env.example` added (gitignore negation), seed script removed |
+| FE-DX-004 | (this commit) | Build green: 33 routes (28 static ○ / 5 dynamic ƒ), compiled ~90s cold / ~6s cached |
+
+Gate run on final HEAD: lint ✅ · test ✅ (3/3) · build ✅
+
+Notes discovered during execution:
+- Next 16 prints a `middleware-to-proxy` codemod notice (middleware deprecation path) — INFO only; revisit if upgrading past 16.
+- The 54 lint warnings are tracked remediation targets (react-hooks v7 rules map to Sprints 02/04/05; `exhaustive-deps` and `no-img-element` fold into those same sprints).
+
