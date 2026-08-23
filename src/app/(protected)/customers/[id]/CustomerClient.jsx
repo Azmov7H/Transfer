@@ -358,7 +358,7 @@ export default function CustomerClient({ id }) {
                                                         )}
                                                         onClick={() => {
                                                             if (entry.type === 'PAYMENT' || entry.type === 'REFUND') {
-                                                                window.open(`/financial/receipts/${entry.referenceId}`, '_blank');
+                                                                window.open(`/financial/receipts/${entry.referenceId}`, '_blank', 'noopener,noreferrer');
                                                             }
                                                         }}
                                                     >
