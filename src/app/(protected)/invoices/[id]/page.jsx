@@ -562,7 +562,7 @@ export default function InvoiceViewPage({ params }) {
                         {invoice.notes && (
                             <div className="text-xs p-4 bg-slate-50 rounded-xl border border-dotted border-slate-200">
                                 <p className="font-bold text-slate-400 mb-1">ملاحظات:</p>
-                                <p className="text-slate-600 italic">"{invoice.notes}"</p>
+                                <p className="text-slate-600 italic">&quot;{invoice.notes}&quot;</p>
                             </div>
                         )}
                     </div>

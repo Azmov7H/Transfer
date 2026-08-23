@@ -225,7 +225,7 @@ export default function PhysicalInventoryDetailPage({ params }) {
                                         يتطلب صلاحية المالك
                                     </AlertDialogTitle>
                                     <AlertDialogDescription className="text-base font-medium">
-                                        هذا الجرد معتمد ومكتمل. لتعديله، يجب إدخال كلمة مرور المالك لتحويله إلى وضع "المسودة".
+                                        هذا الجرد معتمد ومكتمل. لتعديله، يجب إدخال كلمة مرور المالك لتحويله إلى وضع &quot;المسودة&quot;.
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <div className="py-4">
@@ -292,7 +292,7 @@ export default function PhysicalInventoryDetailPage({ params }) {
                                         <AlertDialogTitle className="text-2xl font-black">هل أنت متأكد من الاعتماد؟</AlertDialogTitle>
                                         <AlertDialogDescription asChild>
                                             <div className="text-base font-medium text-right">
-                                                عند الضغط على "تأكيد"، سيقوم النظام بـ:
+                                                عند الضغط على &quot;تأكيد&quot;، سيقوم النظام بـ:
                                                 <ul className="list-disc pr-6 mt-4 space-y-2 text-rose-600 font-black">
                                                     <li>تعديل كميات الأصناف فعلياً في المخزن المختار.</li>
                                                     <li>تسجيل قيود محاسبية بالفوارق المالية المكتشفة.</li>

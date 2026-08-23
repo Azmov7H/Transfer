@@ -92,7 +92,7 @@ export function SmartCombobox({ options = [], value, onChange, placeholder = "Se
                                         }}
                                     >
                                         <Plus className="h-4 w-4" />
-                                        إضافة "{searchValue}" جديد
+                                        إضافة &quot;{searchValue}&quot; جديد
                                     </button>
                                 )}
                             </motion.div>

@@ -153,7 +153,7 @@ export default function ShortageReportsPage() {
                                     <div className="relative group/notes">
                                         <div className="absolute -inset-2 bg-primary/5 rounded-2xl blur-lg group-hover/notes:bg-primary/10 transition-colors opacity-0 group-hover:opacity-100" />
                                         <p className="relative z-10 text-sm font-bold text-muted-foreground bg-white/5 p-4 rounded-2xl border border-white/10 italic leading-relaxed border-r-4 border-r-primary">
-                                            "{report.notes}"
+                                            &quot;{report.notes}&quot;
                                         </p>
                                     </div>
                                 )}

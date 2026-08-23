@@ -2,14 +2,14 @@
   "name": "transfer",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.15.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "seed": "node scripts/seed.js"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",
