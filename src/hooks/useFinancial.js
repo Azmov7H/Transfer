@@ -1,22 +1,34 @@
 // Financial hooks for treasury and debts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import {
+    getTreasury,
+    addTreasuryTransaction,
+    deleteTreasuryTransaction,
+    getDebts,
+    getDebtors,
+    getDebtOverview,
+    addPayment,
+    getDebtInstallments,
+    createInstallments,
+    getReceivables,
+    syncDebts,
+    updateDebt,
+    payCustomerTotal,
+    getPartnerTransactions
+} from '@/services/financeService';
 import { withMutationFeedback } from '@/lib/mutation-feedback';
 
 export function useTreasury(params = {}) {
     return useQuery({
         queryKey: ['treasury', params],
-        queryFn: async ({ signal }) => {
-            const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/financial/treasury?${searchParams}`, undefined, { signal });
-        }
+        queryFn: ({ signal }) => getTreasury(params, { signal })
     });
 }
 
 export function useAddTransaction() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (data) => api.post('/api/financial/transaction', data),
+        mutationFn: (data) => addTreasuryTransaction(data),
         ...withMutationFeedback({
             successMessage: 'تم تسجيل المعاملة بنجاح',
             afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['treasury'] })
@@ -27,7 +39,7 @@ export function useAddTransaction() {
 export function useDeleteTransaction() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (id) => api.delete(`/api/financial/transaction/${id}`),
+        mutationFn: (id) => deleteTreasuryTransaction(id),
         ...withMutationFeedback({
             successMessage: 'تم التراجع عن المعاملة بنجاح',
             fallbackErrorMessage: 'فشل التراجع عن المعاملة',
@@ -39,36 +51,28 @@ export function useDeleteTransaction() {
 export function useDebts(params = {}) {
     return useQuery({
         queryKey: ['debts', params],
-        queryFn: async ({ signal }) => {
-            const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/financial/debts?${searchParams}`, undefined, { signal });
-        }
+        queryFn: ({ signal }) => getDebts(params, { signal })
     });
 }
 
 export function useDebtors(params = {}) {
     return useQuery({
         queryKey: ['debtors', params],
-        queryFn: async ({ signal }) => {
-            const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/financial/debtors?${searchParams}`, undefined, { signal });
-        }
+        queryFn: ({ signal }) => getDebtors(params, { signal })
     });
 }
 
 export function useDebtOverview() {
     return useQuery({
         queryKey: ['debt-overview'],
-        queryFn: async ({ signal }) => {
-            return await api.get('/api/financial/debt-overview', undefined, { signal });
-        }
+        queryFn: ({ signal }) => getDebtOverview({ signal })
     });
 }
 
 export function useAddPayment() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (data) => api.post('/api/financial/payments', data),
+        mutationFn: (data) => addPayment(data),
         ...withMutationFeedback({
             successMessage: 'تم تسجيل الدفعة بنجاح',
             fallbackErrorMessage: 'فشل تسجيل الدفعة',
@@ -83,9 +87,7 @@ export function useAddPayment() {
 export function useDebtInstallments(debtId) {
     return useQuery({
         queryKey: ['debt-installments', debtId],
-        queryFn: async ({ signal }) => {
-            return await api.get(`/api/financial/debts/${debtId}/installments`, undefined, { signal });
-        },
+        queryFn: ({ signal }) => getDebtInstallments(debtId, { signal }),
         enabled: !!debtId
     });
 }
@@ -93,7 +95,7 @@ export function useDebtInstallments(debtId) {
 export function useCreateInstallments() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: ({ debtId, data }) => api.post(`/api/financial/debts/${debtId}/installments`, data),
+        mutationFn: ({ debtId, data }) => createInstallments(debtId, data),
         ...withMutationFeedback({
             successMessage: 'تم جدولة المديونية بنجاح',
             fallbackErrorMessage: 'فشل جدولة المديونية',
@@ -108,10 +110,7 @@ export function useCreateInstallments() {
 export function useReceivables(params = {}) {
     return useQuery({
         queryKey: ['receivables', params],
-        queryFn: async ({ signal }) => {
-            const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/payments?${searchParams}`, undefined, { signal });
-        }
+        queryFn: ({ signal }) => getReceivables(params, { signal })
     });
 }
 
@@ -119,7 +118,7 @@ export function useSyncDebts() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (data) => {
-            return await api.post('/api/financial/debts/sync', data);
+            return await syncDebts(data);
         },
         ...withMutationFeedback({
             successMessage: 'تمت مزامنة المديونيات بنجاح',
@@ -135,7 +134,7 @@ export function useSyncDebts() {
 export function useUpdateDebt() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: ({ id, data }) => api.patch(`/api/financial/debts/${id}`, data),
+        mutationFn: ({ id, data }) => updateDebt(id, data),
         ...withMutationFeedback({
             successMessage: 'تم تحديث بيانات الدين بنجاح',
             fallbackErrorMessage: 'فشل تحديث بيانات الدين',
@@ -150,7 +149,7 @@ export function useUpdateDebt() {
 export function useCustomerTotalPayment() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: ({ customerId, data }) => api.post(`/api/customers/${customerId}/pay`, data),
+        mutationFn: ({ customerId, data }) => payCustomerTotal(customerId, data),
         ...withMutationFeedback({
             successMessage: 'تم تحصيل الدفعة بنجاح وتوزيعها على الفواتير',
             fallbackErrorMessage: 'فشل تحصيل الدفعة',
@@ -167,10 +166,7 @@ export function useCustomerTotalPayment() {
 export function usePartnerTransactions(partnerId, params = {}) {
     return useQuery({
         queryKey: ['partner-transactions', partnerId, params],
-        queryFn: async ({ signal }) => {
-            const searchParams = new URLSearchParams(params);
-            return await api.get(`/api/financial/partner/${partnerId}/transactions?${searchParams}`, undefined, { signal });
-        },
+        queryFn: ({ signal }) => getPartnerTransactions(partnerId, params, { signal }),
         enabled: !!partnerId
     });
 }

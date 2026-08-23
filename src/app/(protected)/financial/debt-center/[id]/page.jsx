@@ -19,6 +19,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { formatCurrency, formatDate } from '@/utils';
 import { PaymentDialog } from '@/components/financial/PaymentDialog';
 import { useDebtInstallments } from '@/hooks/useFinancial';
+import { getDebts, getDebtPayments } from '@/services/financeService';
 import { useState, useEffect } from 'react';
 
 export default function DebtDetailPage({ params }) {
@@ -38,28 +39,22 @@ export default function DebtDetailPage({ params }) {
     const { data: debtData, isLoading } = useQuery({
         queryKey: ['debt', id],
         queryFn: async ({ signal }) => {
-            const res = await fetch(`/api/financial/debts?_id=${id}`, { signal });
-            if (!res.ok) throw new Error('Failed to fetch debt');
-            const json = await res.json();
-            return json.data.debts[0];
+            const res = await getDebts({ _id: id }, { signal });
+            return res.debts?.[0];
         }
     });
 
     // Fetch Payment History
     const { data: paymentsData } = useQuery({
         queryKey: ['payments', id],
-        queryFn: async ({ signal }) => {
-            const res = await fetch(`/api/financial/payments?debtId=${id}`, { signal });
-            if (!res.ok) throw new Error('Failed to fetch payments');
-            return res.json();
-        },
+        queryFn: ({ signal }) => getDebtPayments(id, { signal }),
         enabled: !!id
     });
 
     const { data: installments } = useDebtInstallments(id);
 
     const debt = debtData;
-    const payments = paymentsData?.data || [];
+    const payments = paymentsData || [];
     const schedule = installments || [];
 
     if (isLoading) return <div className="p-12 text-center text-muted-foreground">جاري تحميل التفاصيل...</div>;
