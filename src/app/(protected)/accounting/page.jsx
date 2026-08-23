@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import { getAccountingEntries, getLedger, getTrialBalance } from '@/services/accountingService';
 import {
     Loader2, Calendar, FileText, BarChart3, List, Layers,
     TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight,
@@ -204,7 +204,7 @@ const JournalEntriesTab = ({ filters }) => {
     const { data, isLoading } = useQuery({
         queryKey: ['accounting-entries', filters],
         queryFn: async ({ signal }) => {
-            const res = await api.get('/api/accounting/entries?limit=500', undefined, { signal });
+            const res = await getAccountingEntries(500, { signal });
             return { entries: res.data || [] };
         }
     });
@@ -382,7 +382,7 @@ const LedgerTab = ({ chartOfAccounts }) => {
         queryKey: ['ledger', selectedAccount],
         queryFn: async ({ signal }) => {
             if (!selectedAccount) return null;
-            const res = await api.get(`/api/accounting/ledger?account=${encodeURIComponent(selectedAccount)}`, undefined, { signal });
+            const res = await getLedger(selectedAccount, { signal });
             return { ledger: res.data };
         },
         enabled: !!selectedAccount
@@ -468,7 +468,7 @@ const TrialBalanceTab = () => {
     const { data: trialBalance, isLoading } = useQuery({
         queryKey: ['trial-balance'],
         queryFn: async ({ signal }) => {
-            const res = await api.get('/api/accounting/trial-balance', undefined, { signal });
+            const res = await getTrialBalance({ signal });
             return { trialBalance: res.data };
         }
     });
@@ -568,7 +568,7 @@ export default function AccountingPage() {
     const { data: allEntriesData } = useQuery({
         queryKey: ['accounting-entries-stats'],
         queryFn: async ({ signal }) => {
-            const res = await api.get('/api/accounting/entries?limit=500', undefined, { signal });
+            const res = await getAccountingEntries(500, { signal });
             return { entries: res.data || [] };
         }
     });
@@ -577,7 +577,7 @@ export default function AccountingPage() {
     const { data: chartData } = useQuery({
         queryKey: ['chart-of-accounts'],
         queryFn: async ({ signal }) => {
-            const res = await api.get('/api/accounting/entries?limit=500', undefined, { signal });
+            const res = await getAccountingEntries(500, { signal });
             const entries = res.data || [];
             const accounts = new Set();
             entries.forEach(e => {

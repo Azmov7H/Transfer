@@ -1,12 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api-utils';
+import { getDashboard } from '@/services/dashboardService';
 
 export function useDashboard() {
     const { data: response, isLoading, refetch } = useQuery({
         queryKey: ['dashboard-unified'],
-        queryFn: async ({ signal }) => {
-            return await api.get('/api/dashboard', undefined, { signal });
-        },
+        queryFn: ({ signal }) => getDashboard({ signal }),
         staleTime: 30 * 1000, // 30 seconds - reduces re-fetching
         refetchOnWindowFocus: false, // Prevents unnecessary API calls
     });

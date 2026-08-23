@@ -1,43 +1,33 @@
 /**
- * Physical Inventory Service (Client-Side)
- * Connects to Backend API
+ * Physical Inventory Service — owns the /api/physical-inventory endpoint contract.
+ * UI/hooks must not hardcode these URLs (FE-DATA-005, D2/D10).
  */
-export const PhysicalInventoryService = {
-    async getInventorySession() {
-        const res = await fetch('/api/physical-inventory/current');
-        if (res.status === 404) return null;
-        if (!res.ok) throw new Error('Failed to check inventory session');
-        return res.json();
-    },
+import { api } from '@/lib/api-utils';
 
-    async startSession(name, notes) {
-        const res = await fetch('/api/physical-inventory/start', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, notes })
-        });
-        if (!res.ok) throw new Error('Failed to start inventory session');
-        return res.json();
-    },
+/**
+ * @typedef {Object} InventoryCount
+ * @property {string} _id
+ * @property {'draft'|'completed'} [status]
+ * @property {string} [location]
+ */
 
-    async submitCount(barcode, quantity) {
-        const res = await fetch('/api/physical-inventory/count', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ barcode, quantity })
-        });
-        if (!res.ok) {
-            const result = await res.json();
-            throw new Error(result.message || 'Failed to submit count');
-        }
-        return res.json();
-    },
+/** @param {object} filters @param {{signal?: AbortSignal}} [options] @returns {Promise<{data: InventoryCount[]}>} */
+export const getInventoryCounts = (filters = {}, options) => api.get('/api/physical-inventory', filters, options);
 
-    async finalizeSession(sessionId) {
-        const res = await fetch(`/api/physical-inventory/${sessionId}/finalize`, {
-            method: 'POST'
-        });
-        if (!res.ok) throw new Error('Failed to finalize inventory session');
-        return res.json();
-    }
-};
+/** @param {string} countId @param {{signal?: AbortSignal}} [options] @returns {Promise<{data: InventoryCount}>} */
+export const getInventoryCount = (countId, options) => api.get(`/api/physical-inventory/${countId}`, undefined, options);
+
+/** @param {object} data @returns {Promise<*>} */
+export const createInventoryCount = (data) => api.post('/api/physical-inventory', data);
+
+/** @param {string} id @param {object} data @returns {Promise<*>} patch count items */
+export const updateInventoryCount = (id, data) => api.patch(`/api/physical-inventory/${id}`, data);
+
+/** @param {string} id @returns {Promise<{data: {message?: string}}>} */
+export const completeInventoryCount = (id) => api.post(`/api/physical-inventory/${id}/complete`);
+
+/** @param {string} id @param {{password?: string}} [data] @returns {Promise<{data: {message?: string}}>} */
+export const unlockInventoryCount = (id, data) => api.post(`/api/physical-inventory/${id}/unlock`, data ?? {});
+
+/** @param {string} countId @param {{signal?: AbortSignal}} [options] */
+export const getCountRecentMovements = (countId, options) => api.get(`/api/physical-inventory/${countId}/recent-movements`, undefined, options);

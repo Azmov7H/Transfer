@@ -3,7 +3,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useNotifications } from '@/hooks/useNotifications';
-import { api } from '@/lib/api-utils';
 import { toast } from 'sonner';
 
 const NotificationContext = createContext();
@@ -53,7 +52,6 @@ export function NotificationProvider({ children }) {
             }
 
             // 3. Optional: Hit action API if specific logic needed (currently just generic)
-            // await api.post(`/api/notifications/${id}/action`, { action: notif.actionType });
 
             setIsSidebarOpen(false); // Close sidebar on action
         } catch (err) {
