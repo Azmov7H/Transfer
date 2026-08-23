@@ -1,0 +1,23 @@
+export const DEFAULT_INVOICE_SETTINGS = {
+    companyName: '',
+    phone: '',
+    additionalPhones: [],
+    address: '',
+    email: '',
+    website: '',
+    primaryColor: '#3b82f6',
+    headerBgColor: '#f8fafc',
+    showLogo: true,
+    showQRCode: true,
+    footerText: '',
+    invoiceTemplate: 'modern',
+    stockAlertThreshold: 5,
+    supplierPaymentAlertDays: 3,
+    customerCollectionAlertDays: 3,
+    defaultCustomerTerms: 15,
+    defaultSupplierTerms: 15,
+    minDebtNotificationAmount: 10,
+    inactiveCustomerThresholdDays: 30,
+    pointsPerEGP: 0.01,
+    egpPerPoint: 0.1
+};
