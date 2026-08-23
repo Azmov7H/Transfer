@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sparkles, LogIn, Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,8 +18,15 @@ export default function LoginPage() {
     const queryClient = useQueryClient();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [sessionExpired, setSessionExpired] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({ email: '', password: '' });
+
+    useEffect(() => {
+        if (new URLSearchParams(window.location.search).get('expired') === '1') {
+            setSessionExpired(true);
+        }
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -150,6 +157,16 @@ export default function LoginPage() {
                             {/* Form */}
                             <form onSubmit={handleLogin} className="space-y-6">
                                 <AnimatePresence>
+                                    {sessionExpired && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                                            className="p-4 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 text-amber-400 text-sm rounded-2xl text-center font-bold backdrop-blur-sm"
+                                        >
+                                            انتهت صلاحية الجلسة، يرجى تسجيل الدخول مرة أخرى
+                                        </motion.div>
+                                    )}
                                     {error && (
                                         <motion.div
                                             initial={{ opacity: 0, y: -10, scale: 0.95 }}
