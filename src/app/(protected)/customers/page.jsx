@@ -6,20 +6,10 @@ import { useCustomers } from '@/hooks/useCustomers';
 import { useDebtOverview, useDebts, useReceivables } from '@/hooks/useFinancial';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Users, Activity, RefreshCcw } from 'lucide-react';
 import { cn } from '@/utils';
 import { LABELS } from '@/constants';
-import { LoadingState, TableLoadingState } from '@/components/common/LoadingState';
-import { ErrorState, TableErrorState } from '@/components/common/ErrorState';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -30,6 +20,8 @@ import { InstallmentDialog } from '@/components/financial/InstallmentDialog';
 import { UnifiedPaymentDialog } from '@/components/financial/UnifiedPaymentDialog';
 import { CustomerDetailsSheet } from '@/components/customers/CustomerDetailsSheet';
 import { CustomerRow } from '@/components/customers/CustomerRow';
+import { CustomerCard } from '@/components/customers/CustomerCard';
+import { ResponsiveTable } from '@/components/ui/responsive-table';
 import { DebtOverviewCards, CustomerStatsCards } from '@/components/customers/CustomerStats';
 import { PartnerTransactionDialog } from '@/components/financial/PartnerTransactionDialog';
 import {
@@ -284,57 +276,51 @@ export default function CustomersPage() {
                     </Badge>
                 </div>
 
-                <div className="overflow-x-auto">
-                    <Table>
-                        <TableHeader>
-                            <TableRow className="hover:bg-transparent border-white/5 h-16 bg-white/[0.01]">
-                                <TableHead className="w-[80px] px-8"></TableHead>
-                                <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8">{tableCustomer}</TableHead>
-                                <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8">{tableContact}</TableHead>
-                                <TableHead className="text-center font-black text-white/40 uppercase tracking-widest text-xs px-8">{tablePriceType}</TableHead>
-                                <TableHead className="text-center font-black text-white/40 uppercase tracking-widest text-xs px-8">{tableDebt}</TableHead>
-                                <TableHead className="text-center font-black text-white/40 uppercase tracking-widest text-xs px-8">{tableActions}</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {isLoading ? (
-                                <TableLoadingState colSpan={6} message={loadingLabel} />
-                            ) : queryData?.isError ? (
-                                <TableErrorState colSpan={6} onRetry={refetch} />
-                            ) : customers.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="h-96 text-center border-none">
-                                        <div className="flex flex-col items-center gap-6">
-                                            <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 shadow-inner group">
-                                                <Users className="h-16 w-16 text-muted-foreground/20 group-hover:scale-110 transition-transform" />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <p className="text-2xl font-black text-white/30">{noCustomers}</p>
-                                                <p className="text-sm text-white/10 font-bold uppercase tracking-widest">تحقق من معايير البحث</p>
-                                            </div>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ) : (
-                                customers.map((customer) => (
-                                    <CustomerRow
-                                        key={customer._id}
-                                        customer={customer}
-                                        customerDebts={customerDebts}
-                                        onEdit={handleEditClick}
-                                        onDelete={handleDelete}
-                                        onRowClick={handleRowClick}
-                                        onHistory={(customer) => {
-                                            setDetailCustomer(customer);
-                                            setIsHistoryOpen(true);
-                                        }}
-                                        router={router}
-                                    />
-                                ))
-                            )}
-                        </TableBody>
-                    </Table>
-                </div>
+                <ResponsiveTable
+                    columns={[
+                        { label: '', headerClassName: 'w-[80px] px-8' },
+                        { label: tableCustomer, headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: tableContact, headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: tablePriceType, headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: tableDebt, headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: tableActions, headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8' }
+                    ]}
+                    data={customers}
+                    isPending={isLoading}
+                    isError={Boolean(queryData?.isError)}
+                    onRetry={refetch}
+                    loadingMessage={loadingLabel}
+                    emptyTitle={noCustomers}
+                    emptyHint="تحقق من معايير البحث"
+                    renderDesktopRow={(customer) => (
+                        <CustomerRow
+                            customer={customer}
+                            customerDebts={customerDebts}
+                            onEdit={handleEditClick}
+                            onDelete={handleDelete}
+                            onRowClick={handleRowClick}
+                            onHistory={(customer) => {
+                                setDetailCustomer(customer);
+                                setIsHistoryOpen(true);
+                            }}
+                            router={router}
+                        />
+                    )}
+                    renderMobileCard={(customer) => (
+                        <CustomerCard
+                            customer={customer}
+                            customerDebts={customerDebts}
+                            onEdit={handleEditClick}
+                            onDelete={handleDelete}
+                            onRowClick={handleRowClick}
+                            onHistory={(customer) => {
+                                setDetailCustomer(customer);
+                                setIsHistoryOpen(true);
+                            }}
+                            router={router}
+                        />
+                    )}
+                />
             </div>
 
             {/* Elegant Pagination */}

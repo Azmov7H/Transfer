@@ -34,7 +34,7 @@ function NotificationTrigger() {
             variant="ghost"
             size="icon"
             onClick={() => setIsSidebarOpen(true)}
-            className="rounded-xl hover:bg-white/10 relative h-10 w-10 group"
+            className="rounded-xl hover:bg-white/10 relative h-11 w-11 group"
         >
             <Bell className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
             {unreadCount > 0 && (
@@ -94,7 +94,7 @@ export default function Header() {
                         variant="ghost"
                         size="icon"
                         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                        className="rounded-xl hover:bg-white/10 transition-all h-10 w-10 relative overflow-hidden group"
+                        className="rounded-xl hover:bg-white/10 transition-all h-11 w-11 relative overflow-hidden group"
                     >
                         <div
                             className={cn(
