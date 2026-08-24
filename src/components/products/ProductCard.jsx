@@ -101,6 +101,7 @@ export const ProductCard = React.memo(({
                             size="icon"
                             onClick={() => onView(product)}
                             className="h-11 w-11 rounded-xl bg-white/5 hover:bg-primary/20 hover:text-primary text-white/40 border border-white/5 transition-all"
+                            aria-label="عرض المنتج"
                             title="عرض المنتج"
                         >
                             <Eye size={16} />
@@ -112,6 +113,7 @@ export const ProductCard = React.memo(({
                                     size="icon"
                                     onClick={() => onEdit(product)}
                                     className="h-11 w-11 rounded-xl bg-white/5 hover:bg-amber-500/20 hover:text-amber-500 text-white/40 border border-white/5 transition-all"
+                                    aria-label="تعديل الصنف"
                                     title="تعديل الصنف"
                                 >
                                     <FileEdit size={16} />
@@ -121,6 +123,7 @@ export const ProductCard = React.memo(({
                                     size="icon"
                                     onClick={() => onDelete(product._id)}
                                     className="h-11 w-11 rounded-xl bg-white/5 hover:bg-red-500/20 hover:text-red-500 text-white/40 border border-white/5 transition-all"
+                                    aria-label="حذف نهائي"
                                     title="حذف نهائي"
                                 >
                                     <Trash2 size={16} />

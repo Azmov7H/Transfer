@@ -86,6 +86,7 @@ export function JournalEntriesTab({ filters }) {
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="الصفحة السابقة"
                         onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                         disabled={currentPage === 1}
                         className="w-10 h-10 rounded-xl"
@@ -112,6 +113,7 @@ export function JournalEntriesTab({ filters }) {
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="الصفحة التالية"
                         onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                         disabled={currentPage === totalPages}
                         className="w-10 h-10 rounded-xl"

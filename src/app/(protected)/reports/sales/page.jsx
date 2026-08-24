@@ -89,6 +89,7 @@ export default function SalesReportPage() {
                         <Button
                             variant="outline"
                             size="icon"
+                            aria-label="تحديث التقرير"
                             onClick={() => refetch()}
                             className="w-14 h-14 rounded-2xl glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg"
                         >

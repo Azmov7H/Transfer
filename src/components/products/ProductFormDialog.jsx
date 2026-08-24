@@ -108,6 +108,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                                                     size="icon"
                                                     onClick={handleRegenerateBarcode}
                                                     className="h-12 w-12 rounded-xl bg-white/5 hover:bg-primary/20 hover:text-primary transition-colors"
+                                                    aria-label="توليد كود تلقائي"
                                                     title="توليد كود تلقائي"
                                                 >
                                                     <RefreshCw className="h-5 w-5" />

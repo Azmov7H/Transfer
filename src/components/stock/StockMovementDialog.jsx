@@ -210,6 +210,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                                 type="button"
                                                 variant="ghost"
                                                 size="icon"
+                                                aria-label="إزالة الصنف"
                                                 className="h-11 w-11 text-red-400 hover:bg-red-500/10 rounded-xl hover:text-red-500 transition-all active:scale-90"
                                                 onClick={() => handleRemoveItem(index)}
                                             >

@@ -97,6 +97,7 @@ export function NotificationItem({ notification, onMarkRead, onDelete, index }) 
                     <Button
                         size="icon"
                         variant="ghost"
+                        aria-label="تحديد كمقروء"
                         className="h-7 w-7 rounded-sm hover:bg-muted"
                         onClick={(e) => {
                             e.stopPropagation();

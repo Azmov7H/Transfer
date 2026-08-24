@@ -52,6 +52,7 @@ export function NotificationPopover() {
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="تحديث الإشعارات"
                         className="h-8 w-8 rounded-sm text-muted-foreground hover:text-foreground"
                         onClick={() => refetch()}
                         disabled={isLoading}
