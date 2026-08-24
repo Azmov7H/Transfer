@@ -1,149 +1,88 @@
 'use client';
 
-import { Bar } from 'react-chartjs-2';
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
+    Bar,
+    BarChart,
+    CartesianGrid,
     Legend,
-    Filler
-} from 'chart.js';
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis
+} from 'recharts';
 
-// Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, Filler);
-
+/**
+ * Daily sales/profit bar chart — recharts implementation (FE-PERF-002).
+ * Faithful recreation of the previous chart.js version: gradient bars,
+ * RTL legend, currency tooltips.
+ */
 export function SalesChart({ dailyBreakdown }) {
     const formatCurrency = (val) => Number(val || 0).toLocaleString() + ' ج.م';
 
-    const chartData = {
-        labels: (dailyBreakdown || []).map(d =>
-            new Date(d.date).toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' })
-        ).reverse(),
-        datasets: [
-            {
-                label: 'المبيعات',
-                data: (dailyBreakdown || []).map(d => d.totalRevenue || 0).reverse(),
-                backgroundColor: (context) => {
-                    const chart = context.chart;
-                    const { ctx, chartArea } = chart;
-                    if (!chartArea) return null;
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    gradient.addColorStop(0, 'rgba(59, 130, 246, 0.1)');
-                    gradient.addColorStop(1, 'rgba(59, 130, 246, 0.8)');
-                    return gradient;
-                },
-                borderColor: 'rgba(59, 130, 246, 1)',
-                borderWidth: 2,
-                borderRadius: 12,
-                hoverBackgroundColor: 'rgba(59, 130, 246, 1)',
-                barPercentage: 0.6,
-            },
-            {
-                label: 'الأرباح',
-                data: (dailyBreakdown || []).map(d => d.grossProfit || 0).reverse(),
-                backgroundColor: (context) => {
-                    const chart = context.chart;
-                    const { ctx, chartArea } = chart;
-                    if (!chartArea) return null;
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    gradient.addColorStop(0, 'rgba(16, 185, 129, 0.1)');
-                    gradient.addColorStop(1, 'rgba(16, 185, 129, 0.8)');
-                    return gradient;
-                },
-                borderColor: 'rgba(16, 185, 129, 1)',
-                borderWidth: 2,
-                borderRadius: 12,
-                hoverBackgroundColor: 'rgba(16, 185, 129, 1)',
-                barPercentage: 0.6,
-            }
-        ]
-    };
-
-    const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: {
-            mode: 'index',
-            intersect: false,
-        },
-        plugins: {
-            legend: {
-                position: 'top',
-                rtl: true,
-                labels: {
-                    usePointStyle: true,
-                    pointStyle: 'circle',
-                    padding: 20,
-                    font: {
-                        family: 'Inter, sans-serif',
-                        size: 12,
-                        weight: '900',
-                    },
-                    color: 'rgba(255, 255, 255, 0.4)',
-                }
-            },
-            tooltip: {
-                rtl: true,
-                backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                titleFont: {
-                    family: 'Inter, sans-serif',
-                    size: 14,
-                    weight: 'bold',
-                },
-                bodyFont: {
-                    family: 'mono',
-                    size: 12,
-                },
-                padding: 16,
-                borderRadius: 16,
-                borderColor: 'rgba(255, 255, 255, 0.1)',
-                borderWidth: 1,
-                displayColors: true,
-                callbacks: {
-                    label: function (context) {
-                        return context.dataset.label + ': ' + formatCurrency(context.parsed.y);
-                    }
-                }
-            }
-        },
-        scales: {
-            x: {
-                grid: {
-                    display: false
-                },
-                ticks: {
-                    font: {
-                        family: 'mono',
-                        size: 10,
-                        weight: 'bold',
-                    },
-                    color: 'rgba(255, 255, 255, 0.2)',
-                }
-            },
-            y: {
-                grid: {
-                    color: 'rgba(255, 255, 255, 0.05)',
-                },
-                ticks: {
-                    font: {
-                        family: 'mono',
-                        size: 10,
-                    },
-                    color: 'rgba(255, 255, 255, 0.2)',
-                    callback: function (value) {
-                        return value.toLocaleString();
-                    }
-                }
-            }
-        }
-    };
+    const data = (dailyBreakdown || [])
+        .map(d => ({
+            date: new Date(d.date).toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' }),
+            'المبيعات': d.totalRevenue || 0,
+            'الأرباح': d.grossProfit || 0,
+        }))
+        .reverse();
 
     return (
-        <div className="h-[400px] w-full">
-            <Bar data={chartData} options={chartOptions} />
+        <div className="h-[400px] w-full" dir="ltr">
+            <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={data} barSize="26%" margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
+                    <defs>
+                        <linearGradient id="salesBarGradient" x1="0" y1="1" x2="0" y2="0">
+                            <stop offset="5%" stopColor="rgba(59, 130, 246, 0.1)" />
+                            <stop offset="95%" stopColor="rgba(59, 130, 246, 0.8)" />
+                        </linearGradient>
+                        <linearGradient id="profitBarGradient" x1="0" y1="1" x2="0" y2="0">
+                            <stop offset="5%" stopColor="rgba(16, 185, 129, 0.1)" />
+                            <stop offset="95%" stopColor="rgba(16, 185, 129, 0.8)" />
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid vertical={false} stroke="rgba(255, 255, 255, 0.05)" />
+                    <XAxis
+                        dataKey="date"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fill: 'rgba(255, 255, 255, 0.2)', fontSize: 10, fontWeight: 'bold', fontFamily: 'mono' }}
+                    />
+                    <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        width={60}
+                        tick={{ fill: 'rgba(255, 255, 255, 0.2)', fontSize: 10, fontFamily: 'mono' }}
+                        tickFormatter={(value) => value.toLocaleString()}
+                    />
+                    <Tooltip
+                        cursor={{ fill: 'rgba(255, 255, 255, 0.03)' }}
+                        contentStyle={{
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            borderRadius: 16,
+                            padding: 16,
+                            direction: 'rtl',
+                        }}
+                        labelStyle={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}
+                        itemStyle={{ fontFamily: 'mono', fontSize: 12 }}
+                        formatter={(value, name) => [formatCurrency(value), name]}
+                    />
+                    <Legend
+                        iconType="circle"
+                        wrapperStyle={{
+                            direction: 'rtl',
+                            fontFamily: 'Inter, sans-serif',
+                            fontSize: 12,
+                            fontWeight: 900,
+                            color: 'rgba(255, 255, 255, 0.4)',
+                            paddingBottom: 12,
+                        }}
+                    />
+                    <Bar dataKey="المبيعات" fill="url(#salesBarGradient)" stroke="rgba(59, 130, 246, 1)" strokeWidth={2} radius={[12, 12, 0, 0]} />
+                    <Bar dataKey="الأرباح" fill="url(#profitBarGradient)" stroke="rgba(16, 185, 129, 1)" strokeWidth={2} radius={[12, 12, 0, 0]} />
+                </BarChart>
+            </ResponsiveContainer>
         </div>
     );
 }
