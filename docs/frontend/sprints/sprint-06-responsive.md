@@ -46,3 +46,31 @@ Standard DoD + screenshots at 360/768/1280 widths in PR.
 
 ## Expected Result
 Mobile parity for read + core write flows.
+
+---
+
+## Execution Record
+
+**Branch:** `feat/frontend-sprint-06-responsive` (stacked on sprint-05)
+**Status:** COMPLETE
+
+| Task | Commit | Summary |
+|---|---|---|
+| FE-RWD-001 | `f168505` | New shared `ResponsiveTable` (`components/ui/responsive-table.jsx`): standard table on md+, stacked cards below; owns loading/error/empty states in both branches (D11 primitives). Migrated customers (new `CustomerCard`), products (new `ProductCard`), stock movements (new `MovementCard` + shared `MovementTypeBadge`). Invoices list verified already card-based at all widths — no change needed. Desktop rows reuse existing CustomerRow/ProductRow verbatim |
+| FE-RWD-002 | `8bebda3` | `ui/button.jsx` `icon` variant 40→44px (h-11 w-11) — fixes all default icon buttons globally; explicit-size row actions bumped in CustomerRow/ProductRow/Header; stock type-filter select moved below the search input below md (was absolutely positioned overlapping it) and raised to 44px height |
+
+**Gates at completion:** lint 0 errors / 47 warnings (baseline held), tests 3/3, build green.
+
+**Acceptance verification:**
+- No page-level horizontal scroll at 360px on customers/products/stock/invoices: tables hidden below md, card stacks render instead; control bars already wrap via flex-col breakpoints.
+- One shared implementation (`ResponsiveTable`) — no per-page copies of the pattern.
+- Touch targets ≥44px for all list row actions and header controls.
+
+**Notes / deviations:**
+- Stock desktop feed lost the AnimatePresence popLayout exit animation and per-row stagger delay (rows now animate entry only) — consequence of routing rows through the shared component; visual-only.
+- Stock/customers/products empty-state markup unified onto shared LoadingState/ErrorState/EmptyState inside ResponsiveTable — copy preserved (Arabic strings passed as props); stock's oversized custom loader replaced by the standard one.
+- CustomerRow decorative grip indicator (non-interactive) intentionally left at 40px.
+- Runtime checklist executed via DevTools emulation at 360/768/1280 (no physical devices available in this environment); real-device iOS/Android keyboard pass on invoice form remains open for QA during PR review.
+
+**Follow-ups filed for later sprints:**
+- Remaining ~13 tables (receivables, debt-center, users, suppliers, logs, audit, reports…) migrate onto ResponsiveTable opportunistically — backlog item, not sprint scope.
