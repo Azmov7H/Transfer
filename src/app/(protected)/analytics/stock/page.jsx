@@ -103,7 +103,7 @@ export default function StockAnalyticsPage() {
                 </CardHeader>
                 <CardContent className="p-0">
                     <div className="overflow-x-auto">
-                        <Table>
+                        <Table aria-label="تحليلات المخزون">
                             <TableHeader>
                                 <TableRow>
                                     <TableHead className="text-right">المنتج</TableHead>

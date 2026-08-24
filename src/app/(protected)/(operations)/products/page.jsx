@@ -117,6 +117,7 @@ export default function ProductsPage() {
                             <Button
                                 variant="outline"
                                 size="icon"
+                                aria-label="تحديث القائمة"
                                 className="w-14 h-14 rounded-2xl glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg"
                                 onClick={() => refetch?.()}
                             >
@@ -205,6 +206,7 @@ export default function ProductsPage() {
                     loadingMessage="برجاء الانتظار، جاري المزامنة..."
                     emptyTitle="لم يتم العثور على أي نتائج"
                     emptyHint="تأكد من كلمات البحث أو الفلاتر المختارة"
+                    tableLabel="قائمة المستودع"
                     renderDesktopRow={(product) => (
                         <ProductRow
                             product={product}

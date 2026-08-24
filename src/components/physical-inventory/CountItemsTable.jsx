@@ -44,7 +44,7 @@ export function CountItemsTable({ search, setSearch, filteredItems, isBlind, isC
 
             <CardContent className="p-0">
                 <div className="overflow-x-auto">
-                    <Table>
+                    <Table aria-label="أصناف الجرد">
                         <TableHeader className="bg-muted/30">
                             <TableRow className="border-0 hover:bg-transparent">
                                 <TableHead className="w-[350px] font-black py-6 pr-8 text-primary text-right">المنتج والتفاصيل</TableHead>

@@ -27,6 +27,7 @@ import { cn } from '@/utils';
  * - renderMobileCard(item): stacked card used below md
  * - getKey?(item): React key (defaults to item._id)
  * - loadingMessage / emptyTitle / emptyHint / emptyAction — state copy (Arabic)
+ * - tableLabel — accessible name for the desktop <table> element
  */
 export function ResponsiveTable({
     columns,
@@ -41,7 +42,8 @@ export function ResponsiveTable({
     emptyTitle = 'لا توجد بيانات',
     emptyHint,
     emptyAction,
-    className
+    className,
+    tableLabel
 }) {
     const colSpan = columns.length;
     const stateType = isPending ? 'loading' : isError ? 'error' : data.length === 0 ? 'empty' : null;
@@ -50,7 +52,7 @@ export function ResponsiveTable({
         <React.Fragment>
             {/* Desktop: standard table (md+) */}
             <div className={cn('hidden md:block', className)}>
-                <Table>
+                <Table aria-label={tableLabel}>
                     <TableHeader>
                         <TableRow className="hover:bg-transparent border-white/5 h-16 bg-white/[0.01]">
                             {columns.map((col) => (

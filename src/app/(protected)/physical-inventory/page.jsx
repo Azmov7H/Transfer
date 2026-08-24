@@ -168,7 +168,7 @@ export default function PhysicalInventoryPage() {
             <Card className="glass-card border-0 shadow-custom-xl rounded-[2rem] overflow-hidden">
                 <CardContent className="p-0">
                     <div className="overflow-x-auto">
-                        <Table>
+                        <Table aria-label="جلسات الجرد">
                             <TableHeader className="bg-muted/30">
                                 <TableRow className="border-0 hover:bg-transparent">
                                     <TableHead className="font-black py-6 pr-8 text-primary">التاريخ والمعلومات</TableHead>

@@ -191,7 +191,7 @@ export default function AuditPage() {
 
             {/* Table */}
             <div className="bg-card rounded-lg border shadow-sm overflow-x-auto">
-                <Table>
+                <Table aria-label="سجل التدقيق">
                     <TableHeader>
                         <TableRow>
                             <TableHead className="text-right">المنتج</TableHead>

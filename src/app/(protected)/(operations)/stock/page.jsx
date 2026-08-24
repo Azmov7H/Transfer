@@ -374,6 +374,7 @@ export default function StockPage() {
           data={filteredMovements.slice(0, 15)}
           isPending={loadingMovements}
           emptyTitle="لا توجد حركات مطابقة"
+          tableLabel="سجل الحركات"
           renderDesktopRow={(m) => (
             <motion.tr
               layout

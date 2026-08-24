@@ -99,7 +99,7 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                             </div>
                         ) : (
                             <div className="rounded-3xl border border-white/10 overflow-hidden shadow-sm bg-card/30 backdrop-blur-sm">
-                                <Table>
+                                <Table aria-label="حركات الشريك">
                                     <TableHeader>
                                         <TableRow className="bg-muted/30 border-white/5 h-14">
                                             <TableHead className="text-right font-black uppercase text-xs tracking-widest px-6">التاريخ</TableHead>

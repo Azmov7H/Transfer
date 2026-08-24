@@ -81,7 +81,7 @@ export default function CustomerProfitReportPage() {
                         <div className="flex justify-center p-8"><Loader2 className="animate-spin" /></div>
                     ) : (
                         <div className="border rounded-md">
-                            <Table>
+                            <Table aria-label="أرباح العملاء">
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>العميل</TableHead>

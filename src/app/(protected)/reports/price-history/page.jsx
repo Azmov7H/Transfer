@@ -69,7 +69,7 @@ export default function PriceHistoryPage() {
                         <div className="flex justify-center p-8"><Loader2 className="animate-spin" /></div>
                     ) : (
                         <div className="border rounded-md">
-                            <Table>
+                            <Table aria-label="سجل الأسعار">
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>التاريخ</TableHead>
