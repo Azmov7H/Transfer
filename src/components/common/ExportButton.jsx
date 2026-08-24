@@ -10,8 +10,6 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 
 export function ExportButton({ type, data = [], columns = [], pdfTitle = 'Report' }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -44,9 +42,14 @@ export function ExportButton({ type, data = [], columns = [], pdfTitle = 'Report
         }
     };
 
-    const handlePDFExport = () => {
+    const handlePDFExport = async () => {
         try {
             setIsLoading(true);
+            // Heavy libs load on demand only (FE-PERF-001) — never in the route bundle.
+            const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+                import('jspdf'),
+                import('jspdf-autotable'),
+            ]);
             const doc = new jsPDF();
 
             // Add Arabic Font support if needed (Client-side usually needs base64 font)
