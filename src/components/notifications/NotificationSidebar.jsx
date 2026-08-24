@@ -69,7 +69,8 @@ export function NotificationSidebar() {
                                     onClick={() => setIsSidebarOpen(false)}
                                     className="rounded-full hover:bg-white/10"
                                 >
-                                    <X size={20} />
+                                    <X size={20} aria-hidden="true" />
+                                    <span className="sr-only">إغلاق</span>
                                 </Button>
                             </div>
 
@@ -220,6 +221,7 @@ function NotificationSidebarItem({ notif, markAsRead, deleteNotification, perfor
                     <Button
                         size="icon"
                         variant="ghost"
+                        aria-label="تحديد كمقروء"
                         className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
                         onClick={() => markAsRead(notif._id)}
                     >
@@ -229,6 +231,7 @@ function NotificationSidebarItem({ notif, markAsRead, deleteNotification, perfor
                 <Button
                     size="icon"
                     variant="ghost"
+                    aria-label="حذف الإشعار"
                     className="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500/20"
                     onClick={() => deleteNotification(notif._id)}
                 >

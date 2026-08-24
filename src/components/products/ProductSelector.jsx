@@ -122,7 +122,7 @@ export function ProductSelector({
                             className="py-20"
                         />
                     ) : (
-                        <Table>
+                        <Table aria-label="نتائج البحث عن الأصناف">
                             <TableHeader>
                                 <TableRow>
                                     <TableHead className="text-right">المنتج</TableHead>

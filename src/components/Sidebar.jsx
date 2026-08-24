@@ -71,6 +71,7 @@ export default function Sidebar() {
                         <Button
                             variant="ghost"
                             size="icon"
+                            aria-label="طي القائمة الجانبية"
                             onClick={toggleSidebar}
                             className={cn(
                                 "absolute -left-3 top-1/2 -translate-y-1/2 h-7 w-7 rounded-full bg-background border border-white/10 shadow-xl hover:bg-primary hover:text-white transition-all z-10",
@@ -158,6 +159,7 @@ export default function Sidebar() {
                             <Button
                                 variant="ghost"
                                 size="icon"
+                                aria-label="تسجيل الخروج"
                                 onClick={handleLogout}
                                 className="h-8 w-8 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-all opacity-60 hover:opacity-100"
                             >

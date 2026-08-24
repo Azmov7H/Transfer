@@ -210,6 +210,7 @@ export default function CustomersPage() {
                             <Button
                                 variant="outline"
                                 size="icon"
+                                aria-label="تحديث القائمة"
                                 className="w-14 h-14 rounded-2xl glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg"
                                 onClick={() => refetch()}
                             >
@@ -292,6 +293,7 @@ export default function CustomersPage() {
                     loadingMessage={loadingLabel}
                     emptyTitle={noCustomers}
                     emptyHint="تحقق من معايير البحث"
+                    tableLabel="قائمة العملاء"
                     renderDesktopRow={(customer) => (
                         <CustomerRow
                             customer={customer}

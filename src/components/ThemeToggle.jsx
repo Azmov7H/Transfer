@@ -12,6 +12,7 @@ export function ThemeToggle() {
         <Button
             variant="outline"
             size="icon"
+            aria-label="تبديل المظهر"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             className="rounded-full transition-colors"
         >

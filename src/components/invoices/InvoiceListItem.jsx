@@ -150,6 +150,7 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="حذف الفاتورة"
                         onClick={(e) => {
                             e.stopPropagation();
                             setConfirmDeleteOpen(true);

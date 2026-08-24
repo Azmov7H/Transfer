@@ -162,8 +162,9 @@ export function SmartNotificationCenter() {
                                     size="icon"
                                     onClick={() => setIsSidebarOpen(false)}
                                     className="rounded-full h-10 w-10 hover:bg-white/10"
-                                >
-                                    <X size={20} />
+                            >
+                                    <X size={20} aria-hidden="true" />
+                                    <span className="sr-only">إغلاق</span>
                                 </Button>
                             </div>
 

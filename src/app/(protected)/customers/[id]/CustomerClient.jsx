@@ -215,7 +215,7 @@ export default function CustomerClient({ id }) {
                         </CardHeader>
                         <CardContent>
                             <div className="border rounded-md">
-                                <Table>
+                                <Table aria-label="فواتير العميل">
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>المنتج</TableHead>
@@ -260,7 +260,7 @@ export default function CustomerClient({ id }) {
                         </CardHeader>
                         <CardContent>
                             <div className="border rounded-md">
-                                <Table>
+                                <Table aria-label="مدفوعات العميل">
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>رقم الفاتورة</TableHead>

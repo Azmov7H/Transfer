@@ -95,6 +95,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                 <Button
                                                                     variant="ghost"
                                                                     size="icon"
+                                                                    aria-label="إنقاص الكمية"
                                                                     className="h-10 w-10 rounded-xl hover:bg-white/10 text-slate-400 hover:text-white transition-all active:scale-95"
                                                                     onClick={() => {
                                                                         if (currentReturnQty > 0) {
@@ -117,6 +118,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                 <Button
                                                                     variant="ghost"
                                                                     size="icon"
+                                                                    aria-label="زيادة الكمية"
                                                                     className="h-10 w-10 rounded-xl hover:bg-white/10 text-slate-400 hover:text-white transition-all active:scale-95"
                                                                     onClick={() => {
                                                                         if (currentReturnQty < item.qty) {

@@ -328,6 +328,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                             <Button
                                                 size="icon"
                                                 variant="ghost"
+                                                aria-label="حذف الصنف من الفاتورة"
                                                 className="text-red-500 hover:bg-red-500/10 rounded-lg h-9 w-9"
                                                 onClick={() => removeItem(idx)}
                                             >

@@ -158,6 +158,7 @@ export const CustomerRow = React.memo(({
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="تعديل العميل"
                         onClick={(e) => { e.stopPropagation(); onEdit(customer); }}
                         className="h-11 w-11 rounded-xl bg-white/5 hover:bg-primary/20 hover:text-primary text-white/20 border border-white/5 transition-all"
                     >
@@ -168,6 +169,7 @@ export const CustomerRow = React.memo(({
                         size="icon"
                         className="h-11 w-11 rounded-xl bg-white/5 hover:bg-blue-500/20 hover:text-blue-400 text-white/20 border border-white/5 transition-all"
                         onClick={(e) => { e.stopPropagation(); router.push(`/receivables?customerId=${customer._id}`); }}
+                        aria-label="عرض المستحقات"
                         title="المستحقات"
                     >
                         <Wallet size={16} />
@@ -177,6 +179,7 @@ export const CustomerRow = React.memo(({
                         size="icon"
                         className="h-11 w-11 rounded-xl bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-500 text-white/20 border border-white/5 transition-all"
                         onClick={(e) => { e.stopPropagation(); onHistory && onHistory(customer); }}
+                        aria-label="سجل المعاملات"
                         title="سجل المعاملات"
                     >
                         <History size={16} />
@@ -184,6 +187,7 @@ export const CustomerRow = React.memo(({
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="حذف العميل"
                         className="h-11 w-11 rounded-xl bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 text-white/20 border border-white/5 transition-all md:opacity-0 md:group-hover:opacity-100"
                         onClick={(e) => { e.stopPropagation(); onDelete(customer._id); }}
                     >

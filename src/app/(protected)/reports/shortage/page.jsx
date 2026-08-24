@@ -69,6 +69,7 @@ export default function ShortageReportsPage() {
                         <Button
                             variant="outline"
                             size="icon"
+                            aria-label="تحديث التقرير"
                             onClick={() => refetch()}
                             className="w-12 h-12 rounded-2xl glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg"
                         >

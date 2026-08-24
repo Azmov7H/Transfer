@@ -66,7 +66,7 @@ export default function DebtDetailPage({ params }) {
         <div className="space-y-6 max-w-5xl mx-auto">
             {/* Header / Nav */}
             <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" onClick={() => router.back()}>
+                <Button variant="ghost" size="icon" aria-label="رجوع" onClick={() => router.back()}>
                     <ArrowLeft size={18} />
                 </Button>
                 <div>

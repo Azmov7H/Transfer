@@ -43,7 +43,7 @@ export default function LogsPage() {
             <Card className="border shadow-sm">
                 <CardContent className="p-0">
                     <div className="overflow-x-auto">
-                        <Table>
+                        <Table aria-label="سجلات النظام">
                             <TableHeader>
                                 <TableRow>
                                     <TableHead className="text-right">وقت الحدث</TableHead>

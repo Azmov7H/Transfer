@@ -71,6 +71,7 @@ export function GeneralSettingsTab({ settings, onChange }) {
                                     <Button
                                         variant="ghost"
                                         size="icon"
+                                        aria-label="حذف الرقم الإضافي"
                                         onClick={() => {
                                             const newPhones = settings.additionalPhones.filter((_, i) => i !== idx);
                                             set({ additionalPhones: newPhones });

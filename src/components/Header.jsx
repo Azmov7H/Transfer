@@ -34,6 +34,7 @@ function NotificationTrigger() {
             variant="ghost"
             size="icon"
             onClick={() => setIsSidebarOpen(true)}
+            aria-label="الإشعارات"
             className="rounded-xl hover:bg-white/10 relative h-11 w-11 group"
         >
             <Bell className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
@@ -67,6 +68,7 @@ export default function Header() {
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="فتح القائمة"
                         className="lg:hidden rounded-xl hover:bg-primary/10 hover:text-primary transition-all"
                         onClick={toggleSidebar}
                     >
@@ -93,6 +95,7 @@ export default function Header() {
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="تبديل المظهر"
                         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                         className="rounded-xl hover:bg-white/10 transition-all h-11 w-11 relative overflow-hidden group"
                     >
@@ -120,7 +123,7 @@ export default function Header() {
                     {/* User Profile */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-12 pr-1 pl-4 rounded-2xl hover:bg-white/5 transition-all gap-3 border border-transparent hover:border-white/10">
+                            <Button variant="ghost" aria-label="حساب المستخدم" className="h-12 pr-1 pl-4 rounded-2xl hover:bg-white/5 transition-all gap-3 border border-transparent hover:border-white/10">
                                 <div className="flex flex-col items-end hidden lg:flex">
                                     <span className="text-xs font-black text-foreground truncate max-w-[100px]">
                                         {loading ? '...' : user?.name}

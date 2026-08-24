@@ -48,6 +48,7 @@ export default function DashboardPage() {
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="تحديث البيانات"
                         className="rounded-full w-12 h-12 bg-card border border-border hover:bg-muted transition-all"
                         onClick={() => refetch()}
                     >

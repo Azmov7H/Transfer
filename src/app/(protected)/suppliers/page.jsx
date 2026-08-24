@@ -152,7 +152,7 @@ export default function SuppliersPage() {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <Table>
+                    <Table aria-label="قائمة الموردين">
                         <TableHeader>
                             <TableRow className="hover:bg-transparent border-white/5 h-16 bg-white/[0.01]">
                                 <TableHead className="font-black text-white/40 uppercase tracking-widest text-xs px-8 text-right">المورد / الحالة</TableHead>
@@ -262,6 +262,7 @@ export default function SuppliersPage() {
                                                     onClick={() => handleEditClick(supplier)}
                                                     className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all"
                                                     title="تعديل"
+                                                    aria-label="تعديل"
                                                 >
                                                     <FileEdit size={16} />
                                                 </Button>
@@ -271,6 +272,7 @@ export default function SuppliersPage() {
                                                     className="h-10 w-10 rounded-xl hover:bg-emerald-500/10 text-emerald-500 transition-all"
                                                     onClick={() => { setSelectedSupplier(supplier); setIsDebtOpen(true); }}
                                                     title="إدارة الديون"
+                                                    aria-label="إدارة الديون"
                                                 >
                                                     <Wallet size={16} />
                                                 </Button>
@@ -280,6 +282,7 @@ export default function SuppliersPage() {
                                                     className="h-10 w-10 rounded-xl hover:bg-blue-500/10 text-blue-500 transition-all"
                                                     onClick={() => router.push(`/purchase-orders?supplierId=${supplier._id}`)}
                                                     title="سجل المشتريات"
+                                                    aria-label="سجل المشتريات"
                                                 >
                                                     <History size={16} />
                                                 </Button>
@@ -289,6 +292,7 @@ export default function SuppliersPage() {
                                                     className="h-10 w-10 rounded-xl hover:bg-destructive/10 text-destructive transition-all"
                                                     onClick={() => handleDelete(supplier._id)}
                                                     title="حذف"
+                                                    aria-label="حذف"
                                                 >
                                                     <Trash2 size={16} />
                                                 </Button>

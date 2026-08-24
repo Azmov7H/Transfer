@@ -117,7 +117,7 @@ export default function DailySalesPage() {
                                 <p className="text-2xl font-black text-white/30 italic">جاري تحميل مبيعات اليوم...</p>
                             </div>
                         ) : (
-                            <Table>
+                            <Table aria-label="مبيعات اليوم">
                                 <TableHeader>
                                     <TableRow className="hover:bg-transparent border-white/5 h-16 bg-white/[0.01]">
                                         <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8">رقم الفاتورة</TableHead>

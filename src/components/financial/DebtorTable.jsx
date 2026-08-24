@@ -20,7 +20,7 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
 
     return (
         <div className="overflow-hidden">
-            <Table>
+            <Table aria-label="ديون العملاء">
                 <TableHeader className="bg-muted/30">
                     <TableRow className="border-white/5 hover:bg-transparent h-16">
                         <TableHead className="font-black text-xs uppercase tracking-widest text-right px-6">العميل / المورد</TableHead>
@@ -84,6 +84,7 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
                                     <Button
                                         variant="ghost"
                                         size="icon"
+                                        aria-label="عرض تفاصيل المدين"
                                         className="h-9 w-9 rounded-xl hover:bg-primary/10 hover:text-primary"
                                         onClick={() => router.push(`/customers/${item.debtor._id}`)}
                                     >

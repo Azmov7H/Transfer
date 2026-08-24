@@ -141,7 +141,7 @@ export default function PurchaseOrdersPage() {
             </div>
 
             <div className="bg-card rounded-lg border shadow-sm overflow-x-auto">
-                <Table>
+                <Table aria-label="أوامر الشراء">
                     <TableHeader>
                         <TableRow>
                             <TableHead className="text-right">رقم الطلب</TableHead>
@@ -258,7 +258,7 @@ export default function PurchaseOrdersPage() {
                                 />
                                 <Input type="number" placeholder="الكمية" className="w-20" value={qty} onChange={e => setQty(e.target.value)} />
                                 <Input type="number" placeholder="التكلفة" className="w-24" value={cost} onChange={e => setCost(e.target.value)} />
-                                <Button size="icon" onClick={addItem}><Plus size={18} /></Button>
+                                <Button size="icon" aria-label="إضافة صنف" onClick={addItem}><Plus size={18} /></Button>
                             </div>
                             <div className="max-h-32 overflow-y-auto space-y-1">
                                 {poItems.map((item, idx) => (

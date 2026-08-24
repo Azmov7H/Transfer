@@ -225,7 +225,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                 <DialogHeader className="flex flex-row items-center justify-between border-b pb-4">
                     <div className="flex items-center gap-3">
                         {view !== 'list' && (
-                            <Button variant="ghost" size="icon" onClick={handleBack} className="rounded-full">
+                            <Button variant="ghost" size="icon" aria-label="رجوع" onClick={handleBack} className="rounded-full">
                                 <ChevronLeft className="w-5 h-5 rotate-180" />
                             </Button>
                         )}
@@ -272,7 +272,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                     )}
                                 </div>
                             ) : (
-                                <Table>
+                                <Table aria-label="كشوف حساب المورد">
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead className="text-right">البيان</TableHead>

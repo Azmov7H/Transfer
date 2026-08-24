@@ -125,7 +125,7 @@ export const ProductRow = React.memo(({
                 <div className="flex items-center justify-end">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-11 w-11 rounded-xl hover:bg-white/5 transition-all group-hover:text-primary">
+                            <Button variant="ghost" size="icon" aria-label="خيارات المنتج" className="h-11 w-11 rounded-xl hover:bg-white/5 transition-all group-hover:text-primary">
                                 <MoreVertical size={20} />
                             </Button>
                         </DropdownMenuTrigger>

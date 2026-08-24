@@ -28,7 +28,7 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                                 <CreditCard size={28} />
                             </div>
                             <div>
-                                <h4 className="text-2xl font-black tracking-tight">فترات السداد الآلي</h4>
+                                <h3 className="text-2xl font-black tracking-tight">فترات السداد الآلي</h3>
                                 <p className="text-sm font-bold text-white/20">تُطبق تلقائياً عند إنشاء الفواتير والمشتريات</p>
                             </div>
                         </div>
@@ -74,7 +74,7 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                                 <HandCoins size={28} />
                             </div>
                             <div>
-                                <h4 className="text-2xl font-black tracking-tight">إدارة مبالغ التنبيه</h4>
+                                <h3 className="text-2xl font-black tracking-tight">إدارة مبالغ التنبيه</h3>
                                 <p className="text-sm font-bold text-white/20">تصفية التنبيهات الصغيرة لزيادة الفعالية</p>
                             </div>
                         </div>

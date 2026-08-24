@@ -50,7 +50,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
 
     return (
         <div className="overflow-hidden">
-            <Table>
+            <Table aria-label="الديون">
                 <TableHeader className="bg-muted/30">
                     <TableRow className="border-white/5 hover:bg-transparent h-16">
                         <TableHead className="font-black text-xs uppercase tracking-widest text-right px-6">المرجع</TableHead>
@@ -127,7 +127,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                             <TableCell className="px-4">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
+                                        <Button variant="ghost" size="icon" aria-label="خيارات الدين" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
                                             <MoreHorizontal size={18} />
                                         </Button>
                                     </DropdownMenuTrigger>

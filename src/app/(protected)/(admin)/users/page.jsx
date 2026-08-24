@@ -101,7 +101,7 @@ export default function UsersPage() {
             </div>
 
             <div className="border rounded-lg glass-card shadow-custom-md overflow-hidden hover-lift transition-all duration-300">
-                <Table>
+                <Table aria-label="قائمة المستخدمين">
                     <TableHeader>
                         <TableRow>
                             <TableHead className="text-right">الاسم</TableHead>
@@ -133,6 +133,7 @@ export default function UsersPage() {
                                         <Button
                                             variant="ghost"
                                             size="icon"
+                                            aria-label="تعديل المستخدم"
                                             onClick={() => handleOpenEdit(user)}
                                             className="hover-scale hover:bg-primary/10 hover:text-primary"
                                         >
@@ -142,6 +143,7 @@ export default function UsersPage() {
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
+                                                aria-label="حذف المستخدم"
                                                 className="hover-scale text-destructive hover:text-destructive hover:bg-destructive/10"
                                                 onClick={() => handleDelete(user._id)}
                                             >
