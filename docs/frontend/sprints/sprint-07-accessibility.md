@@ -47,3 +47,30 @@ Standard DoD + axe report attached to PR.
 
 ## Expected Result
 Keyboard/screen-reader operability for all core flows.
+
+---
+
+## Execution Record
+
+**Branch:** `feat/frontend-sprint-07-accessibility` (stacked on sprint-06)
+**Status:** COMPLETE
+
+| Task | Commit | Summary |
+|---|---|---|
+| FE-A11Y-001 | `9a187ae` | ~40 icon-only controls across 28 files labeled with Arabic aria-labels ("حذف", "تعديل", "رجوع", "تبديل المظهر"…). Covers row actions, header controls, notification center, steppers, dropdown triggers. Buttons with existing `title` got a matching aria-label (title alone is not reliably announced) |
+| FE-A11Y-002 | `cf5dde7` | `TableHead` primitive now defaults `scope="col"` app-wide; 18 data tables + the shared ResponsiveTable gained `<Table aria-label>` (new `tableLabel` prop at customers/products/stock call sites); settings DefaultsSettingsTab h4→h3 heading-skip fixed |
+
+**Gates at completion:** lint 0 errors / 47 warnings (baseline held), tests 3/3, build green.
+
+**Acceptance verification:**
+- Zero unlabeled icon-only buttons in `src` (verified by scripted sweep of every `size="icon"` Button block).
+- axe critical violations: cannot run axe-core in this environment — keyboard/a11y-tree inspection done statically via code audit; formal axe report pending QA pass during PR review.
+- Focus visibility: all interactive primitives (button/input/badge/checkbox/switch/tabs/sidebar) carry `focus-visible` ring styles from shadcn base — no RTL-hostile focus overrides found.
+- RTL tab order follows DOM order (no CSS order/flex-direction-reorder traps on interactive elements); logical on audited flows.
+- Heading order: PageHeader renders single h1 per page; section components use h2/h3 below it.
+
+**Notes / deviations:**
+- PartnerTransactionDialog's print-only `<h1>` kept — it is a standalone printed document header (`hidden print:block`), not part of page flow.
+- receipts/[id] h1 kept — standalone printable receipt document.
+- JournalEntriesTab entry-row `<h4>` descriptions left as-is (list-item emphasis styling; no ancestor heading skip inside the tab).
+- customers/products/stock pages appear in both commits (icon labels are FE-A11Y-001, their tableLabel additions FE-A11Y-002) — split by dominant change per file.
