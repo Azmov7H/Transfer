@@ -159,14 +159,14 @@ export const CustomerRow = React.memo(({
                         variant="ghost"
                         size="icon"
                         onClick={(e) => { e.stopPropagation(); onEdit(customer); }}
-                        className="h-10 w-10 rounded-xl bg-white/5 hover:bg-primary/20 hover:text-primary text-white/20 border border-white/5 transition-all"
+                        className="h-11 w-11 rounded-xl bg-white/5 hover:bg-primary/20 hover:text-primary text-white/20 border border-white/5 transition-all"
                     >
                         <FileEdit size={16} />
                     </Button>
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-10 w-10 rounded-xl bg-white/5 hover:bg-blue-500/20 hover:text-blue-400 text-white/20 border border-white/5 transition-all"
+                        className="h-11 w-11 rounded-xl bg-white/5 hover:bg-blue-500/20 hover:text-blue-400 text-white/20 border border-white/5 transition-all"
                         onClick={(e) => { e.stopPropagation(); router.push(`/receivables?customerId=${customer._id}`); }}
                         title="المستحقات"
                     >
@@ -175,7 +175,7 @@ export const CustomerRow = React.memo(({
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-10 w-10 rounded-xl bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-500 text-white/20 border border-white/5 transition-all"
+                        className="h-11 w-11 rounded-xl bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-500 text-white/20 border border-white/5 transition-all"
                         onClick={(e) => { e.stopPropagation(); onHistory && onHistory(customer); }}
                         title="سجل المعاملات"
                     >
@@ -184,7 +184,7 @@ export const CustomerRow = React.memo(({
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-10 w-10 rounded-xl bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 text-white/20 border border-white/5 transition-all md:opacity-0 md:group-hover:opacity-100"
+                        className="h-11 w-11 rounded-xl bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 text-white/20 border border-white/5 transition-all md:opacity-0 md:group-hover:opacity-100"
                         onClick={(e) => { e.stopPropagation(); onDelete(customer._id); }}
                     >
                         <Trash2 size={16} />
