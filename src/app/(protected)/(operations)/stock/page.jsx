@@ -1,21 +1,12 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
   ArrowLeftRight,
-  Loader2,
   Search,
   TrendingUp,
   TrendingDown,
@@ -25,11 +16,13 @@ import {
   AlertCircle,
   Plus
 } from 'lucide-react';
-import { hasPermission } from '@/lib/permissions';
-import { useUserRole } from '@/hooks/useUserRole';
+import { hasPermission } from '@/lib/permissions';import { useUserRole } from '@/hooks/useUserRole';
 import { useStockMovements, useAddStockMovement } from '@/hooks/useStock';
 import { cn } from '@/utils';
 import { StockMovementDialog } from '@/components/stock/StockMovementDialog';
+import { MovementCard, MovementTypeBadge } from '@/components/stock/MovementCard';
+import { ResponsiveTable } from '@/components/ui/responsive-table';
+import { TableCell } from '@/components/ui/table';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -189,26 +182,6 @@ export default function StockPage() {
     });
   };
 
-  const getTypeBadge = (type) => {
-    const variants = {
-      'IN': { variant: "default", label: 'إدخال (شراء)', className: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", icon: TrendingUp },
-      'OUT': { variant: "destructive", label: 'إخراج', className: "bg-red-500/10 text-red-500 border-red-500/20", icon: TrendingDown },
-      'TRANSFER_TO_SHOP': { variant: "secondary", label: 'تحويل للمحل', className: "bg-blue-500/10 text-blue-500 border-blue-500/20", icon: ArrowLeftRight },
-      'TRANSFER_TO_WAREHOUSE': { variant: "outline", label: 'إرجاع للمخزن', className: "bg-indigo-500/10 text-indigo-500 border-indigo-500/20", icon: ArrowLeftRight },
-      'ADJUST': { variant: "outline", label: 'تسوية جردية', className: "bg-amber-500/10 text-amber-500 border-amber-500/20", icon: Layers },
-    };
-
-    const config = variants[type] || { variant: "default", label: type, className: "bg-slate-500/10 text-slate-500", icon: Package };
-    const Icon = config.icon;
-
-    return (
-      <Badge variant="outline" className={cn("gap-1.5 py-1 px-3 font-bold", config.className)}>
-        <Icon size={12} />
-        {config.label}
-      </Badge>
-    );
-  };
-
   return (
     <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8" dir="rtl">
       {/* Dynamic Header */}
@@ -356,11 +329,11 @@ export default function StockPage() {
         />
 
         {/* Type Filter */}
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+        <div className="max-md:static max-md:mt-3 flex items-center gap-2 md:absolute md:left-4 md:top-1/2 md:-translate-y-1/2">
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="h-10 pl-4 pr-10 rounded-xl bg-black/40 border border-white/10 text-xs font-bold text-white focus:border-primary/50 outline-none appearance-none cursor-pointer hover:bg-black/60 transition-colors"
+            className="h-11 w-full pl-4 pr-10 rounded-xl bg-black/40 border border-white/10 text-xs font-bold text-white focus:border-primary/50 outline-none appearance-none cursor-pointer hover:bg-black/60 transition-colors"
             style={{ backgroundImage: 'none' }}
           >
             <option value="ALL">كل الحركات</option>
@@ -390,96 +363,60 @@ export default function StockPage() {
           </Badge>
         </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent border-white/5 h-16 bg-white/[0.01]">
-              <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8">المنتج والتفاصيل</TableHead>
-              <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8">نوع الحركة</TableHead>
-              <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8">الكمية</TableHead>
-              <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8">التوقيت</TableHead>
-              <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8">بواسطة</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <AnimatePresence mode="popLayout">
-              {loadingMovements ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="h-96 text-center">
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="flex flex-col items-center gap-6"
-                    >
-                      <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 shadow-inner">
-                        <Loader2 size={64} className="text-primary animate-spin" />
-                      </div>
-                      <p className="text-2xl font-black text-white/30">جاري تحميل البيانات...</p>
-                    </motion.div>
-                  </TableCell>
-                </TableRow>
-              ) : filteredMovements.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="h-96 text-center">
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="flex flex-col items-center gap-6"
-                    >
-                      <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 shadow-inner">
-                        <Package size={64} className="text-muted-foreground/20" />
-                      </div>
-                      <p className="text-2xl font-black text-white/30">لا توجد حركات مطابقة</p>
-                    </motion.div>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredMovements.slice(0, 15).map((m, i) => (
-                  <motion.tr
-                    key={m._id}
-                    layout
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.03 }}
-                    className="group hover:bg-white/[0.04] border-white/5 transition-all duration-300 h-20"
-                  >
-                    <TableCell className="px-8">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-primary/20 group-hover:rotate-6 transition-all duration-500 shadow-inner">
-                          <Package className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="font-black text-lg group-hover:text-primary transition-colors leading-tight">
-                            {m.productId?.name || 'منتج غير معروف'}
-                          </span>
-                          <span className="text-[10px] font-bold text-muted-foreground/50 tracking-widest uppercase">{m.productId?.code}</span>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="px-8">{getTypeBadge(m.type)}</TableCell>
-                    <TableCell className="px-8">
-                      <div className="text-2xl font-black tabular-nums tracking-tighter">
-                        {m.qty}
-                      </div>
-                    </TableCell>
-                    <TableCell className="px-8 font-bold text-muted-foreground/80">
-                      {new Date(m.date).toLocaleDateString('ar-EG', { day: '2-digit', month: '2-digit' })} • {new Date(m.date).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
-                    </TableCell>
-                    <TableCell className="px-8">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-primary/20 border border-white/10 flex items-center justify-center text-[10px] font-black">
-                          {(m.createdBy?.name || 'A')[0].toUpperCase()}
-                        </div>
-                        <span className="text-sm font-black text-muted-foreground">
-                          {m.createdBy?.name || 'غير معروف'}
-                        </span>
-                      </div>
-                    </TableCell>
-                  </motion.tr>
-                ))
-              )}
-            </AnimatePresence>
-          </TableBody>
-        </Table>
+        <ResponsiveTable
+          columns={[
+            { label: 'المنتج والتفاصيل', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+            { label: 'نوع الحركة', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+            { label: 'الكمية', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+            { label: 'التوقيت', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+            { label: 'بواسطة', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' }
+          ]}
+          data={filteredMovements.slice(0, 15)}
+          isPending={loadingMovements}
+          emptyTitle="لا توجد حركات مطابقة"
+          renderDesktopRow={(m) => (
+            <motion.tr
+              layout
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="group hover:bg-white/[0.04] border-white/5 transition-all duration-300 h-20"
+            >
+              <TableCell className="px-8">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-primary/20 group-hover:rotate-6 transition-all duration-500 shadow-inner">
+                    <Package className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-black text-lg group-hover:text-primary transition-colors leading-tight">
+                      {m.productId?.name || 'منتج غير معروف'}
+                    </span>
+                    <span className="text-[10px] font-bold text-muted-foreground/50 tracking-widest uppercase">{m.productId?.code}</span>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="px-8"><MovementTypeBadge type={m.type} /></TableCell>
+              <TableCell className="px-8">
+                <div className="text-2xl font-black tabular-nums tracking-tighter">
+                  {m.qty}
+                </div>
+              </TableCell>
+              <TableCell className="px-8 font-bold text-muted-foreground/80">
+                {new Date(m.date).toLocaleDateString('ar-EG', { day: '2-digit', month: '2-digit' })} • {new Date(m.date).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
+              </TableCell>
+              <TableCell className="px-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-primary/20 border border-white/10 flex items-center justify-center text-[10px] font-black">
+                    {(m.createdBy?.name || 'A')[0].toUpperCase()}
+                  </div>
+                  <span className="text-sm font-black text-muted-foreground">
+                    {m.createdBy?.name || 'غير معروف'}
+                  </span>
+                </div>
+              </TableCell>
+            </motion.tr>
+          )}
+          renderMobileCard={(m) => <MovementCard movement={m} />}
+        />
       </motion.div>
 
       <StockMovementDialog

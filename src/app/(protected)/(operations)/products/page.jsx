@@ -4,19 +4,10 @@ import React, { useState, useDeferredValue } from 'react';
 import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow
-} from '@/components/ui/table';
 import { cn } from '@/utils';
 import {
     Plus,
     Search,
-    Loader2,
     Package,
     Layers,
     RefreshCcw,
@@ -32,11 +23,11 @@ import {
     PaginationPrevious
 } from '@/components/ui/pagination';
 import { useProductPage } from '@/hooks/useProductPage';
-import { LoadingState } from '@/components/common/LoadingState';
-import { ErrorState } from '@/components/common/ErrorState';
 
 // Standard Components
 import { ProductRow } from '@/components/products/ProductRow';
+import { ProductCard } from '@/components/products/ProductCard';
+import { ResponsiveTable } from '@/components/ui/responsive-table';
 import { ProductStatsCards } from '@/components/products/ProductStats';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
@@ -198,60 +189,41 @@ export default function ProductsPage() {
                     </Badge>
                 </div>
 
-                <div className="overflow-x-auto">
-                    <Table>
-                        <TableHeader>
-                            <TableRow className="hover:bg-transparent border-white/5 h-16 bg-white/[0.01]">
-                                <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8">المنتج والتفاصيل</TableHead>
-                                <TableHead className="text-right font-black text-white/40 uppercase tracking-widest text-xs px-8 hidden lg:table-cell">الماركة والفئة</TableHead>
-                                <TableHead className="text-center font-black text-white/40 uppercase tracking-widest text-xs px-8">سعر البيع</TableHead>
-                                <TableHead className="text-center font-black text-white/40 uppercase tracking-widest text-xs px-8 hidden sm:table-cell">المخزون الحالي</TableHead>
-                                <TableHead className="text-center font-black text-white/40 uppercase tracking-widest text-xs px-8 hidden md:table-cell">حالة التوفر</TableHead>
-                                <TableHead className="text-left font-black px-8 w-[100px]"></TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {isLoading ? (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="h-96 text-center border-none">
-                                        <LoadingState message="برجاء الانتظار، جاري المزامنة..." size="lg" />
-                                    </TableCell>
-                                </TableRow>
-                            ) : deleteMutation.isError || addMutation.isError || updateMutation.isError ? (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="h-96 text-center border-none">
-                                        <ErrorState onRetry={refetch} />
-                                    </TableCell>
-                                </TableRow>
-                            ) : filteredProducts.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="h-96 text-center border-none">
-                                        <div className="flex flex-col items-center gap-6">
-                                            <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 shadow-inner group">
-                                                <Package size={64} className="text-muted-foreground/20 group-hover:scale-110 transition-transform" />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <p className="text-2xl font-black text-white/30">لم يتم العثور على أي نتائج</p>
-                                                <p className="text-sm text-white/10 font-bold uppercase tracking-widest">تأكد من كلمات البحث أو الفلاتر المختارة</p>
-                                            </div>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ) : (
-                                filteredProducts.map((product) => (
-                                    <ProductRow
-                                        key={product._id}
-                                        product={product}
-                                        canManage={canManage}
-                                        onView={handleViewClick}
-                                        onEdit={handleEditClick}
-                                        onDelete={handleDelete}
-                                    />
-                                ))
-                            )}
-                        </TableBody>
-                    </Table>
-                </div>
+                <ResponsiveTable
+                    columns={[
+                        { label: 'المنتج والتفاصيل', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: 'الماركة والفئة', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8 hidden lg:table-cell' },
+                        { label: 'سعر البيع', headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: 'المخزون الحالي', headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8 hidden sm:table-cell' },
+                        { label: 'حالة التوفر', headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8 hidden md:table-cell' },
+                        { label: '', headerClassName: 'text-left font-black px-8 w-[100px]' }
+                    ]}
+                    data={filteredProducts}
+                    isPending={isLoading}
+                    isError={deleteMutation.isError || addMutation.isError || updateMutation.isError}
+                    onRetry={refetch}
+                    loadingMessage="برجاء الانتظار، جاري المزامنة..."
+                    emptyTitle="لم يتم العثور على أي نتائج"
+                    emptyHint="تأكد من كلمات البحث أو الفلاتر المختارة"
+                    renderDesktopRow={(product) => (
+                        <ProductRow
+                            product={product}
+                            canManage={canManage}
+                            onView={handleViewClick}
+                            onEdit={handleEditClick}
+                            onDelete={handleDelete}
+                        />
+                    )}
+                    renderMobileCard={(product) => (
+                        <ProductCard
+                            product={product}
+                            canManage={canManage}
+                            onView={handleViewClick}
+                            onEdit={handleEditClick}
+                            onDelete={handleDelete}
+                        />
+                    )}
+                />
             </div>
 
             {/* Elegant Pagination */}
