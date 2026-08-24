@@ -24,30 +24,15 @@ import { MovementCard, MovementTypeBadge } from '@/components/stock/MovementCard
 import { ResponsiveTable } from '@/components/ui/responsive-table';
 import { TableCell } from '@/components/ui/table';
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
+  CartesianGrid,
   Legend,
-  Filler,
-} from 'chart.js';
-import { Line, Bar } from 'react-chartjs-2';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-);
+  Line as RechartsLine,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip as RechartsTooltip,
+  XAxis,
+  YAxis
+} from 'recharts';
 
 const StockActionCard = ({ title, description, icon: Icon, onClick, color, delay }) => (
   <motion.div
@@ -130,27 +115,11 @@ export default function StockPage() {
         .reduce((sum, m) => sum + m.qty, 0);
     });
 
-    return {
-      labels: last7Days.map(d => new Date(d).toLocaleDateString('ar-EG', { weekday: 'short', day: 'numeric' })),
-      datasets: [
-        {
-          label: 'وارد',
-          data: dataIn,
-          borderColor: '#10b981',
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
-          fill: true,
-          tension: 0.4,
-        },
-        {
-          label: 'صادر',
-          data: dataOut,
-          borderColor: '#f43f5e',
-          backgroundColor: 'rgba(244, 63, 94, 0.1)',
-          fill: true,
-          tension: 0.4,
-        }
-      ]
-    };
+    return last7Days.map((d, i) => ({
+      date: new Date(d).toLocaleDateString('ar-EG', { weekday: 'short', day: 'numeric' }),
+      'وارد': dataIn[i],
+      'صادر': dataOut[i],
+    }));
   }, [movements]);
 
   const filteredMovements = useMemo(() => {
@@ -269,19 +238,29 @@ export default function StockPage() {
                 <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-rose-500" /> صادر</div>
               </div>
             </div>
-            <div className="h-[300px]">
-              <Line
-                data={chartData}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scales: {
-                    y: { grid: { display: false }, ticks: { font: { weight: 'bold' } } },
-                    x: { grid: { display: false }, ticks: { font: { weight: 'bold' } } }
-                  },
-                  plugins: { legend: { display: false } }
-                }}
-              />
+            <div className="h-[300px]" dir="ltr">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
+                  <CartesianGrid vertical={false} stroke="transparent" />
+                  <XAxis
+                    dataKey="date"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: 'currentColor', fontSize: 11, fontWeight: 'bold' }}
+                  />
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    width={48}
+                    tick={{ fill: 'currentColor', fontSize: 11, fontWeight: 'bold' }}
+                  />
+                  <RechartsTooltip
+                    contentStyle={{ direction: 'rtl', borderRadius: 16, border: '1px solid rgba(255,255,255,0.1)' }}
+                  />
+                  <RechartsLine type="monotone" dataKey="وارد" stroke="#10b981" strokeWidth={2} dot={false} fill="rgba(16, 185, 129, 0.1)" />
+                  <RechartsLine type="monotone" dataKey="صادر" stroke="#f43f5e" strokeWidth={2} dot={false} fill="rgba(244, 63, 94, 0.1)" />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </motion.div>
