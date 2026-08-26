@@ -21,7 +21,7 @@ export function SidebarGroup({ title, children, isCollapsed, defaultExpanded = t
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="flex items-center justify-between w-full px-3 py-2 group hover:bg-muted/30 rounded-lg transition-colors"
             >
-                <span className="text-xs font-black text-muted-foreground group-hover:text-foreground tracking-widest uppercase transition-colors">
+                <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground tracking-wide transition-colors">
                     {title}
                 </span>
                 <ChevronRight

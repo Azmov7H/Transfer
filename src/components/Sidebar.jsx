@@ -118,6 +118,7 @@ export default function Sidebar() {
                                                     isActive={isActive}
                                                     isCollapsed={!isOpen && !isMobile}
                                                     onClick={() => isMobile && closeSidebar()}
+                                                    isPrimaryAction={item.href === '/invoices/new'}
                                                 />
                                             );
                                         })}

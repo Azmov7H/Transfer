@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -78,12 +79,11 @@ export default function UsersPage() {
     return (
         <RoleGate fallback={<UnauthorizedState />}>
             <div className="space-y-6 animate-fade-in-up">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="animate-slide-in-right">
-                    <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">إدارة المستخدمين</h1>
-                    <p className="text-muted-foreground">إضافة وتعديل صلاحيات المستخدمين</p>
-                </div>
-                <div className="flex gap-2">
+            <PageHeader
+                title="إدارة المستخدمين"
+                subtitle="إضافة وتعديل صلاحيات المستخدمين"
+                actions={
+                    <>
                     <ExportButton
                         type="users"
                         data={users}
@@ -94,11 +94,12 @@ export default function UsersPage() {
                         ]}
                         pdfTitle="تقرير المستخدمين"
                     />
-                    <Button onClick={handleOpenAdd} className="gap-2 gradient-primary border-0 hover-lift shadow-colored animate-scale-in">
+                    <Button onClick={handleOpenAdd} className="gap-2">
                         <Plus size={18} /> مستخدم جديد
                     </Button>
-                </div>
-            </div>
+                    </>
+                }
+            />
 
             <div className="border rounded-lg glass-card shadow-custom-md overflow-hidden hover-lift transition-all duration-300">
                 <Table aria-label="قائمة المستخدمين">

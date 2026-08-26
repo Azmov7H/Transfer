@@ -15,22 +15,28 @@ export function SidebarItem({
     isActive,
     isCollapsed,
     onClick,
-    badge
+    badge,
+    isPrimaryAction
 }) {
     const content = (
         <Link
             href={href}
             prefetch={true}
             onClick={onClick}
+            aria-current={isActive ? 'page' : undefined}
             className={cn(
-                "group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300",
+                "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-200",
                 isActive
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    ? isPrimaryAction
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-accent text-primary"
+                    : isPrimaryAction
+                        ? "text-primary font-medium hover:bg-primary/10"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
             )}
         >
             <div className={cn(
-                "flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110",
+                "flex items-center justify-center shrink-0 transition-transform duration-200",
                 isCollapsed ? "w-full" : "w-6"
             )}>
                 <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
@@ -38,22 +44,24 @@ export function SidebarItem({
 
             {!isCollapsed && (
                 <span className={cn(
-                    "text-sm font-bold tracking-tight whitespace-nowrap transition-opacity duration-300",
-                    isActive ? "opacity-100" : "opacity-90 group-hover:opacity-100"
+                    "text-sm font-medium tracking-tight whitespace-nowrap",
+                    isActive && "font-semibold"
                 )}>
                     {label}
                 </span>
             )}
 
             {!isCollapsed && badge && (
-                <span className="mr-auto px-1.5 py-0.5 rounded-md bg-secondary text-secondary-foreground text-xs font-black uppercase">
+                <span className="mr-auto px-1.5 py-0.5 rounded-md bg-secondary text-secondary-foreground text-xs font-semibold">
                     {badge}
                 </span>
             )}
 
-            {isActive && !isCollapsed && (
-                <div
-                    className="absolute right-0 top-2 bottom-2 w-1.5 bg-secondary rounded-l-full shadow-[0_0_10px_rgba(var(--secondary),0.5)] transition-all duration-300"
+            {/* Active indicator (not color-only) */}
+            {isActive && !isPrimaryAction && (
+                <span
+                    aria-hidden="true"
+                    className="absolute right-0 top-2 bottom-2 w-1 rounded-full bg-primary transition-all duration-200"
                 />
             )}
         </Link>

@@ -1,5 +1,6 @@
 'use client';
 
+import { PageHeader } from '@/components/ui/PageHeader';
 import { useState, useMemo } from 'react';
 import { useSalesReturns } from '@/hooks/useSalesReturns';
 import { Input } from '@/components/ui/input';
@@ -50,23 +51,11 @@ export default function SalesReturnsPage() {
     return (
         <div className="space-y-8 animate-fade-in-up" dir="rtl">
             {/* Header */}
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-                <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="space-y-1"
-                >
-                    <div className="flex items-center gap-4">
-                        <div className="p-4 bg-warning/10 rounded-2xl shadow-inner border border-warning/20">
-                            <History className="h-8 w-8 text-warning" />
-                        </div>
-                        <div>
-                            <h1 className="text-3xl font-black tracking-tight text-foreground">مرتجع المبيعات</h1>
-                            <p className="text-muted-foreground font-medium mt-1">سجل وإدارة عمليات استرجاع المنتجات من العملاء</p>
-                        </div>
-                    </div>
-                </motion.div>
-            </div>
+            <PageHeader
+                title="مرتجع المبيعات"
+                subtitle="سجل وإدارة عمليات استرجاع المنتجات من العملاء"
+                icon={History}
+            />
 
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
