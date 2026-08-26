@@ -52,3 +52,20 @@ Standard DoD.
 
 ## Expected Result
 Minimal dependency surface; no dead weight for future contributors to trip on.
+
+---
+
+## Execution Record
+
+**Branch:** `feat/frontend-sprint-10-cleanup` (stacked on sprint-09)
+**Status:** COMPLETE
+
+| Task | Commit | Summary |
+|---|---|---|
+| FE-CLEAN-003 | `9f91d27` | Last disabled-code comment removed (`InvoiceCustomerSelect` dead sync branch). The other two registry sites were already resolved by earlier sprints (api-utils rewritten in FE-AUTH-001; NotificationContext comment is documentation, not code). |
+| FE-CLEAN-002 | `8b95391` | Deleted after re-grep: `lib/auth.js`, `lib/cache.js`, `lib/cache-config.js`, `lib/api-response.js` (legacy backend layer — validation grep zero hits), `ThemeToggle.jsx`, `themes/Toggle.jsx`, `hooks/useMutationLock.js`, `services/authService.handleGoogleCallback`. **VERIFY resolutions:** `components/Logo/Logo.jsx` **retained** (imported by 9 files); shadcn `ui/sidebar.jsx` **deleted whole** — zero importers anywhere (app uses custom `components/Sidebar.jsx`). |
+| FE-DEP-001 | `9150d6d` | jspdf 2.5.2→4.2.1 + jspdf-autotable 3.8.4→5.0.8 (**pnpm audit: 28 vulns incl. 2 critical → 0**); removed dotenv, exceljs (FE-PERF-001 leftover), tw-animate-css. Dispositions recorded in `architecture/dependency-dispositions.md`. react-hook-form retained (FE-FORM-001 adopted). |
+
+**Gates at completion:** lint 0 errors / 42 warnings (down from 47 baseline — warnings died with the dead code), tests 59/59 (~42s), build green.
+
+**Acceptance criteria:** all SAFE items deleted ✓ · VERIFY items resolved with recorded decisions ✓ · no dependency without runtime import or documented reason ✓ · audit output recorded, criticals resolved (not risk-accepted) ✓.
