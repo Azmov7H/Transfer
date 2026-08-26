@@ -20,9 +20,6 @@ export const logout = () => api.post('/api/auth/logout');
 /** @param {{signal?: AbortSignal}} [options] @returns {Promise<SessionUser|null>} unwrapped session user */
 export const getSession = (options) => api.get('/api/auth/session', undefined, options);
 
-/** @param {string} code @returns {Promise<*>} */
-export const handleGoogleCallback = (code) => api.post('/api/auth/google/callback', { code });
-
 /** Legacy namespace kept for existing consumers. */
 export const AuthService = {
     login,
@@ -34,5 +31,4 @@ export const AuthService = {
             return null;
         }
     },
-    handleGoogleCallback,
 };

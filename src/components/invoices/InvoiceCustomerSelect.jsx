@@ -31,9 +31,6 @@ export function InvoiceCustomerSelect({
     useEffect(() => {
         if (selectedCustomer) {
             setQuery(selectedCustomer.name);
-        } else if (customerName && !query) {
-            // Keep query in sync if manually typed (partial)
-            // setQuery(customerName); 
         }
     }, [selectedCustomer]);
 
