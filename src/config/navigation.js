@@ -3,15 +3,15 @@ import {
     Package,
     ShoppingCart,
     Wallet,
-    Users,
+    Contact,
     Settings,
     Box,
     FileText,
     ClipboardCheck,
     ShieldAlert,
-    TrendingUp,
     Plus,
-    DollarSign,
+    Truck,
+    UserCog,
     RotateCcw
 } from 'lucide-react';
 
@@ -29,7 +29,7 @@ export const navigationConfig = [
             { name: 'حركة المخزون', href: '/stock', icon: Box, permission: 'products:view' },
             { name: 'الجرد الفعلي', href: '/physical-inventory', icon: ClipboardCheck, permission: 'audit:manage' },
             { name: 'أوامر الشراء', href: '/purchase-orders', icon: ShoppingCart, permission: 'suppliers:manage' },
-            { name: 'الموردين', href: '/suppliers', icon: Users, permission: 'suppliers:manage' },
+            { name: 'الموردين', href: '/suppliers', icon: Truck, permission: 'suppliers:manage' },
         ]
     },
     {
@@ -38,7 +38,7 @@ export const navigationConfig = [
             { name: 'فاتورة جديدة', href: '/invoices/new', icon: Plus, permission: 'invoices:create' },
             { name: 'سجل الفواتير', href: '/invoices', icon: FileText, permission: 'invoices:view' },
             { name: 'مرتجع المبيعات', href: '/sales-returns', icon: RotateCcw, permission: 'invoices:view' },
-            { name: 'العملاء', href: '/customers', icon: Users, permission: 'invoices:view' },
+            { name: 'العملاء', href: '/customers', icon: Contact, permission: 'invoices:view' },
             { name: 'الخزينة والمالية', href: '/financial', icon: Wallet, permission: 'financial:view' },
             { name: 'مركز الديون والمستحقات', href: '/financial/debt-center', icon: ShieldAlert, permission: 'financial:view' },
 
@@ -47,7 +47,7 @@ export const navigationConfig = [
     {
         title: 'النظام',
         items: [
-            { name: 'المستخدمين', href: '/users', icon: Users, permission: 'users:manage' },
+            { name: 'المستخدمين', href: '/users', icon: UserCog, permission: 'users:manage' },
             { name: 'الإعدادات', href: '/settings', icon: Settings, permission: 'settings:manage' },
         ]
     }
