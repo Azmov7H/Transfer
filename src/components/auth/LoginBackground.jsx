@@ -7,7 +7,7 @@ export function LoginBackground() {
         <>
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <motion.div
-                    className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-3xl"
+                    className="absolute top-0 right-0 w-[500px] h-[500px] bg-info/20 rounded-full blur-3xl"
                     animate={{
                         scale: [1, 1.2, 1],
                         opacity: [0.3, 0.5, 0.3],
@@ -17,7 +17,7 @@ export function LoginBackground() {
                     transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <motion.div
-                    className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-600/15 rounded-full blur-3xl"
+                    className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-info/15 rounded-full blur-3xl"
                     animate={{
                         scale: [1, 1.3, 1],
                         opacity: [0.2, 0.4, 0.2],
@@ -27,7 +27,7 @@ export function LoginBackground() {
                     transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                 />
                 <motion.div
-                    className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-pink-600/10 rounded-full blur-3xl"
+                    className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl"
                     animate={{
                         scale: [1, 1.1, 1],
                         opacity: [0.15, 0.25, 0.15],

@@ -52,7 +52,7 @@ export default function PurchaseOrderInvoice() {
                     {po.status === 'PENDING' && (
                         <Button
                             onClick={() => setReceiveDialog(true)}
-                            className="gap-2 bg-green-600 hover:bg-green-700 text-white"
+                            className="gap-2 bg-success hover:bg-success text-white"
                         >
                             <CheckCircle size={18} /> استلام البضاعة
                         </Button>
@@ -217,7 +217,7 @@ export default function PurchaseOrderInvoice() {
                                 </Button>
                             </div>
                         </div>
-                        <div className="bg-slate-50 p-3 rounded text-sm text-slate-600">
+                        <div className="bg-muted50 p-3 rounded text-sm text-muted-foreground">
                             {paymentType === 'cash'
                                 ? 'سيتم خصم المبلغ من الخزينة وتسجيل قيد مصروفات.'
                                 : paymentType === 'wallet'
@@ -229,7 +229,7 @@ export default function PurchaseOrderInvoice() {
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setReceiveDialog(false)}>إلغاء</Button>
-                        <Button onClick={handleReceive} disabled={receiving} className="bg-green-600 hover:bg-green-700 text-white">
+                        <Button onClick={handleReceive} disabled={receiving} className="bg-success hover:bg-success text-white">
                             {receiving ? <Loader2 className="animate-spin" /> : 'تأكيد الاستلام'}
                         </Button>
                     </DialogFooter>

@@ -24,7 +24,7 @@ export function PageHeader({
                         <h1 className={cn(
                             "text-4xl md:text-5xl font-black tracking-tighter",
                             gradient
-                                ? "bg-gradient-to-r from-primary via-blue-400 to-primary bg-clip-text text-transparent"
+                                ? "bg-gradient-to-r from-primary via-info to-primary bg-clip-text text-transparent"
                                 : "text-foreground"
                         )}>
                             {title}

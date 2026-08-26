@@ -57,8 +57,8 @@ export default function SalesReturnsPage() {
                     className="space-y-1"
                 >
                     <div className="flex items-center gap-4">
-                        <div className="p-4 bg-amber-500/10 rounded-2xl shadow-inner border border-amber-500/20">
-                            <History className="h-8 w-8 text-amber-500" />
+                        <div className="p-4 bg-warning/10 rounded-2xl shadow-inner border border-warning/20">
+                            <History className="h-8 w-8 text-warning" />
                         </div>
                         <div>
                             <h1 className="text-3xl font-black tracking-tight text-foreground">مرتجع المبيعات</h1>
@@ -103,11 +103,11 @@ export default function SalesReturnsPage() {
             {/* Search Bar */}
             <div className="bg-card/50 backdrop-blur-xl p-3 border border-white/5 rounded-[2rem] shadow-custom-xl flex flex-col md:flex-row gap-4 sticky top-24 z-20">
                 <div className="relative flex-1 group">
-                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-amber-500 transition-colors h-5 w-5" />
+                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-warning transition-colors h-5 w-5" />
                     <Input
                         type="text"
                         placeholder="بحث برقم المرتجع أو رقم الفاتورة..."
-                        className="h-12 pr-12 text-lg bg-background border-white/5 focus-visible:ring-amber-500/20 rounded-xl transition-all font-bold"
+                        className="h-12 pr-12 text-lg bg-background border-white/5 focus-visible:ring-warning/20 rounded-xl transition-all font-bold"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -116,7 +116,7 @@ export default function SalesReturnsPage() {
 
             {/* List */}
             {isLoading ? (
-                <div className="flex justify-center py-20"><Loader2 className="animate-spin text-amber-500 w-10 h-10" /></div>
+                <div className="flex justify-center py-20"><Loader2 className="animate-spin text-warning w-10 h-10" /></div>
             ) : filteredReturns.length === 0 ? (
                 <div className="text-center py-20 opacity-50">
                     <RotateCcw className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
@@ -135,11 +135,11 @@ export default function SalesReturnsPage() {
                                 className="group"
                             >
                                 <Card className="bg-card border-white/5 rounded-[2rem] p-6 shadow-custom-md hover:shadow-custom-xl hover:bg-white/[0.02] transition-all duration-500 relative overflow-hidden flex flex-col md:flex-row md:items-center gap-6">
-                                    <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-amber-500/40 transition-all duration-500 group-hover:w-3" />
+                                    <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-warning/40 transition-all duration-500 group-hover:w-3" />
 
                                     {/* Number & Date */}
                                     <div className="flex items-center gap-5">
-                                        <div className="h-16 w-16 rounded-2xl bg-amber-500/10 flex items-center justify-center font-black text-amber-500 border border-amber-500/20 shadow-inner">
+                                        <div className="h-16 w-16 rounded-2xl bg-warning/10 flex items-center justify-center font-black text-warning border border-warning/20 shadow-inner">
                                             <span className="text-xs">#{ret.returnNumber.split('-')[1]?.slice(-5) || ret.returnNumber.slice(-5)}</span>
                                         </div>
                                         <div className="flex flex-col gap-1">
@@ -150,7 +150,7 @@ export default function SalesReturnsPage() {
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/20 px-3 py-1 rounded-full font-black text-xs uppercase">
+                                                <Badge className="bg-warning/10 text-warning border-warning/20 px-3 py-1 rounded-full font-black text-xs uppercase">
                                                     مرتجع مبيعات
                                                 </Badge>
                                             </div>
@@ -168,7 +168,7 @@ export default function SalesReturnsPage() {
                                                 <div key={i} className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-lg border border-white/5 text-xs font-bold">
                                                     <Package className="w-3 h-3 text-muted-foreground" />
                                                     <span>{it.productId?.name || it.productName || 'منتج'}</span>
-                                                    <span className="text-amber-500">×{it.qty}</span>
+                                                    <span className="text-warning">×{it.qty}</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -178,7 +178,7 @@ export default function SalesReturnsPage() {
                                     <div className="flex items-center justify-between md:justify-end gap-8 md:pl-4">
                                         <div className="text-left">
                                             <div className="flex items-baseline gap-2 justify-end">
-                                                <span className="text-2xl md:text-3xl font-black text-amber-500 tracking-tighter">
+                                                <span className="text-2xl md:text-3xl font-black text-warning tracking-tighter">
                                                     -{ret.totalRefund?.toLocaleString()}
                                                 </span>
                                                 <span className="text-xs font-black text-muted-foreground uppercase">EGP</span>
@@ -189,7 +189,7 @@ export default function SalesReturnsPage() {
                                                 </Badge>
                                             </div>
                                         </div>
-                                        <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center text-muted-foreground group-hover:bg-amber-500 group-hover:text-white transition-all shadow-xl">
+                                        <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center text-muted-foreground group-hover:bg-warning group-hover:text-white transition-all shadow-xl">
                                             <ArrowLeftRight className="w-5 h-5 rotate-180" />
                                         </div>
                                     </div>

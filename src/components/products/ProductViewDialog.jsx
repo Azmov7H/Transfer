@@ -14,7 +14,7 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                 <div className="relative h-32 bg-primary/10 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
                     <div className="absolute -right-10 -top-10 h-40 w-40 bg-primary/20 blur-3xl rounded-full" />
-                    <div className="absolute right-8 bottom-0 translate-y-1/2 p-4 bg-slate-900 rounded-3xl border border-white/10 shadow-2xl">
+                    <div className="absolute right-8 bottom-0 translate-y-1/2 p-4 bg-secondary rounded-3xl border border-white/10 shadow-2xl">
                         <Barcode className="h-12 w-12 text-primary" />
                     </div>
                 </div>
@@ -45,8 +45,8 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="p-6 bg-emerald-500/5 rounded-3xl border border-emerald-500/10 space-y-4">
-                            <h4 className="flex items-center gap-2 font-black text-emerald-500 text-xs uppercase tracking-widest">
+                        <div className="p-6 bg-success/5 rounded-3xl border border-success/10 space-y-4">
+                            <h4 className="flex items-center gap-2 font-black text-success text-xs uppercase tracking-widest">
                                 <Box className="h-4 w-4" /> حالة المخزون الحالية
                             </h4>
                             <div className="flex items-end justify-between">

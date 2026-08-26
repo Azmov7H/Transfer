@@ -41,15 +41,15 @@ export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
                     {/* Sales Profit Card */}
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-indigo-50 dark:bg-indigo-950/20 cursor-help">
+                            <Card className="border-none shadow-sm bg-info/10 dark:bg-info/20 cursor-help">
                                 <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
+                                    <CardTitle className="text-xs text-info dark:text-info flex items-center gap-1">
                                         <TrendingUp size={12} />
                                         أرباح المبيعات
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-indigo-700 dark:text-indigo-400">
+                                    <div className="text-xl font-bold text-info dark:text-info">
                                         {periodStats.salesProfit.toLocaleString()}
                                     </div>
                                 </CardContent>
@@ -61,15 +61,15 @@ export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
                     {/* Total Outstanding Debt */}
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-amber-50 dark:bg-amber-950/20 cursor-help">
+                            <Card className="border-none shadow-sm bg-warning/10 dark:bg-warning/20 cursor-help">
                                 <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                                    <CardTitle className="text-xs text-warning dark:text-warning flex items-center gap-1">
                                         <AlertTriangle size={12} />
                                         إجمالي المديونيات
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-amber-700 dark:text-amber-400">
+                                    <div className="text-xl font-bold text-warning dark:text-warning">
                                         {periodStats.totalDebt.toLocaleString()}
                                     </div>
                                 </CardContent>
@@ -81,12 +81,12 @@ export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
                     {/* Period Income */}
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-green-50 dark:bg-green-950/20 cursor-help">
+                            <Card className="border-none shadow-sm bg-success/10 dark:bg-success/20 cursor-help">
                                 <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-green-600 dark:text-green-400">إجمالي الإيرادات</CardTitle>
+                                    <CardTitle className="text-xs text-success dark:text-success">إجمالي الإيرادات</CardTitle>
                                 </CardHeader>
                                 <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-green-700 dark:text-green-400">
+                                    <div className="text-xl font-bold text-success dark:text-success">
                                         +{periodStats.income.toLocaleString()}
                                     </div>
                                 </CardContent>
@@ -98,12 +98,12 @@ export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
                     {/* Supplier Payments */}
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-orange-50 dark:bg-orange-950/20 cursor-help">
+                            <Card className="border-none shadow-sm bg-warning/10 dark:bg-warning/20 cursor-help">
                                 <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-orange-600 dark:text-orange-400">دفعات موردين</CardTitle>
+                                    <CardTitle className="text-xs text-warning dark:text-warning">دفعات موردين</CardTitle>
                                 </CardHeader>
                                 <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-orange-700 dark:text-orange-400">
+                                    <div className="text-xl font-bold text-warning dark:text-warning">
                                         -{periodStats.supplierPayments.toLocaleString()}
                                     </div>
                                 </CardContent>
@@ -115,12 +115,12 @@ export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
                     {/* Period Shop Expense */}
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-red-50 dark:bg-red-950/20 cursor-help">
+                            <Card className="border-none shadow-sm bg-destructive/10 dark:bg-destructive/20 cursor-help">
                                 <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-red-600 dark:text-red-400">مصروفات عامة</CardTitle>
+                                    <CardTitle className="text-xs text-destructive dark:text-destructive">مصروفات عامة</CardTitle>
                                 </CardHeader>
                                 <CardContent className="px-4 pb-4">
-                                    <div className="text-xl font-bold text-red-700 dark:text-red-400">
+                                    <div className="text-xl font-bold text-destructive dark:text-destructive">
                                         -{periodStats.shopExpenses.toLocaleString()}
                                     </div>
                                 </CardContent>
@@ -132,12 +132,12 @@ export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
                     {/* Period Net */}
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Card className="border-none shadow-sm bg-blue-50 dark:bg-blue-950/20 cursor-help">
+                            <Card className="border-none shadow-sm bg-info/10 dark:bg-info/20 cursor-help">
                                 <CardHeader className="pb-1 pt-4 px-4">
-                                    <CardTitle className="text-xs text-blue-600 dark:text-blue-400">صافي الفترة</CardTitle>
+                                    <CardTitle className="text-xs text-info dark:text-info">صافي الفترة</CardTitle>
                                 </CardHeader>
                                 <CardContent className="px-4 pb-4">
-                                    <div className={`text-xl font-bold ${periodStats.net >= 0 ? 'text-blue-700 dark:text-blue-400' : 'text-red-700 dark:text-red-400'}`}>
+                                    <div className={`text-xl font-bold ${periodStats.net >= 0 ? 'text-info dark:text-info' : 'text-destructive dark:text-destructive'}`}>
                                         {periodStats.net.toLocaleString()}
                                     </div>
                                 </CardContent>

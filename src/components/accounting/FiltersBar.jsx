@@ -41,7 +41,7 @@ export function FiltersBar({ filters, setFilters, onReset, onExport, totalEntrie
 
                     <Button
                         onClick={onExport}
-                        className="h-14 px-6 rounded-2xl font-black text-sm bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 gap-2"
+                        className="h-14 px-6 rounded-2xl font-black text-sm bg-success hover:bg-success text-white shadow-lg shadow-success/20 gap-2"
                     >
                         <Download className="w-4 h-4" />
                         تصدير ({totalEntries})
@@ -51,7 +51,7 @@ export function FiltersBar({ filters, setFilters, onReset, onExport, totalEntrie
                         <Button
                             variant="ghost"
                             onClick={onReset}
-                            className="h-14 px-4 rounded-2xl font-black text-sm text-rose-500 hover:bg-rose-500/10"
+                            className="h-14 px-4 rounded-2xl font-black text-sm text-destructive hover:bg-destructive/10"
                         >
                             <X className="w-4 h-4" />
                         </Button>

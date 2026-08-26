@@ -76,7 +76,7 @@ export function GeneralSettingsTab({ settings, onChange }) {
                                             const newPhones = settings.additionalPhones.filter((_, i) => i !== idx);
                                             set({ additionalPhones: newPhones });
                                         }}
-                                        className="h-11 w-11 rounded-xl text-red-500 hover:bg-red-50 hover:text-red-700"
+                                        className="h-11 w-11 rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive"
                                     >
                                         <Trash2 size={18} />
                                     </Button>

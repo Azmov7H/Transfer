@@ -79,8 +79,8 @@ export function SalesChart({ dailyBreakdown }) {
                             paddingBottom: 12,
                         }}
                     />
-                    <Bar dataKey="المبيعات" fill="url(#salesBarGradient)" stroke="rgba(59, 130, 246, 1)" strokeWidth={2} radius={[12, 12, 0, 0]} />
-                    <Bar dataKey="الأرباح" fill="url(#profitBarGradient)" stroke="rgba(16, 185, 129, 1)" strokeWidth={2} radius={[12, 12, 0, 0]} />
+                    <Bar dataKey="المبيعات" fill="url(#salesBarGradient)" stroke="hsl(var(--info))" strokeWidth={2} radius={[12, 12, 0, 0]} />
+                    <Bar dataKey="الأرباح" fill="url(#profitBarGradient)" stroke="hsl(var(--success))" strokeWidth={2} radius={[12, 12, 0, 0]} />
                 </BarChart>
             </ResponsiveContainer>
         </div>

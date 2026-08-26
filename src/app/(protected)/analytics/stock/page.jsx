@@ -77,7 +77,7 @@ export default function StockAnalyticsPage() {
                         <CardTitle className="text-sm font-medium text-muted-foreground">منتجات منخفضة</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl md:text-3xl font-bold flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                        <div className="text-2xl md:text-3xl font-bold flex items-center gap-2 text-warning dark:text-warning">
                             {metrics.lowStockCount} <AlertTriangle size={20} />
                         </div>
                     </CardContent>
@@ -115,7 +115,7 @@ export default function StockAnalyticsPage() {
                             <TableBody>
                                 {lowStockItems.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={4} className="text-center py-8 text-green-600 dark:text-green-400 font-semibold">
+                                        <TableCell colSpan={4} className="text-center py-8 text-success dark:text-success font-semibold">
                                             المخزون بوضع ممتاز ✓
                                         </TableCell>
                                     </TableRow>

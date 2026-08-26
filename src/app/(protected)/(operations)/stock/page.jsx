@@ -152,7 +152,7 @@ export default function StockPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8" dir="rtl">
+    <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8" dir="rtl">
       {/* Dynamic Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <motion.div
@@ -164,7 +164,7 @@ export default function StockPage() {
             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20 shadow-lg shadow-primary/5">
               <History className="w-8 h-8 text-primary animate-spin-slow" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tighter bg-gradient-to-r from-primary via-blue-400 to-primary bg-clip-text text-transparent animate-gradient-x">
+            <h1 className="text-4xl md:text-5xl font-black tracking-tighter bg-gradient-to-r from-primary via-info to-primary bg-clip-text text-transparent animate-gradient-x">
               لوحة تحكم المخزون
             </h1>
           </div>
@@ -181,7 +181,7 @@ export default function StockPage() {
           </div>
           <div className="w-px h-10 bg-white/10" />
           <div className="flex flex-col items-end">
-            <span className="text-xs font-black text-emerald-500 uppercase tracking-[0.2em]">حالة النظام</span>
+            <span className="text-xs font-black text-success uppercase tracking-[0.2em]">حالة النظام</span>
             <span className="text-xl font-bold">متصل ومؤمن</span>
           </div>
         </div>
@@ -195,7 +195,7 @@ export default function StockPage() {
             description="تسجيل بضاعة واصلة أو مشتريات جديدة يدوياً لزيادة الأرصدة."
             icon={TrendingUp}
             onClick={() => setIsDialogOpen(true)}
-            color="from-emerald-500/20 to-emerald-600/5"
+            color="from-success/20 to-success/5"
             delay={0.1}
           />
           <StockActionCard
@@ -203,7 +203,7 @@ export default function StockPage() {
             description="تسجيل بضاعة منصرفة أو مبيعات يدوية لخصمها من الأرصدة."
             icon={TrendingDown}
             onClick={() => setIsDialogOpen(true)}
-            color="from-rose-500/20 to-rose-600/5"
+            color="from-destructive/20 to-destructive/5"
             delay={0.2}
           />
           <StockActionCard
@@ -211,7 +211,7 @@ export default function StockPage() {
             description="نقل المخزون بين المحل والمخزن بشكل رسمي لتتبع المواقع."
             icon={ArrowLeftRight}
             onClick={() => setIsDialogOpen(true)}
-            color="from-blue-500/20 to-blue-600/5"
+            color="from-info/20 to-info/5"
             delay={0.3}
           />
         </div>
@@ -234,8 +234,8 @@ export default function StockPage() {
                 اتجاهات الحركة (آخر 7 أيام)
               </h2>
               <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500" /> وارد</div>
-                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-rose-500" /> صادر</div>
+                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-success" /> وارد</div>
+                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-destructive" /> صادر</div>
               </div>
             </div>
             <div className="h-[300px]" dir="ltr">
@@ -268,10 +268,10 @@ export default function StockPage() {
         {/* Summary Stats */}
         <div className="grid grid-cols-1 gap-6">
           {[
-            { label: 'إجمالي العمليات', value: stats.total, icon: Layers, color: 'text-blue-400' },
-            { label: 'إجمالي الوارد', value: stats.in, icon: TrendingUp, color: 'text-emerald-400' },
-            { label: 'إجمالي الصادر', value: stats.out, icon: TrendingDown, color: 'text-rose-400' },
-            { label: 'التحويلات', value: stats.transfers, icon: ArrowLeftRight, color: 'text-amber-400' },
+            { label: 'إجمالي العمليات', value: stats.total, icon: Layers, color: 'text-info' },
+            { label: 'إجمالي الوارد', value: stats.in, icon: TrendingUp, color: 'text-success' },
+            { label: 'إجمالي الصادر', value: stats.out, icon: TrendingDown, color: 'text-destructive' },
+            { label: 'التحويلات', value: stats.transfers, icon: ArrowLeftRight, color: 'text-warning' },
           ].map((stat, i) => (
             <motion.div
               key={i}
@@ -334,7 +334,7 @@ export default function StockPage() {
       >
         <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+            <div className="w-3 h-3 rounded-full bg-success animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
             <h2 className="text-2xl font-black tracking-tight">سجل الحركات الأخير</h2>
           </div>
           <Badge className="bg-primary/20 text-primary border-primary/20 hover:bg-primary/30 font-black px-4 py-1.5 rounded-full text-xs">

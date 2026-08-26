@@ -158,11 +158,11 @@ export function JournalEntriesTab({ filters }) {
                                         </div>
                                         <div className="flex flex-wrap gap-x-8 gap-y-2">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+                                                <div className="w-1.5 h-1.5 rounded-full bg-info/100 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
                                                 <span className="text-xs font-bold text-white/40 tracking-tight">{entry.debitAccount}</span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                                                <div className="w-1.5 h-1.5 rounded-full bg-success shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                                                 <span className="text-xs font-bold text-white/40 tracking-tight">{entry.creditAccount}</span>
                                             </div>
                                         </div>
@@ -171,7 +171,7 @@ export function JournalEntriesTab({ filters }) {
                                     <div className="flex items-center justify-end gap-6 pl-6 border-r border-white/5">
                                         <div className="text-right">
                                             <div className="text-2xl font-black tracking-tighter tabular-nums">{entry.amount.toLocaleString()}</div>
-                                            <div className="text-xs font-black text-emerald-500 uppercase tracking-widest opacity-50">EGP</div>
+                                            <div className="text-xs font-black text-success uppercase tracking-widest opacity-50">EGP</div>
                                         </div>
                                     </div>
                                 </div>

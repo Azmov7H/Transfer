@@ -25,10 +25,10 @@ import { DebtEditDialog } from './DebtEditDialog';
 import { useState } from 'react';
 
 const STATUS_STYLES = {
-    active: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-    overdue: 'bg-rose-500/10 text-rose-500 border-rose-500/20',
-    settled: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-    'written-off': 'bg-gray-500/10 text-gray-500 border-gray-500/20',
+    active: 'bg-info/100/10 text-info border-info/20',
+    overdue: 'bg-destructive/10 text-destructive border-destructive/20',
+    settled: 'bg-success/10 text-success border-success/20',
+    'written-off': 'bg-muted500/10 text-muted-foreground border-border/20',
 };
 
 const STATUS_LABELS = {
@@ -140,7 +140,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                                         </DropdownMenuItem>
 
                                         <DropdownMenuItem
-                                            className="gap-2 p-3 rounded-xl cursor-pointer font-bold text-amber-500 focus:text-amber-500 focus:bg-amber-500/10 transition-colors"
+                                            className="gap-2 p-3 rounded-xl cursor-pointer font-bold text-warning focus:text-warning focus:bg-warning/10 transition-colors"
                                             onClick={() => handleEditDebt(debt)}
                                         >
                                             <Edit2 size={16} /> تعديل المبالغ
@@ -156,7 +156,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                                                 </DropdownMenuItem>
 
                                                 <DropdownMenuItem
-                                                    className="gap-2 p-3 rounded-xl cursor-pointer font-bold text-emerald-500 focus:text-emerald-500 focus:bg-emerald-500/10 transition-colors"
+                                                    className="gap-2 p-3 rounded-xl cursor-pointer font-bold text-success focus:text-success focus:bg-success/10 transition-colors"
                                                     onClick={() => onRecordPayment(debt)}
                                                 >
                                                     <ArrowUpRight size={16} /> تسجيل دفعة سداد
@@ -164,7 +164,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
 
                                                 {debt.debtorType === 'Customer' && (
                                                     <DropdownMenuItem
-                                                        className="gap-2 p-3 rounded-xl cursor-pointer font-bold text-blue-500 focus:text-blue-500 focus:bg-blue-500/10 transition-colors"
+                                                        className="gap-2 p-3 rounded-xl cursor-pointer font-bold text-info focus:text-info focus:bg-info/100/10 transition-colors"
                                                         onClick={() => onUnifiedCollection(debt)}
                                                     >
                                                         <Coins size={16} /> تحصيل من الرصيد الإجمالي

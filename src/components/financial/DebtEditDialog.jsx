@@ -88,12 +88,12 @@ export function DebtEditDialog({ open, onOpenChange, debt }) {
                         </div>
                     </div>
 
-                    <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/10 flex justify-between items-center">
-                        <div className="flex items-center gap-2 text-blue-600">
+                    <div className="p-4 rounded-2xl bg-info/100/5 border border-info/10 flex justify-between items-center">
+                        <div className="flex items-center gap-2 text-info">
                             <Calculator size={18} />
                             <span className="text-xs font-black">المبلغ المتبقي (محسوب تلقائياً)</span>
                         </div>
-                        <span className="text-xl font-black text-blue-600 font-mono">
+                        <span className="text-xl font-black text-info font-mono">
                             {(parseFloat(formData.originalAmount) - collectedAmount).toLocaleString()} <span className="text-xs">د.ل</span>
                         </span>
                     </div>

@@ -16,21 +16,21 @@ import { ar } from 'date-fns/locale';
 const NOTIFICATION_TYPES = {
     CRITICAL: {
         icon: AlertCircle,
-        color: 'text-red-500',
-        borderColor: 'border-red-500/20',
-        bgAccent: 'bg-red-500/[0.02]'
+        color: 'text-destructive',
+        borderColor: 'border-destructive/20',
+        bgAccent: 'bg-destructive/[0.02]'
     },
     WARNING: {
         icon: AlertTriangle,
-        color: 'text-amber-500',
-        borderColor: 'border-amber-500/20',
-        bgAccent: 'bg-amber-500/[0.02]'
+        color: 'text-warning',
+        borderColor: 'border-warning/20',
+        bgAccent: 'bg-warning/[0.02]'
     },
     SUCCESS: {
         icon: CheckCircle2,
-        color: 'text-emerald-500',
-        borderColor: 'border-emerald-500/20',
-        bgAccent: 'bg-emerald-500/[0.02]'
+        color: 'text-success',
+        borderColor: 'border-success/20',
+        bgAccent: 'bg-success/[0.02]'
     },
     INFO: {
         icon: Info,

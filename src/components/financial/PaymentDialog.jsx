@@ -99,7 +99,7 @@ export function PaymentDialog({ open, onOpenChange, debt, targetInstallmentId })
                                     </div>
                                     <div className="text-xs text-muted-foreground font-bold mt-2 pt-2 border-t border-primary/10 flex justify-between items-center">
                                         <span>{debt.debtorId?.name} • {debt.referenceType === 'Invoice' ? 'فاتورة' : 'أمر شراء'}</span>
-                                        <span className="text-rose-500 bg-rose-500/5 px-2 py-0.5 rounded-full border border-rose-500/10 font-black">إجمالي المتبقي: {formatCurrency(debt.remainingAmount)}</span>
+                                        <span className="text-destructive bg-destructive/5 px-2 py-0.5 rounded-full border border-destructive/10 font-black">إجمالي المتبقي: {formatCurrency(debt.remainingAmount)}</span>
                                     </div>
                                 </>
                             )

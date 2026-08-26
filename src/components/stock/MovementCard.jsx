@@ -14,14 +14,14 @@ import { cn } from '@/utils';
 /** Shared movement-type badge used by both desktop rows and mobile cards. */
 export const MovementTypeBadge = ({ type }) => {
     const variants = {
-        'IN': { variant: "default", label: 'إدخال (شراء)', className: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", icon: TrendingUp },
-        'OUT': { variant: "destructive", label: 'إخراج', className: "bg-red-500/10 text-red-500 border-red-500/20", icon: TrendingDown },
-        'TRANSFER_TO_SHOP': { variant: "secondary", label: 'تحويل للمحل', className: "bg-blue-500/10 text-blue-500 border-blue-500/20", icon: ArrowLeftRight },
-        'TRANSFER_TO_WAREHOUSE': { variant: "outline", label: 'إرجاع للمخزن', className: "bg-indigo-500/10 text-indigo-500 border-indigo-500/20", icon: ArrowLeftRight },
-        'ADJUST': { variant: "outline", label: 'تسوية جردية', className: "bg-amber-500/10 text-amber-500 border-amber-500/20", icon: Layers },
+        'IN': { variant: "default", label: 'إدخال (شراء)', className: "bg-success/10 text-success border-success/20", icon: TrendingUp },
+        'OUT': { variant: "destructive", label: 'إخراج', className: "bg-destructive/10 text-destructive border-destructive/20", icon: TrendingDown },
+        'TRANSFER_TO_SHOP': { variant: "secondary", label: 'تحويل للمحل', className: "bg-info/100/10 text-info border-info/20", icon: ArrowLeftRight },
+        'TRANSFER_TO_WAREHOUSE': { variant: "outline", label: 'إرجاع للمخزن', className: "bg-info/100/10 text-info border-info/20", icon: ArrowLeftRight },
+        'ADJUST': { variant: "outline", label: 'تسوية جردية', className: "bg-warning/10 text-warning border-warning/20", icon: Layers },
     };
 
-    const config = variants[type] || { variant: "default", label: type, className: "bg-slate-500/10 text-slate-500", icon: Package };
+    const config = variants[type] || { variant: "default", label: type, className: "bg-muted500/10 text-muted-foreground", icon: Package };
     const Icon = config.icon;
 
     return (

@@ -28,37 +28,37 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                 return {
                     label: 'دفع بنكي',
                     icon: Landmark,
-                    color: "bg-blue-500/5 text-blue-500 border-blue-500/20 shadow-blue-500/5",
-                    accent: "bg-blue-500"
+                    color: "bg-info/100/5 text-info border-info/20 shadow-blue-500/5",
+                    accent: "bg-info/100"
                 };
             case 'wallet':
                 return {
                     label: 'محفظة',
                     icon: Wallet,
-                    color: "bg-purple-500/5 text-purple-500 border-purple-500/20 shadow-purple-500/5",
-                    accent: "bg-purple-500"
+                    color: "bg-info/100/5 text-info border-info/20 shadow-purple-500/5",
+                    accent: "bg-info/100"
                 };
             case 'check':
                 return {
                     label: 'شيك',
                     icon: Ticket,
-                    color: "bg-indigo-500/5 text-indigo-500 border-indigo-500/20 shadow-indigo-500/5",
-                    accent: "bg-indigo-500"
+                    color: "bg-info/100/5 text-info border-info/20 shadow-indigo-500/5",
+                    accent: "bg-info/100"
                 };
             case 'credit':
                 return {
                     label: 'دفع آجل',
                     icon: CreditCard,
-                    color: "bg-amber-500/5 text-amber-500 border-amber-500/20 shadow-amber-500/5",
-                    accent: "bg-amber-500"
+                    color: "bg-warning/5 text-warning border-warning/20 shadow-warning/5",
+                    accent: "bg-warning"
                 };
             case 'cash':
             default:
                 return {
                     label: 'دفع نقدي',
                     icon: Banknote,
-                    color: "bg-emerald-500/5 text-emerald-500 border-emerald-500/20 shadow-emerald-500/5",
-                    accent: "bg-emerald-500"
+                    color: "bg-success/5 text-success border-success/20 shadow-success/5",
+                    accent: "bg-success"
                 };
         }
     };
@@ -100,7 +100,7 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                             <span className="flex items-center gap-2"><PaymentIcon size={12} /> {display.label}</span>
                         </Badge>
                         {invoice.hasReturns && (
-                            <Badge variant="outline" className="px-4 py-1 rounded-full font-black text-xs uppercase tracking-widest bg-rose-500/5 text-rose-500 border-rose-500/20 shadow-lg shadow-rose-500/5">
+                            <Badge variant="outline" className="px-4 py-1 rounded-full font-black text-xs uppercase tracking-widest bg-destructive/5 text-destructive border-destructive/20 shadow-lg shadow-destructive/5">
                                 <ArrowRightLeft size={12} className="ml-2" />
                                 مرتجع
                             </Badge>
@@ -155,7 +155,7 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                             e.stopPropagation();
                             setConfirmDeleteOpen(true);
                         }}
-                        className="h-12 w-12 rounded-2xl hover:bg-rose-500/10 text-white/10 hover:text-rose-500 transition-all duration-300 md:opacity-0 md:group-hover:opacity-100"
+                        className="h-12 w-12 rounded-2xl hover:bg-destructive/10 text-white/10 hover:text-destructive transition-all duration-300 md:opacity-0 md:group-hover:opacity-100"
                     >
                         <Trash2 size={20} />
                     </Button>

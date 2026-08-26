@@ -76,7 +76,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                     {/* Operation Type Selector */}
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-transparent rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                        <div className="relative bg-slate-900/40 backdrop-blur-xl p-6 rounded-[1.5rem] border border-white/10 space-y-4">
+                        <div className="relative bg-foreground/1040 backdrop-blur-xl p-6 rounded-[1.5rem] border border-white/10 space-y-4">
                             <div className="flex items-center justify-between">
                                 <Label className="text-sm font-black text-primary uppercase tracking-widest flex items-center gap-2">
                                     <Layers size={14} className="opacity-50" />
@@ -89,10 +89,10 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                 value={formData.type}
                                 onChange={e => setFormData({ ...formData, type: e.target.value })}
                             >
-                                <option value="IN" className="bg-slate-800">وارد: شراء / توريد (للمخزن)</option>
-                                <option value="OUT" className="bg-slate-800">صادر: صرف / تالف (من المخزن)</option>
-                                <option value="TRANSFER_TO_SHOP" className="bg-slate-800">تحويل: من المخزن للمحل</option>
-                                <option value="TRANSFER_TO_WAREHOUSE" className="bg-slate-800">إرجاع: من المحل للمخزن</option>
+                                <option value="IN" className="bg-secondary">وارد: شراء / توريد (للمخزن)</option>
+                                <option value="OUT" className="bg-secondary">صادر: صرف / تالف (من المخزن)</option>
+                                <option value="TRANSFER_TO_SHOP" className="bg-secondary">تحويل: من المخزن للمحل</option>
+                                <option value="TRANSFER_TO_WAREHOUSE" className="bg-secondary">إرجاع: من المحل للمخزن</option>
                             </select>
                         </div>
                     </div>
@@ -211,7 +211,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                                 variant="ghost"
                                                 size="icon"
                                                 aria-label="إزالة الصنف"
-                                                className="h-11 w-11 text-red-400 hover:bg-red-500/10 rounded-xl hover:text-red-500 transition-all active:scale-90"
+                                                className="h-11 w-11 text-destructive hover:bg-destructive/10 rounded-xl hover:text-destructive transition-all active:scale-90"
                                                 onClick={() => handleRemoveItem(index)}
                                             >
                                                 <Trash2 size={20} />

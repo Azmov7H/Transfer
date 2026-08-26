@@ -194,7 +194,7 @@ export default function NewInvoicePage() {
                         className={cn(
                             "px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2",
                             defaultSource === 'shop'
-                                ? "bg-emerald-500/10 text-emerald-500 shadow-sm"
+                                ? "bg-success/10 text-success shadow-sm"
                                 : "text-muted-foreground hover:bg-white/5"
                         )}
                     >
@@ -206,7 +206,7 @@ export default function NewInvoicePage() {
                         className={cn(
                             "px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2",
                             defaultSource === 'warehouse'
-                                ? "bg-blue-500/10 text-blue-500 shadow-sm"
+                                ? "bg-info/100/10 text-info shadow-sm"
                                 : "text-muted-foreground hover:bg-white/5"
                         )}
                     >
@@ -274,10 +274,10 @@ export default function NewInvoicePage() {
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="flex justify-between items-center p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500"
+                                className="flex justify-between items-center p-4 rounded-2xl bg-success/10 border border-success/20 text-success"
                             >
                                 <div className="flex items-center gap-2">
-                                    <div className="p-1.5 bg-emerald-500/20 rounded-lg">
+                                    <div className="p-1.5 bg-success/20 rounded-lg">
                                         <Wallet className="w-4 h-4" />
                                     </div>
                                     <span className="font-black">خصم رصيد سابق:</span>
@@ -296,7 +296,7 @@ export default function NewInvoicePage() {
                                     className={cn(
                                         "h-14 rounded-2xl font-black transition-all border-2",
                                         paymentType === 'cash'
-                                            ? "bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-500/20 border-emerald-500/50"
+                                            ? "bg-success hover:bg-success shadow-lg shadow-success/20 border-success/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
                                     )}
                                 >
@@ -310,7 +310,7 @@ export default function NewInvoicePage() {
                                     className={cn(
                                         "h-14 rounded-2xl font-black transition-all border-2",
                                         paymentType === 'bank'
-                                            ? "bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20 border-blue-500/50"
+                                            ? "bg-info hover:bg-info shadow-lg shadow-blue-500/20 border-info/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
                                     )}
                                 >
@@ -324,7 +324,7 @@ export default function NewInvoicePage() {
                                     className={cn(
                                         "h-14 rounded-2xl font-black transition-all border-2",
                                         paymentType === 'wallet'
-                                            ? "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/20 border-purple-500/50"
+                                            ? "bg-info hover:bg-info shadow-lg shadow-purple-500/20 border-info/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
                                     )}
                                 >
@@ -338,7 +338,7 @@ export default function NewInvoicePage() {
                                     className={cn(
                                         "h-14 rounded-2xl font-black transition-all border-2",
                                         paymentType === 'check'
-                                            ? "bg-slate-600 hover:bg-slate-700 shadow-lg shadow-slate-500/20 border-slate-500/50"
+                                            ? "bg-secondary hover:bg-secondary shadow-lg shadow-slate-500/20 border-border/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
                                     )}
                                 >
@@ -352,7 +352,7 @@ export default function NewInvoicePage() {
                                     className={cn(
                                         "h-14 rounded-2xl font-black transition-all border-2",
                                         paymentType === 'credit'
-                                            ? "bg-amber-600 hover:bg-amber-700 shadow-lg shadow-amber-500/20 border-amber-500/50"
+                                            ? "bg-warning hover:bg-warning shadow-lg shadow-warning/20 border-warning/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
                                     )}
                                 >
@@ -418,18 +418,18 @@ export default function NewInvoicePage() {
             {/* Shortage Reporting Dialog */}
             <Dialog open={shortageDialog.open} onOpenChange={(open) => { if (!open) setShortageDialog({ ...shortageDialog, open: false }); }}>
                 <DialogContent className="sm:max-w-[425px] glass-card border-white/10 p-0 rounded-[2rem] overflow-hidden" dir="rtl">
-                    <div className="bg-red-600 p-6 text-white text-center">
+                    <div className="bg-destructive p-6 text-white text-center">
                         <DialogHeader>
                             <div className="mx-auto w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-3 text-white backdrop-blur-md">
                                 <AlertTriangle className="h-7 w-7" />
                             </div>
                             <DialogTitle className="text-xl font-black">تنبيه: الكمية غير متوفرة</DialogTitle>
-                            <DialogDescription className="text-red-100 font-medium">
+                            <DialogDescription className="text-destructive font-medium">
                                 المنتج <strong>{shortageDialog.product?.name}</strong> غير متوفر حالياً في المحل.
                             </DialogDescription>
                         </DialogHeader>
                     </div>
-                    <div className="p-6 space-y-4 bg-slate-900">
+                    <div className="p-6 space-y-4 bg-secondary">
                         <p className="text-sm text-muted-foreground font-medium">هل تود إبلاغ المالك ومدير المخزن عن هذا النقص؟</p>
                         <div className="space-y-2">
                             <Label className="font-bold">ملاحظات إضافية (اختياري)</Label>
@@ -441,7 +441,7 @@ export default function NewInvoicePage() {
                             />
                         </div>
                     </div>
-                    <DialogFooter className="p-6 pt-0 bg-slate-900 gap-3">
+                    <DialogFooter className="p-6 pt-0 bg-secondary gap-3">
                         <Button
                             variant="outline"
                             onClick={() => setShortageDialog({ ...shortageDialog, open: false })}
@@ -451,7 +451,7 @@ export default function NewInvoicePage() {
                         </Button>
                         <Button
                             onClick={handleReportShortage}
-                            className="flex-1 h-11 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold"
+                            className="flex-1 h-11 rounded-xl bg-destructive hover:bg-destructive text-white font-bold"
                         >
                             إبلاغ عن نقص
                         </Button>

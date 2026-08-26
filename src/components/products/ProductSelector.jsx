@@ -155,14 +155,14 @@ export function ProductSelector({
                                                     </Badge>
                                                     <div className="flex justify-center gap-2 text-xs">
                                                         <Badge variant="outline" className={cn(
-                                                            "bg-emerald-500/10 text-emerald-600 border-emerald-200 flex items-center gap-1",
+                                                            "bg-success/10 text-success border-success/30 flex items-center gap-1",
                                                             shopQty <= 0 && "opacity-50 grayscale"
                                                         )}>
                                                             <Store className="w-3 h-3" />
                                                             {shopQty}
                                                         </Badge>
                                                         <Badge variant="outline" className={cn(
-                                                            "bg-blue-500/10 text-blue-600 border-blue-200 flex items-center gap-1",
+                                                            "bg-info/100/10 text-info border-info/30 flex items-center gap-1",
                                                             warehouseQty <= 0 && "opacity-50 grayscale"
                                                         )}>
                                                             <Warehouse className="w-3 h-3" />

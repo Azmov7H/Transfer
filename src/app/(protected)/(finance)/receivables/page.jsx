@@ -85,7 +85,7 @@ export default function ReceivablesPage() {
         },
         onSuccess: (res) => {
             toast.success('تم تسجيل الدفعة بنجاح', {
-                icon: <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                icon: <CheckCircle2 className="h-4 w-4 text-success" />
             });
             setIsPaymentOpen(false);
             setPaymentAmount('');
@@ -133,7 +133,7 @@ export default function ReceivablesPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900/20 space-y-8 p-6" dir="rtl">
+        <div className="min-h-screen bg-foreground/1020 space-y-8 p-6" dir="rtl">
             {/* Header Area */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <motion.div
@@ -142,8 +142,8 @@ export default function ReceivablesPage() {
                     className="space-y-1"
                 >
                     <div className="flex items-center gap-3">
-                        <div className="p-3 bg-red-500/10 rounded-2xl">
-                            <Wallet className="h-8 w-8 text-red-500" />
+                        <div className="p-3 bg-destructive/10 rounded-2xl">
+                            <Wallet className="h-8 w-8 text-destructive" />
                         </div>
                         <div>
                             <h1 className="text-3xl font-black text-foreground tracking-tight">
@@ -161,15 +161,15 @@ export default function ReceivablesPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="glass-card p-6 rounded-[2rem] border border-red-500/10 bg-red-500/5 relative overflow-hidden group"
+                    className="glass-card p-6 rounded-[2rem] border border-destructive/10 bg-destructive/5 relative overflow-hidden group"
                 >
-                    <div className="absolute right-0 top-0 w-32 h-32 bg-red-500/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:bg-red-500/20 transition-all duration-500" />
+                    <div className="absolute right-0 top-0 w-32 h-32 bg-destructive/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:bg-destructive/20 transition-all duration-500" />
                     <div className="relative z-10">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="p-2.5 rounded-xl bg-red-500/10 text-red-500">
+                            <div className="p-2.5 rounded-xl bg-destructive/10 text-destructive">
                                 <TrendingDown className="h-5 w-5" />
                             </div>
-                            <h3 className="text-sm font-bold text-red-500/80 uppercase tracking-wider">إجمالي الديون</h3>
+                            <h3 className="text-sm font-bold text-destructive/80 uppercase tracking-wider">إجمالي الديون</h3>
                         </div>
                         <div className="flex items-baseline gap-1">
                             <span className="text-4xl font-black text-foreground">{data?.totalReceivables?.toLocaleString()}</span>
@@ -200,10 +200,10 @@ export default function ReceivablesPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="glass-card p-6 rounded-[2rem] border border-white/10 group hover:border-amber-500/20 transition-all"
+                    className="glass-card p-6 rounded-[2rem] border border-white/10 group hover:border-warning/20 transition-all"
                 >
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-500">
+                        <div className="p-2.5 rounded-xl bg-warning/10 text-warning">
                             <AlertCircle className="h-5 w-5" />
                         </div>
                         <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">متأخرة السداد</h3>
@@ -244,7 +244,7 @@ export default function ReceivablesPage() {
                         className="glass-card p-12 rounded-[2.5rem] text-center border border-white/10 flex flex-col items-center gap-6"
                     >
                         <div className="h-24 w-24 bg-white/5 rounded-full flex items-center justify-center">
-                            <CheckCircle2 className="h-10 w-10 text-emerald-500 opacity-50" />
+                            <CheckCircle2 className="h-10 w-10 text-success opacity-50" />
                         </div>
                         <div>
                             <h3 className="text-xl font-black">لا توجد ديون مستحقة</h3>
@@ -267,7 +267,7 @@ export default function ReceivablesPage() {
                                         transition={{ delay: i * 0.05 }}
                                         className="glass-card p-5 rounded-[2rem] border border-white/5 hover:bg-white/5 transition-all group relative overflow-hidden"
                                     >
-                                        <div className="absolute top-0 right-0 w-1 h-full bg-red-500/50" />
+                                        <div className="absolute top-0 right-0 w-1 h-full bg-destructive/50" />
 
                                         <div className="flex flex-col lg:flex-row lg:items-center gap-6">
                                             {/* Client Info */}
@@ -294,7 +294,7 @@ export default function ReceivablesPage() {
                                                             {inv.number}
                                                         </button>
                                                         {inv.dueDate && (
-                                                            <span className={cn("flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-bold", isOverdue ? "bg-red-500/10 text-red-500" : "bg-white/5 text-muted-foreground")}>
+                                                            <span className={cn("flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-bold", isOverdue ? "bg-destructive/10 text-destructive" : "bg-white/5 text-muted-foreground")}>
                                                                 <Calendar className="h-3.5 w-3.5" />
                                                                 {format(new Date(inv.dueDate), 'dd MMM', { locale: ar })}
                                                             </span>
@@ -311,11 +311,11 @@ export default function ReceivablesPage() {
                                                 </div>
                                                 <div className="text-center">
                                                     <p className="text-xs font-bold text-muted-foreground uppercase opacity-60 mb-1">المدفوع</p>
-                                                    <p className="font-bold font-mono text-emerald-500">{inv.paidAmount.toLocaleString()}</p>
+                                                    <p className="font-bold font-mono text-success">{inv.paidAmount.toLocaleString()}</p>
                                                 </div>
                                                 <div className="text-center relative">
-                                                    <p className="text-xs font-bold text-red-500 uppercase opacity-80 mb-1">المتبقي</p>
-                                                    <p className="text-2xl font-black font-mono text-red-500">{remaining.toLocaleString()}</p>
+                                                    <p className="text-xs font-bold text-destructive uppercase opacity-80 mb-1">المتبقي</p>
+                                                    <p className="text-2xl font-black font-mono text-destructive">{remaining.toLocaleString()}</p>
                                                 </div>
                                             </div>
 
@@ -341,7 +341,7 @@ export default function ReceivablesPage() {
             {/* Premium Payment Dialog */}
             <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
                 <DialogContent className="sm:max-w-[480px]  border-white/10 p-0 rounded-[2.5rem] overflow-hidden" dir="rtl">
-                    <div className="bg-slate-900 p-6 border-b border-white/10">
+                    <div className="bg-secondary p-6 border-b border-white/10">
                         <DialogHeader>
                             <DialogTitle className="text-xl font-black flex items-center gap-2">
                                 <span className="p-2 rounded-xl bg-primary/10 text-primary"><Wallet className="h-5 w-5" /></span>
@@ -353,12 +353,12 @@ export default function ReceivablesPage() {
                         </DialogHeader>
                     </div>
 
-                    <div className="p-6 space-y-6 bg-gradient-to-b from-slate-900 to-slate-900/95">
+                    <div className="p-6 space-y-6 bg-gradient-to-b from-foreground to-foreground/95">
                         {/* Short Info */}
                         <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center">
                             <div>
                                 <p className="text-xs font-bold text-muted-foreground mb-1">المبلغ المتبقي</p>
-                                <p className="text-2xl font-black text-red-500">{(selectedInvoice?.total - selectedInvoice?.paidAmount).toLocaleString()}</p>
+                                <p className="text-2xl font-black text-destructive">{(selectedInvoice?.total - selectedInvoice?.paidAmount).toLocaleString()}</p>
                             </div>
                             <Button
                                 variant="ghost"
@@ -391,7 +391,7 @@ export default function ReceivablesPage() {
                                     <SelectTrigger className="h-14 rounded-2xl bg-white/5 border-white/5 font-bold">
                                         <SelectValue />
                                     </SelectTrigger>
-                                    <SelectContent className="rounded-2xl border-white/10 bg-slate-800">
+                                    <SelectContent className="rounded-2xl border-white/10 bg-secondary">
                                         <SelectItem value="cash" className="font-bold"><span className="flex items-center gap-2"><Banknote className="h-4 w-4" /> نقداً (الخزينة)</span></SelectItem>
                                         <SelectItem value="bank" className="font-bold"><span className="flex items-center gap-2"><Building2 className="h-4 w-4" /> تحويل بنكي</span></SelectItem>
                                         <SelectItem value="check" className="font-bold"><span className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> شيك</span></SelectItem>

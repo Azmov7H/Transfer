@@ -98,11 +98,11 @@ export function ExportButton({ type, data = [], columns = [], pdfTitle = 'Report
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={handleExcelExport} className="gap-2 cursor-pointer">
-                    <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                    <FileSpreadsheet className="w-4 h-4 text-success" />
                     Excel (الكل)
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handlePDFExport} className="gap-2 cursor-pointer">
-                    <FileText className="w-4 h-4 text-red-600" />
+                    <FileText className="w-4 h-4 text-destructive" />
                     PDF (الحالي)
                 </DropdownMenuItem>
             </DropdownMenuContent>

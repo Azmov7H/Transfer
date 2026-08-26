@@ -45,13 +45,13 @@ export function ScannerBar({ isCompleted, isScannerFocused, barcode, setBarcode,
                                     <motion.div
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        className="flex items-center gap-4 p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 min-w-64"
+                                        className="flex items-center gap-4 p-4 rounded-2xl bg-success/5 border border-success/10 min-w-64"
                                     >
-                                        <div className="h-10 w-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                                            <History className="w-5 h-5 text-emerald-600" />
+                                        <div className="h-10 w-10 rounded-xl bg-success/20 flex items-center justify-center">
+                                            <History className="w-5 h-5 text-success" />
                                         </div>
                                         <div>
-                                            <p className="text-xs font-black text-emerald-700/60 uppercase tracking-widest leading-none mb-1">Last Scanned</p>
+                                            <p className="text-xs font-black text-success/60 uppercase tracking-widest leading-none mb-1">Last Scanned</p>
                                             <h4 className="text-sm font-bold truncate max-w-44 leading-none">{lastScanned.name}</h4>
                                         </div>
                                     </motion.div>

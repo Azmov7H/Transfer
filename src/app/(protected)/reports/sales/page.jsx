@@ -56,11 +56,11 @@ export default function SalesReportPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
                 <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px] animate-pulse delay-700" />
+                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-success/10 rounded-full blur-[120px] animate-pulse delay-700" />
             </div>
 
             {/* Header Section */}
@@ -125,21 +125,21 @@ export default function SalesReportPage() {
                     variant="info"
                     subtitle={`متوسط ${stats.totalInvoices ? Math.round(stats.totalRevenue / stats.totalInvoices).toLocaleString() : 0} ج.م`}
                 />
-                <div className="glass-card p-6 rounded-[2.5rem] border border-white/10 overflow-hidden relative group transition-all duration-500 bg-gradient-to-br from-slate-500/5 to-transparent shadow-2xl">
+                <div className="glass-card p-6 rounded-[2.5rem] border border-white/10 overflow-hidden relative group transition-all duration-500 bg-gradient-to-br from-foreground/5 to-transparent shadow-2xl">
                     <div className="flex justify-between items-start mb-6">
                         <div className="space-y-1">
                             <p className="text-xs font-black uppercase tracking-[0.2em] opacity-40">طريقة التحصيل</p>
                             <p className="text-sm font-bold opacity-30">توزيع المدفوعات</p>
                         </div>
                         <div className="p-3 bg-white/5 rounded-2xl border border-white/10 shadow-inner group-hover:bg-primary/10 transition-colors">
-                            <Banknote size={24} className="text-slate-400 group-hover:text-primary transition-colors" />
+                            <Banknote size={24} className="text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>
                     </div>
                     <div className="space-y-4">
                         <div className="flex justify-between items-center group/item p-2 rounded-xl transition-colors hover:bg-white/5">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 bg-emerald-500/10 rounded-lg">
-                                    <Wallet size={14} className="text-emerald-500" />
+                                <div className="p-2 bg-success/10 rounded-lg">
+                                    <Wallet size={14} className="text-success" />
                                 </div>
                                 <span className="text-xs font-black opacity-60">نقدي</span>
                             </div>
@@ -147,8 +147,8 @@ export default function SalesReportPage() {
                         </div>
                         <div className="flex justify-between items-center group/item p-2 rounded-xl transition-colors hover:bg-white/5">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 bg-blue-500/10 rounded-lg">
-                                    <CreditCard size={14} className="text-blue-500" />
+                                <div className="p-2 bg-info/100/10 rounded-lg">
+                                    <CreditCard size={14} className="text-info" />
                                 </div>
                                 <span className="text-xs font-black opacity-60">آجل</span>
                             </div>
@@ -156,11 +156,11 @@ export default function SalesReportPage() {
                         </div>
                         <div className="h-1.5 w-full bg-white/5 rounded-full mt-4 overflow-hidden flex">
                             <div
-                                className="h-full bg-emerald-500 transition-all duration-[1500ms]"
+                                className="h-full bg-success transition-all duration-[1500ms]"
                                 style={{ width: `${stats.totalRevenue ? (totalCash / stats.totalRevenue) * 100 : 0}%` }}
                             />
                             <div
-                                className="h-full bg-blue-500 transition-all duration-[1500ms]"
+                                className="h-full bg-info/100 transition-all duration-[1500ms]"
                                 style={{ width: `${stats.totalRevenue ? (totalCredit / stats.totalRevenue) * 100 : 0}%` }}
                             />
                         </div>

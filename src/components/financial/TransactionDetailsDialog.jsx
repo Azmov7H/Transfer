@@ -25,7 +25,7 @@ export function TransactionDetailsDialog({ transaction, open, onOpenChange }) {
                             <div className="flex justify-between items-center p-4 bg-muted/50 rounded-xl">
                                 <div className="space-y-1">
                                     <p className="text-sm text-muted-foreground">المبلغ</p>
-                                    <p className={`text-2xl font-bold ${selectedTx.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}`}>
+                                    <p className={`text-2xl font-bold ${selectedTx.type === 'INCOME' ? 'text-success' : 'text-destructive'}`}>
                                         {selectedTx.amount.toLocaleString()} ج.م
                                     </p>
                                 </div>
@@ -141,14 +141,14 @@ export function TransactionDetailsDialog({ transaction, open, onOpenChange }) {
                                             )}
                                             {selectedTx.referenceType === 'PurchaseOrder' && selectedTx.referenceId?._id && (
                                                 <Link href={`/purchase-orders/${selectedTx.referenceId._id}`} className="w-full sm:w-auto">
-                                                    <Button size="sm" variant="outline" className="w-full gap-2 border-orange-500/20 text-orange-600 hover:bg-orange-50">
+                                                    <Button size="sm" variant="outline" className="w-full gap-2 border-warning/20 text-warning hover:bg-warning/10">
                                                         <Eye size={14} /> فتح أمر الشراء
                                                     </Button>
                                                 </Link>
                                             )}
                                             {(selectedTx.type === 'INCOME' || selectedTx.referenceType === 'UnifiedCollection') && (
                                                 <Link href={`/financial/receipts/${selectedTx._id}`} className="w-full sm:w-auto">
-                                                    <Button size="sm" variant="outline" className="w-full gap-2 border-green-600/20 text-green-600 hover:bg-green-50">
+                                                    <Button size="sm" variant="outline" className="w-full gap-2 border-success/20 text-success hover:bg-success/10">
                                                         <ReceiptCent size={14} /> عرض سند التحصيل
                                                     </Button>
                                                 </Link>

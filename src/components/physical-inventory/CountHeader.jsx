@@ -41,7 +41,7 @@ export function CountHeader({ count, isCompleted, isBlind, localItems, hasUnsave
                             جرد: {count.location === 'warehouse' ? 'المخزن الرئيسي' : count.location === 'shop' ? 'المحل' : 'شامل'}
                             <Badge className={cn(
                                 "px-4 py-1 rounded-full font-black text-xs",
-                                isCompleted ? "bg-emerald-500 text-white shadow-emerald-500/20" : "bg-amber-500 text-white shadow-amber-500/20"
+                                isCompleted ? "bg-success text-white shadow-success/20" : "bg-warning text-white shadow-warning/20"
                             )}>
                                 {isCompleted ? 'مكتمل ومعتمد' : 'مسودة قيد العمل'}
                             </Badge>
@@ -65,7 +65,7 @@ export function CountHeader({ count, isCompleted, isBlind, localItems, hasUnsave
                             <Button
                                 variant="outline"
                                 size="lg"
-                                className="h-14 px-8 rounded-2xl border-rose-500/20 text-rose-600 hover:bg-rose-50 hover:border-rose-500/40 font-black"
+                                className="h-14 px-8 rounded-2xl border-destructive/20 text-destructive hover:bg-destructive/10 hover:border-destructive/40 font-black"
                             >
                                 <Unlock className="ml-2 h-4 w-4" />
                                 تعديل الجرد (كلمة سر المالك)
@@ -74,7 +74,7 @@ export function CountHeader({ count, isCompleted, isBlind, localItems, hasUnsave
                         <AlertDialogContent className="rounded-[2.5rem] border-0 glass-card">
                             <AlertDialogHeader className="pb-4">
                                 <AlertDialogTitle className="text-2xl font-black flex items-center gap-2">
-                                    <Lock className="w-6 h-6 text-rose-600" />
+                                    <Lock className="w-6 h-6 text-destructive" />
                                     يتطلب صلاحية المالك
                                 </AlertDialogTitle>
                                 <AlertDialogDescription className="text-base font-medium">
@@ -98,7 +98,7 @@ export function CountHeader({ count, isCompleted, isBlind, localItems, hasUnsave
                                 <Button
                                     onClick={() => unlockMutation.mutate(unlockPassword)}
                                     disabled={unlockMutation.isPending || !unlockPassword}
-                                    className="h-12 rounded-xl font-black bg-rose-600 hover:bg-rose-700 text-white shadow-lg shadow-rose-600/20"
+                                    className="h-12 rounded-xl font-black bg-destructive hover:bg-destructive text-white shadow-lg shadow-rose-600/20"
                                 >
                                     {unlockMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "تأكيد الهوية"}
                                 </Button>
@@ -146,7 +146,7 @@ export function CountHeader({ count, isCompleted, isBlind, localItems, hasUnsave
                                     <AlertDialogDescription asChild>
                                         <div className="text-base font-medium text-right">
                                             عند الضغط على &quot;تأكيد&quot;، سيقوم النظام بـ:
-                                            <ul className="list-disc pr-6 mt-4 space-y-2 text-rose-600 font-black">
+                                            <ul className="list-disc pr-6 mt-4 space-y-2 text-destructive font-black">
                                                 <li>تعديل كميات الأصناف فعلياً في المخزن المختار.</li>
                                                 <li>تسجيل قيود محاسبية بالفوارق المالية المكتشفة.</li>
                                                 <li>أرشفة هذه الجلسة ولا يمكن التعديل عليها بعدها.</li>
@@ -158,7 +158,7 @@ export function CountHeader({ count, isCompleted, isBlind, localItems, hasUnsave
                                     <AlertDialogCancel className="h-12 rounded-xl font-bold border-0 bg-muted">إلغاء</AlertDialogCancel>
                                     <AlertDialogAction
                                         onClick={() => completeMutation.mutate()}
-                                        className="h-12 rounded-xl font-black bg-rose-600 hover:bg-rose-700 text-white shadow-lg shadow-rose-600/20"
+                                        className="h-12 rounded-xl font-black bg-destructive hover:bg-destructive text-white shadow-lg shadow-rose-600/20"
                                     >
                                         تأكيد واعتماد الكميات
                                     </AlertDialogAction>

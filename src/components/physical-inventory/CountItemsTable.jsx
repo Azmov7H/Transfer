@@ -35,7 +35,7 @@ export function CountItemsTable({ search, setSearch, filteredItems, isBlind, isC
                     </div>
 
                     {isBlind && (
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-700 font-bold text-xs">
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-warning/10 border border-warning/20 text-warning font-bold text-xs">
                             <EyeOff className="w-4 h-4" /> وضع الجرد الأعمى نشط: الفروقات مخفية حتى يتم الاعتماد.
                         </div>
                     )}
@@ -66,8 +66,8 @@ export function CountItemsTable({ search, setSearch, filteredItems, isBlind, isC
                                             animate={{ opacity: 1, y: 0 }}
                                             className={cn(
                                                 "border-b border-muted/20 hover:bg-muted/5 transition-colors group",
-                                                !isBlind && item.difference !== 0 ? 'bg-rose-500/[0.02]' : '',
-                                                (prodId && movementsSinceSnapshot?.[prodId]) ? 'bg-amber-500/[0.03]' : ''
+                                                !isBlind && item.difference !== 0 ? 'bg-destructive/[0.02]' : '',
+                                                (prodId && movementsSinceSnapshot?.[prodId]) ? 'bg-warning/[0.03]' : ''
                                             )}
                                         >
                                             <TableCell className="py-6 pr-8 text-right">
@@ -79,7 +79,7 @@ export function CountItemsTable({ search, setSearch, filteredItems, isBlind, isC
                                                         <div className="flex items-center gap-2">
                                                             <div className="font-black text-base">{item.productName}</div>
                                                             {movementsSinceSnapshot?.[prodId] && (
-                                                                <Badge className="bg-amber-500 text-white text-xs px-1.5 py-0 border-0 flex items-center gap-1">
+                                                                <Badge className="bg-warning text-white text-xs px-1.5 py-0 border-0 flex items-center gap-1">
                                                                     <RefreshCw size={8} className="animate-spin" />
                                                                     حركة مؤخراً
                                                                 </Badge>
@@ -116,7 +116,7 @@ export function CountItemsTable({ search, setSearch, filteredItems, isBlind, isC
                                                                 className={cn(
                                                                     "w-32 h-14 rounded-2xl text-center text-xl font-black border-2 transition-all",
                                                                     !isBlind && item.difference !== 0
-                                                                        ? 'border-rose-500/30 bg-rose-500/5 text-rose-700'
+                                                                        ? 'border-destructive/30 bg-destructive/5 text-destructive'
                                                                         : 'border-transparent bg-muted/40'
                                                                 )}
                                                             />
@@ -140,11 +140,11 @@ export function CountItemsTable({ search, setSearch, filteredItems, isBlind, isC
                                                     ) : (
                                                         <>
                                                             {item.difference > 0 ? (
-                                                                <Badge className="bg-emerald-500/10 text-emerald-600 border-0 font-black rounded-lg">
+                                                                <Badge className="bg-success/10 text-success border-0 font-black rounded-lg">
                                                                     زيادة {item.difference}+
                                                                 </Badge>
                                                             ) : item.difference < 0 ? (
-                                                                <Badge className="bg-rose-500/10 text-rose-600 border-0 font-black rounded-lg">
+                                                                <Badge className="bg-destructive/10 text-destructive border-0 font-black rounded-lg">
                                                                     عجز {item.difference}
                                                                 </Badge>
                                                             ) : (
@@ -161,7 +161,7 @@ export function CountItemsTable({ search, setSearch, filteredItems, isBlind, isC
                                                 <TableCell className="text-left pl-8">
                                                     <div className={cn(
                                                         "text-lg font-black tracking-tighter",
-                                                        item.value > 0 ? "text-emerald-500" : item.value < 0 ? "text-rose-500" : "text-muted-foreground/30"
+                                                        item.value > 0 ? "text-success" : item.value < 0 ? "text-destructive" : "text-muted-foreground/30"
                                                     )} dir="ltr">
                                                         {item.value === 0 ? '-' : (item.value > 0 ? `+${item.value.toLocaleString()}` : item.value.toLocaleString())}
                                                     </div>

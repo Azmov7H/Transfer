@@ -53,15 +53,15 @@ export default function PhysicalInventoryPage() {
         switch (status) {
             case 'completed':
                 return (
-                    <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
-                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <Badge className="bg-success/10 text-success border-success/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
+                        <div className="h-1.5 w-1.5 rounded-full bg-success" />
                         مكتمل
                     </Badge>
                 );
             case 'draft':
                 return (
-                    <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
-                        <div className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+                    <Badge className="bg-warning/10 text-warning border-warning/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
+                        <div className="h-1.5 w-1.5 rounded-full bg-warning animate-pulse" />
                         مسودة جارية
                     </Badge>
                 );
@@ -78,8 +78,8 @@ export default function PhysicalInventoryPage() {
 
     const getLocationBadge = (location) => {
         const styles = {
-            warehouse: { label: 'المخزن الرئيسي', icon: Warehouse, color: 'text-indigo-600 bg-indigo-500/10' },
-            shop: { label: 'المحل', icon: Store, color: 'text-rose-600 bg-rose-500/10' },
+            warehouse: { label: 'المخزن الرئيسي', icon: Warehouse, color: 'text-info bg-info/100/10' },
+            shop: { label: 'المحل', icon: Store, color: 'text-destructive bg-destructive/10' },
             both: { label: 'شامل', icon: Layers, color: 'text-primary bg-primary/10' }
         };
         const config = styles[location] || styles.both;
@@ -244,7 +244,7 @@ export default function PhysicalInventoryPage() {
                                                 <TableCell className="text-center">
                                                     <div className="flex justify-center">
                                                         {count.isBlind ? (
-                                                            <Badge className="bg-indigo-500/10 text-indigo-600 border-indigo-500/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
+                                                            <Badge className="bg-info/100/10 text-info border-info/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
                                                                 <EyeOff size={14} />
                                                                 جرد أعمى
                                                             </Badge>
@@ -263,7 +263,7 @@ export default function PhysicalInventoryPage() {
                                                         <div className="flex flex-col items-center">
                                                             <div className={cn(
                                                                 "text-lg font-black tabular-nums tracking-tighter",
-                                                                count.netDifference > 0 ? "text-emerald-500" : count.netDifference < 0 ? "text-rose-500" : "text-muted-foreground/40"
+                                                                count.netDifference > 0 ? "text-success" : count.netDifference < 0 ? "text-destructive" : "text-muted-foreground/40"
                                                             )} dir="ltr">
                                                                 {count.netDifference > 0 ? `+${count.netDifference}` : count.netDifference}
                                                             </div>

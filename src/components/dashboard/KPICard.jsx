@@ -7,27 +7,27 @@ import { cn } from '@/utils';
 export const KPICard = memo(function KPICard({ title, value, unit, icon: Icon, subtitle, variant = 'default' }) {
     const variants = {
         primary: 'border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent hover:from-primary/15 shadow-sm hover:shadow-primary/20',
-        success: 'border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent hover:from-emerald-500/15 shadow-sm hover:shadow-emerald-500/20',
-        warning: 'border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent hover:from-amber-500/15 shadow-sm hover:shadow-amber-500/20',
-        destructive: 'border-rose-500/20 bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-transparent hover:from-rose-500/15 shadow-sm hover:shadow-rose-500/20',
+        success: 'border-success/20 bg-gradient-to-br from-success/10 via-success/5 to-transparent hover:from-success/15 shadow-sm hover:shadow-success/20',
+        warning: 'border-warning/20 bg-gradient-to-br from-warning/10 via-warning/5 to-transparent hover:from-warning/15 shadow-sm hover:shadow-warning/20',
+        destructive: 'border-destructive/20 bg-gradient-to-br from-destructive/10 via-destructive/5 to-transparent hover:from-destructive/15 shadow-sm hover:shadow-destructive/20',
         secondary: 'border-secondary/20 bg-gradient-to-br from-secondary/10 via-secondary/5 to-transparent hover:from-secondary/15 shadow-sm hover:shadow-secondary/20',
         default: 'border-border bg-card hover:bg-muted/20 shadow-sm'
     };
 
     const iconColors = {
         primary: 'text-primary',
-        success: 'text-green-600 dark:text-green-400',
-        warning: 'text-amber-600 dark:text-amber-400',
-        destructive: 'text-red-600 dark:text-red-400',
+        success: 'text-success dark:text-success',
+        warning: 'text-warning dark:text-warning',
+        destructive: 'text-destructive dark:text-destructive',
         secondary: 'text-secondary',
         default: 'text-muted-foreground'
     };
 
     const iconBgColors = {
         primary: 'bg-primary/10',
-        success: 'bg-green-500/10',
-        warning: 'bg-amber-500/10',
-        destructive: 'bg-red-500/10',
+        success: 'bg-success/10',
+        warning: 'bg-warning/10',
+        destructive: 'bg-destructive/10',
         secondary: 'bg-secondary/10',
         default: 'bg-muted/20'
     };

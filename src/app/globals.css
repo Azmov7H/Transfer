@@ -52,7 +52,7 @@
   }
 
   .dark {
-    /* Dark Mode - Professional Midnight */
+    /* Dark Mode - Tonal Navy (same brand hue as light mode) */
     --background: 240 10% 4%;
     --foreground: 0 0% 100%;
 
@@ -62,24 +62,24 @@
     --popover: 240 10% 6%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 263 70% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 217 90% 61%;
+    --primary-foreground: 222 47% 8%;
 
-    --secondary: 217 91% 60%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 41 60% 50%;
+    --secondary-foreground: 222 47% 11%;
 
     --muted: 240 5% 12%;
     --muted-foreground: 240 5% 70%;
 
-    --accent: 263 70% 15%;
-    --accent-foreground: 263 70% 80%;
+    --accent: 217 91% 15%;
+    --accent-foreground: 217 90% 77%;
 
     --destructive: 346 84% 50%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 240 5% 15%;
     --input: 240 5% 15%;
-    --ring: 263 70% 50%;
+    --ring: 217 90% 61%;
 
     --success: 142.1 70.6% 45.3%;
     --success-foreground: 144.4 61.4% 9.1%;
@@ -90,8 +90,8 @@
     --info: 199 88.7% 48.4%;
     --info-foreground: 210 40% 98%;
 
-    /* Optimized Gradients - Dark */
-    --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+    /* Brand-family gradients - Dark */
+    --gradient-primary: linear-gradient(135deg, #1e4a8f 0%, #2563eb 100%);
   }
 
   * {

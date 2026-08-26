@@ -59,8 +59,8 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                         className="p-4 hover:bg-white/5 cursor-pointer flex justify-between items-center border-b border-white/5 last:border-0 transition-all group"
                                     >
                                         <div className="flex items-center gap-3">
-                                            <div className="p-2 bg-purple-500/10 rounded-lg group-hover:bg-purple-500/20 transition-colors">
-                                                <Package className="h-5 w-5 text-purple-500" />
+                                            <div className="p-2 bg-info/100/10 rounded-lg group-hover:bg-info/100/20 transition-colors">
+                                                <Package className="h-5 w-5 text-info" />
                                             </div>
                                             <div>
                                                 <div className="font-bold text-sm">{p.name}</div>
@@ -68,12 +68,12 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                             </div>
                                         </div>
                                         <div className="text-left">
-                                            <div className="font-bold text-purple-500">{p.retailPrice || p.sellPrice} ج.م</div>
+                                            <div className="font-bold text-info">{p.retailPrice || p.sellPrice} ج.م</div>
                                             <div className="flex gap-3 text-xs font-medium mt-1">
-                                                <span className={`${(p.shopQty || 0) > 0 ? 'text-emerald-500' : 'text-muted-foreground'}`}>
+                                                <span className={`${(p.shopQty || 0) > 0 ? 'text-success' : 'text-muted-foreground'}`}>
                                                     محل: {p.shopQty || 0}
                                                 </span>
-                                                <span className={`${(p.warehouseQty || 0) > 0 ? 'text-blue-500' : 'text-muted-foreground'}`}>
+                                                <span className={`${(p.warehouseQty || 0) > 0 ? 'text-info' : 'text-muted-foreground'}`}>
                                                     مخزن: {p.warehouseQty || 0}
                                                 </span>
                                             </div>
@@ -101,7 +101,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                         <Label className="font-bold mb-2 block invisible">مساحة</Label>
                         <Button
                             onClick={() => setShowServiceDialog(true)}
-                            className="h-12 px-6 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl gap-2"
+                            className="h-12 px-6 bg-gradient-to-r from-warning to-warning hover:from-warning hover:to-warning rounded-xl gap-2"
                         >
                             <Wrench className="w-4 h-4" />
                             <span className="font-bold">خدمة</span>
@@ -127,7 +127,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                 <DialogContent className="sm:max-w-[500px]" dir="rtl">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
-                            <Wrench className="w-5 h-5 text-amber-500" />
+                            <Wrench className="w-5 h-5 text-warning" />
                             إضافة خدمة/منتج مخصص
                         </DialogTitle>
                     </DialogHeader>
@@ -178,7 +178,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                         <Button variant="outline" onClick={() => setShowServiceDialog(false)}>
                             إلغاء
                         </Button>
-                        <Button onClick={addServiceItem} className="bg-amber-500 hover:bg-amber-600">
+                        <Button onClick={addServiceItem} className="bg-warning hover:bg-warning">
                             إضافة
                         </Button>
                     </DialogFooter>
@@ -215,8 +215,8 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                     className={cn(
                                         "glass-card p-4 rounded-xl border transition-all hover:bg-white/5",
                                         item.isService ? "border-white/5" : item.source === 'warehouse'
-                                            ? "border-blue-500/30 text-blue-50 bg-blue-500/5"
-                                            : "border-emerald-500/30 text-emerald-50 bg-emerald-500/5"
+                                            ? "border-info/30 text-info bg-info/100/5"
+                                            : "border-success/30 text-success bg-success/5"
                                     )}
                                 >
                                     <div className="grid grid-cols-12 gap-4 items-center">
@@ -225,7 +225,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                             <div className="flex items-center gap-2 mb-1">
                                                 <div className="font-bold text-sm">{item.name || item.productName}</div>
                                                 {item.isService && (
-                                                    <span className="px-2 py-0.5 bg-amber-500/20 text-amber-500 border border-amber-500/30 rounded text-xs font-bold flex items-center gap-1">
+                                                    <span className="px-2 py-0.5 bg-warning/20 text-warning border border-warning/30 rounded text-xs font-bold flex items-center gap-1">
                                                         <Wrench className="w-2.5 h-2.5" />
                                                         خدمة
                                                     </span>
@@ -233,10 +233,10 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                             </div>
                                             {!item.isService && (
                                                 <div className="flex gap-3 text-xs font-medium opacity-80">
-                                                    <span className={item.source === 'shop' ? 'text-emerald-400 font-bold' : ''}>
+                                                    <span className={item.source === 'shop' ? 'text-success font-bold' : ''}>
                                                         محل: {item.shopQty}
                                                     </span>
-                                                    <span className={item.source === 'warehouse' ? 'text-blue-400 font-bold' : ''}>
+                                                    <span className={item.source === 'warehouse' ? 'text-info font-bold' : ''}>
                                                         مخزن: {item.warehouseQty}
                                                     </span>
                                                 </div>
@@ -255,13 +255,13 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="shop">
-                                                            <div className="flex items-center gap-2 text-emerald-500">
+                                                            <div className="flex items-center gap-2 text-success">
                                                                 <Store className="w-4 h-4" />
                                                                 <span>محل</span>
                                                             </div>
                                                         </SelectItem>
                                                         <SelectItem value="warehouse">
-                                                            <div className="flex items-center gap-2 text-blue-500">
+                                                            <div className="flex items-center gap-2 text-info">
                                                                 <Warehouse className="w-4 h-4" />
                                                                 <span>مخزن</span>
                                                             </div>
@@ -302,13 +302,13 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                                     onChange={e => updatePrice(idx, e.target.value)}
                                                     className={cn(
                                                         "h-10 text-center rounded-lg bg-white/5 border-white/10 font-bold",
-                                                        isLoss && "border-red-500/50 bg-red-500/10",
-                                                        isLowMargin && "border-amber-400/50 bg-amber-400/10"
+                                                        isLoss && "border-destructive/50 bg-destructive/10",
+                                                        isLowMargin && "border-warning/50 bg-warning/10"
                                                     )}
                                                 />
                                                 <div className={cn(
                                                     "text-xs font-bold text-center",
-                                                    isLoss ? "text-red-500" : isLowMargin ? "text-amber-500" : "text-emerald-500"
+                                                    isLoss ? "text-destructive" : isLowMargin ? "text-warning" : "text-success"
                                                 )}>
                                                     {isLoss ? '⚠️ خسارة' : `ربح ${profitMargin.toFixed(0)}%`}
                                                 </div>
@@ -317,7 +317,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
 
                                         {/* Total - 1.5 cols */}
                                         <div className="col-span-1.5 text-center">
-                                            <div className="font-black text-lg text-purple-500">
+                                            <div className="font-black text-lg text-info">
                                                 {(item.qty * item.unitPrice).toLocaleString()}
                                             </div>
                                             <div className="text-xs text-muted-foreground">ج.م</div>
@@ -329,7 +329,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                                 size="icon"
                                                 variant="ghost"
                                                 aria-label="حذف الصنف من الفاتورة"
-                                                className="text-red-500 hover:bg-red-500/10 rounded-lg h-9 w-9"
+                                                className="text-destructive hover:bg-destructive/10 rounded-lg h-9 w-9"
                                                 onClick={() => removeItem(idx)}
                                             >
                                                 <Trash2 size={16} />

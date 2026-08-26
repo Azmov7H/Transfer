@@ -67,18 +67,18 @@ export default function StockMovementsPage() {
 
     const getTypeConfig = (type) => {
         switch (type) {
-            case 'SALE': return { label: 'مبيعات', icon: TrendingDown, color: 'red', bg: 'bg-red-500/10', text: 'text-red-500', border: 'border-red-500/20' };
-            case 'OUT': return { label: 'صرف مخزني', icon: ArrowUpRight, color: 'orange', bg: 'bg-orange-500/10', text: 'text-orange-500', border: 'border-orange-500/20' };
-            case 'IN': return { label: 'توريد جديد', icon: TrendingUp, color: 'emerald', bg: 'bg-emerald-500/10', text: 'text-emerald-500', border: 'border-emerald-500/20' };
-            case 'TRANSFER_TO_SHOP': return { label: 'تحويل للمحل', icon: ArrowRightLeft, color: 'blue', bg: 'bg-blue-500/10', text: 'text-blue-500', border: 'border-blue-500/20' };
-            case 'TRANSFER_TO_WAREHOUSE': return { label: 'تحويل للمخزن', icon: ArrowRightLeft, color: 'indigo', bg: 'bg-indigo-500/10', text: 'text-indigo-500', border: 'border-indigo-500/20' };
-            case 'ADJUST': return { label: 'تسوية جردية', icon: FileEdit, color: 'amber', bg: 'bg-amber-500/10', text: 'text-amber-500', border: 'border-amber-500/20' };
-            default: return { label: 'حركة عامة', icon: Package, color: 'slate', bg: 'bg-slate-500/10', text: 'text-slate-500', border: 'border-slate-500/20' };
+            case 'SALE': return { label: 'مبيعات', icon: TrendingDown, color: 'red', bg: 'bg-destructive/10', text: 'text-destructive', border: 'border-destructive/20' };
+            case 'OUT': return { label: 'صرف مخزني', icon: ArrowUpRight, color: 'orange', bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning/20' };
+            case 'IN': return { label: 'توريد جديد', icon: TrendingUp, color: 'emerald', bg: 'bg-success/10', text: 'text-success', border: 'border-success/20' };
+            case 'TRANSFER_TO_SHOP': return { label: 'تحويل للمحل', icon: ArrowRightLeft, color: 'blue', bg: 'bg-info/100/10', text: 'text-info', border: 'border-info/20' };
+            case 'TRANSFER_TO_WAREHOUSE': return { label: 'تحويل للمخزن', icon: ArrowRightLeft, color: 'indigo', bg: 'bg-info/100/10', text: 'text-info', border: 'border-info/20' };
+            case 'ADJUST': return { label: 'تسوية جردية', icon: FileEdit, color: 'amber', bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning/20' };
+            default: return { label: 'حركة عامة', icon: Package, color: 'slate', bg: 'bg-muted500/10', text: 'text-muted-foreground', border: 'border-border/20' };
         }
     };
 
     return (
-        <div className="min-h-screen bg-slate-900/20 space-y-6 p-1 md:p-6" dir="rtl">
+        <div className="min-h-screen bg-foreground/1020 space-y-6 p-1 md:p-6" dir="rtl">
             {/* Header Area */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <motion.div

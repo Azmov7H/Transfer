@@ -78,7 +78,7 @@ export function NotificationSidebar() {
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="flex-1 rounded-xl bg-emerald-500/10 border-emerald-500/20 text-emerald-500 hover:bg-emerald-500/20 text-xs font-black uppercase tracking-wider"
+                                    className="flex-1 rounded-xl bg-success/10 border-success/20 text-success hover:bg-success/20 text-xs font-black uppercase tracking-wider"
                                     onClick={() => markAsRead('all')}
                                 >
                                     <Check size={14} className="mr-2" /> تحديد الكل كمقروء
@@ -141,7 +141,7 @@ export function NotificationSidebar() {
                             <div className="p-6 border-t border-white/5 bg-black/10 backdrop-blur-md">
                                 <Button
                                     variant="ghost"
-                                    className="w-full text-rose-500 hover:bg-rose-500/10 hover:text-rose-600 font-bold text-xs gap-2 rounded-xl"
+                                    className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive font-bold text-xs gap-2 rounded-xl"
                                     onClick={() => deleteNotification('all')}
                                 >
                                     <Trash2 size={16} /> مسح سجل الإشعارات بالكامل
@@ -199,7 +199,7 @@ function NotificationSidebarItem({ notif, markAsRead, deleteNotification, perfor
                         <div className="pt-2">
                             <Button
                                 size="sm"
-                                className="h-9 w-full rounded-2xl bg-gradient-to-r from-primary to-blue-600 text-white font-bold text-xs gap-2 shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] transition-all"
+                                className="h-9 w-full rounded-2xl bg-gradient-to-r from-primary to-info text-white font-bold text-xs gap-2 shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] transition-all"
                                 onClick={() => performAction(notif._id)}
                                 disabled={isLoading}
                             >
@@ -222,7 +222,7 @@ function NotificationSidebarItem({ notif, markAsRead, deleteNotification, perfor
                         size="icon"
                         variant="ghost"
                         aria-label="تحديد كمقروء"
-                        className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
+                        className="w-7 h-7 rounded-lg bg-success/10 text-success hover:bg-success/20"
                         onClick={() => markAsRead(notif._id)}
                     >
                         <Check size={14} />
@@ -232,7 +232,7 @@ function NotificationSidebarItem({ notif, markAsRead, deleteNotification, perfor
                     size="icon"
                     variant="ghost"
                     aria-label="حذف الإشعار"
-                    className="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500/20"
+                    className="w-7 h-7 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20"
                     onClick={() => deleteNotification(notif._id)}
                 >
                     <Trash2 size={14} />

@@ -25,10 +25,10 @@ export function GrowthSettingsTab({ settings, onChange }) {
                     />
 
                     <div className="space-y-8 mt-10">
-                        <div className="group space-y-6 p-8 rounded-[2.5rem] bg-amber-500/5 border border-white/5 shadow-inner">
+                        <div className="group space-y-6 p-8 rounded-[2.5rem] bg-warning/5 border border-white/5 shadow-inner">
                             <div className="flex items-center justify-between">
-                                <Label className="text-xl font-black text-amber-100 italic">معدل الاكتساب</Label>
-                                <div className="w-12 h-12 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-500 shadow-lg shadow-amber-500/10">
+                                <Label className="text-xl font-black text-warning italic">معدل الاكتساب</Label>
+                                <div className="w-12 h-12 bg-warning/20 rounded-2xl flex items-center justify-center text-warning shadow-lg shadow-warning/10">
                                     <Zap size={24} className="animate-pulse" />
                                 </div>
                             </div>
@@ -48,10 +48,10 @@ export function GrowthSettingsTab({ settings, onChange }) {
                             <p className="text-xs text-white/20 font-bold leading-relaxed px-2">ملاحظة: تفعيل خيار &quot;نقطة لكل 100 ج.م&quot; يعني أن كل 100 جنيه عُملة فاتورة تمنح العميل نقطة واحدة.</p>
                         </div>
 
-                        <div className="group space-y-6 p-8 rounded-[2.5rem] bg-emerald-500/5 border border-white/5 shadow-inner">
+                        <div className="group space-y-6 p-8 rounded-[2.5rem] bg-success/5 border border-white/5 shadow-inner">
                             <div className="flex items-center justify-between">
-                                <Label className="text-xl font-black text-emerald-100 italic">قيمة الاستبدال</Label>
-                                <div className="w-12 h-12 bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-500 shadow-lg shadow-emerald-500/10">
+                                <Label className="text-xl font-black text-success italic">قيمة الاستبدال</Label>
+                                <div className="w-12 h-12 bg-success/20 rounded-2xl flex items-center justify-center text-success shadow-lg shadow-success/10">
                                     <TrendingUp size={24} />
                                 </div>
                             </div>
@@ -81,20 +81,20 @@ export function GrowthSettingsTab({ settings, onChange }) {
                     />
 
                     <div className="space-y-8 mt-10">
-                        <div className="group space-y-6 p-10 rounded-[2.5rem] bg-rose-500/5 border border-white/5 shadow-inner relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-32 h-32 bg-rose-500/5 rounded-full -ml-16 -mt-16 blur-2xl" />
+                        <div className="group space-y-6 p-10 rounded-[2.5rem] bg-destructive/5 border border-white/5 shadow-inner relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-32 h-32 bg-destructive/5 rounded-full -ml-16 -mt-16 blur-2xl" />
                             <div className="flex items-center justify-between relative z-10">
-                                <Label className="text-xl font-black text-rose-100">فترة الانقطاع الحرجة</Label>
-                                <Clock size={28} className="text-rose-500 animate-pulse" />
+                                <Label className="text-xl font-black text-destructive">فترة الانقطاع الحرجة</Label>
+                                <Clock size={28} className="text-destructive animate-pulse" />
                             </div>
                             <div className="flex items-center gap-4 bg-black/20 p-8 rounded-[2rem] border border-white/5 relative z-10">
                                 <Input
                                     type="number"
                                     value={settings.inactiveCustomerThresholdDays || 30}
                                     onChange={e => set({ inactiveCustomerThresholdDays: parseInt(e.target.value) || 0 })}
-                                    className="h-16 text-4xl font-black text-center border-0 bg-transparent text-rose-500 ring-0 focus-visible:ring-0"
+                                    className="h-16 text-4xl font-black text-center border-0 bg-transparent text-destructive ring-0 focus-visible:ring-0"
                                 />
-                                <span className="font-black text-rose-500/30 uppercase text-xs tracking-[0.5em]">يوم</span>
+                                <span className="font-black text-destructive/30 uppercase text-xs tracking-[0.5em]">يوم</span>
                             </div>
                             <p className="text-sm text-white/20 font-bold leading-relaxed px-2 relative z-10">سيتم تظليل أسماء العملاء باللون الأحمر في القوائم إذا لم يتم الشراء خلال هذه المدة.</p>
                         </div>

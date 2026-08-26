@@ -141,7 +141,7 @@ export default function Sidebar() {
                                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : user?.name?.charAt(0)}
                                 </AvatarFallback>
                             </Avatar>
-                            {!loading && <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-card shadow-lg" />}
+                            {!loading && <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-success rounded-full border-2 border-card shadow-lg" />}
                         </div>
 
                         {(isOpen || isMobile) && (

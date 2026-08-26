@@ -91,9 +91,9 @@ export const ProductRow = React.memo(({
                 <div className="flex flex-col items-center gap-2">
                     <div className={cn(
                         "relative h-10 px-5 rounded-2xl border flex items-center justify-center font-black text-lg tabular-nums shadow-inner transition-all group-hover:scale-110",
-                        stockStatus === 'out' ? "bg-red-500/10 text-red-500 border-red-500/20 shadow-red-500/5" :
-                            stockStatus === 'low' ? "bg-amber-500/10 text-amber-500 border-amber-500/20 shadow-amber-500/5" :
-                                "bg-emerald-500/10 text-emerald-500 border-emerald-500/20 shadow-emerald-500/5"
+                        stockStatus === 'out' ? "bg-destructive/10 text-destructive border-destructive/20 shadow-destructive/5" :
+                            stockStatus === 'low' ? "bg-warning/10 text-warning border-warning/20 shadow-warning/5" :
+                                "bg-success/10 text-success border-success/20 shadow-success/5"
                     )}>
                         {product.stockQty}
                     </div>
@@ -107,15 +107,15 @@ export const ProductRow = React.memo(({
 
             <TableCell className="px-8 text-center hidden md:table-cell">
                 {stockStatus === 'out' ? (
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-black uppercase tracking-widest shadow-lg shadow-red-500/5">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 border border-destructive/20 text-destructive text-xs font-black uppercase tracking-widest shadow-lg shadow-destructive/5">
                         <XCircle size={12} className="animate-pulse" /> نفذت
                     </div>
                 ) : stockStatus === 'low' ? (
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-black uppercase tracking-widest shadow-lg shadow-amber-500/5">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-warning/10 border border-warning/20 text-warning text-xs font-black uppercase tracking-widest shadow-lg shadow-warning/5">
                         <AlertTriangle size={12} /> منخفض
                     </div>
                 ) : (
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-500/5">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-success/10 border border-success/20 text-success text-xs font-black uppercase tracking-widest shadow-lg shadow-success/5">
                         <CheckCircle2 size={12} /> متوفر
                     </div>
                 )}
@@ -136,14 +136,14 @@ export const ProductRow = React.memo(({
                             </DropdownMenuItem>
                             {canManage && (
                                 <>
-                                    <DropdownMenuItem onClick={() => onEdit(product)} className="gap-3 p-3 rounded-xl cursor-pointer transition-colors focus:bg-amber-500/20 focus:text-amber-500 group/item font-black text-sm">
-                                        <FileEdit size={18} className="text-amber-500 opacity-60 group-hover/item:opacity-100" />
+                                    <DropdownMenuItem onClick={() => onEdit(product)} className="gap-3 p-3 rounded-xl cursor-pointer transition-colors focus:bg-warning/20 focus:text-warning group/item font-black text-sm">
+                                        <FileEdit size={18} className="text-warning opacity-60 group-hover/item:opacity-100" />
                                         <span>تعديل الصنف</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator className="bg-white/5 my-1" />
                                     <DropdownMenuItem
                                         onClick={() => onDelete(product._id)}
-                                        className="gap-3 p-3 rounded-xl cursor-pointer transition-colors focus:bg-red-500/20 text-red-500/60 focus:text-red-500 group/item font-black text-sm"
+                                        className="gap-3 p-3 rounded-xl cursor-pointer transition-colors focus:bg-destructive/20 text-destructive/60 focus:text-destructive group/item font-black text-sm"
                                     >
                                         <Trash2 size={18} />
                                         <span>حذف نهائي</span>
