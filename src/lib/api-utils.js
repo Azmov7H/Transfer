@@ -24,12 +24,24 @@ const pendingRequests = new Map();
 // Session-expiry redirect guard — ensures exactly one redirect per expired session
 let isRedirectingToLogin = false;
 
+/**
+ * Seam for tests: override these to observe the session-expiry navigation
+ * without touching the real window.location (non-configurable under modern
+ * jsdom).
+ */
+export const __internals = {
+    currentPathname: () => window.location.pathname,
+    redirectToLogin(url) {
+        window.location.replace(url);
+    },
+};
+
 function handleSessionExpiry() {
     if (typeof window === 'undefined' || isRedirectingToLogin) return;
-    if (window.location.pathname.startsWith('/login')) return;
+    if (__internals.currentPathname().startsWith('/login')) return;
     isRedirectingToLogin = true;
     // Hard navigation: full remount clears the React Query cache along with all client state
-    window.location.replace('/login?expired=1');
+    __internals.redirectToLogin('/login?expired=1');
 }
 
 function getRequestKey(url, options = {}) {

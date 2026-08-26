@@ -58,3 +58,19 @@
 4. يتم حماية المسارات (`middleware.js`) للتحقق من وجود الرمز.
 
 ---.
+
+## الاختبارات (Testing)
+
+```bash
+pnpm test            # تشغيل كامل (<60 ثانية)
+pnpm test --watch    # وضع المراقبة
+pnpm test -- src/lib/api-utils.test.js   # ملف محدد
+```
+
+- **الأدوات المساعدة:** `src/test/utils.jsx` — `renderWithProviders` (QueryClient جديد لكل اختبار، retry معطّل) وأشكال الاستجابة (`envelopeOk`/`envelopeFail`/`jsonResponse`) لمحاكاة طبقة الـ API.
+- **مصفوفة الـ fetcher:** `src/lib/api-utils.test.js` — يثبّت سلوك فك الغلاف، إلغاء تكرار GET فقط، انتهاء المهلة (408)، وتوجيه 401 لمرة واحدة عبر seam ‏`__internals`.
+- **الصلاحيات والجلسة:** `src/lib/permissions.test.js` و `src/hooks/useUserRole.test.js`.
+- **المكونات:** `RoleGate.test.jsx` و `confirm-dialog.test.jsx` بجانب مصادرها.
+- **التدفقات الحرجة:** حسابات بنود الفاتورة (`useInvoiceItems.test.js`) وبوابة إشعارات الجلسة (`useNotifications.test.js`).
+
+> ملاحظة: اختبارات تستخدم `jest.mock()` يجب أن تُكتب بأسلوب CommonJS (`require`) — تحويل SWC في `next/jest` لا يرفع (hoist) الـ mock لملفات ES Modules.
