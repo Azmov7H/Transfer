@@ -15,13 +15,10 @@ import { toast } from 'sonner';
 
 import { CustomerFormDialog } from '@/components/customers/CustomerFormDialog';
 import { UnifiedPaymentDialog } from '@/components/financial/PaymentDialog';
-import { InstallmentDialog } from '@/components/financial/InstallmentDialog';
-import { CustomerDetailsSheet } from '@/components/customers/CustomerDetailsSheet';
 import { CustomerRow } from '@/components/customers/CustomerRow';
 import { CustomerCard } from '@/components/customers/CustomerCard';
 import { ResponsiveTable } from '@/components/ui/responsive-table';
 import { DebtOverviewCards, CustomerStatsCards } from '@/components/customers/CustomerStats';
-import { PartnerTransactionDialog } from '@/components/financial/PartnerTransactionDialog';
 import {
     Pagination,
     PaginationContent,
@@ -58,15 +55,7 @@ export default function CustomersPage() {
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
-    const [detailCustomer, setDetailCustomer] = useState(null);
-    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-    const [selectedDebt, setSelectedDebt] = useState(null);
-    const [selectedInvoice, setSelectedInvoice] = useState(null);
-    const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-    const [isInvoicePaymentOpen, setIsInvoicePaymentOpen] = useState(false);
-    const [isInstallmentOpen, setIsInstallmentOpen] = useState(false);
     const [isUnifiedOpen, setIsUnifiedOpen] = useState(false);
-    const [isHistoryOpen, setIsHistoryOpen] = useState(false);
     const [unifiedPaymentData, setUnifiedPaymentData] = useState(null);
 
     // Generate page numbers to display
@@ -95,18 +84,7 @@ export default function CustomersPage() {
 
     // Handlers
     const handleRowClick = (customer) => {
-        setDetailCustomer(customer);
-        setIsDetailsOpen(true);
-    };
-
-    const handleRecordPayment = (debt) => {
-        setSelectedDebt(debt);
-        setIsPaymentOpen(true);
-    };
-
-    const handleScheduleInstallment = (debt) => {
-        setSelectedDebt(debt);
-        setIsInstallmentOpen(true);
+        router.push(`/customers/${customer._id}`);
     };
 
     const handleEditClick = (customer) => {
@@ -299,10 +277,7 @@ export default function CustomersPage() {
                             onEdit={handleEditClick}
                             onDelete={handleDelete}
                             onRowClick={handleRowClick}
-                            onHistory={(customer) => {
-                                setDetailCustomer(customer);
-                                setIsHistoryOpen(true);
-                            }}
+                            onCollect={handleUnifiedCollection}
                             router={router}
                         />
                     )}
@@ -313,10 +288,7 @@ export default function CustomersPage() {
                             onEdit={handleEditClick}
                             onDelete={handleDelete}
                             onRowClick={handleRowClick}
-                            onHistory={(customer) => {
-                                setDetailCustomer(customer);
-                                setIsHistoryOpen(true);
-                            }}
+                            onCollect={handleUnifiedCollection}
                             router={router}
                         />
                     )}
@@ -400,22 +372,6 @@ export default function CustomersPage() {
                 </p>
             )}
 
-            {/* Detail Sheet & Dialogs */}
-            <CustomerDetailsSheet
-                open={isDetailsOpen}
-                onOpenChange={setIsDetailsOpen}
-                customer={detailCustomer}
-                debts={customerDebts.filter(d => d.debtorId?._id === detailCustomer?._id || d.debtorId === detailCustomer?._id) || []}
-                invoices={collectionInvoices}
-                onRecordPayment={handleRecordPayment}
-                onManageInstallment={handleScheduleInstallment}
-                onCollectInvoice={(invoice) => {
-                    setSelectedInvoice(invoice);
-                    setIsInvoicePaymentOpen(true);
-                }}
-                onUnifiedCollection={handleUnifiedCollection}
-            />
-
             <CustomerFormDialog
                 open={isAddOpen || isEditOpen}
                 onOpenChange={(open) => {
@@ -432,37 +388,11 @@ export default function CustomersPage() {
             />
 
             <UnifiedPaymentDialog
-                open={isPaymentOpen}
-                onOpenChange={setIsPaymentOpen}
-                target={{ kind: 'debt', debt: selectedDebt }}
-            />
-
-            <UnifiedPaymentDialog
-                open={isInvoicePaymentOpen}
-                onOpenChange={(o) => {
-                    setIsInvoicePaymentOpen(o);
-                    if (!o) setSelectedInvoice(null);
-                }}
-                target={{ kind: 'invoice', invoice: selectedInvoice }}
-            />
-
-            <InstallmentDialog
-                open={isInstallmentOpen}
-                onOpenChange={setIsInstallmentOpen}
-                debt={selectedDebt}
-            />
-
-            <UnifiedPaymentDialog
                 open={isUnifiedOpen}
                 onOpenChange={setIsUnifiedOpen}
                 target={{ kind: 'customer-total', customerId: unifiedPaymentData?.id, customerName: unifiedPaymentData?.name, totalBalance: unifiedPaymentData?.balance }}
             />
 
-            <PartnerTransactionDialog
-                open={isHistoryOpen}
-                onOpenChange={setIsHistoryOpen}
-                partner={detailCustomer}
-            />
 
             <ConfirmDialog
                 open={deleteTargetId !== null}
