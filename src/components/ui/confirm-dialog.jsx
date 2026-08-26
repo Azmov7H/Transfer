@@ -41,7 +41,7 @@ export function ConfirmDialog({
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogContent dir="rtl" className="rounded-2xl">
                 <AlertDialogHeader className="text-right">
-                    <AlertDialogTitle className="font-black">{title}</AlertDialogTitle>
+                    <AlertDialogTitle className="font-bold">{title}</AlertDialogTitle>
                     {description && (
                         <AlertDialogDescription className="font-medium leading-relaxed">
                             {description}

@@ -64,7 +64,7 @@ export function QuickAddProductDialog({ open, onOpenChange, initialName = '', on
             <DialogContent className="sm:max-w-[500px] glass-card border-white/10 rounded-3xl top-[60%]" dir="rtl">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader className="pb-4">
-                        <DialogTitle className="text-xl font-black flex items-center gap-2">
+                        <DialogTitle className="text-xl font-bold flex items-center gap-2">
                             <Package className="text-primary" />
                             إضافة منتج سريعة
                         </DialogTitle>
@@ -121,7 +121,7 @@ export function QuickAddProductDialog({ open, onOpenChange, initialName = '', on
                                 <Input
                                     type="number"
                                     required
-                                    className="h-12 rounded-xl bg-primary/10 border-primary/20 text-center font-black text-lg text-primary"
+                                    className="h-12 rounded-xl bg-primary/10 border-primary/20 text-center font-bold text-lg text-primary"
                                     placeholder="0"
                                     value={formData.retailPrice}
                                     onChange={e => setFormData({ ...formData, retailPrice: e.target.value })}

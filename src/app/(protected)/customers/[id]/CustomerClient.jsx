@@ -142,7 +142,7 @@ export default function CustomerClient({ id }) {
                         <Button
                             size="sm"
                             variant="destructive"
-                            className="bg-primary hover:bg-primary/90 text-white font-black rounded-lg h-8 gap-2"
+                            className="bg-primary hover:bg-primary/90 text-white font-bold rounded-lg h-8 gap-2"
                             onClick={() => setIsUnifiedOpen(true)}
                         >
                             <Coins size={14} /> تحصيل الديون
@@ -310,14 +310,14 @@ export default function CustomerClient({ id }) {
                         <CardHeader className="p-8 border-b border-white/5 bg-gradient-to-r from-primary/5 to-transparent">
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div>
-                                    <CardTitle className="text-2xl font-black tracking-tight">كشف حساب تفصيلي</CardTitle>
+                                    <CardTitle className="text-2xl font-bold tracking-tight">كشف حساب تفصيلي</CardTitle>
                                     <CardDescription className="text-muted-foreground font-medium mt-1">تتبع تاريخي دقيق لكافة الحركات المالية والمديونيات</CardDescription>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <Button variant="outline" className="rounded-xl font-bold bg-white/5 border-white/10 hover:bg-white/10 h-11 px-6">
                                         <Plus className="ml-2 h-4 w-4" /> إضافة حركة يدوية
                                     </Button>
-                                    <Button className="rounded-xl font-black bg-primary hover:bg-primary/90 h-11 px-8 shadow-lg shadow-primary/20">
+                                    <Button className="rounded-xl font-bold bg-primary hover:bg-primary/90 h-11 px-8 shadow-lg shadow-primary/20">
                                         تصدير PDF
                                     </Button>
                                 </div>
@@ -331,11 +331,11 @@ export default function CustomerClient({ id }) {
                                     <Table>
                                         <TableHeader className="bg-muted/40 h-16">
                                             <TableRow className="hover:bg-transparent border-white/5">
-                                                <TableHead className="w-[120px] text-right font-black text-xs uppercase tracking-widest px-8">التاريخ</TableHead>
-                                                <TableHead className="text-right font-black text-xs uppercase tracking-widest">نوع الحركة / البيان</TableHead>
-                                                <TableHead className="text-center font-black text-xs uppercase tracking-widest text-destructive bg-destructive/5">مدين (+)</TableHead>
-                                                <TableHead className="text-center font-black text-xs uppercase tracking-widest text-success bg-success/5">دائن (-)</TableHead>
-                                                <TableHead className="text-center font-black text-xs uppercase tracking-widest bg-primary/5">الرصيد التراكمي</TableHead>
+                                                <TableHead className="w-[120px] text-right font-bold text-xs uppercase tracking-widest px-8">التاريخ</TableHead>
+                                                <TableHead className="text-right font-bold text-xs uppercase tracking-widest">نوع الحركة / البيان</TableHead>
+                                                <TableHead className="text-center font-bold text-xs uppercase tracking-widest text-destructive bg-destructive/5">مدين (+)</TableHead>
+                                                <TableHead className="text-center font-bold text-xs uppercase tracking-widest text-success bg-success/5">دائن (-)</TableHead>
+                                                <TableHead className="text-center font-bold text-xs uppercase tracking-widest bg-primary/5">الرصيد التراكمي</TableHead>
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
@@ -388,7 +388,7 @@ export default function CustomerClient({ id }) {
                                                                 <div className="flex flex-col">
                                                                     <span className="font-bold text-sm text-foreground/90">{entry.label}</span>
                                                                     <div className="flex items-center gap-2">
-                                                                        <Badge variant="outline" className="text-xs h-4 font-black bg-white/5 border-white/10 px-1.5 opacity-60">
+                                                                        <Badge variant="outline" className="text-xs h-4 font-bold bg-white/5 border-white/10 px-1.5 opacity-60">
                                                                             {entry.type === 'SALES' ? 'فاتورة مبيعات' :
                                                                                 entry.type === 'PAYMENT' ? 'تحصيل دفعة' :
                                                                                     entry.type === 'DEBT_START' ? 'رصيد افتتاحي' : 'ارتجاع'}
@@ -403,7 +403,7 @@ export default function CustomerClient({ id }) {
                                                         </TableCell>
                                                         <TableCell className="text-center bg-destructive/[0.02]">
                                                             <span className={cn(
-                                                                "font-mono font-black text-lg",
+                                                                "font-mono font-bold text-lg",
                                                                 entry.debit > 0 ? "text-destructive" : "text-muted-foreground/20"
                                                             )}>
                                                                 {entry.debit ? entry.debit.toLocaleString() : '-'}
@@ -411,7 +411,7 @@ export default function CustomerClient({ id }) {
                                                         </TableCell>
                                                         <TableCell className="text-center bg-success/[0.02]">
                                                             <span className={cn(
-                                                                "font-mono font-black text-lg",
+                                                                "font-mono font-bold text-lg",
                                                                 entry.credit > 0 ? "text-success" : "text-muted-foreground/20"
                                                             )}>
                                                                 {entry.credit ? entry.credit.toLocaleString() : '-'}
@@ -420,7 +420,7 @@ export default function CustomerClient({ id }) {
                                                         <TableCell className="text-center bg-primary/[0.02] border-r border-white/5">
                                                             <div className="flex items-center justify-center gap-2">
                                                                 <span className={cn(
-                                                                    "text-xl font-black font-mono tracking-tighter",
+                                                                    "text-xl font-bold font-mono tracking-tighter",
                                                                     entry.balance > 0 ? "text-destructive" : entry.balance < 0 ? "text-success" : "text-muted-foreground"
                                                                 )}>
                                                                     {entry.balance.toLocaleString()}

@@ -66,7 +66,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                 <form onSubmit={handleSubmit(onValid)} noValidate>
                     <div className="p-4 md:p-8 space-y-6 md:space-y-8">
                         <div className="space-y-2">
-                            <DialogTitle className="text-2xl font-black">
+                            <DialogTitle className="text-2xl font-bold">
                                 {mode === 'add' ? 'إضافة منتج جديد' : `تعديل: ${productName}`}
                             </DialogTitle>
                             <DialogDescription className="font-medium">
@@ -78,7 +78,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                             {/* Basic Info Section */}
                             <div className="space-y-6">
                                 <div className="space-y-4">
-                                    <h3 className="flex items-center gap-2 font-black text-primary text-sm uppercase tracking-wider">
+                                    <h3 className="flex items-center gap-2 font-bold text-primary text-sm uppercase tracking-wider">
                                         <Info className="h-4 w-4" /> المعلومات الأساسية
                                     </h3>
 
@@ -172,7 +172,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                             {/* Inventory & Pricing Section */}
                             <div className="space-y-6">
                                 <div className="p-6 bg-primary/5 rounded-3xl border border-primary/10 space-y-6">
-                                    <h3 className="flex items-center gap-2 font-black text-primary text-sm uppercase tracking-wider">
+                                    <h3 className="flex items-center gap-2 font-bold text-primary text-sm uppercase tracking-wider">
                                         <ArrowUpRight className="h-4 w-4" /> التسعير والمخزون
                                     </h3>
 
@@ -181,7 +181,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                                             <Input
                                                 type="number"
                                                 {...register('retailPrice')}
-                                                className="h-14 rounded-2xl bg-white/10 border-primary/20 text-center font-black text-xl text-primary"
+                                                className="h-14 rounded-2xl bg-white/10 border-primary/20 text-center font-bold text-xl text-primary"
                                                 aria-invalid={!!errors.retailPrice}
                                             />
                                         </FormField>
@@ -216,10 +216,10 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                                 {mode === 'add' && (
                                     <div className="p-6 bg-success/5 rounded-3xl border border-success/10 space-y-4">
                                         <div className="flex items-center justify-between">
-                                            <h3 className="flex items-center gap-2 font-black text-success text-sm uppercase tracking-wider">
+                                            <h3 className="flex items-center gap-2 font-bold text-success text-sm uppercase tracking-wider">
                                                 <History className="h-4 w-4" /> الرصيد الافتتاحي
                                             </h3>
-                                            <Badge className="bg-success/20 text-success border-success/30 text-xs font-black uppercase">التسجيل الأول</Badge>
+                                            <Badge className="bg-success/20 text-success border-success/30 text-xs font-bold uppercase">التسجيل الأول</Badge>
                                         </div>
 
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -257,7 +257,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                                 <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="flex-1 sm:flex-none h-12 px-8 rounded-2xl border-white/10 hover:bg-white/5 font-bold">
                                     إلغاء
                                 </Button>
-                                <Button type="submit" disabled={isPending || isSubmitting} className="flex-1 sm:flex-none h-12 px-12 rounded-2xl bg-primary text-primary-foreground font-black shadow-lg shadow-primary/20">
+                                <Button type="submit" disabled={isPending || isSubmitting} className="flex-1 sm:flex-none h-12 px-12 rounded-2xl bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20">
                                     {isPending ? <Loader2 className="animate-spin" /> : (mode === 'add' ? 'إضافة المنتج' : 'حفظ التغييرات')}
                                 </Button>
                             </div>

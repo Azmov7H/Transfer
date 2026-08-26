@@ -64,7 +64,7 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto border-white/5 bg-card/95 backdrop-blur-3xl shadow-2xl rounded-[1.5rem]" dir="rtl">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl font-black flex items-center gap-3">
+                    <DialogTitle className="text-2xl font-bold flex items-center gap-3">
                         <Building2 className="text-primary w-6 h-6" />
                         {mode === 'edit' ? 'تعديل بيانات المورد' : 'إضافة مورد جديد'}
                     </DialogTitle>
@@ -103,7 +103,7 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
                     <Separator className="bg-white/5" />
 
                     <div className="bg-primary/5 p-5 rounded-2xl space-y-6 border border-primary/10">
-                        <h4 className="text-xs font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                        <h4 className="text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
                             <Wallet size={14} /> التسهيلات المالية والسداد
                         </h4>
 
@@ -156,7 +156,7 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
 
                     {mode === 'add' && (
                         <div className="bg-primary/5 p-5 rounded-2xl space-y-6 border border-primary/10">
-                            <h4 className="text-xs font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
                                 <Wallet size={14} /> الرصيد الافتتاحي (ديون سابقة)
                             </h4>
                             <div className="grid grid-cols-2 gap-6">
@@ -201,7 +201,7 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
                         <Button
                             type="submit"
                             disabled={isPending}
-                            className="rounded-xl px-8 font-black gradient-primary shadow-colored border-0 hover:scale-105 active:scale-95 transition-all"
+                            className="rounded-xl px-8 font-bold gradient-primary shadow-colored border-0 hover:scale-105 active:scale-95 transition-all"
                         >
                             {isPending && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
                             حفظ المورد

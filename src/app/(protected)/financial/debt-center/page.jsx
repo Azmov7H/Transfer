@@ -84,7 +84,7 @@ export default function DebtCenterPage() {
                 subtitle="متابعة المستحقات والمدفوعات والتسويات المالية"
                 icon={TrendingUp}
                 actions={
-                    <Button variant="outline" className="h-14 px-8 rounded-2xl font-black text-lg gap-3 glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg">
+                    <Button variant="outline" className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg">
                         <Download size={22} /> تصدير تقرير
                     </Button>
                 }
@@ -129,8 +129,8 @@ export default function DebtCenterPage() {
             {/* Main Content Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
                 <TabsList className="bg-muted/50 border border-white/5 p-1 rounded-2xl h-14">
-                    <TabsTrigger value="Customer" className="rounded-xl px-8 font-black data-[state=active]:bg-primary data-[state=active]:text-white transition-all h-full">ديون العملاء (مستحقات)</TabsTrigger>
-                    <TabsTrigger value="Supplier" className="rounded-xl px-8 font-black data-[state=active]:bg-primary data-[state=active]:text-white transition-all h-full">ديون الموردين (التزامات)</TabsTrigger>
+                    <TabsTrigger value="Customer" className="rounded-xl px-8 font-bold data-[state=active]:bg-primary data-[state=active]:text-white transition-all h-full">ديون العملاء (مستحقات)</TabsTrigger>
+                    <TabsTrigger value="Supplier" className="rounded-xl px-8 font-bold data-[state=active]:bg-primary data-[state=active]:text-white transition-all h-full">ديون الموردين (التزامات)</TabsTrigger>
                 </TabsList>
 
                 {/* Filters Bar */}
@@ -139,7 +139,7 @@ export default function DebtCenterPage() {
                         <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-primary h-6 w-6 group-focus-within:animate-pulse transition-all" />
                         <Input
                             placeholder="بحث باسم العميل أو المورد..."
-                            className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-black text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
+                            className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-bold text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
@@ -151,14 +151,14 @@ export default function DebtCenterPage() {
                         <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
-                                <h2 className="text-2xl font-black tracking-tight">سجل التزامات الجهات</h2>
+                                <h2 className="text-2xl font-bold tracking-tight">سجل التزامات الجهات</h2>
                             </div>
                         </div>
                         <div className="overflow-x-auto">
                             {(activeTab === 'Customer' ? isDebtorsLoading : isDebtsLoading) ? (
                                 <div className="p-32 text-center">
                                     <Loader2 className="animate-spin mx-auto text-primary w-12 h-12 opacity-50" />
-                                    <p className="mt-4 text-muted-foreground font-black">جاري مزامنة الديون...</p>
+                                    <p className="mt-4 text-muted-foreground font-bold">جاري مزامنة الديون...</p>
                                 </div>
                             ) : (
                                 activeTab === 'Customer' ? (

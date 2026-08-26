@@ -50,7 +50,7 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                                 <Receipt size={28} />
                             </div>
                             <div>
-                                <DialogTitle className="text-2xl font-black">سجل المعاملات المالية</DialogTitle>
+                                <DialogTitle className="text-2xl font-bold">سجل المعاملات المالية</DialogTitle>
                                 <p className="text-sm text-muted-foreground font-bold mt-0.5">{partner?.name}</p>
                             </div>
                         </div>
@@ -76,13 +76,13 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                     <div id="print-area">
                         {/* Print Header (Visible only on print) */}
                         <div className="hidden print:block mb-10 text-center border-b pb-6" dir="rtl">
-                            <h1 className="text-3xl font-black mb-2">سجل كشف حساب مالي</h1>
+                            <h1 className="text-3xl font-bold mb-2">سجل كشف حساب مالي</h1>
                             <p className="text-xl font-bold">{partner?.name}</p>
                             <p className="text-sm text-muted-foreground mt-2">تاريخ الاستخراج: {format(new Date(), 'dd MMMM yyyy', { locale: ar })}</p>
                             <div className="mt-4 flex justify-center gap-8">
                                 <div className="text-center">
                                     <span className="text-xs text-muted-foreground block">الرصيد الحالي</span>
-                                    <span className="text-xl font-black">{partner?.balance?.toLocaleString()} ج.م</span>
+                                    <span className="text-xl font-bold">{partner?.balance?.toLocaleString()} ج.م</span>
                                 </div>
                             </div>
                         </div>
@@ -95,19 +95,19 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                         ) : filteredTransactions.length === 0 ? (
                             <div className="text-center py-20 bg-muted/20 rounded-[2.5rem] border-2 border-dashed border-white/10">
                                 <Receipt className="h-16 w-16 mx-auto text-muted-foreground/30 mb-4" />
-                                <p className="text-xl font-black text-muted-foreground/50">لا توجد معاملات مالية مسجلة بعد</p>
+                                <p className="text-xl font-bold text-muted-foreground/50">لا توجد معاملات مالية مسجلة بعد</p>
                             </div>
                         ) : (
                             <div className="rounded-3xl border border-white/10 overflow-hidden shadow-sm bg-card/30 backdrop-blur-sm">
                                 <Table aria-label="حركات الشريك">
                                     <TableHeader>
                                         <TableRow className="bg-muted/30 border-white/5 h-14">
-                                            <TableHead className="text-right font-black uppercase text-xs tracking-widest px-6">التاريخ</TableHead>
-                                            <TableHead className="text-right font-black uppercase text-xs tracking-widest px-6">البيان / الوصف</TableHead>
-                                            <TableHead className="text-center font-black uppercase text-xs tracking-widest px-6">النوع</TableHead>
-                                            <TableHead className="text-center font-black uppercase text-xs tracking-widest px-6">قيمة (وارد)</TableHead>
-                                            <TableHead className="text-center font-black uppercase text-xs tracking-widest px-6">قيمة (صادر)</TableHead>
-                                            <TableHead className="text-center font-black uppercase text-xs tracking-widest px-6 print:hidden">إجراءات</TableHead>
+                                            <TableHead className="text-right font-bold uppercase text-xs tracking-widest px-6">التاريخ</TableHead>
+                                            <TableHead className="text-right font-bold uppercase text-xs tracking-widest px-6">البيان / الوصف</TableHead>
+                                            <TableHead className="text-center font-bold uppercase text-xs tracking-widest px-6">النوع</TableHead>
+                                            <TableHead className="text-center font-bold uppercase text-xs tracking-widest px-6">قيمة (وارد)</TableHead>
+                                            <TableHead className="text-center font-bold uppercase text-xs tracking-widest px-6">قيمة (صادر)</TableHead>
+                                            <TableHead className="text-center font-bold uppercase text-xs tracking-widest px-6 print:hidden">إجراءات</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -123,12 +123,12 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                                                     <div className="flex flex-col max-w-[300px]">
                                                         <span className="font-bold text-sm leading-snug">{tx.description}</span>
                                                         {tx.receiptNumber && (
-                                                            <span className="text-xs text-primary/70 font-black mt-0.5">سند #{tx.receiptNumber}</span>
+                                                            <span className="text-xs text-primary/70 font-bold mt-0.5">سند #{tx.receiptNumber}</span>
                                                         )}
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="px-6 text-center">
-                                                    <Badge variant="outline" className="text-xs font-black h-5 border-white/10 bg-white/5">
+                                                    <Badge variant="outline" className="text-xs font-bold h-5 border-white/10 bg-white/5">
                                                         {tx.referenceType === 'Invoice' ? 'فاتورة' :
                                                             tx.referenceType === 'PurchaseOrder' ? 'شراء' :
                                                                 tx.referenceType === 'SalesReturn' ? 'مرتجع' :
@@ -139,7 +139,7 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                                                 <TableCell className="px-6 text-center">
                                                     {tx.type === 'INCOME' ? (
                                                         <div className="flex flex-col items-center">
-                                                            <div className="flex items-center gap-1.5 text-success font-black text-lg">
+                                                            <div className="flex items-center gap-1.5 text-success font-bold text-lg">
                                                                 <ArrowDownCircle size={14} />
                                                                 <span>{tx.amount.toLocaleString()}</span>
                                                             </div>
@@ -149,7 +149,7 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                                                 <TableCell className="px-6 text-center">
                                                     {tx.type === 'EXPENSE' ? (
                                                         <div className="flex flex-col items-center">
-                                                            <div className="flex items-center gap-1.5 text-destructive font-black text-lg">
+                                                            <div className="flex items-center gap-1.5 text-destructive font-bold text-lg">
                                                                 <ArrowUpCircle size={14} />
                                                                 <span>{tx.amount.toLocaleString()}</span>
                                                             </div>
@@ -180,20 +180,20 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                     <div className="w-full flex justify-between items-center">
                         <div className="flex gap-4">
                             <div className="flex flex-col">
-                                <span className="text-xs font-black text-muted-foreground uppercase opacity-50">إجمالي الوارد</span>
-                                <span className="text-xl font-black text-success leading-none">
+                                <span className="text-xs font-bold text-muted-foreground uppercase opacity-50">إجمالي الوارد</span>
+                                <span className="text-xl font-bold text-success leading-none">
                                     {filteredTransactions.filter(t => t.type === 'INCOME').reduce((s, t) => s + t.amount, 0).toLocaleString()}
                                 </span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col">
-                                <span className="text-xs font-black text-muted-foreground uppercase opacity-50">إجمالي الصادر</span>
-                                <span className="text-xl font-black text-destructive leading-none">
+                                <span className="text-xs font-bold text-muted-foreground uppercase opacity-50">إجمالي الصادر</span>
+                                <span className="text-xl font-bold text-destructive leading-none">
                                     {filteredTransactions.filter(t => t.type === 'EXPENSE').reduce((s, t) => s + t.amount, 0).toLocaleString()}
                                 </span>
                             </div>
                         </div>
-                        <Button variant="ghost" onClick={() => onOpenChange(false)} className="rounded-xl px-10 h-12 font-black border border-white/5 hover:bg-white/5">
+                        <Button variant="ghost" onClick={() => onOpenChange(false)} className="rounded-xl px-10 h-12 font-bold border border-white/5 hover:bg-white/5">
                             إغلاق
                         </Button>
                     </div>

@@ -182,7 +182,7 @@ export default function NewInvoicePage() {
                         <Receipt className="h-8 w-8 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-black tracking-tight text-foreground">إنشاء فاتورة جديدة</h1>
+                        <h1 className="text-3xl font-bold tracking-tight text-foreground">إنشاء فاتورة جديدة</h1>
                         <p className="text-muted-foreground font-medium mt-1">إصدار عملية بيع جديدة وتحديث المخزون تلقائياً</p>
                     </div>
                 </div>
@@ -267,7 +267,7 @@ export default function NewInvoicePage() {
 
                         <div className="flex justify-between items-center text-lg">
                             <span className="text-muted-foreground font-bold">المجموع الفرعي:</span>
-                            <span className="font-black text-foreground">{subtotal.toLocaleString()} ج.م</span>
+                            <span className="font-bold text-foreground">{subtotal.toLocaleString()} ج.م</span>
                         </div>
 
                         {customerCredit > 0 && (
@@ -280,21 +280,21 @@ export default function NewInvoicePage() {
                                     <div className="p-1.5 bg-success/20 rounded-lg">
                                         <Wallet className="w-4 h-4" />
                                     </div>
-                                    <span className="font-black">خصم رصيد سابق:</span>
+                                    <span className="font-bold">خصم رصيد سابق:</span>
                                 </div>
-                                <span className="font-black">-{Math.min(subtotal, customerCredit).toLocaleString()} ج.م</span>
+                                <span className="font-bold">-{Math.min(subtotal, customerCredit).toLocaleString()} ج.م</span>
                             </motion.div>
                         )}
 
                         <div className="space-y-4">
-                            <Label className="font-black text-xs uppercase tracking-widest text-muted-foreground/60 mr-1">طريقة السداد</Label>
+                            <Label className="font-bold text-xs uppercase tracking-widest text-muted-foreground/60 mr-1">طريقة السداد</Label>
                             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                 <Button
                                     variant={paymentType === 'cash' ? 'default' : 'outline'}
                                     onClick={() => setPaymentType('cash')}
                                     disabled={createInvoiceMutation.isPending}
                                     className={cn(
-                                        "h-14 rounded-2xl font-black transition-all border-2",
+                                        "h-14 rounded-2xl font-bold transition-all border-2",
                                         paymentType === 'cash'
                                             ? "bg-success hover:bg-success shadow-lg shadow-success/20 border-success/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
@@ -308,7 +308,7 @@ export default function NewInvoicePage() {
                                     onClick={() => setPaymentType('bank')}
                                     disabled={createInvoiceMutation.isPending}
                                     className={cn(
-                                        "h-14 rounded-2xl font-black transition-all border-2",
+                                        "h-14 rounded-2xl font-bold transition-all border-2",
                                         paymentType === 'bank'
                                             ? "bg-info hover:bg-info shadow-lg shadow-blue-500/20 border-info/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
@@ -322,7 +322,7 @@ export default function NewInvoicePage() {
                                     onClick={() => setPaymentType('wallet')}
                                     disabled={createInvoiceMutation.isPending}
                                     className={cn(
-                                        "h-14 rounded-2xl font-black transition-all border-2",
+                                        "h-14 rounded-2xl font-bold transition-all border-2",
                                         paymentType === 'wallet'
                                             ? "bg-info hover:bg-info shadow-lg shadow-purple-500/20 border-info/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
@@ -336,7 +336,7 @@ export default function NewInvoicePage() {
                                     onClick={() => setPaymentType('check')}
                                     disabled={createInvoiceMutation.isPending}
                                     className={cn(
-                                        "h-14 rounded-2xl font-black transition-all border-2",
+                                        "h-14 rounded-2xl font-bold transition-all border-2",
                                         paymentType === 'check'
                                             ? "bg-secondary hover:bg-secondary shadow-lg shadow-slate-500/20 border-border/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
@@ -350,7 +350,7 @@ export default function NewInvoicePage() {
                                     onClick={() => setPaymentType('credit')}
                                     disabled={createInvoiceMutation.isPending}
                                     className={cn(
-                                        "h-14 rounded-2xl font-black transition-all border-2",
+                                        "h-14 rounded-2xl font-bold transition-all border-2",
                                         paymentType === 'credit'
                                             ? "bg-warning hover:bg-warning shadow-lg shadow-warning/20 border-warning/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
@@ -369,7 +369,7 @@ export default function NewInvoicePage() {
                                 exit={{ opacity: 0, height: 0 }}
                                 className="space-y-3"
                             >
-                                <Label className="font-black text-xs uppercase tracking-widest text-muted-foreground/60 mr-1">تاريخ الاستحقاق المتوقع</Label>
+                                <Label className="font-bold text-xs uppercase tracking-widest text-muted-foreground/60 mr-1">تاريخ الاستحقاق المتوقع</Label>
                                 <div className="relative group">
                                     <CalendarIcon className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary h-5 w-5 z-10 transition-colors" />
                                     <Input
@@ -385,18 +385,18 @@ export default function NewInvoicePage() {
                         <div className="h-px bg-white/5 my-2"></div>
 
                         <div className="flex justify-between items-center">
-                            <span className="text-2xl font-black uppercase tracking-tight">الإجمالي النهائي:</span>
+                            <span className="text-2xl font-bold uppercase tracking-tight">الإجمالي النهائي:</span>
                             <div className="flex items-baseline gap-2">
-                                <span className="text-4xl font-black text-primary tracking-tighter">
+                                <span className="text-4xl font-bold text-primary tracking-tighter">
                                     {Math.max(0, subtotal - customerCredit).toLocaleString()}
                                 </span>
-                                <span className="text-sm font-black text-muted-foreground uppercase tracking-widest">جنيه</span>
+                                <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">جنيه</span>
                             </div>
                         </div>
 
                         <Button
                             size="lg"
-                            className="w-full h-16 rounded-[1.5rem] bg-primary hover:bg-primary/90 font-black text-xl shadow-colored hover:scale-[1.02] active:scale-[0.98] transition-all gap-3"
+                            className="w-full h-16 rounded-[1.5rem] bg-primary hover:bg-primary/90 font-bold text-xl shadow-colored hover:scale-[1.02] active:scale-[0.98] transition-all gap-3"
                             onClick={handleSubmit}
                             disabled={createInvoiceMutation.isPending || isNavigating || items.length === 0}
                         >
@@ -423,7 +423,7 @@ export default function NewInvoicePage() {
                             <div className="mx-auto w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-3 text-white backdrop-blur-md">
                                 <AlertTriangle className="h-7 w-7" />
                             </div>
-                            <DialogTitle className="text-xl font-black">تنبيه: الكمية غير متوفرة</DialogTitle>
+                            <DialogTitle className="text-xl font-bold">تنبيه: الكمية غير متوفرة</DialogTitle>
                             <DialogDescription className="text-destructive font-medium">
                                 المنتج <strong>{shortageDialog.product?.name}</strong> غير متوفر حالياً في المحل.
                             </DialogDescription>

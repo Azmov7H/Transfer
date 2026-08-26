@@ -53,7 +53,7 @@ export function DebtEditDialog({ open, onOpenChange, debt }) {
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-md bg-card/95 border-white/10 backdrop-blur-2xl rounded-[1.5rem]" dir="rtl">
                 <DialogHeader>
-                    <DialogTitle className="text-xl font-black flex items-center gap-2">
+                    <DialogTitle className="text-xl font-bold flex items-center gap-2">
                         <Settings2 className="text-primary" /> تعديل بيانات المديونية
                     </DialogTitle>
                 </DialogHeader>
@@ -91,9 +91,9 @@ export function DebtEditDialog({ open, onOpenChange, debt }) {
                     <div className="p-4 rounded-2xl bg-info/10 border border-info/10 flex justify-between items-center">
                         <div className="flex items-center gap-2 text-info">
                             <Calculator size={18} />
-                            <span className="text-xs font-black">المبلغ المتبقي (محسوب تلقائياً)</span>
+                            <span className="text-xs font-bold">المبلغ المتبقي (محسوب تلقائياً)</span>
                         </div>
-                        <span className="text-xl font-black text-info font-mono">
+                        <span className="text-xl font-bold text-info font-mono">
                             {(parseFloat(formData.originalAmount) - collectedAmount).toLocaleString()} <span className="text-xs">د.ل</span>
                         </span>
                     </div>
@@ -125,7 +125,7 @@ export function DebtEditDialog({ open, onOpenChange, debt }) {
                         <Button
                             type="submit"
                             disabled={isPending}
-                            className="h-12 rounded-xl px-8 font-black gradient-primary shadow-colored border-0 hover:scale-105 transition-all"
+                            className="h-12 rounded-xl px-8 font-bold gradient-primary shadow-colored border-0 hover:scale-105 transition-all"
                         >
                             {isPending && <Loader2 className="animate-spin w-4 h-4 ml-2" />}
                             حفظ التعديلات

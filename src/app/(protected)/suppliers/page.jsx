@@ -96,19 +96,19 @@ export default function SuppliersPage() {
                     <>
                         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-3xl border border-white/10 shadow-xl ml-4">
                             <div className="flex flex-col items-end">
-                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي الموردين</span>
+                                <span className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">إجمالي الموردين</span>
                                 <span className="text-xl font-bold tabular-nums">{(suppliers.length || 0).toLocaleString()}</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col items-end text-destructive">
-                                <span className="text-xs font-black opacity-60 uppercase tracking-[0.2em]">إجمالي المديونيات</span>
+                                <span className="text-xs font-bold opacity-60 uppercase tracking-[0.2em]">إجمالي المديونيات</span>
                                 <span className="text-xl font-bold tabular-nums">{(suppliers.reduce((sum, s) => sum + (s.balance || 0), 0) || 0).toLocaleString()} ج.م</span>
                             </div>
                         </div>
 
                         <Button
                             onClick={() => { setSelectedSupplier(null); setIsAddOpen(true); }}
-                            className="h-14 px-8 rounded-2xl font-black text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 flex-1 lg:flex-none bg-primary text-primary-foreground"
+                            className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 flex-1 lg:flex-none bg-primary text-primary-foreground"
                         >
                             <Plus size={24} />
                             إضافة مورد
@@ -131,7 +131,7 @@ export default function SuppliersPage() {
                     <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-primary h-6 w-6 group-focus-within:animate-pulse transition-all" />
                     <Input
                         placeholder="ابحث باسم المورد، العنوان، أو رقم الهاتف..."
-                        className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-black text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
+                        className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-bold text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
@@ -143,7 +143,7 @@ export default function SuppliersPage() {
                 <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_15px_rgba(var(--primary),0.5)]" />
-                        <h2 className="text-2xl font-black tracking-tight">قائمة الموردين</h2>
+                        <h2 className="text-2xl font-bold tracking-tight">قائمة الموردين</h2>
                     </div>
                 </div>
 
@@ -151,11 +151,11 @@ export default function SuppliersPage() {
                     <Table aria-label="قائمة الموردين">
                         <TableHeader>
                             <TableRow className="hover:bg-transparent border-white/5 h-16 bg-white/[0.01]">
-                                <TableHead className="font-black text-white/40 uppercase tracking-widest text-xs px-8 text-right">المورد / الحالة</TableHead>
-                                <TableHead className="font-black text-white/40 uppercase tracking-widest text-xs px-8 text-right">الاتصال</TableHead>
-                                <TableHead className="font-black text-white/40 uppercase tracking-widest text-xs px-8 text-center">يوم السداد</TableHead>
-                                <TableHead className="font-black text-white/40 uppercase tracking-widest text-xs px-8 text-center">المستحقات</TableHead>
-                                <TableHead className="font-black text-white/40 uppercase tracking-widest text-xs px-8 text-center">الإجراءات</TableHead>
+                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-right">المورد / الحالة</TableHead>
+                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-right">الاتصال</TableHead>
+                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-center">يوم السداد</TableHead>
+                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-center">المستحقات</TableHead>
+                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-center">الإجراءات</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -166,7 +166,7 @@ export default function SuppliersPage() {
                                             <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 shadow-inner">
                                                 <Loader2 size={64} className="text-primary animate-spin" />
                                             </div>
-                                            <p className="text-2xl font-black text-white/30 italic">جاري المزامنة...</p>
+                                            <p className="text-2xl font-bold text-white/30 italic">جاري المزامنة...</p>
                                         </div>
                                     </TableCell>
                                 </TableRow>
@@ -178,7 +178,7 @@ export default function SuppliersPage() {
                                                 <Building2 size={64} className="text-muted-foreground/20 group-hover:scale-110 transition-transform" />
                                             </div>
                                             <div className="space-y-2">
-                                                <p className="text-2xl font-black text-white/30">لا يوجد موردين حالياً</p>
+                                                <p className="text-2xl font-bold text-white/30">لا يوجد موردين حالياً</p>
                                                 <p className="text-sm text-white/10 font-bold uppercase tracking-widest">تأكد من فلاتر البحث</p>
                                             </div>
                                         </div>
@@ -190,21 +190,21 @@ export default function SuppliersPage() {
                                         <TableCell className="px-6">
                                             <div className="flex items-center gap-4">
                                                 <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-lg group-hover:scale-110 transition-transform">
-                                                    <AvatarFallback className="bg-gradient-to-tr from-primary to-primary/60 text-white font-black italic">
+                                                    <AvatarFallback className="bg-gradient-to-tr from-primary to-primary/60 text-white font-bold italic">
                                                         {supplier.name.charAt(0)}
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div className="flex flex-col">
                                                     <span
                                                         onClick={() => { setSelectedSupplier(supplier); setIsHistoryOpen(true); }}
-                                                        className="font-black text-foreground text-sm group-hover:text-primary transition-colors cursor-pointer hover:underline"
+                                                        className="font-bold text-foreground text-sm group-hover:text-primary transition-colors cursor-pointer hover:underline"
                                                     >
                                                         {supplier.name}
                                                     </span>
                                                     <div className="flex items-center gap-2 mt-1">
                                                         <Badge
                                                             variant={supplier.isActive ? "secondary" : "destructive"}
-                                                            className="text-xs h-4 font-black"
+                                                            className="text-xs h-4 font-bold"
                                                         >
                                                             {supplier.isActive ? 'نشط' : 'متوقف'}
                                                         </Badge>
@@ -240,7 +240,7 @@ export default function SuppliersPage() {
                                         <TableCell className="text-center">
                                             {supplier.balance > 0 ? (
                                                 <div className="flex flex-col items-center">
-                                                    <div className="flex items-center gap-2 font-black text-destructive bg-destructive/10 px-3 py-1 rounded-xl border border-destructive/20 text-xs shadow-sm">
+                                                    <div className="flex items-center gap-2 font-bold text-destructive bg-destructive/10 px-3 py-1 rounded-xl border border-destructive/20 text-xs shadow-sm">
                                                         <span className="font-mono">{supplier.balance.toLocaleString()}</span>
                                                         <span className="text-xs opacity-70 italic">ج.م</span>
                                                     </div>

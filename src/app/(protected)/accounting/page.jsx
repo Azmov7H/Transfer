@@ -126,7 +126,7 @@ export default function AccountingPage() {
                     <div className="flex items-center gap-3">
                         <Button
                             onClick={handleExport}
-                            className="h-14 px-8 rounded-2xl font-black text-lg gap-3 bg-success hover:bg-success text-white shadow-2xl shadow-success/20"
+                            className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 bg-success hover:bg-success text-white shadow-2xl shadow-success/20"
                         >
                             <Download size={24} />
                             تصدير البيانات
@@ -160,7 +160,7 @@ export default function AccountingPage() {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={cn(
-                            "relative px-6 py-3 rounded-xl font-black text-sm transition-all duration-300",
+                            "relative px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300",
                             activeTab === tab.id ? "text-white" : "text-muted-foreground hover:text-white"
                         )}
                     >

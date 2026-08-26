@@ -125,7 +125,7 @@ export default function Header() {
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" aria-label="حساب المستخدم" className="h-12 pr-1 pl-4 rounded-2xl hover:bg-white/5 transition-all gap-3 border border-transparent hover:border-white/10">
                                 <div className="flex flex-col items-end hidden lg:flex">
-                                    <span className="text-xs font-black text-foreground truncate max-w-[100px]">
+                                    <span className="text-xs font-bold text-foreground truncate max-w-[100px]">
                                         {loading ? '...' : user?.name}
                                     </span>
                                     <span className="text-xs font-bold text-primary/80 uppercase tracking-wider">
@@ -134,7 +134,7 @@ export default function Header() {
                                 </div>
                                 <Avatar className="h-9 w-9 border-2 border-primary/20 shadow-xl group-hover:scale-110 transition-transform">
                                     <AvatarImage src={user?.picture} />
-                                    <AvatarFallback className="bg-gradient-to-tr from-primary to-primary/60 text-white font-black">
+                                    <AvatarFallback className="bg-gradient-to-tr from-primary to-primary/60 text-white font-bold">
                                         {user?.name?.charAt(0)}
                                     </AvatarFallback>
                                 </Avatar>
@@ -143,7 +143,7 @@ export default function Header() {
                         <DropdownMenuContent align="start" className="w-[240px] rounded-2xl p-2 bg-popover/80 backdrop-blur-2xl border-white/10">
                             <DropdownMenuLabel className="p-3">
                                 <div className="flex flex-col items-start gap-1">
-                                    <span className="font-black text-sm">{user?.name}</span>
+                                    <span className="font-bold text-sm">{user?.name}</span>
                                     <span className="text-xs text-muted-foreground bg-white/5 px-2 py-0.5 rounded-full border border-white/5">{user?.email}</span>
                                 </div>
                             </DropdownMenuLabel>

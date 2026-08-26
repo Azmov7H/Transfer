@@ -28,7 +28,7 @@ export function AlertsSettingsTab({ settings, onChange }) {
                             <Package size={32} />
                         </div>
                         <div className="space-y-2">
-                            <Label className="text-xl font-black text-warning block">حد المخزون الحرج</Label>
+                            <Label className="text-xl font-bold text-warning block">حد المخزون الحرج</Label>
                             <p className="text-sm font-bold text-warning/50 leading-relaxed">أقل كمية للمنتج قبل إطلاق تنبيه &quot;نقص المخزون&quot;</p>
                         </div>
                         <div className="flex items-center gap-4 bg-black/20 p-4 rounded-2xl">
@@ -36,9 +36,9 @@ export function AlertsSettingsTab({ settings, onChange }) {
                                 type="number"
                                 value={settings.stockAlertThreshold || 0}
                                 onChange={e => set({ stockAlertThreshold: parseInt(e.target.value) || 0 })}
-                                className="h-12 w-24 text-2xl font-black text-center border-0 bg-transparent text-warning ring-0 focus-visible:ring-0"
+                                className="h-12 w-24 text-2xl font-bold text-center border-0 bg-transparent text-warning ring-0 focus-visible:ring-0"
                             />
-                            <span className="font-black text-warning/30 uppercase text-xs tracking-[0.3em]">وحدة</span>
+                            <span className="font-bold text-warning/30 uppercase text-xs tracking-[0.3em]">وحدة</span>
                         </div>
                     </div>
 
@@ -47,7 +47,7 @@ export function AlertsSettingsTab({ settings, onChange }) {
                             <Calendar size={32} />
                         </div>
                         <div className="space-y-2">
-                            <Label className="text-xl font-black text-info block">تنبيه توريد الموردين</Label>
+                            <Label className="text-xl font-bold text-info block">تنبيه توريد الموردين</Label>
                             <p className="text-sm font-bold text-info/50 leading-relaxed">تذكير بموعد وصول الشحنات المنتظرة</p>
                         </div>
                         <div className="flex items-center gap-4 bg-black/20 p-4 rounded-2xl">
@@ -55,9 +55,9 @@ export function AlertsSettingsTab({ settings, onChange }) {
                                 type="number"
                                 value={settings.supplierPaymentAlertDays || 0}
                                 onChange={e => set({ supplierPaymentAlertDays: parseInt(e.target.value) || 0 })}
-                                className="h-12 w-24 text-2xl font-black text-center border-0 bg-transparent text-info ring-0 focus-visible:ring-0"
+                                className="h-12 w-24 text-2xl font-bold text-center border-0 bg-transparent text-info ring-0 focus-visible:ring-0"
                             />
-                            <span className="font-black text-info/30 uppercase text-xs tracking-[0.3em]">أيام</span>
+                            <span className="font-bold text-info/30 uppercase text-xs tracking-[0.3em]">أيام</span>
                         </div>
                     </div>
 
@@ -66,7 +66,7 @@ export function AlertsSettingsTab({ settings, onChange }) {
                             <Users size={32} />
                         </div>
                         <div className="space-y-2">
-                            <Label className="text-xl font-black text-success block">تنبيه تحصيل العملاء</Label>
+                            <Label className="text-xl font-bold text-success block">تنبيه تحصيل العملاء</Label>
                             <p className="text-sm font-bold text-success/50 leading-relaxed">تنبيه قبل حلول موعد استحقاق المديونية</p>
                         </div>
                         <div className="flex items-center gap-4 bg-black/20 p-4 rounded-2xl">
@@ -74,9 +74,9 @@ export function AlertsSettingsTab({ settings, onChange }) {
                                 type="number"
                                 value={settings.customerCollectionAlertDays || 0}
                                 onChange={e => set({ customerCollectionAlertDays: parseInt(e.target.value) || 0 })}
-                                className="h-12 w-24 text-2xl font-black text-center border-0 bg-transparent text-success ring-0 focus-visible:ring-0"
+                                className="h-12 w-24 text-2xl font-bold text-center border-0 bg-transparent text-success ring-0 focus-visible:ring-0"
                             />
-                            <span className="font-black text-success/30 uppercase text-xs tracking-[0.3em]">أيام</span>
+                            <span className="font-bold text-success/30 uppercase text-xs tracking-[0.3em]">أيام</span>
                         </div>
                     </div>
                 </div>

@@ -56,7 +56,7 @@ export function InstallmentDialog({ open, onOpenChange, debt }) {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16 blur-3xl opacity-50" />
 
                 <DialogHeader className="relative z-10 text-right">
-                    <DialogTitle className="text-2xl font-black text-foreground flex items-center gap-3">
+                    <DialogTitle className="text-2xl font-bold text-foreground flex items-center gap-3">
                         <div className="p-2 bg-primary/10 rounded-lg">
                             <Layers className="w-5 h-5 text-primary" />
                         </div>
@@ -79,7 +79,7 @@ export function InstallmentDialog({ open, onOpenChange, debt }) {
                                 max="24"
                                 value={formData.installmentsCount}
                                 onChange={(e) => setFormData({ ...formData, installmentsCount: e.target.value })}
-                                className="h-12 bg-muted/30 border-white/10 rounded-xl font-black text-lg focus:ring-primary/20"
+                                className="h-12 bg-muted/30 border-white/10 rounded-xl font-bold text-lg focus:ring-primary/20"
                                 required
                             />
                         </div>
@@ -121,7 +121,7 @@ export function InstallmentDialog({ open, onOpenChange, debt }) {
                     <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 space-y-3">
                         <div className="flex justify-between items-center">
                             <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">قيمة القسط التقريبية</span>
-                            <span className="font-black text-primary text-xl">
+                            <span className="font-bold text-primary text-xl">
                                 {amountPerInstallment} <span className="text-xs italic">د.ل</span>
                             </span>
                         </div>
@@ -143,7 +143,7 @@ export function InstallmentDialog({ open, onOpenChange, debt }) {
                         <Button
                             type="submit"
                             disabled={createInstallments.isPending}
-                            className="h-12 rounded-xl gradient-primary border-0 font-black shadow-lg shadow-primary/20 flex-1 text-white gap-2"
+                            className="h-12 rounded-xl gradient-primary border-0 font-bold shadow-lg shadow-primary/20 flex-1 text-white gap-2"
                         >
                             {createInstallments.isPending ? (
                                 <Loader2 className="animate-spin w-4 h-4" />

@@ -28,14 +28,14 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                                 <CreditCard size={28} />
                             </div>
                             <div>
-                                <h3 className="text-2xl font-black tracking-tight">فترات السداد الآلي</h3>
+                                <h3 className="text-2xl font-bold tracking-tight">فترات السداد الآلي</h3>
                                 <p className="text-sm font-bold text-white/20">تُطبق تلقائياً عند إنشاء الفواتير والمشتريات</p>
                             </div>
                         </div>
 
                         <div className="space-y-8 pr-6 border-r-4 border-white/5">
                             <div className="space-y-4 group">
-                                <Label className="text-sm font-black text-white/30 uppercase tracking-[0.2em] flex items-center justify-between">
+                                <Label className="text-sm font-bold text-white/30 uppercase tracking-[0.2em] flex items-center justify-between">
                                     استحقاق العميل (المبيعات)
                                     <span className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full">STANDARD TERMS</span>
                                 </Label>
@@ -44,14 +44,14 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                                         type="number"
                                         value={settings.defaultCustomerTerms || 0}
                                         onChange={e => set({ defaultCustomerTerms: parseInt(e.target.value) || 0 })}
-                                        className="h-10 text-3xl font-black border-0 bg-transparent text-white ring-0 focus-visible:ring-0 tabular-nums text-center"
+                                        className="h-10 text-3xl font-bold border-0 bg-transparent text-white ring-0 focus-visible:ring-0 tabular-nums text-center"
                                     />
-                                    <span className="text-xs font-black text-white/10 uppercase tracking-widest">يوم</span>
+                                    <span className="text-xs font-bold text-white/10 uppercase tracking-widest">يوم</span>
                                 </div>
                             </div>
 
                             <div className="space-y-4 group">
-                                <Label className="text-sm font-black text-white/30 uppercase tracking-[0.2em] flex items-center justify-between">
+                                <Label className="text-sm font-bold text-white/30 uppercase tracking-[0.2em] flex items-center justify-between">
                                     موعد التوريد (المشتريات)
                                     <span className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full">EXPECTED DELIVERY</span>
                                 </Label>
@@ -60,9 +60,9 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                                         type="number"
                                         value={settings.defaultSupplierTerms || 0}
                                         onChange={e => set({ defaultSupplierTerms: parseInt(e.target.value) || 0 })}
-                                        className="h-10 text-3xl font-black border-0 bg-transparent text-white ring-0 focus-visible:ring-0 tabular-nums text-center"
+                                        className="h-10 text-3xl font-bold border-0 bg-transparent text-white ring-0 focus-visible:ring-0 tabular-nums text-center"
                                     />
-                                    <span className="text-xs font-black text-white/10 uppercase tracking-widest">يوم</span>
+                                    <span className="text-xs font-bold text-white/10 uppercase tracking-widest">يوم</span>
                                 </div>
                             </div>
                         </div>
@@ -74,14 +74,14 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                                 <HandCoins size={28} />
                             </div>
                             <div>
-                                <h3 className="text-2xl font-black tracking-tight">إدارة مبالغ التنبيه</h3>
+                                <h3 className="text-2xl font-bold tracking-tight">إدارة مبالغ التنبيه</h3>
                                 <p className="text-sm font-bold text-white/20">تصفية التنبيهات الصغيرة لزيادة الفعالية</p>
                             </div>
                         </div>
 
                         <div className="space-y-8 pr-6 border-r-4 border-warning/10">
                             <div className="space-y-4">
-                                <Label className="text-sm font-black text-warning/40 uppercase tracking-[0.2em]">الحد الأدنى لقيمة التنبيه</Label>
+                                <Label className="text-sm font-bold text-warning/40 uppercase tracking-[0.2em]">الحد الأدنى لقيمة التنبيه</Label>
                                 <div className="relative group">
                                     <div className="absolute inset-x-0 bottom-0 h-1 bg-warning/20 rounded-full overflow-hidden">
                                         <div className="h-full bg-warning animate-pulse w-[30%]" />
@@ -91,9 +91,9 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                                             type="number"
                                             value={settings.minDebtNotificationAmount || 0}
                                             onChange={e => set({ minDebtNotificationAmount: parseInt(e.target.value) || 0 })}
-                                            className="h-12 text-5xl font-black text-center border-0 bg-transparent text-warning ring-0 focus-visible:ring-0 tabular-nums"
+                                            className="h-12 text-5xl font-bold text-center border-0 bg-transparent text-warning ring-0 focus-visible:ring-0 tabular-nums"
                                         />
-                                        <span className="text-xl font-black text-warning/20">ج.م</span>
+                                        <span className="text-xl font-bold text-warning/20">ج.م</span>
                                     </div>
                                 </div>
                                 <p className="text-xs text-white/20 font-bold leading-relaxed pr-2 italic">

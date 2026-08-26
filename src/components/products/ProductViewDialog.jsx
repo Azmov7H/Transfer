@@ -22,10 +22,10 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                 <div className="p-8 pt-12 space-y-8">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h2 className="text-3xl font-black">{product.name}</h2>
+                            <h2 className="text-3xl font-bold">{product.name}</h2>
                             <p className="font-mono text-muted-foreground mt-1 uppercase tracking-tighter">{product.code}</p>
                         </div>
-                        <Badge className="h-10 px-6 rounded-2xl bg-primary/10 text-primary border-primary/20 font-black text-lg">
+                        <Badge className="h-10 px-6 rounded-2xl bg-primary/10 text-primary border-primary/20 font-bold text-lg">
                             {product.retailPrice || product.sellPrice} ج.م
                         </Badge>
                     </div>
@@ -36,23 +36,23 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                             { label: 'الفئة', val: product.category, icon: Layers },
                         ].map((item, i) => (
                             <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                                <div className="flex items-center gap-2 text-xs font-black text-muted-foreground uppercase opacity-60 mb-1">
+                                <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase opacity-60 mb-1">
                                     <item.icon className="h-3 w-3" /> {item.label}
                                 </div>
-                                <p className="font-black text-sm">{item.val || '-'}</p>
+                                <p className="font-bold text-sm">{item.val || '-'}</p>
                             </div>
                         ))}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="p-6 bg-success/5 rounded-3xl border border-success/10 space-y-4">
-                            <h4 className="flex items-center gap-2 font-black text-success text-xs uppercase tracking-widest">
+                            <h4 className="flex items-center gap-2 font-bold text-success text-xs uppercase tracking-widest">
                                 <Box className="h-4 w-4" /> حالة المخزون الحالية
                             </h4>
                             <div className="flex items-end justify-between">
                                 <div>
-                                    <p className="text-3xl font-black">{product.stockQty}</p>
-                                    <p className="text-xs text-muted-foreground font-black uppercase">إجمالي الرصيد</p>
+                                    <p className="text-3xl font-bold">{product.stockQty}</p>
+                                    <p className="text-xs text-muted-foreground font-bold uppercase">إجمالي الرصيد</p>
                                 </div>
                                 <div className="text-left font-bold text-xs space-y-1">
                                     <p className="opacity-60">المخزن: {product.warehouseQty || 0}</p>
@@ -62,13 +62,13 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                         </div>
 
                         <div className="p-6 bg-primary/5 rounded-3xl border border-primary/10 space-y-4">
-                            <h4 className="flex items-center gap-2 font-black text-primary text-xs uppercase tracking-widest">
+                            <h4 className="flex items-center gap-2 font-bold text-primary text-xs uppercase tracking-widest">
                                 <History className="h-4 w-4" /> الرصيد الافتتاحي
                             </h4>
                             <div className="flex items-end justify-between">
                                 <div>
-                                    <p className="text-3xl font-black">{(product.openingWarehouseQty || 0) + (product.openingShopQty || 0)}</p>
-                                    <p className="text-xs text-muted-foreground font-black uppercase">عند تسليم النظام</p>
+                                    <p className="text-3xl font-bold">{(product.openingWarehouseQty || 0) + (product.openingShopQty || 0)}</p>
+                                    <p className="text-xs text-muted-foreground font-bold uppercase">عند تسليم النظام</p>
                                 </div>
                                 <div className="text-left font-bold text-xs">
                                     <p className="opacity-60">التكلفة: {product.openingBuyPrice || product.buyPrice || 0}</p>
@@ -78,7 +78,7 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                     </div>
 
                     <div className="flex gap-4">
-                        <Button className="flex-1 h-12 rounded-2xl font-black" onClick={() => onOpenChange(false)}>
+                        <Button className="flex-1 h-12 rounded-2xl font-bold" onClick={() => onOpenChange(false)}>
                             إغلاق النافذة
                         </Button>
                     </div>

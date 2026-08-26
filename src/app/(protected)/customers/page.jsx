@@ -168,12 +168,12 @@ export default function CustomersPage() {
                     <>
                         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-3xl border border-white/10 shadow-xl ml-4">
                             <div className="flex flex-col items-end">
-                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي العملاء</span>
+                                <span className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">إجمالي العملاء</span>
                                 <span className="text-xl font-bold tabular-nums">{(pagination.total || 0).toLocaleString()}</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col items-end text-destructive">
-                                <span className="text-xs font-black opacity-60 uppercase tracking-[0.2em]">إجمالي المديونيات</span>
+                                <span className="text-xs font-bold opacity-60 uppercase tracking-[0.2em]">إجمالي المديونيات</span>
                                 <span className="text-xl font-bold tabular-nums">{(totalReceivables || 0).toLocaleString()} ج.م</span>
                             </div>
                         </div>
@@ -190,7 +190,7 @@ export default function CustomersPage() {
                             </Button>
                             <Button
                                 onClick={() => { setSelectedCustomer(null); setIsAddOpen(true); }}
-                                className="h-14 px-8 rounded-2xl font-black text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 flex-1 lg:flex-none bg-primary text-primary-foreground"
+                                className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 flex-1 lg:flex-none bg-primary text-primary-foreground"
                             >
                                 <Plus size={24} />
                                 إضافة عميل
@@ -214,7 +214,7 @@ export default function CustomersPage() {
             <div className="space-y-6">
                 <div className="flex items-center gap-3 px-2">
                     <div className="w-2 h-6 bg-primary rounded-full" />
-                    <h2 className="text-2xl font-black tracking-tight">{financialOverview}</h2>
+                    <h2 className="text-2xl font-bold tracking-tight">{financialOverview}</h2>
                 </div>
                 <DebtOverviewCards
                     totalReceivables={totalReceivables}
@@ -230,7 +230,7 @@ export default function CustomersPage() {
                     <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-primary h-6 w-6 group-focus-within:animate-pulse transition-all" />
                     <Input
                         placeholder={searchPlaceholder}
-                        className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-black text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
+                        className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-bold text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
                         value={search}
                         onChange={handleSearch}
                     />
@@ -242,9 +242,9 @@ export default function CustomersPage() {
                 <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_15px_rgba(var(--primary),0.5)]" />
-                        <h2 className="text-2xl font-black tracking-tight">قائمة العملاء</h2>
+                        <h2 className="text-2xl font-bold tracking-tight">قائمة العملاء</h2>
                     </div>
-                    <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-black">
+                    <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-bold">
                         {pagination.total} عميل مسجل
                     </Badge>
                 </div>
@@ -252,11 +252,11 @@ export default function CustomersPage() {
                 <ResponsiveTable
                     columns={[
                         { label: '', headerClassName: 'w-[80px] px-8' },
-                        { label: tableCustomer, headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-                        { label: tableContact, headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-                        { label: tablePriceType, headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-                        { label: tableDebt, headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-                        { label: tableActions, headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8' }
+                        { label: tableCustomer, headerClassName: 'text-right font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: tableContact, headerClassName: 'text-right font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: tablePriceType, headerClassName: 'text-center font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: tableDebt, headerClassName: 'text-center font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: tableActions, headerClassName: 'text-center font-bold text-white/40 uppercase tracking-widest text-xs px-8' }
                     ]}
                     data={customers}
                     isPending={isLoading}
@@ -301,7 +301,7 @@ export default function CustomersPage() {
                                     <PaginationPrevious
                                         onClick={() => setPage(Math.max(1, page - 1))}
                                         className={cn(
-                                            "h-10 px-4 rounded-xl border-white/5 hover:bg-white/5 transition-all text-sm font-black",
+                                            "h-10 px-4 rounded-xl border-white/5 hover:bg-white/5 transition-all text-sm font-bold",
                                             page === 1 ? 'pointer-events-none opacity-25' : 'cursor-pointer'
                                         )}
                                     />
@@ -310,7 +310,7 @@ export default function CustomersPage() {
                                 {page > 3 && (
                                     <>
                                         <PaginationItem>
-                                            <PaginationLink onClick={() => setPage(1)} className="h-10 w-10 rounded-xl cursor-pointer font-black border-white/5 text-muted-foreground">
+                                            <PaginationLink onClick={() => setPage(1)} className="h-10 w-10 rounded-xl cursor-pointer font-bold border-white/5 text-muted-foreground">
                                                 1
                                             </PaginationLink>
                                         </PaginationItem>
@@ -324,7 +324,7 @@ export default function CustomersPage() {
                                             onClick={() => setPage(p)}
                                             isActive={p === page}
                                             className={cn(
-                                                "h-10 w-10 rounded-xl cursor-pointer font-black transition-all",
+                                                "h-10 w-10 rounded-xl cursor-pointer font-bold transition-all",
                                                 p === page
                                                     ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                                                     : "border-white/5 hover:bg-white/5 text-muted-foreground"
@@ -339,7 +339,7 @@ export default function CustomersPage() {
                                     <>
                                         <PaginationEllipsis className="text-white/10" />
                                         <PaginationItem>
-                                            <PaginationLink onClick={() => setPage(totalPages)} className="h-10 w-10 rounded-xl cursor-pointer font-black border-white/5 text-muted-foreground">
+                                            <PaginationLink onClick={() => setPage(totalPages)} className="h-10 w-10 rounded-xl cursor-pointer font-bold border-white/5 text-muted-foreground">
                                                 {totalPages}
                                             </PaginationLink>
                                         </PaginationItem>
@@ -350,7 +350,7 @@ export default function CustomersPage() {
                                     <PaginationNext
                                         onClick={() => setPage(Math.min(totalPages, page + 1))}
                                         className={cn(
-                                            "h-10 px-4 rounded-xl border-white/5 hover:bg-white/5 transition-all text-sm font-black",
+                                            "h-10 px-4 rounded-xl border-white/5 hover:bg-white/5 transition-all text-sm font-bold",
                                             page === totalPages ? 'pointer-events-none opacity-25' : 'cursor-pointer'
                                         )}
                                     />
@@ -363,7 +363,7 @@ export default function CustomersPage() {
 
             {/* Page info */}
             {!isLoading && pagination.total > 0 && (
-                <p className="text-center text-sm font-black text-white/10 uppercase tracking-[0.2em] pt-4">
+                <p className="text-center text-sm font-bold text-white/10 uppercase tracking-[0.2em] pt-4">
                     {LABELS.pagination.page} {page} {LABELS.pagination.of} {totalPages} ({pagination.total} {LABELS.pagination.customer})
                 </p>
             )}

@@ -98,18 +98,18 @@ export default function InvoicesPage() {
                     <>
                         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-3xl border border-white/10 shadow-xl ml-4">
                             <div className="flex flex-col items-end">
-                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي المبيعات</span>
+                                <span className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">إجمالي المبيعات</span>
                                 <span className="text-xl font-bold tabular-nums text-success">{(totalSales || 0).toLocaleString()} ج.م</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col items-end">
-                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">عدد الفواتير</span>
+                                <span className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">عدد الفواتير</span>
                                 <span className="text-xl font-bold tabular-nums">{invoicesCount}</span>
                             </div>
                         </div>
 
                         <Link href="/invoices/new" className="flex-1 lg:flex-none">
-                            <Button className="h-14 px-8 rounded-2xl font-black text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 w-full lg:w-auto bg-primary text-primary-foreground">
+                            <Button className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 w-full lg:w-auto bg-primary text-primary-foreground">
                                 <Plus size={24} />
                                 فاتورة جديدة
                             </Button>
@@ -156,7 +156,7 @@ export default function InvoicesPage() {
                     <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-primary h-6 w-6 group-focus-within:animate-pulse transition-all" />
                     <Input
                         placeholder="ابحث برقم الفاتورة، اسم العميل، أو التاريخ..."
-                        className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-black text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
+                        className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-bold text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
                         value={searchTerm}
                         onChange={handleSearch}
                     />
@@ -174,7 +174,7 @@ export default function InvoicesPage() {
                                 key={tab.id}
                                 onClick={() => setFilterType(tab.id)}
                                 className={cn(
-                                    "px-8 py-3 rounded-2xl font-black transition-all text-sm whitespace-nowrap flex items-center gap-3",
+                                    "px-8 py-3 rounded-2xl font-bold transition-all text-sm whitespace-nowrap flex items-center gap-3",
                                     filterType === tab.id
                                         ? "bg-primary text-primary-foreground shadow-xl scale-105"
                                         : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
@@ -203,7 +203,7 @@ export default function InvoicesPage() {
                         <ShoppingBag className="h-20 w-20 text-muted-foreground/20" />
                     </div>
                     <div className="text-center space-y-2">
-                        <h3 className="text-3xl font-black text-white/30">{noInvoices}</h3>
+                        <h3 className="text-3xl font-bold text-white/30">{noInvoices}</h3>
                         <p className="text-white/10 font-bold uppercase tracking-widest">{noMatchingInvoices}</p>
                     </div>
                 </div>
@@ -212,9 +212,9 @@ export default function InvoicesPage() {
                     <div className="flex items-center justify-between px-8 mb-4">
                         <div className="flex items-center gap-3">
                             <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
-                            <span className="text-sm font-black text-white/40 uppercase tracking-widest">تحديثات المبيعات الحالية</span>
+                            <span className="text-sm font-bold text-white/40 uppercase tracking-widest">تحديثات المبيعات الحالية</span>
                         </div>
-                        <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-black uppercase tracking-tighter">
+                        <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-bold uppercase tracking-tighter">
                             {pagination.total} عملية مسجلة
                         </Badge>
                     </div>
@@ -239,7 +239,7 @@ export default function InvoicesPage() {
                                             <PaginationPrevious
                                                 onClick={() => setPage(Math.max(1, page - 1))}
                                                 className={cn(
-                                                    "h-10 px-4 rounded-xl border-white/5 hover:bg-white/5 transition-all text-sm font-black",
+                                                    "h-10 px-4 rounded-xl border-white/5 hover:bg-white/5 transition-all text-sm font-bold",
                                                     page === 1 ? 'pointer-events-none opacity-25' : 'cursor-pointer'
                                                 )}
                                             />
@@ -248,7 +248,7 @@ export default function InvoicesPage() {
                                         {page > 3 && (
                                             <>
                                                 <PaginationItem>
-                                                    <PaginationLink onClick={() => setPage(1)} className="h-10 w-10 rounded-xl cursor-pointer font-black border-white/5 text-muted-foreground">
+                                                    <PaginationLink onClick={() => setPage(1)} className="h-10 w-10 rounded-xl cursor-pointer font-bold border-white/5 text-muted-foreground">
                                                         1
                                                     </PaginationLink>
                                                 </PaginationItem>
@@ -262,7 +262,7 @@ export default function InvoicesPage() {
                                                     onClick={() => setPage(p)}
                                                     isActive={p === page}
                                                     className={cn(
-                                                        "h-10 w-10 rounded-xl cursor-pointer font-black transition-all",
+                                                        "h-10 w-10 rounded-xl cursor-pointer font-bold transition-all",
                                                         p === page
                                                             ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                                                             : "border-white/5 hover:bg-white/5 text-muted-foreground"
@@ -277,7 +277,7 @@ export default function InvoicesPage() {
                                             <>
                                                 <PaginationEllipsis className="text-white/10" />
                                                 <PaginationItem>
-                                                    <PaginationLink onClick={() => setPage(totalPages)} className="h-10 w-10 rounded-xl cursor-pointer font-black border-white/5 text-muted-foreground">
+                                                    <PaginationLink onClick={() => setPage(totalPages)} className="h-10 w-10 rounded-xl cursor-pointer font-bold border-white/5 text-muted-foreground">
                                                         {totalPages}
                                                     </PaginationLink>
                                                 </PaginationItem>
@@ -288,7 +288,7 @@ export default function InvoicesPage() {
                                             <PaginationNext
                                                 onClick={() => setPage(Math.min(totalPages, page + 1))}
                                                 className={cn(
-                                                    "h-10 px-4 rounded-xl border-white/5 hover:bg-white/5 transition-all text-sm font-black",
+                                                    "h-10 px-4 rounded-xl border-white/5 hover:bg-white/5 transition-all text-sm font-bold",
                                                     page === totalPages ? 'pointer-events-none opacity-25' : 'cursor-pointer'
                                                 )}
                                             />

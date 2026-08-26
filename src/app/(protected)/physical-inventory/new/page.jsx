@@ -86,7 +86,7 @@ export default function NewPhysicalInventoryPage() {
                         <div className="mx-auto w-20 h-20 rounded-3xl gradient-primary flex items-center justify-center shadow-lg shadow-primary/20 mb-6 rotate-3">
                             <ClipboardCheck className="w-10 h-10 text-white" />
                         </div>
-                        <CardTitle className="text-3xl font-black tracking-tight mb-2">بدء جرد ذكي</CardTitle>
+                        <CardTitle className="text-3xl font-bold tracking-tight mb-2">بدء جرد ذكي</CardTitle>
                         <CardDescription className="text-base font-medium">قم بتهيئة جلسة الجرد الفعلية لضمان دقة المخزون</CardDescription>
                     </CardHeader>
 
@@ -94,7 +94,7 @@ export default function NewPhysicalInventoryPage() {
                         <form onSubmit={handleSubmit} className="space-y-8">
                             {/* Location Section */}
                             <div className="space-y-4">
-                                <Label className="text-sm font-black flex items-center gap-2 text-primary/80">
+                                <Label className="text-sm font-bold flex items-center gap-2 text-primary/80">
                                     <Warehouse className="w-4 h-4" /> موقع الجرد
                                 </Label>
                                 <div className="grid grid-cols-3 gap-3">
@@ -121,7 +121,7 @@ export default function NewPhysicalInventoryPage() {
 
                             {/* Category Section */}
                             <div className="space-y-4">
-                                <Label className="text-sm font-black flex items-center gap-2 text-primary/80">
+                                <Label className="text-sm font-bold flex items-center gap-2 text-primary/80">
                                     <LayoutGrid className="w-4 h-4" /> القسم المختار
                                 </Label>
                                 <Select value={category} onValueChange={setCategory} disabled={fetchingMetadata}>
@@ -143,7 +143,7 @@ export default function NewPhysicalInventoryPage() {
                             <div className="p-6 rounded-3xl bg-primary/5 space-y-6">
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-1">
-                                        <Label className="text-base font-black flex items-center gap-2">
+                                        <Label className="text-base font-bold flex items-center gap-2">
                                             <SearchX className="w-4 h-4 text-primary" /> الجرد الأعمى (Blind Count)
                                         </Label>
                                         <p className="text-xs text-muted-foreground font-medium">إخفاء كميات النظام لضمان دقة الجرد الفعلي</p>
@@ -158,7 +158,7 @@ export default function NewPhysicalInventoryPage() {
 
                             <Button
                                 type="submit"
-                                className="w-full h-16 rounded-[1.5rem] gradient-primary text-lg font-black shadow-lg shadow-primary/30 hover-scale group"
+                                className="w-full h-16 rounded-[1.5rem] gradient-primary text-lg font-bold shadow-lg shadow-primary/30 hover-scale group"
                                 disabled={!location || createMutation.isPending}
                             >
                                 {createMutation.isPending ? (

@@ -22,7 +22,7 @@ export function RevenueChart({ data, className }) {
     return (
         <Card className={cn("glass-card border-none shadow-custom-xl overflow-hidden", className)}>
             <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-black flex items-center gap-2">
+                <CardTitle className="text-xl font-bold flex items-center gap-2">
                     نمو المبيعات
                     <span className="text-xs font-medium text-muted-foreground opacity-60">(آخر 6 أشهر)</span>
                 </CardTitle>

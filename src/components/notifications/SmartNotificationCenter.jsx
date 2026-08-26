@@ -146,7 +146,7 @@ export function SmartNotificationCenter() {
                                         </div>
                                     </div>
                                     <div className="space-y-0.5">
-                                        <h2 className="text-2xl font-black tracking-tight">مركز الذكاء</h2>
+                                        <h2 className="text-2xl font-bold tracking-tight">مركز الذكاء</h2>
                                         <div className="flex items-center gap-2">
                                             <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">
                                                 {unreadCount > 0 ? `${unreadCount} تنبيهات نشطة` : 'جميع الأنظمة مستقرة'}
@@ -218,7 +218,7 @@ export function SmartNotificationCenter() {
                                                     <Layout size={32} />
                                                 </div>
                                                 <div>
-                                                    <h3 className="text-lg font-black">لا توجد سجلات</h3>
+                                                    <h3 className="text-lg font-bold">لا توجد سجلات</h3>
                                                     <p className="text-xs font-bold uppercase tracking-widest">Feed is Clear</p>
                                                 </div>
                                             </motion.div>
@@ -244,7 +244,7 @@ export function SmartNotificationCenter() {
                         {/* Footer Controls */}
                         <div className="p-8 bg-black/20 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
                             <div className="flex items-center gap-6">
-                                <div className="flex items-center gap-3 text-primary text-xs font-black uppercase tracking-[0.3em]">
+                                <div className="flex items-center gap-3 text-primary text-xs font-bold uppercase tracking-[0.3em]">
                                     <Zap size={14} className="animate-pulse" />
                                     Real-time Operational Insight
                                 </div>
@@ -256,13 +256,13 @@ export function SmartNotificationCenter() {
                             <div className="flex gap-4 w-full sm:w-auto">
                                 <Button
                                     variant="ghost"
-                                    className="flex-1 sm:flex-none h-12 px-6 text-muted-foreground hover:text-destructive hover:bg-destructive/10 font-black rounded-xl transition-all"
+                                    className="flex-1 sm:flex-none h-12 px-6 text-muted-foreground hover:text-destructive hover:bg-destructive/10 font-bold rounded-xl transition-all"
                                     onClick={() => deleteNotification('all')}
                                 >
                                     <Trash2 size={16} className="ml-3" /> مسح السجل
                                 </Button>
                                 <Button
-                                    className="flex-1 sm:flex-none h-12 px-10 bg-primary hover:bg-primary/90 text-white rounded-xl font-black shadow-xl shadow-primary/20 transition-all hover:scale-[1.02]"
+                                    className="flex-1 sm:flex-none h-12 px-10 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold shadow-xl shadow-primary/20 transition-all hover:scale-[1.02]"
                                     onClick={() => markAsRead('all')}
                                 >
                                     أرشفة جميع التنبيهات
@@ -317,11 +317,11 @@ function SmartActionCard({ notif, onRead, onDelete, onAction, isLoading }) {
                 {/* Main Content */}
                 <div className="flex-1 min-w-0 space-y-2">
                     <div className="flex items-center gap-3 flex-wrap">
-                        <Badge variant="outline" className={cn("px-2 py-0.5 text-xs font-black uppercase tracking-widest border transition-all", style.bg, style.border, style.text)}>
+                        <Badge variant="outline" className={cn("px-2 py-0.5 text-xs font-bold uppercase tracking-widest border transition-all", style.bg, style.border, style.text)}>
                             {style.label}
                         </Badge>
-                        <h4 className="text-lg font-black tracking-tight">{notif.title}</h4>
-                        <div className="flex items-center gap-1.5 text-xs font-black text-muted-foreground/60 uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded-full border border-white/5">
+                        <h4 className="text-lg font-bold tracking-tight">{notif.title}</h4>
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground/60 uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded-full border border-white/5">
                             <Clock size={10} className="text-primary" />
                             {formatDistanceToNow(new Date(notif.createdAt), { addSuffix: true, locale: ar })}
                         </div>
@@ -336,7 +336,7 @@ function SmartActionCard({ notif, onRead, onDelete, onAction, isLoading }) {
                     {notif.actionType && !notif.isRead ? (
                         <Button
                             className={cn(
-                                "flex-1 lg:flex-none h-12 px-6 rounded-xl text-xs font-black shadow-lg transition-all hover:scale-[1.02] group/btn",
+                                "flex-1 lg:flex-none h-12 px-6 rounded-xl text-xs font-bold shadow-lg transition-all hover:scale-[1.02] group/btn",
                                 notif.category === 'CRITICAL' ? "bg-destructive hover:bg-destructive" : "bg-primary hover:bg-primary/90"
                             )}
                             onClick={onAction}
@@ -352,7 +352,7 @@ function SmartActionCard({ notif, onRead, onDelete, onAction, isLoading }) {
                     ) : !notif.isRead && (
                         <Button
                             variant="outline"
-                            className="h-12 px-6 rounded-xl text-xs font-black bg-white/5 border-white/5 hover:bg-white/10 transition-all flex-1 lg:flex-none"
+                            className="h-12 px-6 rounded-xl text-xs font-bold bg-white/5 border-white/5 hover:bg-white/10 transition-all flex-1 lg:flex-none"
                             onClick={onRead}
                         >
                             أرشفة التنبيه

@@ -8,7 +8,7 @@ export default function Loading() {
                     <div className="w-12 h-12 rounded-full border-4 border-primary/20" />
                     <Loader2 className="w-12 h-12 text-primary animate-spin absolute inset-0" />
                 </div>
-                <p className="text-sm font-black text-primary animate-pulse tracking-widest uppercase">
+                <p className="text-sm font-bold text-primary animate-pulse tracking-widest uppercase">
                     جاري التحميل...
                 </p>
             </div>

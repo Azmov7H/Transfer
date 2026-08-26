@@ -61,7 +61,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent dir="rtl" className="sm:max-w-[850px] w-[95vw] max-h-[90vh] flex flex-col p-0 overflow-hidden">
                 <DialogHeader className="px-6 py-4 border-b border-white/10 shrink-0">
-                    <DialogTitle className="flex items-center gap-4 text-3xl font-black tracking-tight">
+                    <DialogTitle className="flex items-center gap-4 text-3xl font-bold tracking-tight">
                         <div className="p-3 bg-primary/20 rounded-2xl shadow-lg shadow-primary/20 animate-pulse">
                             <ArrowLeftRight className="w-7 h-7 text-primary" />
                         </div>
@@ -78,14 +78,14 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                         <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-transparent rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
                         <div className="relative bg-foreground/1040 backdrop-blur-xl p-6 rounded-[1.5rem] border border-white/10 space-y-4">
                             <div className="flex items-center justify-between">
-                                <Label className="text-sm font-black text-primary uppercase tracking-widest flex items-center gap-2">
+                                <Label className="text-sm font-bold text-primary uppercase tracking-widest flex items-center gap-2">
                                     <Layers size={14} className="opacity-50" />
                                     نوع العملية الرئيسي
                                 </Label>
                                 <span className="text-xs font-bold text-muted-foreground bg-white/5 px-2 py-1 rounded-md">Unified Action</span>
                             </div>
                             <select
-                                className="w-full h-14 px-5 border-2 border-white/5 rounded-2xl bg-white/[0.03] font-black text-lg shadow-inner focus:border-primary/50 focus:ring-4 focus:ring-primary/10 outline-none transition-all appearance-none cursor-pointer hover:bg-white/5"
+                                className="w-full h-14 px-5 border-2 border-white/5 rounded-2xl bg-white/[0.03] font-bold text-lg shadow-inner focus:border-primary/50 focus:ring-4 focus:ring-primary/10 outline-none transition-all appearance-none cursor-pointer hover:bg-white/5"
                                 value={formData.type}
                                 onChange={e => setFormData({ ...formData, type: e.target.value })}
                             >
@@ -100,7 +100,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                     {/* Product Adder */}
                     <div className="space-y-5 p-6 rounded-[2rem] bg-white/[0.02] border-2 border-dashed border-white/5 hover:border-primary/20 transition-all duration-500 group/adder">
                         <div className="flex items-center justify-between px-2">
-                            <Label className="text-sm font-black text-white/60 uppercase tracking-widest flex items-center gap-2">
+                            <Label className="text-sm font-bold text-white/60 uppercase tracking-widest flex items-center gap-2">
                                 <Package size={14} className="opacity-50" />
                                 إضافة منتجات للعملية
                             </Label>
@@ -116,7 +116,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                                 <Package size={20} />
                                             </div>
                                             <div>
-                                                <p className="font-black text-foreground">{selectedProductDetails.name}</p>
+                                                <p className="font-bold text-foreground">{selectedProductDetails.name}</p>
                                                 <p className="text-xs font-bold text-muted-foreground">{selectedProductDetails.code}</p>
                                             </div>
                                         </div>
@@ -151,14 +151,14 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                     min="1"
                                     value={formData.qty}
                                     onChange={e => setFormData({ ...formData, qty: e.target.value })}
-                                    className="h-12 rounded-2xl font-black text-center text-xl border-white/10 bg-white/[0.03] focus:border-primary focus:ring-primary/10 transition-all placeholder:text-sm placeholder:font-bold"
+                                    className="h-12 rounded-2xl font-bold text-center text-xl border-white/10 bg-white/[0.03] focus:border-primary focus:ring-primary/10 transition-all placeholder:text-sm placeholder:font-bold"
                                 />
                             </div>
                             <Button
                                 type="button"
                                 onClick={handleAddItem}
                                 disabled={!formData.productId || !formData.qty}
-                                className="h-12 px-8 rounded-2xl gap-2 font-black text-base gradient-primary border-0 hover-lift shadow-lg shadow-primary/20 disabled:opacity-30 transition-all active:scale-95"
+                                className="h-12 px-8 rounded-2xl gap-2 font-bold text-base gradient-primary border-0 hover-lift shadow-lg shadow-primary/20 disabled:opacity-30 transition-all active:scale-95"
                             >
                                 <Plus size={20} className="animate-bounce" />
                                 إدراج للقائمة
@@ -175,7 +175,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                 className="space-y-4"
                             >
                                 <div className="flex items-center justify-between px-2">
-                                    <Label className="text-sm font-black text-primary/80 uppercase tracking-widest">
+                                    <Label className="text-sm font-bold text-primary/80 uppercase tracking-widest">
                                         قائمة العناصر المختارة ({items.length})
                                     </Label>
                                     <div className="h-[2px] flex-1 mx-4 bg-gradient-to-l from-primary/20 to-transparent"></div>
@@ -194,9 +194,9 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                                     <Package size={24} />
                                                 </div>
                                                 <div className="space-y-1">
-                                                    <p className="text-lg font-black text-foreground group-hover:text-primary transition-colors leading-tight">{item.name}</p>
+                                                    <p className="text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-tight">{item.name}</p>
                                                     <div className="flex items-center gap-3">
-                                                        <span className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full font-black shadow-sm">الكمية: {item.qty}</span>
+                                                        <span className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full font-bold shadow-sm">الكمية: {item.qty}</span>
                                                         {item.note && (
                                                             <div className="flex items-center gap-1 text-xs text-muted-foreground font-bold italic opacity-60">
                                                                 <AlertCircle size={10} />
@@ -225,7 +225,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
 
                     {/* Final Notes */}
                     <div className="space-y-3 pt-4 border-t border-white/5">
-                        <Label className="text-sm font-black text-white/40 uppercase tracking-widest px-1">ملاحظات العملية الكلية</Label>
+                        <Label className="text-sm font-bold text-white/40 uppercase tracking-widest px-1">ملاحظات العملية الكلية</Label>
                         <Input
                             placeholder="أدخل أي ملاحظات إضافية هنا (اختياري)..."
                             value={formData.note}
@@ -240,13 +240,13 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                             variant="outline"
                             type="button"
                             onClick={() => onOpenChange(false)}
-                            className="h-14 px-10 rounded-2xl font-black text-muted-foreground border-2 border-white/5 hover:bg-white/5 hover:text-foreground transition-all flex-1 lg:flex-none active:scale-95"
+                            className="h-14 px-10 rounded-2xl font-bold text-muted-foreground border-2 border-white/5 hover:bg-white/5 hover:text-foreground transition-all flex-1 lg:flex-none active:scale-95"
                         >
                             إلغاء الأمر
                         </Button>
                         <Button
                             type="submit"
-                            className="gradient-primary border-0 h-14 px-12 rounded-2xl font-black text-xl shadow-2xl shadow-primary/20 hover-lift flex-1 lg:min-w-[240px] relative overflow-hidden group/submit"
+                            className="gradient-primary border-0 h-14 px-12 rounded-2xl font-bold text-xl shadow-2xl shadow-primary/20 hover-lift flex-1 lg:min-w-[240px] relative overflow-hidden group/submit"
                             disabled={(items.length === 0 && (!formData.productId || !formData.qty)) || isSubmitting}
                         >
                             <AnimatePresence mode="wait">

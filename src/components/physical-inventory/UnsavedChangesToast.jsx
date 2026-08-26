@@ -20,13 +20,13 @@ export function UnsavedChangesToast({ show, isPending, onSave }) {
                             <AlertTriangle className="w-5 h-5 text-white animate-bounce" />
                         </div>
                         <div className="text-white text-right">
-                            <h4 className="font-black text-sm leading-none">تنبيه: يوجد تغييرات غير محفوظة</h4>
+                            <h4 className="font-bold text-sm leading-none">تنبيه: يوجد تغييرات غير محفوظة</h4>
                             <p className="text-xs font-bold opacity-80 mt-1">تأكد من الحفظ قبل الخروج</p>
                         </div>
                         <Button
                             size="sm"
                             variant="secondary"
-                            className="h-10 rounded-xl px-4 font-black bg-white text-warning hover:bg-white/90"
+                            className="h-10 rounded-xl px-4 font-bold bg-white text-warning hover:bg-white/90"
                             onClick={onSave}
                             disabled={isPending}
                         >

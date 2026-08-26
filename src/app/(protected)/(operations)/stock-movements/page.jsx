@@ -91,7 +91,7 @@ export default function StockMovementsPage() {
                             <History className="h-8 w-8 text-primary" />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-black text-foreground tracking-tight">سجل حركات المخزون</h1>
+                            <h1 className="text-3xl font-bold text-foreground tracking-tight">سجل حركات المخزون</h1>
                             <p className="text-muted-foreground font-medium">تتبع شامل لجميع عمليات الدخول والخروج والتحويلات</p>
                         </div>
                     </div>
@@ -150,7 +150,7 @@ export default function StockMovementsPage() {
                         </div>
                         <div className="mt-4">
                             <p className="text-sm font-bold text-muted-foreground opacity-80">{stat.label}</p>
-                            <h3 className="text-3xl font-black mt-1">{stat.value.toLocaleString()}</h3>
+                            <h3 className="text-3xl font-bold mt-1">{stat.value.toLocaleString()}</h3>
                         </div>
                     </motion.div>
                 ))}
@@ -213,7 +213,7 @@ export default function StockMovementsPage() {
                             <Package className="h-10 w-10 text-muted-foreground opacity-50" />
                         </div>
                         <div>
-                            <h3 className="text-xl font-black">لا توجد حركات مسجلة</h3>
+                            <h3 className="text-xl font-bold">لا توجد حركات مسجلة</h3>
                             <p className="text-muted-foreground mt-2 font-medium">لم يتم العثور على أي حركات مخزنية في الفترة المحددة</p>
                         </div>
                     </motion.div>
@@ -252,7 +252,7 @@ export default function StockMovementsPage() {
                                             {/* Product Info */}
                                             <div className="flex-1 space-y-1">
                                                 <div className="flex items-center gap-2">
-                                                    <h3 className="font-black text-lg text-foreground group-hover:text-primary transition-colors">
+                                                    <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">
                                                         {movement.productId?.name || 'منتج غير موجود'}
                                                     </h3>
                                                     <Badge variant="outline" className="font-mono text-xs tracking-wider border-white/10 bg-white/5">
@@ -285,18 +285,18 @@ export default function StockMovementsPage() {
                                                     <div className="flex gap-2">
                                                         <div className="flex flex-col items-center px-3 py-1 rounded-xl bg-white/5 border border-white/5">
                                                             <span className="text-xs font-bold text-muted-foreground uppercase">مخزن</span>
-                                                            <span className="text-xs font-black">{movement.snapshot.warehouseQty}</span>
+                                                            <span className="text-xs font-bold">{movement.snapshot.warehouseQty}</span>
                                                         </div>
                                                         <div className="flex flex-col items-center px-3 py-1 rounded-xl bg-white/5 border border-white/5">
                                                             <span className="text-xs font-bold text-muted-foreground uppercase">محل</span>
-                                                            <span className="text-xs font-black">{movement.snapshot.shopQty}</span>
+                                                            <span className="text-xs font-bold">{movement.snapshot.shopQty}</span>
                                                         </div>
                                                     </div>
                                                 )}
 
                                                 <div className="flex flex-col items-end min-w-[80px]">
                                                     <span className="text-xs font-bold text-muted-foreground uppercase">الكمية</span>
-                                                    <span className={cn("text-2xl font-black tabular-nums", config.text)}>
+                                                    <span className={cn("text-2xl font-bold tabular-nums", config.text)}>
                                                         {movement.qty > 0 ? '+' : ''}{movement.qty}
                                                     </span>
                                                 </div>

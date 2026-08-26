@@ -317,7 +317,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
 
                                         {/* Total - 1.5 cols */}
                                         <div className="col-span-1.5 text-center">
-                                            <div className="font-black text-lg text-info">
+                                            <div className="font-bold text-lg text-info">
                                                 {(item.qty * item.unitPrice).toLocaleString()}
                                             </div>
                                             <div className="text-xs text-muted-foreground">ج.م</div>

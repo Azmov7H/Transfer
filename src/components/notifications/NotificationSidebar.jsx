@@ -59,7 +59,7 @@ export function NotificationSidebar() {
                                         <Bell className="w-6 h-6 text-primary" />
                                     </div>
                                     <div>
-                                        <h2 className="text-2xl font-black tracking-tight">مركز الإشعارات</h2>
+                                        <h2 className="text-2xl font-bold tracking-tight">مركز الإشعارات</h2>
                                         <p className="text-xs text-foreground/40 font-bold uppercase tracking-widest">Notification Center v2.0</p>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@ export function NotificationSidebar() {
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="flex-1 rounded-xl bg-success/10 border-success/20 text-success hover:bg-success/20 text-xs font-black uppercase tracking-wider"
+                                    className="flex-1 rounded-xl bg-success/10 border-success/20 text-success hover:bg-success/20 text-xs font-bold uppercase tracking-wider"
                                     onClick={() => markAsRead('all')}
                                 >
                                     <Check size={14} className="mr-2" /> تحديد الكل كمقروء
@@ -113,7 +113,7 @@ export function NotificationSidebar() {
                                         const labels = { today: 'اليوم', yesterday: 'أمس', earlier: 'سابقاً' };
                                         return (
                                             <div key={key} className="space-y-4">
-                                                <h4 className="text-xs font-black uppercase tracking-[0.2em] text-foreground/30 flex items-center gap-4">
+                                                <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-foreground/30 flex items-center gap-4">
                                                     {labels[key]}
                                                     <span className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
                                                 </h4>
