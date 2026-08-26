@@ -76,7 +76,7 @@ export function LedgerTab({ chartOfAccounts }) {
                                 <div className="flex items-center gap-4">
                                     <div className="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-white/5 border border-white/5 shrink-0">
                                         <span className="text-xs font-bold text-muted-foreground">{format(new Date(item.date), 'dd')}</span>
-                                        <span className="text-[10px] uppercase text-muted-foreground/60">{format(new Date(item.date), 'MMM')}</span>
+                                        <span className="text-xs uppercase text-muted-foreground/60">{format(new Date(item.date), 'MMM')}</span>
                                     </div>
                                     <div>
                                         <p className="font-bold text-sm mb-0.5">{item.description}</p>

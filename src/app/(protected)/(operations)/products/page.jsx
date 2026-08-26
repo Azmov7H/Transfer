@@ -103,12 +103,12 @@ export default function ProductsPage() {
                     <>
                         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-3xl border border-white/10 shadow-xl ml-4">
                             <div className="flex flex-col items-end">
-                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي الأصناف</span>
+                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي الأصناف</span>
                                 <span className="text-xl font-bold tabular-nums">{stats.total}</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col items-end text-emerald-500">
-                                <span className="text-[10px] font-black opacity-60 uppercase tracking-[0.2em]">القيمة الكلية</span>
+                                <span className="text-xs font-black opacity-60 uppercase tracking-[0.2em]">القيمة الكلية</span>
                                 <span className="text-xl font-bold tabular-nums">{(stats.value || 0).toLocaleString()} ج.م</span>
                             </div>
                         </div>

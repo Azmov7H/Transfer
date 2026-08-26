@@ -204,13 +204,13 @@ export default function DebtDetailPage({ params }) {
                                         <div key={item._id} className="flex items-center justify-between p-2 rounded-lg bg-black/20 text-xs">
                                             <div className="flex flex-col">
                                                 <span className="font-bold">القسط {idx + 1}</span>
-                                                <span className="text-[10px] text-muted-foreground font-mono">{formatDate(item.dueDate)}</span>
+                                                <span className="text-xs text-muted-foreground font-mono">{formatDate(item.dueDate)}</span>
                                             </div>
                                             <div className="flex flex-col items-end gap-1">
                                                 <span className="font-black">{formatCurrency(item.amount)}</span>
                                                 <Badge
                                                     variant="outline"
-                                                    className={`text-[8px] h-4 px-1 ${item.status === 'PAID'
+                                                    className={`text-xs h-4 px-1 ${item.status === 'PAID'
                                                         ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
                                                         : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
                                                         }`}

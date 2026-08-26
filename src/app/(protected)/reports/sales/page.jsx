@@ -128,7 +128,7 @@ export default function SalesReportPage() {
                 <div className="glass-card p-6 rounded-[2.5rem] border border-white/10 overflow-hidden relative group transition-all duration-500 bg-gradient-to-br from-slate-500/5 to-transparent shadow-2xl">
                     <div className="flex justify-between items-start mb-6">
                         <div className="space-y-1">
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">طريقة التحصيل</p>
+                            <p className="text-xs font-black uppercase tracking-[0.2em] opacity-40">طريقة التحصيل</p>
                             <p className="text-sm font-bold opacity-30">توزيع المدفوعات</p>
                         </div>
                         <div className="p-3 bg-white/5 rounded-2xl border border-white/10 shadow-inner group-hover:bg-primary/10 transition-colors">
@@ -182,7 +182,7 @@ export default function SalesReportPage() {
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-black uppercase tracking-widest text-[8px]">
+                            <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-black uppercase tracking-widest text-xs">
                                 الرسم البياني للفترة
                             </Badge>
                         </div>
@@ -228,7 +228,7 @@ export default function SalesReportPage() {
                             <TrendingUp className="w-12 h-12 text-primary animate-bounce mt-2" />
                             <div className="space-y-1">
                                 <p className="text-2xl font-black text-foreground">بياتات دقيقة</p>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">تحليل أداء الفترة</p>
+                                <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">تحليل أداء الفترة</p>
                             </div>
                             <p className="text-xs font-bold text-muted-foreground leading-relaxed px-4">
                                 تعتمد هذه الأرقام على كافة الفواتير المسجلة بالنظام للفترة المختارة

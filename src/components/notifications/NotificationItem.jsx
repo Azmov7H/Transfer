@@ -73,19 +73,19 @@ export function NotificationItem({ notification, onMarkRead, onDelete, index }) 
             <div className="flex-1 min-w-0 flex flex-col gap-0.5">
                 <div className="flex items-center justify-between gap-2">
                     <h4 className={cn(
-                        "text-[13px] leading-tight truncate",
+                        "text-sm leading-tight truncate",
                         isRead ? "font-medium text-foreground/70" : "font-bold text-foreground"
                     )}>
                         {notification.title}
                     </h4>
 
-                    <span className="text-[10px] text-muted-foreground shrink-0 font-medium">
+                    <span className="text-xs text-muted-foreground shrink-0 font-medium">
                         {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true, locale: ar })}
                     </span>
                 </div>
 
                 <p className={cn(
-                    "text-[12px] leading-relaxed truncate text-muted-foreground/90",
+                    "text-xs leading-relaxed truncate text-muted-foreground/90",
                 )}>
                     {notification.message}
                 </p>

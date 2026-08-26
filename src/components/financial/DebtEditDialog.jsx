@@ -94,7 +94,7 @@ export function DebtEditDialog({ open, onOpenChange, debt }) {
                             <span className="text-xs font-black">المبلغ المتبقي (محسوب تلقائياً)</span>
                         </div>
                         <span className="text-xl font-black text-blue-600 font-mono">
-                            {(parseFloat(formData.originalAmount) - collectedAmount).toLocaleString()} <span className="text-[10px]">د.ل</span>
+                            {(parseFloat(formData.originalAmount) - collectedAmount).toLocaleString()} <span className="text-xs">د.ل</span>
                         </span>
                     </div>
 

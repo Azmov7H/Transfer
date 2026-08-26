@@ -69,7 +69,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                         </div>
                                         <div className="text-left">
                                             <div className="font-bold text-purple-500">{p.retailPrice || p.sellPrice} ج.م</div>
-                                            <div className="flex gap-3 text-[10px] font-medium mt-1">
+                                            <div className="flex gap-3 text-xs font-medium mt-1">
                                                 <span className={`${(p.shopQty || 0) > 0 ? 'text-emerald-500' : 'text-muted-foreground'}`}>
                                                     محل: {p.shopQty || 0}
                                                 </span>
@@ -225,14 +225,14 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                             <div className="flex items-center gap-2 mb-1">
                                                 <div className="font-bold text-sm">{item.name || item.productName}</div>
                                                 {item.isService && (
-                                                    <span className="px-2 py-0.5 bg-amber-500/20 text-amber-500 border border-amber-500/30 rounded text-[9px] font-bold flex items-center gap-1">
+                                                    <span className="px-2 py-0.5 bg-amber-500/20 text-amber-500 border border-amber-500/30 rounded text-xs font-bold flex items-center gap-1">
                                                         <Wrench className="w-2.5 h-2.5" />
                                                         خدمة
                                                     </span>
                                                 )}
                                             </div>
                                             {!item.isService && (
-                                                <div className="flex gap-3 text-[10px] font-medium opacity-80">
+                                                <div className="flex gap-3 text-xs font-medium opacity-80">
                                                     <span className={item.source === 'shop' ? 'text-emerald-400 font-bold' : ''}>
                                                         محل: {item.shopQty}
                                                     </span>
@@ -285,7 +285,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                                     onChange={e => updateQty(idx, e.target.value)}
                                                     className="h-10 text-center bg-white/5 border-white/10 rounded-lg font-bold"
                                                 />
-                                                <div className="text-[9px] text-center text-muted-foreground">
+                                                <div className="text-xs text-center text-muted-foreground">
                                                     متوفر: {maxAvailable}
                                                 </div>
                                             </div>
@@ -307,7 +307,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                                     )}
                                                 />
                                                 <div className={cn(
-                                                    "text-[9px] font-bold text-center",
+                                                    "text-xs font-bold text-center",
                                                     isLoss ? "text-red-500" : isLowMargin ? "text-amber-500" : "text-emerald-500"
                                                 )}>
                                                     {isLoss ? '⚠️ خسارة' : `ربح ${profitMargin.toFixed(0)}%`}
@@ -320,7 +320,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                             <div className="font-black text-lg text-purple-500">
                                                 {(item.qty * item.unitPrice).toLocaleString()}
                                             </div>
-                                            <div className="text-[9px] text-muted-foreground">ج.م</div>
+                                            <div className="text-xs text-muted-foreground">ج.م</div>
                                         </div>
 
                                         {/* Delete - 0.5 col */}

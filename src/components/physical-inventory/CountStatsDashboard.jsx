@@ -50,14 +50,14 @@ export function CountStatsDashboard({ localItems, discrepancies, isBlind }) {
                                 <div className={cn("p-3 rounded-2xl", `bg-${stat.color}-500/10`)}>
                                     <stat.icon className={cn("w-6 h-6", `text-${stat.color}-500`)} />
                                 </div>
-                                <Badge variant="outline" className="text-[10px] font-black uppercase opacity-60">Insight</Badge>
+                                <Badge variant="outline" className="text-xs font-black uppercase opacity-60">Insight</Badge>
                             </div>
                             <h3 className="text-sm font-bold text-muted-foreground">{stat.label}</h3>
                             <div className="flex items-baseline gap-2 mt-1">
                                 <span className="text-3xl font-black tracking-tighter">{stat.value}</span>
                                 {stat.symbol && <span className="text-sm font-black text-muted-foreground">{stat.symbol}</span>}
                             </div>
-                            {stat.sub && <p className="text-[10px] font-bold mt-2 text-muted-foreground/60">{stat.sub}</p>}
+                            {stat.sub && <p className="text-xs font-bold mt-2 text-muted-foreground/60">{stat.sub}</p>}
                         </CardContent>
                     </Card>
                 </motion.div>

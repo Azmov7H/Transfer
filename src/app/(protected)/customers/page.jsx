@@ -196,12 +196,12 @@ export default function CustomersPage() {
                     <>
                         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-3xl border border-white/10 shadow-xl ml-4">
                             <div className="flex flex-col items-end">
-                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي العملاء</span>
+                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي العملاء</span>
                                 <span className="text-xl font-bold tabular-nums">{(pagination.total || 0).toLocaleString()}</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col items-end text-rose-500">
-                                <span className="text-[10px] font-black opacity-60 uppercase tracking-[0.2em]">إجمالي المديونيات</span>
+                                <span className="text-xs font-black opacity-60 uppercase tracking-[0.2em]">إجمالي المديونيات</span>
                                 <span className="text-xl font-bold tabular-nums">{(totalReceivables || 0).toLocaleString()} ج.م</span>
                             </div>
                         </div>

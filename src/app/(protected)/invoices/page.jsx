@@ -102,12 +102,12 @@ export default function InvoicesPage() {
                     <>
                         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-3xl border border-white/10 shadow-xl ml-4">
                             <div className="flex flex-col items-end">
-                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي المبيعات</span>
+                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي المبيعات</span>
                                 <span className="text-xl font-bold tabular-nums text-emerald-500">{(totalSales || 0).toLocaleString()} ج.م</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col items-end">
-                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">عدد الفواتير</span>
+                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">عدد الفواتير</span>
                                 <span className="text-xl font-bold tabular-nums">{invoicesCount}</span>
                             </div>
                         </div>

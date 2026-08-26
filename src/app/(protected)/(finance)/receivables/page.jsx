@@ -284,7 +284,7 @@ export default function ReceivablesPage() {
                                                         >
                                                             <h3 className="font-black text-lg">{inv.customerName}</h3>
                                                         </Link>
-                                                        <Badge variant="outline" className="font-mono text-[10px] bg-white/5 border-white/10 hover:bg-white/10">
+                                                        <Badge variant="outline" className="font-mono text-xs bg-white/5 border-white/10 hover:bg-white/10">
                                                             {inv.player || 'عميل'}
                                                         </Badge>
                                                     </div>
@@ -306,15 +306,15 @@ export default function ReceivablesPage() {
                                             {/* Financials */}
                                             <div className="flex items-center gap-8 justify-between lg:justify-end flex-1 pl-4 lg:pl-8 py-4 lg:py-0 border-t lg:border-t-0 border-white/5">
                                                 <div className="text-center">
-                                                    <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-60 mb-1">الإجمالي</p>
+                                                    <p className="text-xs font-bold text-muted-foreground uppercase opacity-60 mb-1">الإجمالي</p>
                                                     <p className="font-bold font-mono text-muted-foreground">{inv.total.toLocaleString()}</p>
                                                 </div>
                                                 <div className="text-center">
-                                                    <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-60 mb-1">المدفوع</p>
+                                                    <p className="text-xs font-bold text-muted-foreground uppercase opacity-60 mb-1">المدفوع</p>
                                                     <p className="font-bold font-mono text-emerald-500">{inv.paidAmount.toLocaleString()}</p>
                                                 </div>
                                                 <div className="text-center relative">
-                                                    <p className="text-[10px] font-bold text-red-500 uppercase opacity-80 mb-1">المتبقي</p>
+                                                    <p className="text-xs font-bold text-red-500 uppercase opacity-80 mb-1">المتبقي</p>
                                                     <p className="text-2xl font-black font-mono text-red-500">{remaining.toLocaleString()}</p>
                                                 </div>
                                             </div>

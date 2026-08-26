@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { useTreasury, useAddTransaction, useDeleteTransaction } from '@/hooks/useFinancial';
@@ -173,6 +174,22 @@ export default function FinancialPage() {
                     <h1 className="text-2xl md:text-3xl font-bold text-foreground">الخزينة (النظام المالي)</h1>
                 </div>
 
+                {/* Reachability links for surfaces outside the sidebar (UX-100 interim) */}
+                <nav aria-label="أقسام مالية أخرى" className="flex flex-wrap items-center gap-2">
+                    <Button asChild variant="outline" size="sm" className="h-8 text-xs">
+                        <Link href="/financial/debt-center">مركز الديون والمستحقات</Link>
+                    </Button>
+                    <Button asChild variant="outline" size="sm" className="h-8 text-xs">
+                        <Link href="/receivables">المستحقات</Link>
+                    </Button>
+                    <Button asChild variant="outline" size="sm" className="h-8 text-xs">
+                        <Link href="/accounting">العرض المحاسبي</Link>
+                    </Button>
+                    <Button asChild variant="outline" size="sm" className="h-8 text-xs">
+                        <Link href="/reports/financial">التقارير المالية</Link>
+                    </Button>
+                </nav>
+
                 {/* Period Filter */}
                 <div className="flex flex-wrap items-center gap-2 bg-muted p-1 rounded-lg">
                     <Button
@@ -182,10 +199,10 @@ export default function FinancialPage() {
                         className="text-xs h-8"
                     >اليوم</Button>
                     <div className="flex items-center gap-1 glass-card px-2 h-8 rounded-md bg-white/5 border border-white/10">
-                        <Label className="text-[10px] text-muted-foreground mr-1">تاريخ محدد:</Label>
+                        <Label className="text-xs text-muted-foreground mr-1">تاريخ محدد:</Label>
                         <Input
                             type="date"
-                            className="h-6 w-32 text-[10px] bg-transparent border-none p-0 focus-visible:ring-0"
+                            className="h-6 w-32 text-xs bg-transparent border-none p-0 focus-visible:ring-0"
                             value={customDates.startDate}
                             onChange={e => {
                                 setCustomDates({ startDate: e.target.value, endDate: e.target.value });

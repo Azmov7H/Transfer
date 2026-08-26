@@ -112,7 +112,7 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                                 ) : (tx.referenceId?.debtorId?.name || 'طرف مديون')
                                                             ) : '---'}
                                                         </span>
-                                                        <span className="text-[10px] text-muted-foreground">
+                                                        <span className="text-xs text-muted-foreground">
                                                             {tx.referenceType === 'Invoice' ? `فاتورة #${tx.referenceId?.number || ''}` :
                                                                 tx.referenceType === 'PurchaseOrder' ? `أمر شراء #${tx.referenceId?.poNumber || ''}` :
                                                                     tx.referenceType === 'Debt' ? `دين / مطالبات` : ''}
@@ -123,14 +123,14 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                     {tx.amount.toLocaleString()} ج.م
                                                 </TableCell>
                                                 <TableCell>
-                                                    <Badge variant="outline" className="text-[10px] bg-muted/30">
+                                                    <Badge variant="outline" className="text-xs bg-muted/30">
                                                         {tx.method === 'bank' ? 'بنك' : tx.method === 'wallet' ? 'محفظة' : 'نقدي'}
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell className="hidden md:table-cell">
                                                     <div className="flex flex-col">
                                                         <span>{tx.description}</span>
-                                                        <Badge variant="outline" className="text-[10px] w-fit mt-1 opacity-70">
+                                                        <Badge variant="outline" className="text-xs w-fit mt-1 opacity-70">
                                                             {tx.type === 'INCOME' ?
                                                                 (tx.referenceType === 'Invoice' ? 'مبيعات' : 'إيداع إضافي') :
                                                                 (tx.referenceType === 'PurchaseOrder' || (tx.referenceType === 'Debt' && tx.referenceId?.debtorType === 'Supplier') ? 'دفعة مورد' :

@@ -51,7 +51,7 @@ export function ScannerBar({ isCompleted, isScannerFocused, barcode, setBarcode,
                                             <History className="w-5 h-5 text-emerald-600" />
                                         </div>
                                         <div>
-                                            <p className="text-[10px] font-black text-emerald-700/60 uppercase tracking-widest leading-none mb-1">Last Scanned</p>
+                                            <p className="text-xs font-black text-emerald-700/60 uppercase tracking-widest leading-none mb-1">Last Scanned</p>
                                             <h4 className="text-sm font-bold truncate max-w-44 leading-none">{lastScanned.name}</h4>
                                         </div>
                                     </motion.div>

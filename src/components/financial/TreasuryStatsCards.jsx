@@ -18,7 +18,7 @@ export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">{balance.toLocaleString()} ج.م</div>
-                                    <div className="flex flex-col gap-0.5 mt-2 opacity-80 text-[10px]">
+                                    <div className="flex flex-col gap-0.5 mt-2 opacity-80 text-xs">
                                         <div className="flex justify-between">
                                             <span>كاش:</span>
                                             <span>{(treasuryData?.breakdown?.cash || 0).toLocaleString()}</span>

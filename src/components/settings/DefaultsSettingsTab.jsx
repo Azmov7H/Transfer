@@ -37,7 +37,7 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                             <div className="space-y-4 group">
                                 <Label className="text-sm font-black text-white/30 uppercase tracking-[0.2em] flex items-center justify-between">
                                     استحقاق العميل (المبيعات)
-                                    <span className="text-[10px] bg-primary/20 text-primary px-3 py-1 rounded-full">STANDARD TERMS</span>
+                                    <span className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full">STANDARD TERMS</span>
                                 </Label>
                                 <div className="flex items-center gap-4 bg-white/[0.03] p-6 rounded-[2rem] border border-white/5 group-hover:bg-white/[0.05] transition-all">
                                     <Input
@@ -53,7 +53,7 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                             <div className="space-y-4 group">
                                 <Label className="text-sm font-black text-white/30 uppercase tracking-[0.2em] flex items-center justify-between">
                                     موعد التوريد (المشتريات)
-                                    <span className="text-[10px] bg-primary/20 text-primary px-3 py-1 rounded-full">EXPECTED DELIVERY</span>
+                                    <span className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full">EXPECTED DELIVERY</span>
                                 </Label>
                                 <div className="flex items-center gap-4 bg-white/[0.03] p-6 rounded-[2rem] border border-white/5 group-hover:bg-white/[0.05] transition-all">
                                     <Input
@@ -96,7 +96,7 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                                         <span className="text-xl font-black text-amber-500/20">ج.م</span>
                                     </div>
                                 </div>
-                                <p className="text-[11px] text-white/20 font-bold leading-relaxed pr-2 italic">
+                                <p className="text-xs text-white/20 font-bold leading-relaxed pr-2 italic">
                                     سيتم تجاهل أي مديونية أقل من هذا المبلغ في قائمة الإشعارات السريعة.
                                 </p>
                             </div>

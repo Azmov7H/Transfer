@@ -60,7 +60,7 @@ export function NotificationSidebar() {
                                     </div>
                                     <div>
                                         <h2 className="text-2xl font-black tracking-tight">مركز الإشعارات</h2>
-                                        <p className="text-[11px] text-foreground/40 font-bold uppercase tracking-widest">Notification Center v2.0</p>
+                                        <p className="text-xs text-foreground/40 font-bold uppercase tracking-widest">Notification Center v2.0</p>
                                     </div>
                                 </div>
                                 <Button
@@ -78,7 +78,7 @@ export function NotificationSidebar() {
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="flex-1 rounded-xl bg-emerald-500/10 border-emerald-500/20 text-emerald-500 hover:bg-emerald-500/20 text-[11px] font-black uppercase tracking-wider"
+                                    className="flex-1 rounded-xl bg-emerald-500/10 border-emerald-500/20 text-emerald-500 hover:bg-emerald-500/20 text-xs font-black uppercase tracking-wider"
                                     onClick={() => markAsRead('all')}
                                 >
                                     <Check size={14} className="mr-2" /> تحديد الكل كمقروء
@@ -113,7 +113,7 @@ export function NotificationSidebar() {
                                         const labels = { today: 'اليوم', yesterday: 'أمس', earlier: 'سابقاً' };
                                         return (
                                             <div key={key} className="space-y-4">
-                                                <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-foreground/30 flex items-center gap-4">
+                                                <h4 className="text-xs font-black uppercase tracking-[0.2em] text-foreground/30 flex items-center gap-4">
                                                     {labels[key]}
                                                     <span className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
                                                 </h4>
@@ -187,7 +187,7 @@ function NotificationSidebarItem({ notif, markAsRead, deleteNotification, perfor
                         <h5 className={cn("text-sm font-bold truncate", isRead && "text-foreground/60")}>
                             {notif.title}
                         </h5>
-                        <span className="text-[10px] font-bold text-foreground/30 whitespace-nowrap">
+                        <span className="text-xs font-bold text-foreground/30 whitespace-nowrap">
                             {formatDistanceToNow(new Date(notif.createdAt), { addSuffix: true, locale: ar })}
                         </span>
                     </div>
@@ -199,7 +199,7 @@ function NotificationSidebarItem({ notif, markAsRead, deleteNotification, perfor
                         <div className="pt-2">
                             <Button
                                 size="sm"
-                                className="h-9 w-full rounded-2xl bg-gradient-to-r from-primary to-blue-600 text-white font-bold text-[11px] gap-2 shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] transition-all"
+                                className="h-9 w-full rounded-2xl bg-gradient-to-r from-primary to-blue-600 text-white font-bold text-xs gap-2 shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] transition-all"
                                 onClick={() => performAction(notif._id)}
                                 disabled={isLoading}
                             >

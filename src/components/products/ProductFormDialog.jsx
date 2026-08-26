@@ -219,7 +219,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                                             <h3 className="flex items-center gap-2 font-black text-emerald-500 text-sm uppercase tracking-wider">
                                                 <History className="h-4 w-4" /> الرصيد الافتتاحي
                                             </h3>
-                                            <Badge className="bg-emerald-500/20 text-emerald-500 border-emerald-500/30 text-[9px] font-black uppercase">التسجيل الأول</Badge>
+                                            <Badge className="bg-emerald-500/20 text-emerald-500 border-emerald-500/30 text-xs font-black uppercase">التسجيل الأول</Badge>
                                         </div>
 
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -240,7 +240,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                                                 />
                                             </FormField>
                                         </div>
-                                        <p className="text-[10px] text-muted-foreground font-medium bg-emerald-500/5 p-2 rounded-lg leading-relaxed">
+                                        <p className="text-xs text-muted-foreground font-medium bg-emerald-500/5 p-2 rounded-lg leading-relaxed">
                                             💡 هذه هي الكميات التي يتم تسجيلها لأول مرة عند استلام المحل للنظام. سيتم إنشاء حركة &quot;رصيد افتتاحي&quot; آلياً بهذه القيم.
                                         </p>
                                     </div>
@@ -251,7 +251,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                         <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 pt-6 md:pt-8 border-t border-white/5">
                             <div className="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
                                 <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">النظام جاهز للتسجيل</span>
+                                <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">النظام جاهز للتسجيل</span>
                             </div>
                             <div className="flex gap-4 w-full sm:w-auto">
                                 <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="flex-1 sm:flex-none h-12 px-8 rounded-2xl border-white/10 hover:bg-white/5 font-bold">

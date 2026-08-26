@@ -228,7 +228,7 @@ function SwitchField({ control, name }) {
                 <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
                         <Label className="text-sm">تفعيل التتبع المالي</Label>
-                        <p className="text-[10px] text-muted-foreground">توليد إشعارات تحصيل لهذا العميل</p>
+                        <p className="text-xs text-muted-foreground">توليد إشعارات تحصيل لهذا العميل</p>
                     </div>
                     <Switch checked={!!field.value} onCheckedChange={field.onChange} />
                 </div>

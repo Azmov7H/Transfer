@@ -145,12 +145,12 @@ export default function SalesReturnsPage() {
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-center gap-2 text-muted-foreground">
                                                 <Calendar className="w-3.5 h-3.5" />
-                                                <span className="text-[10px] font-black uppercase tracking-wider">
+                                                <span className="text-xs font-black uppercase tracking-wider">
                                                     {format(new Date(ret.createdAt), 'cccc, d MMMM yyyy (p)', { locale: ar })}
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/20 px-3 py-1 rounded-full font-black text-[10px] uppercase">
+                                                <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/20 px-3 py-1 rounded-full font-black text-xs uppercase">
                                                     مرتجع مبيعات
                                                 </Badge>
                                             </div>
@@ -165,7 +165,7 @@ export default function SalesReturnsPage() {
                                         </Link>
                                         <div className="flex flex-wrap gap-2">
                                             {ret.items.map((it, i) => (
-                                                <div key={i} className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-lg border border-white/5 text-[11px] font-bold">
+                                                <div key={i} className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-lg border border-white/5 text-xs font-bold">
                                                     <Package className="w-3 h-3 text-muted-foreground" />
                                                     <span>{it.productId?.name || it.productName || 'منتج'}</span>
                                                     <span className="text-amber-500">×{it.qty}</span>
@@ -181,10 +181,10 @@ export default function SalesReturnsPage() {
                                                 <span className="text-2xl md:text-3xl font-black text-amber-500 tracking-tighter">
                                                     -{ret.totalRefund?.toLocaleString()}
                                                 </span>
-                                                <span className="text-[10px] font-black text-muted-foreground uppercase">EGP</span>
+                                                <span className="text-xs font-black text-muted-foreground uppercase">EGP</span>
                                             </div>
                                             <div className="flex items-center justify-end gap-2 mt-1">
-                                                <Badge variant="secondary" className="text-[9px] font-bold py-0 h-5">
+                                                <Badge variant="secondary" className="text-xs font-bold py-0 h-5">
                                                     {ret.refundMethod === 'cash' ? '💵 نقدي' : '💳 محفظة'}
                                                 </Badge>
                                             </div>

@@ -26,7 +26,7 @@ export function InvoiceDesignTab({ settings, onChange }) {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
                         <div className="space-y-4 p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 shadow-inner">
-                            <Label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] block mb-2">اللون الأساسي للعلامة</Label>
+                            <Label className="text-xs font-black text-white/20 uppercase tracking-[0.2em] block mb-2">اللون الأساسي للعلامة</Label>
                             <div className="flex gap-4 items-center">
                                 <div
                                     className="w-16 h-16 rounded-2xl shadow-inner border-2 border-white/10 transition-transform hover:scale-105 duration-500"
@@ -48,7 +48,7 @@ export function InvoiceDesignTab({ settings, onChange }) {
                             </div>
                         </div>
                         <div className="space-y-4 p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 shadow-inner">
-                            <Label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] block mb-2">لون خلفية الترويسة</Label>
+                            <Label className="text-xs font-black text-white/20 uppercase tracking-[0.2em] block mb-2">لون خلفية الترويسة</Label>
                             <div className="flex gap-4 items-center">
                                 <div
                                     className="w-16 h-16 rounded-2xl shadow-inner border-2 border-white/10 transition-transform hover:scale-105 duration-500"
@@ -111,7 +111,7 @@ export function InvoiceDesignTab({ settings, onChange }) {
                     </div>
                     <div className="p-10">
                         <div className="space-y-4">
-                            <Label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mr-2">نص ختامي مخصص</Label>
+                            <Label className="text-xs font-black text-white/20 uppercase tracking-[0.2em] mr-2">نص ختامي مخصص</Label>
                             <textarea
                                 value={settings.footerText || ''}
                                 onChange={e => set({ footerText: e.target.value })}
@@ -130,7 +130,7 @@ export function InvoiceDesignTab({ settings, onChange }) {
                     </div>
                     <p className="relative z-10 text-white/70 font-bold text-sm leading-relaxed">سيتم تطبيق هذه التغييرات على كافة الفواتير والتقارير الجديدة فور الضغط على حفظ التغييرات.</p>
                     <div className="relative z-10 pt-4 border-t border-white/20 mt-4 flex justify-between items-center">
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] opacity-50">Transfer ERP v2.0</span>
+                        <span className="text-xs font-black uppercase tracking-[0.3em] opacity-50">Transfer ERP v2.0</span>
                         <div className="flex -space-x-2">
                             {[1, 2, 3].map(i => <div key={i} className="w-8 h-8 rounded-full border-2 border-primary bg-white/20 backdrop-blur-md" />)}
                         </div>

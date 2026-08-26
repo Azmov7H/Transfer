@@ -16,8 +16,8 @@ export function NotificationList({
                 <div className="p-4 bg-muted/30 rounded-full mb-4">
                     <Bell size={32} className="text-muted-foreground/40" />
                 </div>
-                <h4 className="text-[14px] font-bold text-foreground/80 mb-1">لا توجد إشعارات</h4>
-                <p className="text-[12px] text-muted-foreground">كل شيء على ما يرام في نظامك.</p>
+                <h4 className="text-sm font-bold text-foreground/80 mb-1">لا توجد إشعارات</h4>
+                <p className="text-xs text-muted-foreground">كل شيء على ما يرام في نظامك.</p>
             </div>
         );
     }

@@ -21,7 +21,7 @@ export function UnsavedChangesToast({ show, isPending, onSave }) {
                         </div>
                         <div className="text-white text-right">
                             <h4 className="font-black text-sm leading-none">تنبيه: يوجد تغييرات غير محفوظة</h4>
-                            <p className="text-[10px] font-bold opacity-80 mt-1">تأكد من الحفظ قبل الخروج</p>
+                            <p className="text-xs font-bold opacity-80 mt-1">تأكد من الحفظ قبل الخروج</p>
                         </div>
                         <Button
                             size="sm"

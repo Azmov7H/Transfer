@@ -82,7 +82,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                     <Layers size={14} className="opacity-50" />
                                     نوع العملية الرئيسي
                                 </Label>
-                                <span className="text-[10px] font-bold text-muted-foreground bg-white/5 px-2 py-1 rounded-md">Unified Action</span>
+                                <span className="text-xs font-bold text-muted-foreground bg-white/5 px-2 py-1 rounded-md">Unified Action</span>
                             </div>
                             <select
                                 className="w-full h-14 px-5 border-2 border-white/5 rounded-2xl bg-white/[0.03] font-black text-lg shadow-inner focus:border-primary/50 focus:ring-4 focus:ring-primary/10 outline-none transition-all appearance-none cursor-pointer hover:bg-white/5"
@@ -104,7 +104,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                 <Package size={14} className="opacity-50" />
                                 إضافة منتجات للعملية
                             </Label>
-                            <span className="text-[10px] font-bold text-muted-foreground/40">Quick Add</span>
+                            <span className="text-xs font-bold text-muted-foreground/40">Quick Add</span>
                         </div>
 
                         <div className="flex flex-col lg:flex-row gap-4">
@@ -198,7 +198,7 @@ export function StockMovementDialog({ open, onOpenChange, onSubmit, isSubmitting
                                                     <div className="flex items-center gap-3">
                                                         <span className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full font-black shadow-sm">الكمية: {item.qty}</span>
                                                         {item.note && (
-                                                            <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-bold italic opacity-60">
+                                                            <div className="flex items-center gap-1 text-xs text-muted-foreground font-bold italic opacity-60">
                                                                 <AlertCircle size={10} />
                                                                 {item.note}
                                                             </div>

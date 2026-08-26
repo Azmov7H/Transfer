@@ -88,19 +88,19 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2 text-white/40">
                         <Calendar size={14} className="text-primary/60" />
-                        <span className="text-[11px] font-black uppercase tracking-wider">
+                        <span className="text-xs font-black uppercase tracking-wider">
                             {format(new Date(invoice.date), 'eeee, d MMMM yyyy', { locale: ar })}
                         </span>
                     </div>
                     <div className="flex items-center gap-3">
                         <Badge variant="outline" className={cn(
-                            "px-4 py-1 rounded-full font-black text-[10px] uppercase tracking-widest border transition-all",
+                            "px-4 py-1 rounded-full font-black text-xs uppercase tracking-widest border transition-all",
                             display.color
                         )}>
                             <span className="flex items-center gap-2"><PaymentIcon size={12} /> {display.label}</span>
                         </Badge>
                         {invoice.hasReturns && (
-                            <Badge variant="outline" className="px-4 py-1 rounded-full font-black text-[10px] uppercase tracking-widest bg-rose-500/5 text-rose-500 border-rose-500/20 shadow-lg shadow-rose-500/5">
+                            <Badge variant="outline" className="px-4 py-1 rounded-full font-black text-xs uppercase tracking-widest bg-rose-500/5 text-rose-500 border-rose-500/20 shadow-lg shadow-rose-500/5">
                                 <ArrowRightLeft size={12} className="ml-2" />
                                 مرتجع
                             </Badge>
@@ -129,7 +129,7 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                                 {invoice.customerName || 'عميل نقدي سريع'}
                             </span>
                         )}
-                        <span className="text-[10px] text-white/20 font-black uppercase tracking-[0.2em]">بواسطة: {invoice.createdBy?.name || 'النظام المركزي'}</span>
+                        <span className="text-xs text-white/20 font-black uppercase tracking-[0.2em]">بواسطة: {invoice.createdBy?.name || 'النظام المركزي'}</span>
                     </div>
                 </div>
             </div>
@@ -141,9 +141,9 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                         <span className="text-3xl font-black tabular-nums tracking-tighter text-primary group-hover/total:scale-110 transition-transform duration-500">
                             {invoice.total?.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </span>
-                        <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">ج.م</span>
+                        <span className="text-xs font-black text-white/20 uppercase tracking-widest">ج.م</span>
                     </div>
-                    <span className="text-[9px] font-black text-white/10 uppercase tracking-[0.3em]">إجمالي المعاملة</span>
+                    <span className="text-xs font-black text-white/10 uppercase tracking-[0.3em]">إجمالي المعاملة</span>
                 </div>
 
                 <div className="flex items-center gap-4">

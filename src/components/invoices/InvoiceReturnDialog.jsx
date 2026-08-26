@@ -38,7 +38,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                             </div>
                                         </DialogTitle>
                                         <div className="text-left hidden md:block">
-                                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">تاريخ الفاتورة</span>
+                                            <span className="text-xs font-black text-slate-500 uppercase tracking-widest block mb-1">تاريخ الفاتورة</span>
                                             <span className="text-xs font-bold text-slate-300 bg-white/5 px-3 py-1 rounded-full border border-white/5">
                                                 {format(new Date(invoice.date), 'd MMMM yyyy', { locale: ar })}
                                             </span>
@@ -133,7 +133,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                 <motion.div
                                                                     initial={{ opacity: 0, scale: 0.9 }}
                                                                     animate={{ opacity: 1, scale: 1 }}
-                                                                    className="text-[10px] font-black text-amber-500/60 uppercase tracking-widest"
+                                                                    className="text-xs font-black text-amber-500/60 uppercase tracking-widest"
                                                                 >
                                                                     سيتم استرداد {(currentReturnQty * item.unitPrice).toLocaleString()} ج.م
                                                                 </motion.div>
@@ -159,7 +159,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                                     <div className="md:col-span-5 space-y-4">
                                         <div className="space-y-3">
-                                            <Label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 mr-1">
+                                            <Label className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 mr-1">
                                                 <Wallet size={12} className="text-amber-500" /> طريقة رد المبلغ
                                             </Label>
                                             <div className="grid grid-cols-2 gap-2">
@@ -178,7 +178,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                     )}>
                                                         <Banknote size={16} />
                                                     </div>
-                                                    <span className="text-[10px] font-black uppercase tracking-tighter">خزينة نقداً</span>
+                                                    <span className="text-xs font-black uppercase tracking-tighter">خزينة نقداً</span>
                                                 </button>
                                                 <button
                                                     onClick={() => setRefundMethod('customerBalance')}
@@ -195,7 +195,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                     )}>
                                                         <Wallet size={16} />
                                                     </div>
-                                                    <span className="text-[10px] font-black uppercase tracking-tighter">محفظة العميل</span>
+                                                    <span className="text-xs font-black uppercase tracking-tighter">محفظة العميل</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -205,7 +205,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                         <div className="bg-slate-950/80 rounded-3xl p-6 border border-white/5 shadow-inner relative overflow-hidden group">
                                             <div className="flex justify-between items-center relative z-10">
                                                 <div className="flex flex-col">
-                                                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">صافي القيمة المستردة</span>
+                                                    <span className="text-xs font-black text-slate-500 uppercase tracking-widest mb-1">صافي القيمة المستردة</span>
                                                     <div className="flex items-baseline gap-2">
                                                         <span className="text-4xl font-black text-amber-400 tracking-tighter">
                                                             {

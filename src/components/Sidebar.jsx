@@ -56,7 +56,7 @@ export default function Sidebar() {
                                 <span className="text-xl font-black tracking-tight text-foreground">
                                     مخازن الجماز
                                 </span>
-                                <span className="text-[10px] font-bold text-primary tracking-widest uppercase opacity-70">
+                                <span className="text-xs font-bold text-primary tracking-widest uppercase opacity-70">
                                     Enterprise Suite
                                 </span>
                             </div>
@@ -146,10 +146,10 @@ export default function Sidebar() {
 
                         {(isOpen || isMobile) && (
                             <div className="flex-1 min-w-0 pr-1">
-                                <p className="text-[13px] font-black text-foreground truncate leading-tight">
+                                <p className="text-sm font-black text-foreground truncate leading-tight">
                                     {loading ? 'جاري التحميل...' : user?.name}
                                 </p>
-                                <p className="text-[9px] font-bold text-primary/80 uppercase tracking-widest mt-0.5">
+                                <p className="text-xs font-bold text-primary/80 uppercase tracking-widest mt-0.5">
                                     {getRoleDisplay()}
                                 </p>
                             </div>

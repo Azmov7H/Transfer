@@ -116,7 +116,7 @@ export function SmartCombobox({ options = [], value, onChange, placeholder = "Se
                                         <span className="font-black text-sm tracking-tight leading-tight">{option.label}</span>
                                         {/* Optional subtitle if label has | separator */}
                                         {option.label.includes('|') && (
-                                            <span className="text-[10px] text-muted-foreground font-bold mt-1 uppercase tracking-widest">
+                                            <span className="text-xs text-muted-foreground font-bold mt-1 uppercase tracking-widest">
                                                 {option.label.split('|')[1].trim()}
                                             </span>
                                         )}

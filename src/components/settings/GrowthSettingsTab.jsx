@@ -45,7 +45,7 @@ export function GrowthSettingsTab({ settings, onChange }) {
                                 />
                                 <span className="font-black text-white/40 uppercase text-xs tracking-[0.3em]">ج.م</span>
                             </div>
-                            <p className="text-[11px] text-white/20 font-bold leading-relaxed px-2">ملاحظة: تفعيل خيار &quot;نقطة لكل 100 ج.م&quot; يعني أن كل 100 جنيه عُملة فاتورة تمنح العميل نقطة واحدة.</p>
+                            <p className="text-xs text-white/20 font-bold leading-relaxed px-2">ملاحظة: تفعيل خيار &quot;نقطة لكل 100 ج.م&quot; يعني أن كل 100 جنيه عُملة فاتورة تمنح العميل نقطة واحدة.</p>
                         </div>
 
                         <div className="group space-y-6 p-8 rounded-[2.5rem] bg-emerald-500/5 border border-white/5 shadow-inner">
@@ -66,7 +66,7 @@ export function GrowthSettingsTab({ settings, onChange }) {
                                 />
                                 <span className="font-black text-white/40 uppercase text-xs tracking-[0.3em]">ج.م</span>
                             </div>
-                            <p className="text-[11px] text-white/20 font-bold leading-relaxed px-2">القيمة النقدية التي سيتم تحويلها من رصيد النقاط إلى رصيد المحفظة.</p>
+                            <p className="text-xs text-white/20 font-bold leading-relaxed px-2">القيمة النقدية التي سيتم تحويلها من رصيد النقاط إلى رصيد المحفظة.</p>
                         </div>
                     </div>
                 </div>

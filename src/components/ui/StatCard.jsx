@@ -37,7 +37,7 @@ export function StatCard({
 
             <div className="flex justify-between items-start relative z-10 mb-6">
                 <div className="space-y-1">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] opacity-60">
                         {title}
                     </p>
                     {subtitle && <p className="text-sm font-bold opacity-40">{subtitle}</p>}
@@ -57,7 +57,7 @@ export function StatCard({
             </div>
 
             <div className="mt-4 flex items-center justify-between">
-                <div className="flex items-center gap-2 text-[10px] font-black opacity-40 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-2 text-xs font-black opacity-40 group-hover:opacity-100 transition-opacity">
                     {trend ? (
                         <>
                             <TrendingUp size={12} className={trend === 'up' ? 'text-emerald-500' : 'text-rose-500'} />

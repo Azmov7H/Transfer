@@ -177,7 +177,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                         <span className="text-xs font-black">المبلغ المتبقي (محسوب تلقائياً)</span>
                     </div>
                     <span className="text-xl font-black text-blue-600 font-mono">
-                        {(parseFloat(formData.originalAmount) - collectedAmount).toLocaleString()} <span className="text-[10px]">د.ل</span>
+                        {(parseFloat(formData.originalAmount) - collectedAmount).toLocaleString()} <span className="text-xs">د.ل</span>
                     </span>
                 </div>
 
@@ -257,7 +257,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                     <div className="space-y-1">
                                         <p className="text-muted-foreground font-bold">لا توجد سجلات ديون مفصلة حالياً</p>
                                         {supplier?.balance > 0 && (
-                                            <p className="text-[10px] text-muted-foreground">يوجد رصيد مستحق بقيمة {supplier.balance.toLocaleString()} د.ل ولكن لا توجد سجلات ديون من النظام الجديد.</p>
+                                            <p className="text-xs text-muted-foreground">يوجد رصيد مستحق بقيمة {supplier.balance.toLocaleString()} د.ل ولكن لا توجد سجلات ديون من النظام الجديد.</p>
                                         )}
                                     </div>
                                     {supplier?.balance > 0 && (
@@ -347,7 +347,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                     <p className="text-2xl font-black text-primary">{selectedDebt.remainingAmount?.toLocaleString()} د.ل</p>
                                 </div>
                                 <div className="text-left">
-                                    <p className="text-[10px] font-bold text-emerald-600 mb-0.5">تم سداد</p>
+                                    <p className="text-xs font-bold text-emerald-600 mb-0.5">تم سداد</p>
                                     <p className="text-lg font-black text-emerald-600">{(selectedDebt.originalAmount - selectedDebt.remainingAmount).toLocaleString()} د.ل</p>
                                 </div>
                             </div>

@@ -75,10 +75,10 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                                                 {debt.referenceType === 'Invoice' ? 'فاتورة مبيعات' : 'أمر شراء'}
                                             </span>
                                             {debt.meta?.isScheduled && (
-                                                <Badge variant="outline" className="text-[8px] font-black h-4 px-1 border-primary/20 bg-primary/5 text-primary">مجدول</Badge>
+                                                <Badge variant="outline" className="text-xs font-black h-4 px-1 border-primary/20 bg-primary/5 text-primary">مجدول</Badge>
                                             )}
                                         </div>
-                                        <span className="text-[10px] text-muted-foreground font-bold font-mono">
+                                        <span className="text-xs text-muted-foreground font-bold font-mono">
                                             #{debt.referenceId?.toString().slice(-6).toUpperCase() || 'N/A'}
                                         </span>
                                     </div>
@@ -95,7 +95,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                                         >
                                             <span className="font-bold text-sm">{debt.debtorId?.name || 'غير معروف'}</span>
                                         </Link>
-                                        <span className="text-[10px] text-muted-foreground font-medium">{debt.debtorId?.phone}</span>
+                                        <span className="text-xs text-muted-foreground font-medium">{debt.debtorId?.phone}</span>
                                     </div>
                                 </div>
                             </TableCell>
@@ -109,7 +109,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                                 <div className="flex flex-col">
                                     <div className="flex items-center gap-1 font-black text-foreground">
                                         <span className="font-mono text-base">{debt.remainingAmount.toLocaleString()}</span>
-                                        <span className="text-[10px] text-muted-foreground italic">د.ل</span>
+                                        <span className="text-xs text-muted-foreground italic">د.ل</span>
                                     </div>
                                 </div>
                             </TableCell>
@@ -117,7 +117,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                                 <Badge
                                     variant="outline"
                                     className={cn(
-                                        "font-black text-[10px] h-6 px-3 rounded-lg border-2",
+                                        "font-black text-xs h-6 px-3 rounded-lg border-2",
                                         STATUS_STYLES[debt.status] || ''
                                     )}
                                 >

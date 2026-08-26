@@ -79,14 +79,14 @@ export function CountItemsTable({ search, setSearch, filteredItems, isBlind, isC
                                                         <div className="flex items-center gap-2">
                                                             <div className="font-black text-base">{item.productName}</div>
                                                             {movementsSinceSnapshot?.[prodId] && (
-                                                                <Badge className="bg-amber-500 text-white text-[9px] px-1.5 py-0 border-0 flex items-center gap-1">
+                                                                <Badge className="bg-amber-500 text-white text-xs px-1.5 py-0 border-0 flex items-center gap-1">
                                                                     <RefreshCw size={8} className="animate-spin" />
                                                                     حركة مؤخراً
                                                                 </Badge>
                                                             )}
                                                         </div>
                                                         <div className="text-xs font-bold text-muted-foreground flex items-center gap-2 mt-1">
-                                                            <Badge variant="secondary" className="px-2 py-0 h-4 text-[10px] font-black rounded-sm">{item.productCode}</Badge>
+                                                            <Badge variant="secondary" className="px-2 py-0 h-4 text-xs font-black rounded-sm">{item.productCode}</Badge>
                                                         </div>
                                                     </div>
                                                 </div>

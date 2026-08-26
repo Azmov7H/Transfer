@@ -126,7 +126,7 @@ export function InstallmentDialog({ open, onOpenChange, debt }) {
                             </span>
                         </div>
                         <div className="h-px bg-primary/10 w-full" />
-                        <p className="text-[10px] text-muted-foreground leading-relaxed font-bold">
+                        <p className="text-xs text-muted-foreground leading-relaxed font-bold">
                             * سيتم إنشاء {formData.installmentsCount} سجلات دفع مجدولة في النظام وتذكيرك بمواعيد استحقاقها تلقائياً.
                         </p>
                     </div>

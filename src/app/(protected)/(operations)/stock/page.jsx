@@ -176,12 +176,12 @@ export default function StockPage() {
         {/* Real-time Clock / Metadata */}
         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-[2rem] border border-white/10">
           <div className="flex flex-col items-end">
-            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">آخر تحديث للمخزون</span>
+            <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">آخر تحديث للمخزون</span>
             <span className="text-xl font-bold tabular-nums">{new Date().toLocaleTimeString('ar-EG')}</span>
           </div>
           <div className="w-px h-10 bg-white/10" />
           <div className="flex flex-col items-end">
-            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.2em]">حالة النظام</span>
+            <span className="text-xs font-black text-emerald-500 uppercase tracking-[0.2em]">حالة النظام</span>
             <span className="text-xl font-bold">متصل ومؤمن</span>
           </div>
         </div>
@@ -281,7 +281,7 @@ export default function StockPage() {
               className="glass-card p-6 rounded-[2rem] border border-white/10 flex items-center justify-between shadow-xl"
             >
               <div className="space-y-1">
-                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{stat.label}</p>
+                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">{stat.label}</p>
                 <h3 className="text-3xl font-black tabular-nums">{stat.value}</h3>
               </div>
               <div className={cn("p-4 rounded-2xl bg-white/5 border border-white/10", stat.color)}>
@@ -370,7 +370,7 @@ export default function StockPage() {
                     <span className="font-black text-lg group-hover:text-primary transition-colors leading-tight">
                       {m.productId?.name || 'منتج غير معروف'}
                     </span>
-                    <span className="text-[10px] font-bold text-muted-foreground/50 tracking-widest uppercase">{m.productId?.code}</span>
+                    <span className="text-xs font-bold text-muted-foreground/50 tracking-widest uppercase">{m.productId?.code}</span>
                   </div>
                 </div>
               </TableCell>
@@ -385,7 +385,7 @@ export default function StockPage() {
               </TableCell>
               <TableCell className="px-8">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 border border-white/10 flex items-center justify-center text-[10px] font-black">
+                  <div className="w-8 h-8 rounded-full bg-primary/20 border border-white/10 flex items-center justify-center text-xs font-black">
                     {(m.createdBy?.name || 'A')[0].toUpperCase()}
                   </div>
                   <span className="text-sm font-black text-muted-foreground">

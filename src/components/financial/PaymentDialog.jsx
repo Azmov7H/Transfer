@@ -92,12 +92,12 @@ export function PaymentDialog({ open, onOpenChange, debt, targetInstallmentId })
                                 </div>
                             ) : (
                                 <>
-                                    <span className="text-[10px] uppercase font-black tracking-widest text-primary opacity-60 block">قيمة القسط المستحق</span>
+                                    <span className="text-xs uppercase font-black tracking-widest text-primary opacity-60 block">قيمة القسط المستحق</span>
                                     <div className="text-3xl font-black tracking-tighter text-foreground flex items-baseline gap-1">
                                         {formatCurrency(installments.find(i => i.status === 'PENDING')?.amount || 0)}
                                         <span className="text-xs text-muted-foreground font-bold italic">د.ل</span>
                                     </div>
-                                    <div className="text-[11px] text-muted-foreground font-bold mt-2 pt-2 border-t border-primary/10 flex justify-between items-center">
+                                    <div className="text-xs text-muted-foreground font-bold mt-2 pt-2 border-t border-primary/10 flex justify-between items-center">
                                         <span>{debt.debtorId?.name} • {debt.referenceType === 'Invoice' ? 'فاتورة' : 'أمر شراء'}</span>
                                         <span className="text-rose-500 bg-rose-500/5 px-2 py-0.5 rounded-full border border-rose-500/10 font-black">إجمالي المتبقي: {formatCurrency(debt.remainingAmount)}</span>
                                     </div>
@@ -107,14 +107,14 @@ export function PaymentDialog({ open, onOpenChange, debt, targetInstallmentId })
                             <>
                                 <div className="flex justify-between items-end">
                                     <div>
-                                        <span className="text-[10px] uppercase font-black tracking-widest text-primary opacity-60 block">المبلغ المتبقي حالياً</span>
+                                        <span className="text-xs uppercase font-black tracking-widest text-primary opacity-60 block">المبلغ المتبقي حالياً</span>
                                         <div className="text-3xl font-black tracking-tighter text-foreground flex items-baseline gap-1">
                                             {formatCurrency(debt.remainingAmount)}
                                             <span className="text-xs text-muted-foreground font-bold italic">د.ل</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="text-[11px] text-muted-foreground font-bold mt-2 pt-2 border-t border-primary/10">
+                                <div className="text-xs text-muted-foreground font-bold mt-2 pt-2 border-t border-primary/10">
                                     {debt.debtorId?.name} • {debt.referenceType === 'Invoice' ? 'فاتورة' : 'أمر شراء'}
                                 </div>
                             </>
@@ -125,7 +125,7 @@ export function PaymentDialog({ open, onOpenChange, debt, targetInstallmentId })
                         <div className="flex justify-between items-center mr-1">
                             <Label className="text-xs font-bold">قيمة الدفعة *</Label>
                             {debt.meta?.isScheduled && (
-                                <span className="text-[10px] font-black text-primary flex items-center gap-1 bg-primary/10 px-2 py-0.5 rounded-full animate-pulse">
+                                <span className="text-xs font-black text-primary flex items-center gap-1 bg-primary/10 px-2 py-0.5 rounded-full animate-pulse">
                                     <Sparkles size={10} /> اقتراح القسط القادم
                                 </span>
                             )}

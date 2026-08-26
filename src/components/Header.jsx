@@ -83,7 +83,7 @@ export default function Header() {
                             placeholder="بحث سريعة (Ctrl+K)"
                             className="bg-white/5 border-white/10 pr-10 h-10 rounded-xl focus-visible:ring-primary/30 focus-visible:bg-white/10 transition-all font-bold"
                         />
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-1 px-1.5 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-bold text-muted-foreground">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-1 px-1.5 py-0.5 rounded border border-white/10 bg-white/5 text-xs font-bold text-muted-foreground">
                             <Command className="w-3 h-3" />
                             <span>K</span>
                         </div>
@@ -128,7 +128,7 @@ export default function Header() {
                                     <span className="text-xs font-black text-foreground truncate max-w-[100px]">
                                         {loading ? '...' : user?.name}
                                     </span>
-                                    <span className="text-[10px] font-bold text-primary/80 uppercase tracking-wider">
+                                    <span className="text-xs font-bold text-primary/80 uppercase tracking-wider">
                                         {role === ROLES.OWNER ? 'المالك' : 'مستخدم'}
                                     </span>
                                 </div>
@@ -144,7 +144,7 @@ export default function Header() {
                             <DropdownMenuLabel className="p-3">
                                 <div className="flex flex-col items-start gap-1">
                                     <span className="font-black text-sm">{user?.name}</span>
-                                    <span className="text-[10px] text-muted-foreground bg-white/5 px-2 py-0.5 rounded-full border border-white/5">{user?.email}</span>
+                                    <span className="text-xs text-muted-foreground bg-white/5 px-2 py-0.5 rounded-full border border-white/5">{user?.email}</span>
                                 </div>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator className="bg-white/5" />

@@ -63,13 +63,13 @@ export function UnifiedPaymentDialog({ open, onOpenChange, customerId, customerN
                                 <User className="w-5 h-5" />
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-[10px] uppercase font-black tracking-widest text-primary opacity-60">اسم العميل</span>
+                                <span className="text-xs uppercase font-black tracking-widest text-primary opacity-60">اسم العميل</span>
                                 <span className="text-lg font-black">{customerName}</span>
                             </div>
                         </div>
 
                         <div className="pt-3 border-t border-primary/10">
-                            <span className="text-[10px] uppercase font-black tracking-widest text-primary opacity-60 block">إجمالي المتبقي حالياً</span>
+                            <span className="text-xs uppercase font-black tracking-widest text-primary opacity-60 block">إجمالي المتبقي حالياً</span>
                             <div className="text-3xl font-black tracking-tighter text-red-500 flex items-baseline gap-1">
                                 {formatCurrency(totalBalance || 0)}
                                 <span className="text-xs text-muted-foreground font-bold italic">ج.م</span>
@@ -80,7 +80,7 @@ export function UnifiedPaymentDialog({ open, onOpenChange, customerId, customerN
                     <div className="space-y-2">
                         <div className="flex justify-between items-center mr-1">
                             <Label className="text-xs font-bold font-black">قيمة التحصيل *</Label>
-                            <span className="text-[10px] font-black text-emerald-500 flex items-center gap-1 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                            <span className="text-xs font-black text-emerald-500 flex items-center gap-1 bg-emerald-500/10 px-2 py-0.5 rounded-full">
                                 <TrendingUp size={10} /> سيتم توزيعها تلقائياً
                             </span>
                         </div>

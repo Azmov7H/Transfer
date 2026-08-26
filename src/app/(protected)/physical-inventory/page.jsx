@@ -228,7 +228,7 @@ export default function PhysicalInventoryPage() {
                                                     <div className="flex flex-col items-center gap-1.5">
                                                         {getLocationBadge(count.location)}
                                                         {count.category && (
-                                                            <Badge variant="outline" className="text-[10px] font-black border-primary/20 text-primary/70">
+                                                            <Badge variant="outline" className="text-xs font-black border-primary/20 text-primary/70">
                                                                 SECTION: {count.category}
                                                             </Badge>
                                                         )}
@@ -267,7 +267,7 @@ export default function PhysicalInventoryPage() {
                                                             )} dir="ltr">
                                                                 {count.netDifference > 0 ? `+${count.netDifference}` : count.netDifference}
                                                             </div>
-                                                            <div className="text-[10px] font-bold opacity-40 uppercase">DISCREPANCY</div>
+                                                            <div className="text-xs font-bold opacity-40 uppercase">DISCREPANCY</div>
                                                         </div>
                                                     )}
                                                 </TableCell>

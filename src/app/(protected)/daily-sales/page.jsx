@@ -156,7 +156,7 @@ export default function DailySalesPage() {
                                                         {invoice.paymentType === 'credit' ? 'آجل' : 'نقدي'}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell className="px-8 text-center font-black text-xl tabular-nums">{invoice.total.toLocaleString()} <span className="text-[10px] opacity-40 mr-1">ج.م</span></TableCell>
+                                                <TableCell className="px-8 text-center font-black text-xl tabular-nums">{invoice.total.toLocaleString()} <span className="text-xs opacity-40 mr-1">ج.م</span></TableCell>
                                                 <TableCell className="px-8 text-center">
                                                     <span className="bg-emerald-500/10 text-emerald-500 px-4 py-1.5 rounded-full font-black text-sm border border-emerald-500/20">
                                                         +{invoice.profit?.toLocaleString()}
@@ -193,7 +193,7 @@ export default function DailySalesPage() {
                                 </div>
                                 <div className="text-right">
                                     <div className="font-black text-xl tabular-nums">{product.revenue.toLocaleString()}</div>
-                                    <div className="text-[10px] font-black text-emerald-500 tracking-tighterUppercase uppercase">ج.م كلي</div>
+                                    <div className="text-xs font-black text-emerald-500 tracking-tighterUppercase uppercase">ج.م كلي</div>
                                 </div>
                             </div>
                         ))}
