@@ -62,10 +62,11 @@ export function useDebtors(params = {}) {
     });
 }
 
-export function useDebtOverview() {
+export function useDebtOverview(options = {}) {
     return useQuery({
         queryKey: ['debt-overview'],
-        queryFn: ({ signal }) => getDebtOverview({ signal })
+        queryFn: ({ signal }) => getDebtOverview({ signal }),
+        enabled: options.enabled !== false
     });
 }
 

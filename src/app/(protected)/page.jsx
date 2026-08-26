@@ -2,6 +2,8 @@
 
 import { useDashboard } from '@/hooks/useDashboard';
 import { useDebtOverview } from '@/hooks/useFinancial';
+import { useUserRole } from '@/hooks/useUserRole';
+import { can } from '@/lib/permissions';
 import {
     TrendingUp, DollarSign, Package,
     AlertTriangle, ShoppingCart,
@@ -29,7 +31,10 @@ export default function DashboardPage() {
         refetch
     } = useDashboard();
 
-    const { data: debtOverview } = useDebtOverview();
+    const { user, loading: isUserLoading } = useUserRole();
+    const canViewFinancial = !isUserLoading && !!user && can(user.role, 'financial:view');
+
+    const { data: debtOverview } = useDebtOverview({ enabled: canViewFinancial });
     const overdueAmount = debtOverview?.receivables?.overdue || 0;
 
     if (isLoading) return <DashboardSkeleton />;
