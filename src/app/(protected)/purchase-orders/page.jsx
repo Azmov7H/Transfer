@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -127,18 +128,13 @@ export default function PurchaseOrdersPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="flex items-center gap-3">
-                    <ShoppingCart className="w-6 h-6 md:w-8 md:h-8 text-primary" />
-                    <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-foreground">أوامر الشراء</h1>
-                        <p className="text-sm text-muted-foreground">طلبات التوريد من الموردين</p>
-                    </div>
-                </div>
-                <Button onClick={() => setIsDialogOpen(true)} className="gap-2">
-                    <Plus size={18} /> طلب جديد
-                </Button>
-            </div>
+            <PageHeader title="أوامر الشراء" subtitle="طلبات التوريد من الموردين" icon={ShoppingCart}
+                actions={
+                    <Button onClick={() => setIsDialogOpen(true)} className="gap-2">
+                        <Plus size={18} /> طلب جديد
+                    </Button>
+                }
+            />
 
             <div className="bg-card rounded-lg border shadow-sm overflow-x-auto">
                 <Table aria-label="أوامر الشراء">
