@@ -367,7 +367,7 @@ export default function CustomerClient({ id }) {
                                                                 <span className="font-mono font-bold text-sm text-foreground/80">
                                                                     {new Date(entry.date).toLocaleDateString('ar-EG', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                                                                 </span>
-                                                                <span className="text-[10px] text-muted-foreground font-mono">
+                                                                <span className="text-xs text-muted-foreground font-mono">
                                                                     {new Date(entry.date).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
                                                                 </span>
                                                             </div>
@@ -388,12 +388,12 @@ export default function CustomerClient({ id }) {
                                                                 <div className="flex flex-col">
                                                                     <span className="font-bold text-sm text-foreground/90">{entry.label}</span>
                                                                     <div className="flex items-center gap-2">
-                                                                        <Badge variant="outline" className="text-[9px] h-4 font-black bg-white/5 border-white/10 px-1.5 opacity-60">
+                                                                        <Badge variant="outline" className="text-xs h-4 font-black bg-white/5 border-white/10 px-1.5 opacity-60">
                                                                             {entry.type === 'SALES' ? 'فاتورة مبيعات' :
                                                                                 entry.type === 'PAYMENT' ? 'تحصيل دفعة' :
                                                                                     entry.type === 'DEBT_START' ? 'رصيد افتتاحي' : 'ارتجاع'}
                                                                         </Badge>
-                                                                        <span className="text-[10px] text-muted-foreground font-mono flex items-center gap-1">
+                                                                        <span className="text-xs text-muted-foreground font-mono flex items-center gap-1">
                                                                             {entry.reference}
                                                                             {(entry.type === 'PAYMENT' || entry.type === 'REFUND') && <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />}
                                                                         </span>
@@ -425,7 +425,7 @@ export default function CustomerClient({ id }) {
                                                                 )}>
                                                                     {entry.balance.toLocaleString()}
                                                                 </span>
-                                                                <span className="text-[10px] font-bold text-muted-foreground mt-1">ج.م</span>
+                                                                <span className="text-xs font-bold text-muted-foreground mt-1">ج.م</span>
                                                             </div>
                                                         </TableCell>
                                                     </TableRow>

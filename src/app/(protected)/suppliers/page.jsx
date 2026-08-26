@@ -100,12 +100,12 @@ export default function SuppliersPage() {
                     <>
                         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-3xl border border-white/10 shadow-xl ml-4">
                             <div className="flex flex-col items-end">
-                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي الموردين</span>
+                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي الموردين</span>
                                 <span className="text-xl font-bold tabular-nums">{(suppliers.length || 0).toLocaleString()}</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col items-end text-rose-500">
-                                <span className="text-[10px] font-black opacity-60 uppercase tracking-[0.2em]">إجمالي المديونيات</span>
+                                <span className="text-xs font-black opacity-60 uppercase tracking-[0.2em]">إجمالي المديونيات</span>
                                 <span className="text-xl font-bold tabular-nums">{(suppliers.reduce((sum, s) => sum + (s.balance || 0), 0) || 0).toLocaleString()} ج.م</span>
                             </div>
                         </div>
@@ -208,7 +208,7 @@ export default function SuppliersPage() {
                                                     <div className="flex items-center gap-2 mt-1">
                                                         <Badge
                                                             variant={supplier.isActive ? "secondary" : "destructive"}
-                                                            className="text-[10px] h-4 font-black"
+                                                            className="text-xs h-4 font-black"
                                                         >
                                                             {supplier.isActive ? 'نشط' : 'متوقف'}
                                                         </Badge>
@@ -223,7 +223,7 @@ export default function SuppliersPage() {
                                                     <span className="font-mono">{supplier.phone || '---'}</span>
                                                 </div>
                                                 {supplier.address && (
-                                                    <div className="flex items-center gap-2 text-[10px] text-muted-foreground/60">
+                                                    <div className="flex items-center gap-2 text-xs text-muted-foreground/60">
                                                         <MapPin size={10} />
                                                         <span className="truncate max-w-[150px]">{supplier.address}</span>
                                                     </div>
@@ -246,9 +246,9 @@ export default function SuppliersPage() {
                                                 <div className="flex flex-col items-center">
                                                     <div className="flex items-center gap-2 font-black text-rose-500 bg-rose-500/10 px-3 py-1 rounded-xl border border-rose-500/20 text-xs shadow-sm">
                                                         <span className="font-mono">{supplier.balance.toLocaleString()}</span>
-                                                        <span className="text-[10px] opacity-70 italic">ج.م</span>
+                                                        <span className="text-xs opacity-70 italic">ج.م</span>
                                                     </div>
-                                                    <span className="text-[9px] text-muted-foreground font-bold mt-1 uppercase tracking-tighter">مستحقات للمورد</span>
+                                                    <span className="text-xs text-muted-foreground font-bold mt-1 uppercase tracking-tighter">مستحقات للمورد</span>
                                                 </div>
                                             ) : (
                                                 <Badge variant="outline" className="opacity-50 font-bold border-dashed border-2">0.00</Badge>

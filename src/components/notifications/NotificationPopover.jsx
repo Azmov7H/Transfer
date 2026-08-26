@@ -41,9 +41,9 @@ export function NotificationPopover() {
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b">
                     <div className="flex items-center gap-2">
-                        <span className="text-[14px] font-bold text-foreground">الإشعارات</span>
+                        <span className="text-sm font-bold text-foreground">الإشعارات</span>
                         {unreadCount > 0 && (
-                            <span className="px-1.5 py-0.5 text-[10px] font-bold bg-primary/10 text-primary rounded-full border border-primary/20">
+                            <span className="px-1.5 py-0.5 text-xs font-bold bg-primary/10 text-primary rounded-full border border-primary/20">
                                 {unreadCount} جديد
                             </span>
                         )}
@@ -75,14 +75,14 @@ export function NotificationPopover() {
                     <div className="grid grid-cols-2 border-t text-center divide-x divide-x-reverse overflow-hidden">
                         <button
                             onClick={() => markAsRead('all')}
-                            className="flex items-center justify-center gap-2 py-3 text-[12px] font-medium text-muted-foreground hover:text-primary hover:bg-muted/30 transition-colors"
+                            className="flex items-center justify-center gap-2 py-3 text-xs font-medium text-muted-foreground hover:text-primary hover:bg-muted/30 transition-colors"
                         >
                             <Check size={14} />
                             <span>تحديد الكل كمقروء</span>
                         </button>
                         <button
                             onClick={handleClearAll}
-                            className="flex items-center justify-center gap-2 py-3 text-[12px] font-medium text-muted-foreground hover:text-destructive hover:bg-muted/30 transition-colors"
+                            className="flex items-center justify-center gap-2 py-3 text-xs font-medium text-muted-foreground hover:text-destructive hover:bg-muted/30 transition-colors"
                         >
                             <Trash2 size={14} />
                             <span>مسح الكل</span>

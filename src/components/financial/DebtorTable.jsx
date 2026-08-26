@@ -45,7 +45,7 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
                                         >
                                             {item.debtor.name}
                                         </Link>
-                                        <Badge variant="outline" className="w-fit text-[9px] h-4 px-1 border-white/10 text-muted-foreground">
+                                        <Badge variant="outline" className="w-fit text-xs h-4 px-1 border-white/10 text-muted-foreground">
                                             {item.debtor.priceType === 'wholesale' ? 'جملة' : 'قطاعي'}
                                         </Badge>
                                     </div>
@@ -67,7 +67,7 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
                                 <div className="flex flex-col">
                                     <div className="flex items-center gap-1 font-black text-foreground">
                                         <span className="font-mono text-lg text-red-500">{item.totalDebt.toLocaleString()}</span>
-                                        <span className="text-[10px] text-muted-foreground italic">ج.م</span>
+                                        <span className="text-xs text-muted-foreground italic">ج.م</span>
                                     </div>
                                 </div>
                             </TableCell>

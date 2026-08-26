@@ -131,7 +131,7 @@ export default function ReceiptPage() {
 
                         <div className="space-y-2 text-right">
                             <div className="bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100">
-                                <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">رقم السند</span>
+                                <span className="text-xs text-slate-400 font-black uppercase tracking-widest block mb-1">رقم السند</span>
                                 <span className="text-xl font-black font-mono text-primary">{transaction.receiptNumber || `TR- ${transaction._id.toString().slice(-6).toUpperCase()}`}</span>
                             </div>
                             <div className="flex flex-col gap-1 pr-6">
@@ -176,7 +176,7 @@ export default function ReceiptPage() {
                             {/* Watermark Logo */}
                             <CheckCircle2 className="absolute -right-8 -bottom-8 h-48 w-48 opacity-10" />
 
-                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2 relative z-10">المبلغ المُستلم</span>
+                            <span className="text-xs font-black uppercase tracking-widest text-slate-400 block mb-2 relative z-10">المبلغ المُستلم</span>
                             <div className="flex items-baseline gap-2 relative z-10">
                                 <span className="text-5xl font-black tracking-tighter font-mono">{transaction.amount.toLocaleString()}</span>
                                 <span className="text-lg font-bold text-slate-400 italic">ج.م</span>
@@ -195,20 +195,20 @@ export default function ReceiptPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="md:col-span-2 space-y-6 bg-slate-50/50 p-8 rounded-3xl border border-slate-100">
                             <div className="space-y-2">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">وذلك عـن / البيان</span>
+                                <span className="text-xs font-black uppercase tracking-widest text-slate-400 block">وذلك عـن / البيان</span>
                                 <p className="text-xl font-bold leading-relaxed pr-2 border-r-4 border-primary/20">{transaction.description}</p>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 mt-6 border-t border-slate-200/50">
                                 <div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">مرجع العملية</span>
+                                    <span className="text-xs font-black uppercase tracking-widest text-slate-400 block mb-1">مرجع العملية</span>
                                     <span className="font-bold text-slate-700">
                                         {transaction.referenceType === 'Invoice' ? 'فاتورة مبيعات' :
                                             transaction.referenceType === 'Debt' ? 'مديونية سابقة' : 'تحصيل يدوي'}
                                     </span>
                                 </div>
                                 <div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">مُحرر السند</span>
+                                    <span className="text-xs font-black uppercase tracking-widest text-slate-400 block mb-1">مُحرر السند</span>
                                     <span className="font-bold text-slate-700">{transaction.createdBy?.name || 'النظام'}</span>
                                 </div>
                             </div>
@@ -216,12 +216,12 @@ export default function ReceiptPage() {
 
                         {/* Balance Info */}
                         <div className="bg-rose-50 p-8 rounded-3xl border border-rose-100 flex flex-col justify-center items-center text-center">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-rose-400 block mb-2">إجمالي الرصيد المتبقي للحساب</span>
+                            <span className="text-xs font-black uppercase tracking-widest text-rose-400 block mb-2">إجمالي الرصيد المتبقي للحساب</span>
                             <div className="text-3xl font-black text-rose-600 font-mono">
                                 {(remainingBalance ?? 0).toLocaleString()}
                                 <span className="text-xs font-bold mr-1 italic">ج.م</span>
                             </div>
-                            <p className="text-[10px] text-rose-400 font-bold mt-2">يرجى الالتزام بمواعيد السداد المحددة</p>
+                            <p className="text-xs text-rose-400 font-bold mt-2">يرجى الالتزام بمواعيد السداد المحددة</p>
                         </div>
                     </div>
 
@@ -230,11 +230,11 @@ export default function ReceiptPage() {
                         {/* Company Seal */}
                         <div className="absolute left-[50%] top-[-50px] -translate-x-[50%] opacity-20 hidden print:block pointer-events-none">
                             <div className="w-40 h-40 rounded-full border-8 border-primary flex flex-col items-center justify-center p-4 text-center">
-                                <span className="text-[10px] font-black uppercase text-primary leading-none mb-1">مدفوع / PAID</span>
+                                <span className="text-xs font-black uppercase text-primary leading-none mb-1">مدفوع / PAID</span>
                                 <div className="h-px bg-primary w-full my-2" />
                                 <span className="text-xs font-black text-primary leading-tight">{settings.companyName}</span>
                                 <div className="h-px bg-primary w-full my-2" />
-                                <span className="text-[10px] font-black text-primary">{format(new Date(), 'yyyy/MM/dd')}</span>
+                                <span className="text-xs font-black text-primary">{format(new Date(), 'yyyy/MM/dd')}</span>
                             </div>
                         </div>
 
@@ -251,22 +251,22 @@ export default function ReceiptPage() {
                         <div className="w-48 h-48 rounded-full border-[6px] border-slate-200/50 flex flex-col items-center justify-center p-6 text-center rotate-6 scale-90 sm:scale-100">
                             <div className="text-primary font-black text-lg leading-tight mb-2">{settings.companyName}</div>
                             <div className="h-[2px] w-12 bg-slate-200 my-1" />
-                            <div className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em]">Certified Receipt</div>
-                            <div className="text-[8px] font-black text-slate-300 mt-1 italic">محرر إلكترونياً</div>
+                            <div className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Certified Receipt</div>
+                            <div className="text-xs font-black text-slate-300 mt-1 italic">محرر إلكترونياً</div>
                         </div>
 
                         <div className="text-center space-y-8 min-w-[200px]">
                             <div className="h-20 flex items-center justify-center opacity-30 italic font-medium pt-8">
                                 <span className="border-b-2 border-dotted border-slate-300 px-12">التوقيع والختم</span>
                             </div>
-                            <p className="text-[10px] font-bold text-slate-300 italic max-w-[200px]">هذا السند مُحرر إلكترونياً ولا يتطلب ختم يدوي في حالة وجود رمز التحقق</p>
+                            <p className="text-xs font-bold text-slate-300 italic max-w-[200px]">هذا السند مُحرر إلكترونياً ولا يتطلب ختم يدوي في حالة وجود رمز التحقق</p>
                         </div>
                     </div>
                 </CardContent>
 
                 {/* Print Helper Bar */}
                 <div className="bg-slate-50 p-4 text-center border-t border-slate-100 hidden print:block">
-                    <p className="text-[10px] font-bold text-slate-400">{settings.companyName} - نظام إدارة المبيعات المطور ®</p>
+                    <p className="text-xs font-bold text-slate-400">{settings.companyName} - نظام إدارة المبيعات المطور ®</p>
                 </div>
             </Card>
 

@@ -48,7 +48,7 @@ export const MovementCard = React.memo(({ movement }) => {
                         <span className="font-black text-sm truncate leading-tight">
                             {m.productId?.name || 'منتج غير معروف'}
                         </span>
-                        <span className="text-[9px] font-bold text-muted-foreground/50 tracking-widest uppercase">{m.productId?.code}</span>
+                        <span className="text-xs font-bold text-muted-foreground/50 tracking-widest uppercase">{m.productId?.code}</span>
                     </div>
                 </div>
                 <MovementTypeBadge type={m.type} />
@@ -57,13 +57,13 @@ export const MovementCard = React.memo(({ movement }) => {
             <div className="mt-3 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                     <span className="text-xl font-black tabular-nums tracking-tighter">{m.qty}</span>
-                    <span className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-widest">الكمية</span>
+                    <span className="text-xs font-black text-muted-foreground/40 uppercase tracking-widest">الكمية</span>
                 </div>
                 <div className="flex flex-col items-end gap-1">
-                    <span className="text-[10px] font-bold text-muted-foreground/70">
+                    <span className="text-xs font-bold text-muted-foreground/70">
                         {new Date(m.date).toLocaleDateString('ar-EG', { day: '2-digit', month: '2-digit' })} • {new Date(m.date).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
                     </span>
-                    <span className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-widest">
+                    <span className="text-xs font-black text-muted-foreground/40 uppercase tracking-widest">
                         بواسطة: {m.createdBy?.name || 'غير معروف'}
                     </span>
                 </div>

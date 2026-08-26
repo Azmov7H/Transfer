@@ -243,7 +243,7 @@ export default function StockMovementsPage() {
                                                     <span className="text-xs font-bold text-muted-foreground">
                                                         {format(new Date(movement.date), 'dd MMMM yyyy', { locale: ar })}
                                                     </span>
-                                                    <span className="text-[10px] bg-white/5 px-2 py-0.5 rounded text-muted-foreground w-fit mt-1">
+                                                    <span className="text-xs bg-white/5 px-2 py-0.5 rounded text-muted-foreground w-fit mt-1">
                                                         {format(new Date(movement.date), 'hh:mm a', { locale: ar })}
                                                     </span>
                                                 </div>
@@ -255,7 +255,7 @@ export default function StockMovementsPage() {
                                                     <h3 className="font-black text-lg text-foreground group-hover:text-primary transition-colors">
                                                         {movement.productId?.name || 'منتج غير موجود'}
                                                     </h3>
-                                                    <Badge variant="outline" className="font-mono text-[10px] tracking-wider border-white/10 bg-white/5">
+                                                    <Badge variant="outline" className="font-mono text-xs tracking-wider border-white/10 bg-white/5">
                                                         {movement.productId?.code}
                                                     </Badge>
                                                 </div>
@@ -284,18 +284,18 @@ export default function StockMovementsPage() {
                                                 {movement.snapshot && (
                                                     <div className="flex gap-2">
                                                         <div className="flex flex-col items-center px-3 py-1 rounded-xl bg-white/5 border border-white/5">
-                                                            <span className="text-[9px] font-bold text-muted-foreground uppercase">مخزن</span>
+                                                            <span className="text-xs font-bold text-muted-foreground uppercase">مخزن</span>
                                                             <span className="text-xs font-black">{movement.snapshot.warehouseQty}</span>
                                                         </div>
                                                         <div className="flex flex-col items-center px-3 py-1 rounded-xl bg-white/5 border border-white/5">
-                                                            <span className="text-[9px] font-bold text-muted-foreground uppercase">محل</span>
+                                                            <span className="text-xs font-bold text-muted-foreground uppercase">محل</span>
                                                             <span className="text-xs font-black">{movement.snapshot.shopQty}</span>
                                                         </div>
                                                     </div>
                                                 )}
 
                                                 <div className="flex flex-col items-end min-w-[80px]">
-                                                    <span className="text-[10px] font-bold text-muted-foreground uppercase">الكمية</span>
+                                                    <span className="text-xs font-bold text-muted-foreground uppercase">الكمية</span>
                                                     <span className={cn("text-2xl font-black tabular-nums", config.text)}>
                                                         {movement.qty > 0 ? '+' : ''}{movement.qty}
                                                     </span>

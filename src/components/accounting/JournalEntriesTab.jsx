@@ -73,7 +73,7 @@ export function JournalEntriesTab({ filters }) {
                     <span>المعروض: {paginatedEntries.length} قيد من {filteredEntries.length}</span>
                     <div className="h-4 w-px bg-white/10" />
                     <Select value={pageSize.toString()} onValueChange={(val) => { setPageSize(Number(val)); setCurrentPage(1); }}>
-                        <SelectTrigger className="h-8 w-20 bg-white/5 border-none font-black text-[10px]">
+                        <SelectTrigger className="h-8 w-20 bg-white/5 border-none font-black text-xs">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="glass-card border-white/10">
@@ -133,7 +133,7 @@ export function JournalEntriesTab({ filters }) {
                             </span>
                         </div>
                         <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
-                        <Badge variant="outline" className="px-4 py-1.5 rounded-full border-white/10 text-[10px] font-black opacity-30 group-hover:opacity-100 transition-opacity">
+                        <Badge variant="outline" className="px-4 py-1.5 rounded-full border-white/10 text-xs font-black opacity-30 group-hover:opacity-100 transition-opacity">
                             {entries.length} عمليات
                         </Badge>
                     </div>
@@ -151,7 +151,7 @@ export function JournalEntriesTab({ filters }) {
 
                                     <div className="flex-1 space-y-3">
                                         <div className="flex items-center gap-3">
-                                            <Badge className="bg-primary/10 text-primary border-primary/20 text-[8px] font-black uppercase tracking-widest px-3 py-1">
+                                            <Badge className="bg-primary/10 text-primary border-primary/20 text-xs font-black uppercase tracking-widest px-3 py-1">
                                                 {entry.type}
                                             </Badge>
                                             <h4 className="font-black text-lg tracking-tight group-hover:text-primary transition-colors truncate">{entry.description}</h4>
@@ -171,7 +171,7 @@ export function JournalEntriesTab({ filters }) {
                                     <div className="flex items-center justify-end gap-6 pl-6 border-r border-white/5">
                                         <div className="text-right">
                                             <div className="text-2xl font-black tracking-tighter tabular-nums">{entry.amount.toLocaleString()}</div>
-                                            <div className="text-[10px] font-black text-emerald-500 uppercase tracking-widest opacity-50">EGP</div>
+                                            <div className="text-xs font-black text-emerald-500 uppercase tracking-widest opacity-50">EGP</div>
                                         </div>
                                     </div>
                                 </div>

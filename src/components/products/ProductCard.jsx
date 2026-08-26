@@ -41,17 +41,17 @@ export const ProductCard = React.memo(({
                             {product.name}
                         </p>
                         <div className="flex items-center gap-2 mt-1 flex-wrap">
-                            <Badge variant="outline" className="font-black text-[9px] tracking-widest border-white/10 bg-white/5 px-2 py-0.5 rounded-md text-muted-foreground">
+                            <Badge variant="outline" className="font-black text-xs tracking-widest border-white/10 bg-white/5 px-2 py-0.5 rounded-md text-muted-foreground">
                                 {product.code}
                             </Badge>
                             {product.unit && (
-                                <span className="text-[10px] text-muted-foreground/40 font-black uppercase tracking-tighter">وحدة: {product.unit}</span>
+                                <span className="text-xs text-muted-foreground/40 font-black uppercase tracking-tighter">وحدة: {product.unit}</span>
                             )}
                         </div>
                     </div>
                 </div>
                 <div className={cn(
-                    "shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest",
+                    "shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-black uppercase tracking-widest",
                     stockStatus === 'out' ? "bg-red-500/10 text-red-500 border-red-500/20" :
                         stockStatus === 'low' ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
                             "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
@@ -66,7 +66,7 @@ export const ProductCard = React.memo(({
                 </div>
             </div>
 
-            <div className="mt-3 flex items-center gap-3 text-[10px] font-black text-muted-foreground/50 uppercase tracking-widest">
+            <div className="mt-3 flex items-center gap-3 text-xs font-black text-muted-foreground/50 uppercase tracking-widest">
                 <span className="flex items-center gap-1"><Tag className="h-3 w-3 text-primary/60" />{product.brand || 'عام'}</span>
                 <span className="w-1 h-1 rounded-full bg-white/10" />
                 <span>{product.category || '-'}</span>
@@ -77,7 +77,7 @@ export const ProductCard = React.memo(({
                     <span className="text-xl font-black tabular-nums tracking-tighter text-primary">
                         {(product.retailPrice || product.sellPrice || 0).toLocaleString()}
                     </span>
-                    <span className="text-[9px] text-muted-foreground font-black uppercase opacity-40">ج.م</span>
+                    <span className="text-xs text-muted-foreground font-black uppercase opacity-40">ج.م</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="flex flex-col items-center">
@@ -89,7 +89,7 @@ export const ProductCard = React.memo(({
                         )}>
                             {product.stockQty}
                         </div>
-                        <div className="flex gap-2 mt-1 text-[8px] font-black text-muted-foreground/40 uppercase tracking-widest">
+                        <div className="flex gap-2 mt-1 text-xs font-black text-muted-foreground/40 uppercase tracking-widest">
                             <span>م: {product.warehouseQty || 0}</span>
                             <span>ح: {product.shopQty || 0}</span>
                         </div>

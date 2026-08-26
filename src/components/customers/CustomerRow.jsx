@@ -79,14 +79,14 @@ export const CustomerRow = React.memo(({
                             <Badge
                                 variant={customer.isActive ? "secondary" : "destructive"}
                                 className={cn(
-                                    "text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full",
+                                    "text-xs font-black uppercase tracking-widest px-2 py-0.5 rounded-full",
                                     customer.isActive ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : "bg-rose-500/10 text-rose-500 border-rose-500/20"
                                 )}
                             >
                                 {customer.isActive ? 'نشط' : 'متوقف'}
                             </Badge>
                             {isInactive && (
-                                <Badge variant="destructive" className="bg-amber-500/10 text-amber-500 border-amber-500/20 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full">
+                                <Badge variant="destructive" className="bg-amber-500/10 text-amber-500 border-amber-500/20 text-xs font-black uppercase tracking-widest px-2 py-0.5 rounded-full">
                                     غير نشط منذ {daysSinceLast} يوم
                                 </Badge>
                             )}
@@ -104,7 +104,7 @@ export const CustomerRow = React.memo(({
                         <span className="font-mono tracking-tighter">{customer.phone}</span>
                     </div>
                     {customer.address && (
-                        <div className="flex items-center gap-2 text-[10px] text-white/20 font-bold">
+                        <div className="flex items-center gap-2 text-xs text-white/20 font-bold">
                             <MapPin size={10} />
                             <span className="truncate max-w-[200px]">{customer.address}</span>
                         </div>
@@ -116,7 +116,7 @@ export const CustomerRow = React.memo(({
                 <Badge
                     variant="outline"
                     className={cn(
-                        "font-black py-1.5 px-4 rounded-xl border transition-all text-[10px] uppercase tracking-widest shadow-lg",
+                        "font-black py-1.5 px-4 rounded-xl border transition-all text-xs uppercase tracking-widest shadow-lg",
                         customer.priceType === 'wholesale' && "bg-blue-500/10 text-blue-500 border-blue-500/20 shadow-blue-500/5",
                         customer.priceType === 'special' && "bg-purple-500/10 text-purple-500 border-purple-500/20 shadow-purple-500/5",
                         customer.priceType === 'retail' && "bg-emerald-500/10 text-emerald-500 border-emerald-500/20 shadow-emerald-500/5"
@@ -138,17 +138,17 @@ export const CustomerRow = React.memo(({
                         )}>
                             <div className="flex flex-col items-end">
                                 <span className="font-black text-lg tracking-tighter tabular-nums">{customer.balance.toLocaleString()}</span>
-                                <span className="text-[8px] font-black opacity-40 uppercase tracking-[0.2em]">المتبقي المطلوب ({activeDebtsCount} ديون)</span>
+                                <span className="text-xs font-black opacity-40 uppercase tracking-[0.2em]">المتبقي المطلوب ({activeDebtsCount} ديون)</span>
                             </div>
                             <Wallet size={16} className="opacity-40 group-hover/debt:scale-110 transition-transform" />
                         </div>
                     ) : customer.creditBalance > 0 ? (
                         <div className="flex items-center gap-3 font-black text-emerald-500 bg-emerald-500/5 px-4 py-2 rounded-2xl border border-emerald-500/20 shadow-xl">
                             <span className="font-black text-lg tracking-tighter tabular-nums">{customer.creditBalance?.toLocaleString()}</span>
-                            <span className="text-[10px] font-black opacity-40 uppercase tracking-widest">رصيد دائن</span>
+                            <span className="text-xs font-black opacity-40 uppercase tracking-widest">رصيد دائن</span>
                         </div>
                     ) : (
-                        <Badge variant="outline" className="opacity-10 font-black border-dashed px-4 py-1.5 rounded-xl uppercase tracking-widest text-[10px]">خالي من الديون</Badge>
+                        <Badge variant="outline" className="opacity-10 font-black border-dashed px-4 py-1.5 rounded-xl uppercase tracking-widest text-xs">خالي من الديون</Badge>
                     )}
                 </div>
             </TableCell>

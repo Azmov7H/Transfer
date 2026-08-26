@@ -204,7 +204,7 @@ export default function DashboardPage() {
                                             </div>
                                             <div>
                                                 <p className="text-sm font-bold truncate max-w-[100px]">#{invoice.number}</p>
-                                                <p className="text-[10px] text-muted-foreground">{format(new Date(invoice.date), 'hh:mm a')}</p>
+                                                <p className="text-xs text-muted-foreground">{format(new Date(invoice.date), 'hh:mm a')}</p>
                                             </div>
                                         </div>
                                         <div className="text-left">

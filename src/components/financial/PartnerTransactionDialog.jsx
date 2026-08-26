@@ -116,19 +116,19 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                                                 <TableCell className="px-6">
                                                     <div className="flex flex-col">
                                                         <span className="font-bold text-sm text-foreground/80">{format(new Date(tx.date), 'dd/MM/yyyy')}</span>
-                                                        <span className="text-[10px] text-muted-foreground font-mono">{format(new Date(tx.date), 'HH:mm')}</span>
+                                                        <span className="text-xs text-muted-foreground font-mono">{format(new Date(tx.date), 'HH:mm')}</span>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="px-6">
                                                     <div className="flex flex-col max-w-[300px]">
                                                         <span className="font-bold text-sm leading-snug">{tx.description}</span>
                                                         {tx.receiptNumber && (
-                                                            <span className="text-[10px] text-primary/70 font-black mt-0.5">سند #{tx.receiptNumber}</span>
+                                                            <span className="text-xs text-primary/70 font-black mt-0.5">سند #{tx.receiptNumber}</span>
                                                         )}
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="px-6 text-center">
-                                                    <Badge variant="outline" className="text-[10px] font-black h-5 border-white/10 bg-white/5">
+                                                    <Badge variant="outline" className="text-xs font-black h-5 border-white/10 bg-white/5">
                                                         {tx.referenceType === 'Invoice' ? 'فاتورة' :
                                                             tx.referenceType === 'PurchaseOrder' ? 'شراء' :
                                                                 tx.referenceType === 'SalesReturn' ? 'مرتجع' :
@@ -180,14 +180,14 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                     <div className="w-full flex justify-between items-center">
                         <div className="flex gap-4">
                             <div className="flex flex-col">
-                                <span className="text-[10px] font-black text-muted-foreground uppercase opacity-50">إجمالي الوارد</span>
+                                <span className="text-xs font-black text-muted-foreground uppercase opacity-50">إجمالي الوارد</span>
                                 <span className="text-xl font-black text-emerald-500 leading-none">
                                     {filteredTransactions.filter(t => t.type === 'INCOME').reduce((s, t) => s + t.amount, 0).toLocaleString()}
                                 </span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col">
-                                <span className="text-[10px] font-black text-muted-foreground uppercase opacity-50">إجمالي الصادر</span>
+                                <span className="text-xs font-black text-muted-foreground uppercase opacity-50">إجمالي الصادر</span>
                                 <span className="text-xl font-black text-rose-500 leading-none">
                                     {filteredTransactions.filter(t => t.type === 'EXPENSE').reduce((s, t) => s + t.amount, 0).toLocaleString()}
                                 </span>

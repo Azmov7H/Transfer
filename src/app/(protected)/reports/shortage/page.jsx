@@ -108,7 +108,7 @@ export default function ShortageReportsPage() {
                                     <div className="space-y-4">
                                         <Badge
                                             className={cn(
-                                                "font-black text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full border shadow-lg",
+                                                "font-black text-xs uppercase tracking-widest px-4 py-1.5 rounded-full border shadow-lg",
                                                 report.status === 'PENDING'
                                                     ? 'bg-amber-500/10 text-amber-500 border-amber-500/20'
                                                     : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
@@ -119,13 +119,13 @@ export default function ShortageReportsPage() {
                                                 {report.status === 'PENDING' ? 'قيد الانتظار' : 'تم الرد'}
                                             </div>
                                         </Badge>
-                                        <div className="flex items-center gap-2 text-[10px] font-bold text-white/20 uppercase tracking-widest">
+                                        <div className="flex items-center gap-2 text-xs font-bold text-white/20 uppercase tracking-widest">
                                             <Calendar size={10} />
                                             {new Date(report.createdAt).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' })}
                                         </div>
                                     </div>
                                     <div className="text-left">
-                                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mb-1 text-right">مقدم الطلب</p>
+                                        <p className="text-xs font-black text-white/20 uppercase tracking-[0.2em] mb-1 text-right">مقدم الطلب</p>
                                         <div className="flex items-center gap-2 justify-end">
                                             <User size={14} className="text-primary" />
                                             <p className="font-black text-sm text-foreground">{report.requesterName}</p>
@@ -140,11 +140,11 @@ export default function ShortageReportsPage() {
                                     </h3>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="flex flex-col gap-1 px-4 py-3 bg-white/5 rounded-2xl border border-white/5 shadow-inner">
-                                            <span className="text-white/40 uppercase tracking-widest text-[8px] font-black">الكمية المطلوبة</span>
+                                            <span className="text-white/40 uppercase tracking-widest text-xs font-black">الكمية المطلوبة</span>
                                             <span className="text-foreground text-xl tracking-tighter font-black tabular-nums">{report.requestedQty}</span>
                                         </div>
                                         <div className="flex flex-col gap-1 px-4 py-3 bg-white/5 rounded-2xl border border-white/5 shadow-inner">
-                                            <span className="text-white/40 uppercase tracking-widest text-[8px] font-black">المتوفر حالياً</span>
+                                            <span className="text-white/40 uppercase tracking-widest text-xs font-black">المتوفر حالياً</span>
                                             <span className="text-foreground text-xl tracking-tighter font-black tabular-nums text-primary">{report.availableQty}</span>
                                         </div>
                                     </div>
@@ -167,7 +167,7 @@ export default function ShortageReportsPage() {
                                         <ExternalLink size={14} className="group-hover/link:rotate-12 transition-transform" />
                                         عرض تفاصيل الصنف
                                     </Link>
-                                    <span className="text-[10px] font-black uppercase tracking-widest opacity-20 tabular-nums">ID: {report._id?.slice(-6).toUpperCase()}</span>
+                                    <span className="text-xs font-black uppercase tracking-widest opacity-20 tabular-nums">ID: {report._id?.slice(-6).toUpperCase()}</span>
                                 </div>
                             </div>
                         </div>

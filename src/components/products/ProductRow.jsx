@@ -50,11 +50,11 @@ export const ProductRow = React.memo(({
                             {product.name}
                         </p>
                         <div className="flex items-center gap-3 mt-1.5">
-                            <Badge variant="outline" className="font-black text-[10px] tracking-widest border-white/10 bg-white/5 px-2 py-0.5 rounded-md text-muted-foreground">
+                            <Badge variant="outline" className="font-black text-xs tracking-widest border-white/10 bg-white/5 px-2 py-0.5 rounded-md text-muted-foreground">
                                 {product.code}
                             </Badge>
                             {product.unit && (
-                                <span className="text-[11px] text-muted-foreground/40 font-black uppercase tracking-tighter">وحدة: {product.unit}</span>
+                                <span className="text-xs text-muted-foreground/40 font-black uppercase tracking-tighter">وحدة: {product.unit}</span>
                             )}
                         </div>
                     </div>
@@ -67,10 +67,10 @@ export const ProductRow = React.memo(({
                         <Tag className="h-3.5 w-3.5 text-primary/60" />
                         {product.brand || 'عام'}
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-xs font-black text-muted-foreground/40 uppercase tracking-widest">
                         <Layers className="h-3 w-3" />
                         {product.category || '-'}
-                        {product.subsection && <span className="text-[8px] opacity-30 mx-1">/</span>}
+                        {product.subsection && <span className="text-xs opacity-30 mx-1">/</span>}
                         {product.subsection}
                     </div>
                 </div>
@@ -82,7 +82,7 @@ export const ProductRow = React.memo(({
                         <span className="text-2xl font-black tabular-nums tracking-tighter text-primary">
                             {(product.retailPrice || product.sellPrice || 0).toLocaleString()}
                         </span>
-                        <span className="text-[10px] text-muted-foreground font-black uppercase opacity-40 group-hover/price:opacity-100 transition-opacity">ج.م</span>
+                        <span className="text-xs text-muted-foreground font-black uppercase opacity-40 group-hover/price:opacity-100 transition-opacity">ج.م</span>
                     </div>
                 </div>
             </TableCell>
@@ -97,7 +97,7 @@ export const ProductRow = React.memo(({
                     )}>
                         {product.stockQty}
                     </div>
-                    <div className="flex gap-3 text-[9px] font-black text-muted-foreground/30 group-hover:text-muted-foreground transition-colors uppercase tracking-widest">
+                    <div className="flex gap-3 text-xs font-black text-muted-foreground/30 group-hover:text-muted-foreground transition-colors uppercase tracking-widest">
                         <span>م: {product.warehouseQty || 0}</span>
                         <span className="w-1 h-1 rounded-full bg-white/10 self-center" />
                         <span>ح: {product.shopQty || 0}</span>
@@ -107,15 +107,15 @@ export const ProductRow = React.memo(({
 
             <TableCell className="px-8 text-center hidden md:table-cell">
                 {stockStatus === 'out' ? (
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/5">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-black uppercase tracking-widest shadow-lg shadow-red-500/5">
                         <XCircle size={12} className="animate-pulse" /> نفذت
                     </div>
                 ) : stockStatus === 'low' ? (
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-500/5">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-black uppercase tracking-widest shadow-lg shadow-amber-500/5">
                         <AlertTriangle size={12} /> منخفض
                     </div>
                 ) : (
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/5">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-500/5">
                         <CheckCircle2 size={12} /> متوفر
                     </div>
                 )}

@@ -148,7 +148,7 @@ export function SmartNotificationCenter() {
                                     <div className="space-y-0.5">
                                         <h2 className="text-2xl font-black tracking-tight">مركز الذكاء</h2>
                                         <div className="flex items-center gap-2">
-                                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                                            <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">
                                                 {unreadCount > 0 ? `${unreadCount} تنبيهات نشطة` : 'جميع الأنظمة مستقرة'}
                                             </p>
                                             {unreadCount > 0 && (
@@ -219,7 +219,7 @@ export function SmartNotificationCenter() {
                                                 </div>
                                                 <div>
                                                     <h3 className="text-lg font-black">لا توجد سجلات</h3>
-                                                    <p className="text-[10px] font-bold uppercase tracking-widest">Feed is Clear</p>
+                                                    <p className="text-xs font-bold uppercase tracking-widest">Feed is Clear</p>
                                                 </div>
                                             </motion.div>
                                         ) : (
@@ -244,12 +244,12 @@ export function SmartNotificationCenter() {
                         {/* Footer Controls */}
                         <div className="p-8 bg-black/20 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
                             <div className="flex items-center gap-6">
-                                <div className="flex items-center gap-3 text-primary text-[11px] font-black uppercase tracking-[0.3em]">
+                                <div className="flex items-center gap-3 text-primary text-xs font-black uppercase tracking-[0.3em]">
                                     <Zap size={14} className="animate-pulse" />
                                     Real-time Operational Insight
                                 </div>
                                 <div className="hidden sm:block h-4 w-[1px] bg-white/10" />
-                                <div className="text-[10px] font-bold text-muted-foreground/40 hidden sm:block">
+                                <div className="text-xs font-bold text-muted-foreground/40 hidden sm:block">
                                     SYNCHRONIZED WITH GLOBAL CLOUD
                                 </div>
                             </div>
@@ -317,11 +317,11 @@ function SmartActionCard({ notif, onRead, onDelete, onAction, isLoading }) {
                 {/* Main Content */}
                 <div className="flex-1 min-w-0 space-y-2">
                     <div className="flex items-center gap-3 flex-wrap">
-                        <Badge variant="outline" className={cn("px-2 py-0.5 text-[8px] font-black uppercase tracking-widest border transition-all", style.bg, style.border, style.text)}>
+                        <Badge variant="outline" className={cn("px-2 py-0.5 text-xs font-black uppercase tracking-widest border transition-all", style.bg, style.border, style.text)}>
                             {style.label}
                         </Badge>
                         <h4 className="text-lg font-black tracking-tight">{notif.title}</h4>
-                        <div className="flex items-center gap-1.5 text-[8px] font-black text-muted-foreground/60 uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded-full border border-white/5">
+                        <div className="flex items-center gap-1.5 text-xs font-black text-muted-foreground/60 uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded-full border border-white/5">
                             <Clock size={10} className="text-primary" />
                             {formatDistanceToNow(new Date(notif.createdAt), { addSuffix: true, locale: ar })}
                         </div>

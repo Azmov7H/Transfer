@@ -46,7 +46,7 @@ export function SidebarItem({
             )}
 
             {!isCollapsed && badge && (
-                <span className="mr-auto px-1.5 py-0.5 rounded-md bg-secondary text-secondary-foreground text-[10px] font-black uppercase">
+                <span className="mr-auto px-1.5 py-0.5 rounded-md bg-secondary text-secondary-foreground text-xs font-black uppercase">
                     {badge}
                 </span>
             )}

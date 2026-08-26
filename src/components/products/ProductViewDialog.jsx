@@ -36,7 +36,7 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                             { label: 'الفئة', val: product.category, icon: Layers },
                         ].map((item, i) => (
                             <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                                <div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase opacity-60 mb-1">
+                                <div className="flex items-center gap-2 text-xs font-black text-muted-foreground uppercase opacity-60 mb-1">
                                     <item.icon className="h-3 w-3" /> {item.label}
                                 </div>
                                 <p className="font-black text-sm">{item.val || '-'}</p>
@@ -52,7 +52,7 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                             <div className="flex items-end justify-between">
                                 <div>
                                     <p className="text-3xl font-black">{product.stockQty}</p>
-                                    <p className="text-[10px] text-muted-foreground font-black uppercase">إجمالي الرصيد</p>
+                                    <p className="text-xs text-muted-foreground font-black uppercase">إجمالي الرصيد</p>
                                 </div>
                                 <div className="text-left font-bold text-xs space-y-1">
                                     <p className="opacity-60">المخزن: {product.warehouseQty || 0}</p>
@@ -68,7 +68,7 @@ export function ProductViewDialog({ open, onOpenChange, product }) {
                             <div className="flex items-end justify-between">
                                 <div>
                                     <p className="text-3xl font-black">{(product.openingWarehouseQty || 0) + (product.openingShopQty || 0)}</p>
-                                    <p className="text-[10px] text-muted-foreground font-black uppercase">عند تسليم النظام</p>
+                                    <p className="text-xs text-muted-foreground font-black uppercase">عند تسليم النظام</p>
                                 </div>
                                 <div className="text-left font-bold text-xs">
                                     <p className="opacity-60">التكلفة: {product.openingBuyPrice || product.buyPrice || 0}</p>

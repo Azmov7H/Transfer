@@ -30,7 +30,7 @@ export function InvoicePrintView({ invoice, settings, returns }) {
                                 ) : (
                                     <>
                                         <span className="text-3xl font-bold">{settings?.companyName?.charAt(0) || 'ج'}</span>
-                                        <span className="text-[8px] tracking-widest uppercase mt-1">
+                                        <span className="text-xs tracking-widest uppercase mt-1">
                                             {settings?.companyName || 'Jammaz'}
                                         </span>
                                     </>
@@ -163,7 +163,7 @@ export function InvoicePrintView({ invoice, settings, returns }) {
                                             </div>
                                         </div>
                                         <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <div className="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded uppercase">بواسطة: {ret.createdBy?.name || 'النظام'}</div>
+                                            <div className="text-xs font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded uppercase">بواسطة: {ret.createdBy?.name || 'النظام'}</div>
                                         </div>
                                     </div>
                                 ))}
@@ -209,7 +209,7 @@ export function InvoicePrintView({ invoice, settings, returns }) {
                         {settings?.footerText || 'شكراً لتعاملكم مع شركة الجماز'}
                     </p>
                     <p className="text-xs text-slate-400 mb-1">{settings?.address || 'القاهرة، مصر - العطبة'}</p>
-                    <p className="text-[10px] text-slate-300">تم إصدار هذه الفاتورة إلكترونياً وهي معتمدة وصالحة دون توقيع</p>
+                    <p className="text-xs text-slate-300">تم إصدار هذه الفاتورة إلكترونياً وهي معتمدة وصالحة دون توقيع</p>
                 </div>
 
             <style jsx global>{`

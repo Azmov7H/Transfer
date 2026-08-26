@@ -110,7 +110,7 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
                         <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
                                 <Label className="text-sm font-bold">تفعيل التتبع المالي</Label>
-                                <p className="text-[10px] text-muted-foreground">تتبع المديونية وجدولة مواعيد التحصيل</p>
+                                <p className="text-xs text-muted-foreground">تتبع المديونية وجدولة مواعيد التحصيل</p>
                             </div>
                             <Switch
                                 checked={formData.financialTrackingEnabled}
