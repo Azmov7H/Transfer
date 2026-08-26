@@ -146,6 +146,8 @@ export async function fetcher(url, options = {}) {
 
             // Handle Global Session Expiry (401 only — 403 is an authorization issue, not a session one)
             if (res.status === 401 && !url.startsWith('/api/auth')) {
+                // Diagnostic: identify which endpoint triggered the expiry redirect
+                console.warn(`[Session] 401 on ${res.method || config.method || 'GET'} ${url} — redirecting to login`);
                 handleSessionExpiry();
             }
 
