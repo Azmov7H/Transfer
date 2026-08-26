@@ -96,7 +96,7 @@ export default function PurchaseOrderInvoice() {
                         </div>
                         <div className="text-left">
                             <div className="mb-4">
-                                <div className="text-2xl font-black text-primary">شركة الجماز</div>
+                                <div className="text-2xl font-bold text-primary">شركة الجماز</div>
                                 <div className="text-sm text-muted-foreground font-semibold tracking-wide">للاستيراد والتصدير</div>
                             </div>
                             <div className="text-sm text-muted-foreground space-y-1">

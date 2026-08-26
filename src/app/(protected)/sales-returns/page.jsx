@@ -128,18 +128,18 @@ export default function SalesReturnsPage() {
 
                                     {/* Number & Date */}
                                     <div className="flex items-center gap-5">
-                                        <div className="h-16 w-16 rounded-2xl bg-warning/10 flex items-center justify-center font-black text-warning border border-warning/20 shadow-inner">
+                                        <div className="h-16 w-16 rounded-2xl bg-warning/10 flex items-center justify-center font-bold text-warning border border-warning/20 shadow-inner">
                                             <span className="text-xs">#{ret.returnNumber.split('-')[1]?.slice(-5) || ret.returnNumber.slice(-5)}</span>
                                         </div>
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-center gap-2 text-muted-foreground">
                                                 <Calendar className="w-3.5 h-3.5" />
-                                                <span className="text-xs font-black uppercase tracking-wider">
+                                                <span className="text-xs font-bold uppercase tracking-wider">
                                                     {format(new Date(ret.createdAt), 'cccc, d MMMM yyyy (p)', { locale: ar })}
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <Badge className="bg-warning/10 text-warning border-warning/20 px-3 py-1 rounded-full font-black text-xs uppercase">
+                                                <Badge className="bg-warning/10 text-warning border-warning/20 px-3 py-1 rounded-full font-bold text-xs uppercase">
                                                     مرتجع مبيعات
                                                 </Badge>
                                             </div>
@@ -167,10 +167,10 @@ export default function SalesReturnsPage() {
                                     <div className="flex items-center justify-between md:justify-end gap-8 md:pl-4">
                                         <div className="text-left">
                                             <div className="flex items-baseline gap-2 justify-end">
-                                                <span className="text-2xl md:text-3xl font-black text-warning tracking-tighter">
+                                                <span className="text-2xl md:text-3xl font-bold text-warning tracking-tighter">
                                                     -{ret.totalRefund?.toLocaleString()}
                                                 </span>
-                                                <span className="text-xs font-black text-muted-foreground uppercase">EGP</span>
+                                                <span className="text-xs font-bold text-muted-foreground uppercase">EGP</span>
                                             </div>
                                             <div className="flex items-center justify-end gap-2 mt-1">
                                                 <Badge variant="secondary" className="text-xs font-bold py-0 h-5">

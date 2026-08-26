@@ -124,7 +124,7 @@ export default function SalesReportPage() {
                 <div className="glass-card p-6 rounded-[2.5rem] border border-white/10 overflow-hidden relative group transition-all duration-500 bg-gradient-to-br from-foreground/5 to-transparent shadow-2xl">
                     <div className="flex justify-between items-start mb-6">
                         <div className="space-y-1">
-                            <p className="text-xs font-black uppercase tracking-[0.2em] opacity-40">طريقة التحصيل</p>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-40">طريقة التحصيل</p>
                             <p className="text-sm font-bold opacity-30">توزيع المدفوعات</p>
                         </div>
                         <div className="p-3 bg-white/5 rounded-2xl border border-white/10 shadow-inner group-hover:bg-primary/10 transition-colors">
@@ -137,18 +137,18 @@ export default function SalesReportPage() {
                                 <div className="p-2 bg-success/10 rounded-lg">
                                     <Wallet size={14} className="text-success" />
                                 </div>
-                                <span className="text-xs font-black opacity-60">نقدي</span>
+                                <span className="text-xs font-bold opacity-60">نقدي</span>
                             </div>
-                            <span className="text-lg font-black tracking-tighter tabular-nums">{formatCurrency(totalCash)}</span>
+                            <span className="text-lg font-bold tracking-tighter tabular-nums">{formatCurrency(totalCash)}</span>
                         </div>
                         <div className="flex justify-between items-center group/item p-2 rounded-xl transition-colors hover:bg-white/5">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 bg-info/10 rounded-lg">
                                     <CreditCard size={14} className="text-info" />
                                 </div>
-                                <span className="text-xs font-black opacity-60">آجل</span>
+                                <span className="text-xs font-bold opacity-60">آجل</span>
                             </div>
-                            <span className="text-lg font-black tracking-tighter tabular-nums">{formatCurrency(totalCredit)}</span>
+                            <span className="text-lg font-bold tracking-tighter tabular-nums">{formatCurrency(totalCredit)}</span>
                         </div>
                         <div className="h-1.5 w-full bg-white/5 rounded-full mt-4 overflow-hidden flex">
                             <div
@@ -173,12 +173,12 @@ export default function SalesReportPage() {
                                 <Activity className="text-primary" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black">حركة المبيعات والنمو</h2>
+                                <h2 className="text-2xl font-bold">حركة المبيعات والنمو</h2>
                                 <p className="text-xs font-bold text-muted-foreground opacity-50 uppercase tracking-widest">مقارنة الإيرادات بالأرباح يومياً</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-black uppercase tracking-widest text-xs">
+                            <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-bold uppercase tracking-widest text-xs">
                                 الرسم البياني للفترة
                             </Badge>
                         </div>
@@ -196,7 +196,7 @@ export default function SalesReportPage() {
                                 <PieChart className="text-info" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black">تحليل الحركة</h2>
+                                <h2 className="text-2xl font-bold">تحليل الحركة</h2>
                                 <p className="text-xs font-bold text-muted-foreground opacity-50 uppercase tracking-widest">تحديثات الأداء اللحظي</p>
                             </div>
                         </div>
@@ -207,13 +207,13 @@ export default function SalesReportPage() {
                         <div className="space-y-4">
                             <div className="p-6 bg-white/5 rounded-[2rem] border border-white/5 space-y-4">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-xs font-black opacity-40 uppercase tracking-widest">متوسط الفاتورة</span>
-                                    <span className="text-sm font-black tabular-nums">{stats.totalInvoices ? Math.round(stats.totalRevenue / stats.totalInvoices).toLocaleString() : 0} ج.م</span>
+                                    <span className="text-xs font-bold opacity-40 uppercase tracking-widest">متوسط الفاتورة</span>
+                                    <span className="text-sm font-bold tabular-nums">{stats.totalInvoices ? Math.round(stats.totalRevenue / stats.totalInvoices).toLocaleString() : 0} ج.م</span>
                                 </div>
                                 <div className="h-px bg-white/5 w-full" />
                                 <div className="flex justify-between items-center">
-                                    <span className="text-xs font-black opacity-40 uppercase tracking-widest">أعلى مبيعات يومية</span>
-                                    <span className="text-sm font-black tabular-nums border-b-2 border-primary pb-0.5">
+                                    <span className="text-xs font-bold opacity-40 uppercase tracking-widest">أعلى مبيعات يومية</span>
+                                    <span className="text-sm font-bold tabular-nums border-b-2 border-primary pb-0.5">
                                         {formatCurrency(Math.max(...(stats.dailyBreakdown?.map(d => d.totalRevenue) || [0])))} ج.م
                                     </span>
                                 </div>
@@ -223,8 +223,8 @@ export default function SalesReportPage() {
                         <div className="p-8 bg-gradient-to-br from-primary/20 to-transparent rounded-[2.5rem] border border-primary/20 flex flex-col items-center justify-center text-center gap-4 group hover:scale-[1.02] transition-all duration-500 shadow-2xl">
                             <TrendingUp className="w-12 h-12 text-primary animate-bounce mt-2" />
                             <div className="space-y-1">
-                                <p className="text-2xl font-black text-foreground">بياتات دقيقة</p>
-                                <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">تحليل أداء الفترة</p>
+                                <p className="text-2xl font-bold text-foreground">بياتات دقيقة</p>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">تحليل أداء الفترة</p>
                             </div>
                             <p className="text-xs font-bold text-muted-foreground leading-relaxed px-4">
                                 تعتمد هذه الأرقام على كافة الفواتير المسجلة بالنظام للفترة المختارة

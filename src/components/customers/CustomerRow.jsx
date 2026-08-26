@@ -64,14 +64,14 @@ export const CustomerRow = React.memo(({
                         {customer.image ? (
                             <img src={customer.image} alt={customer.name} className="w-full h-full object-cover" />
                         ) : (
-                            <span className="font-black text-xl">{customer.name.charAt(0)}</span>
+                            <span className="font-bold text-xl">{customer.name.charAt(0)}</span>
                         )}
                     </div>
                     <div className="flex flex-col gap-1">
                         <Link
                             href={`/customers/${customer._id}`}
                             onClick={(e) => e.stopPropagation()}
-                            className="font-black text-lg leading-tight text-foreground group-hover:text-primary transition-colors tracking-tight"
+                            className="font-bold text-lg leading-tight text-foreground group-hover:text-primary transition-colors tracking-tight"
                         >
                             {customer.name}
                         </Link>
@@ -79,14 +79,14 @@ export const CustomerRow = React.memo(({
                             <Badge
                                 variant={customer.isActive ? "secondary" : "destructive"}
                                 className={cn(
-                                    "text-xs font-black uppercase tracking-widest px-2 py-0.5 rounded-full",
+                                    "text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded-full",
                                     customer.isActive ? "bg-success/10 text-success border-success/20" : "bg-destructive/10 text-destructive border-destructive/20"
                                 )}
                             >
                                 {customer.isActive ? 'نشط' : 'متوقف'}
                             </Badge>
                             {isInactive && (
-                                <Badge variant="destructive" className="bg-warning/10 text-warning border-warning/20 text-xs font-black uppercase tracking-widest px-2 py-0.5 rounded-full">
+                                <Badge variant="destructive" className="bg-warning/10 text-warning border-warning/20 text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">
                                     غير نشط منذ {daysSinceLast} يوم
                                 </Badge>
                             )}
@@ -97,7 +97,7 @@ export const CustomerRow = React.memo(({
 
             <TableCell className="px-8">
                 <div className="space-y-1.5">
-                    <div className="flex items-center gap-2 text-sm font-black text-white/40 group-hover:text-white transition-colors">
+                    <div className="flex items-center gap-2 text-sm font-bold text-white/40 group-hover:text-white transition-colors">
                         <div className="p-1.5 bg-white/5 rounded-lg">
                             <Phone size={12} className="text-primary" />
                         </div>
@@ -116,7 +116,7 @@ export const CustomerRow = React.memo(({
                 <Badge
                     variant="outline"
                     className={cn(
-                        "font-black py-1.5 px-4 rounded-xl border transition-all text-xs uppercase tracking-widest shadow-lg",
+                        "font-bold py-1.5 px-4 rounded-xl border transition-all text-xs uppercase tracking-widest shadow-lg",
                         customer.priceType === 'wholesale' && "bg-info/10 text-info border-info/20 shadow-blue-500/5",
                         customer.priceType === 'special' && "bg-info/10 text-info border-info/20 shadow-purple-500/5",
                         customer.priceType === 'retail' && "bg-success/10 text-success border-success/20 shadow-success/5"
@@ -131,24 +131,24 @@ export const CustomerRow = React.memo(({
                 <div className="flex flex-col items-center gap-2">
                     {customer.balance > 0 ? (
                         <div className={cn(
-                            "flex items-center gap-3 font-black px-4 py-2 rounded-2xl border transition-all shadow-xl group/debt",
+                            "flex items-center gap-3 font-bold px-4 py-2 rounded-2xl border transition-all shadow-xl group/debt",
                             hasOverdueDebt
                                 ? "text-destructive bg-destructive/5 border-destructive/20 shadow-destructive/5"
                                 : "text-warning bg-warning/5 border-warning/20 shadow-warning/5"
                         )}>
                             <div className="flex flex-col items-end">
-                                <span className="font-black text-lg tracking-tighter tabular-nums">{customer.balance.toLocaleString()}</span>
-                                <span className="text-xs font-black opacity-40 uppercase tracking-[0.2em]">المتبقي المطلوب ({activeDebtsCount} ديون)</span>
+                                <span className="font-bold text-lg tracking-tighter tabular-nums">{customer.balance.toLocaleString()}</span>
+                                <span className="text-xs font-bold opacity-40 uppercase tracking-[0.2em]">المتبقي المطلوب ({activeDebtsCount} ديون)</span>
                             </div>
                             <Wallet size={16} className="opacity-40 group-hover/debt:scale-110 transition-transform" />
                         </div>
                     ) : customer.creditBalance > 0 ? (
-                        <div className="flex items-center gap-3 font-black text-success bg-success/5 px-4 py-2 rounded-2xl border border-success/20 shadow-xl">
-                            <span className="font-black text-lg tracking-tighter tabular-nums">{customer.creditBalance?.toLocaleString()}</span>
-                            <span className="text-xs font-black opacity-40 uppercase tracking-widest">رصيد دائن</span>
+                        <div className="flex items-center gap-3 font-bold text-success bg-success/5 px-4 py-2 rounded-2xl border border-success/20 shadow-xl">
+                            <span className="font-bold text-lg tracking-tighter tabular-nums">{customer.creditBalance?.toLocaleString()}</span>
+                            <span className="text-xs font-bold opacity-40 uppercase tracking-widest">رصيد دائن</span>
                         </div>
                     ) : (
-                        <Badge variant="outline" className="opacity-10 font-black border-dashed px-4 py-1.5 rounded-xl uppercase tracking-widest text-xs">خالي من الديون</Badge>
+                        <Badge variant="outline" className="opacity-10 font-bold border-dashed px-4 py-1.5 rounded-xl uppercase tracking-widest text-xs">خالي من الديون</Badge>
                     )}
                 </div>
             </TableCell>

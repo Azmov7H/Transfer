@@ -37,7 +37,7 @@ export function StatCard({
 
             <div className="flex justify-between items-start relative z-10 mb-6">
                 <div className="space-y-1">
-                    <p className="text-xs font-black uppercase tracking-[0.2em] opacity-60">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-60">
                         {title}
                     </p>
                     {subtitle && <p className="text-sm font-bold opacity-40">{subtitle}</p>}
@@ -50,14 +50,14 @@ export function StatCard({
             </div>
 
             <div className="relative z-10 flex items-baseline gap-2">
-                <h3 className="text-4xl font-black tabular-nums tracking-tighter">
+                <h3 className="text-4xl font-bold tabular-nums tracking-tighter">
                     {value}
                 </h3>
-                {unit && <span className="text-lg font-black opacity-40">{unit}</span>}
+                {unit && <span className="text-lg font-bold opacity-40">{unit}</span>}
             </div>
 
             <div className="mt-4 flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs font-black opacity-40 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-2 text-xs font-bold opacity-40 group-hover:opacity-100 transition-opacity">
                     {trend ? (
                         <>
                             <TrendingUp size={12} className={trend === 'up' ? 'text-success' : 'text-destructive'} />

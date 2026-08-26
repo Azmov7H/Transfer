@@ -67,7 +67,7 @@ export default function ExpensesPage() {
                                 <ArrowDownRight size={24} />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black tracking-tight uppercase">تسجيل مصروف جديد</h2>
+                                <h2 className="text-2xl font-bold tracking-tight uppercase">تسجيل مصروف جديد</h2>
                                 <p className="text-sm font-bold text-white/20">سيتم خصم المبلغ من رصيد الخزينة</p>
                             </div>
                         </div>
@@ -75,7 +75,7 @@ export default function ExpensesPage() {
                     <div className="p-10">
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="space-y-4">
-                                <Label htmlFor="amount" className="font-black text-white/40 uppercase tracking-widest text-xs mr-2">المبلغ (ج.م)</Label>
+                                <Label htmlFor="amount" className="font-bold text-white/40 uppercase tracking-widest text-xs mr-2">المبلغ (ج.م)</Label>
                                 <div className="relative group">
                                     <Input
                                         id="amount"
@@ -84,14 +84,14 @@ export default function ExpensesPage() {
                                         required
                                         value={amount}
                                         onChange={(e) => setAmount(e.target.value)}
-                                        className="h-16 pl-14 pr-6 rounded-2xl bg-white/[0.03] border-white/10 focus:bg-white/[0.05] focus:border-destructive/50 transition-all font-black text-2xl tabular-nums shadow-inner ring-0 focus-visible:ring-0"
+                                        className="h-16 pl-14 pr-6 rounded-2xl bg-white/[0.03] border-white/10 focus:bg-white/[0.05] focus:border-destructive/50 transition-all font-bold text-2xl tabular-nums shadow-inner ring-0 focus-visible:ring-0"
                                         placeholder="0.00"
                                     />
                                     <Wallet className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-destructive/50 group-focus-within:text-destructive transition-colors" />
                                 </div>
                             </div>
                             <div className="space-y-4">
-                                <Label htmlFor="date" className="font-black text-white/40 uppercase tracking-widest text-xs mr-2">التاريخ</Label>
+                                <Label htmlFor="date" className="font-bold text-white/40 uppercase tracking-widest text-xs mr-2">التاريخ</Label>
                                 <div className="relative">
                                     <Input
                                         id="date"
@@ -99,16 +99,16 @@ export default function ExpensesPage() {
                                         required
                                         value={date}
                                         onChange={(e) => setDate(e.target.value)}
-                                        className="h-16 pl-14 pr-6 rounded-2xl bg-white/[0.03] border-white/10 focus:bg-white/[0.05] focus:border-primary/50 transition-all font-black text-lg ring-0 focus-visible:ring-0"
+                                        className="h-16 pl-14 pr-6 rounded-2xl bg-white/[0.03] border-white/10 focus:bg-white/[0.05] focus:border-primary/50 transition-all font-bold text-lg ring-0 focus-visible:ring-0"
                                     />
                                     <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-primary/50" />
                                 </div>
                             </div>
 
                             <div className="space-y-4">
-                                <Label htmlFor="category" className="font-black text-white/40 uppercase tracking-widest text-xs mr-2">التصنيف</Label>
+                                <Label htmlFor="category" className="font-bold text-white/40 uppercase tracking-widest text-xs mr-2">التصنيف</Label>
                                 <Select value={category} onValueChange={setCategory}>
-                                    <SelectTrigger className="h-16 rounded-2xl bg-white/[0.03] border-white/10 focus:bg-white/[0.05] focus:border-primary/50 transition-all font-black text-lg px-6 ring-0 focus-visible:ring-0">
+                                    <SelectTrigger className="h-16 rounded-2xl bg-white/[0.03] border-white/10 focus:bg-white/[0.05] focus:border-primary/50 transition-all font-bold text-lg px-6 ring-0 focus-visible:ring-0">
                                         <SelectValue placeholder="اختر التصنيف" />
                                     </SelectTrigger>
                                     <SelectContent className="glass-card border-white/10 rounded-2xl overflow-hidden backdrop-blur-3xl">
@@ -124,7 +124,7 @@ export default function ExpensesPage() {
                             </div>
 
                             <div className="space-y-4">
-                                <Label htmlFor="reason" className="font-black text-white/40 uppercase tracking-widest text-xs mr-2">البيان / السبب</Label>
+                                <Label htmlFor="reason" className="font-bold text-white/40 uppercase tracking-widest text-xs mr-2">البيان / السبب</Label>
                                 <Textarea
                                     id="reason"
                                     required
@@ -138,7 +138,7 @@ export default function ExpensesPage() {
 
                             <Button
                                 type="submit"
-                                className="w-full h-16 text-xl font-black uppercase tracking-widest rounded-2xl bg-destructive hover:bg-destructive text-white shadow-2xl shadow-destructive/30 transition-all duration-300 disabled:opacity-50 group"
+                                className="w-full h-16 text-xl font-bold uppercase tracking-widest rounded-2xl bg-destructive hover:bg-destructive text-white shadow-2xl shadow-destructive/30 transition-all duration-300 disabled:opacity-50 group"
                                 disabled={mutation.isPending}
                             >
                                 {mutation.isPending ? (

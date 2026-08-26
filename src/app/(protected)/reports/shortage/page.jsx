@@ -51,7 +51,7 @@ export default function ShortageReportsPage() {
                                         variant="ghost"
                                         size="sm"
                                         className={cn(
-                                            "h-10 px-6 rounded-xl font-black text-xs uppercase tracking-widest transition-all",
+                                            "h-10 px-6 rounded-xl font-bold text-xs uppercase tracking-widest transition-all",
                                             filter === opt.value
                                                 ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                                                 : "hover:bg-white/5 text-muted-foreground"
@@ -83,7 +83,7 @@ export default function ShortageReportsPage() {
                             <AlertCircle className="h-20 w-20 text-muted-foreground/20 group-hover:scale-110 transition-transform" />
                         </div>
                         <div className="space-y-2 text-center">
-                            <p className="text-2xl font-black text-white/30 uppercase tracking-widest">لا توجد بلاغات نواقص</p>
+                            <p className="text-2xl font-bold text-white/30 uppercase tracking-widest">لا توجد بلاغات نواقص</p>
                             <p className="text-sm text-white/10 font-bold uppercase tracking-widest">تحقق من معايير التصفية</p>
                         </div>
                     </div>
@@ -104,7 +104,7 @@ export default function ShortageReportsPage() {
                                     <div className="space-y-4">
                                         <Badge
                                             className={cn(
-                                                "font-black text-xs uppercase tracking-widest px-4 py-1.5 rounded-full border shadow-lg",
+                                                "font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full border shadow-lg",
                                                 report.status === 'PENDING'
                                                     ? 'bg-warning/10 text-warning border-warning/20'
                                                     : 'bg-success/10 text-success border-success/20'
@@ -121,27 +121,27 @@ export default function ShortageReportsPage() {
                                         </div>
                                     </div>
                                     <div className="text-left">
-                                        <p className="text-xs font-black text-white/20 uppercase tracking-[0.2em] mb-1 text-right">مقدم الطلب</p>
+                                        <p className="text-xs font-bold text-white/20 uppercase tracking-[0.2em] mb-1 text-right">مقدم الطلب</p>
                                         <div className="flex items-center gap-2 justify-end">
                                             <User size={14} className="text-primary" />
-                                            <p className="font-black text-sm text-foreground">{report.requesterName}</p>
+                                            <p className="font-bold text-sm text-foreground">{report.requesterName}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="space-y-3">
-                                    <h3 className="text-2xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
+                                    <h3 className="text-2xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
                                         <Package className="w-6 h-6 opacity-30" />
                                         {report.productName}
                                     </h3>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="flex flex-col gap-1 px-4 py-3 bg-white/5 rounded-2xl border border-white/5 shadow-inner">
-                                            <span className="text-white/40 uppercase tracking-widest text-xs font-black">الكمية المطلوبة</span>
-                                            <span className="text-foreground text-xl tracking-tighter font-black tabular-nums">{report.requestedQty}</span>
+                                            <span className="text-white/40 uppercase tracking-widest text-xs font-bold">الكمية المطلوبة</span>
+                                            <span className="text-foreground text-xl tracking-tighter font-bold tabular-nums">{report.requestedQty}</span>
                                         </div>
                                         <div className="flex flex-col gap-1 px-4 py-3 bg-white/5 rounded-2xl border border-white/5 shadow-inner">
-                                            <span className="text-white/40 uppercase tracking-widest text-xs font-black">المتوفر حالياً</span>
-                                            <span className="text-foreground text-xl tracking-tighter font-black tabular-nums text-primary">{report.availableQty}</span>
+                                            <span className="text-white/40 uppercase tracking-widest text-xs font-bold">المتوفر حالياً</span>
+                                            <span className="text-foreground text-xl tracking-tighter font-bold tabular-nums text-primary">{report.availableQty}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -158,12 +158,12 @@ export default function ShortageReportsPage() {
                                 <div className="pt-6 border-t border-white/5 flex items-center justify-between">
                                     <Link
                                         href={`/products?search=${report.productName}`}
-                                        className="text-xs font-black text-primary hover:text-primary/70 flex items-center gap-2 transition-all active:scale-95 group/link"
+                                        className="text-xs font-bold text-primary hover:text-primary/70 flex items-center gap-2 transition-all active:scale-95 group/link"
                                     >
                                         <ExternalLink size={14} className="group-hover/link:rotate-12 transition-transform" />
                                         عرض تفاصيل الصنف
                                     </Link>
-                                    <span className="text-xs font-black uppercase tracking-widest opacity-20 tabular-nums">ID: {report._id?.slice(-6).toUpperCase()}</span>
+                                    <span className="text-xs font-bold uppercase tracking-widest opacity-20 tabular-nums">ID: {report._id?.slice(-6).toUpperCase()}</span>
                                 </div>
                             </div>
                         </div>

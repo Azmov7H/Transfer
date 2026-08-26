@@ -55,14 +55,14 @@ export const CustomerCard = React.memo(({
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={customer.image} alt={customer.name} className="w-full h-full object-cover" />
                         ) : (
-                            <span className="font-black text-lg">{customer.name.charAt(0)}</span>
+                            <span className="font-bold text-lg">{customer.name.charAt(0)}</span>
                         )}
                     </div>
                     <div className="flex flex-col gap-1 min-w-0">
                         <Link
                             href={`/customers/${customer._id}`}
                             onClick={(e) => e.stopPropagation()}
-                            className="font-black text-base leading-tight text-foreground truncate"
+                            className="font-bold text-base leading-tight text-foreground truncate"
                         >
                             {customer.name}
                         </Link>
@@ -70,14 +70,14 @@ export const CustomerCard = React.memo(({
                             <Badge
                                 variant={customer.isActive ? "secondary" : "destructive"}
                                 className={cn(
-                                    "text-xs font-black uppercase tracking-widest px-2 py-0.5 rounded-full",
+                                    "text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded-full",
                                     customer.isActive ? "bg-success/10 text-success border-success/20" : "bg-destructive/10 text-destructive border-destructive/20"
                                 )}
                             >
                                 {customer.isActive ? 'نشط' : 'متوقف'}
                             </Badge>
                             {isInactive && (
-                                <Badge variant="destructive" className="bg-warning/10 text-warning border-warning/20 text-xs font-black uppercase tracking-widest px-2 py-0.5 rounded-full">
+                                <Badge variant="destructive" className="bg-warning/10 text-warning border-warning/20 text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">
                                     غير نشط منذ {daysSinceLast} يوم
                                 </Badge>
                             )}
@@ -87,7 +87,7 @@ export const CustomerCard = React.memo(({
                 <Badge
                     variant="outline"
                     className={cn(
-                        "shrink-0 font-black py-1 px-2.5 rounded-xl border text-xs uppercase tracking-widest",
+                        "shrink-0 font-bold py-1 px-2.5 rounded-xl border text-xs uppercase tracking-widest",
                         customer.priceType === 'wholesale' && "bg-info/10 text-info border-info/20",
                         customer.priceType === 'special' && "bg-info/10 text-info border-info/20",
                         customer.priceType === 'retail' && "bg-success/10 text-success border-success/20"
@@ -99,7 +99,7 @@ export const CustomerCard = React.memo(({
             </div>
 
             <div className="mt-3 space-y-1.5">
-                <div className="flex items-center gap-2 text-sm font-black text-white/50">
+                <div className="flex items-center gap-2 text-sm font-bold text-white/50">
                     <Phone size={12} className="text-primary shrink-0" />
                     <span className="font-mono tracking-tighter" dir="ltr">{customer.phone}</span>
                 </div>
@@ -114,22 +114,22 @@ export const CustomerCard = React.memo(({
             <div className="mt-3 flex items-center justify-between gap-2">
                 {customer.balance > 0 ? (
                     <div className={cn(
-                        "flex items-center gap-2 font-black px-3 py-1.5 rounded-2xl border text-sm",
+                        "flex items-center gap-2 font-bold px-3 py-1.5 rounded-2xl border text-sm",
                         hasOverdueDebt
                             ? "text-destructive bg-destructive/5 border-destructive/20"
                             : "text-warning bg-warning/5 border-warning/20"
                     )}>
                         <Wallet size={14} />
                         <span className="tabular-nums">{customer.balance.toLocaleString()}</span>
-                        <span className="text-xs font-black opacity-40">({activeDebtsCount} ديون)</span>
+                        <span className="text-xs font-bold opacity-40">({activeDebtsCount} ديون)</span>
                     </div>
                 ) : customer.creditBalance > 0 ? (
-                    <div className="flex items-center gap-2 font-black text-success bg-success/5 px-3 py-1.5 rounded-2xl border border-success/20 text-sm">
+                    <div className="flex items-center gap-2 font-bold text-success bg-success/5 px-3 py-1.5 rounded-2xl border border-success/20 text-sm">
                         <span className="tabular-nums">{customer.creditBalance?.toLocaleString()}</span>
-                        <span className="text-xs font-black opacity-40">رصيد دائن</span>
+                        <span className="text-xs font-bold opacity-40">رصيد دائن</span>
                     </div>
                 ) : (
-                    <Badge variant="outline" className="opacity-40 font-black border-dashed px-3 py-1.5 rounded-xl text-xs uppercase tracking-widest">خالي من الديون</Badge>
+                    <Badge variant="outline" className="opacity-40 font-bold border-dashed px-3 py-1.5 rounded-xl text-xs uppercase tracking-widest">خالي من الديون</Badge>
                 )}
 
                 <div className="flex items-center gap-1.5 -m-1.5">

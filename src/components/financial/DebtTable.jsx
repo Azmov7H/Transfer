@@ -53,11 +53,11 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
             <Table aria-label="الديون">
                 <TableHeader className="bg-muted/30">
                     <TableRow className="border-white/5 hover:bg-transparent h-16">
-                        <TableHead className="font-black text-xs uppercase tracking-widest text-right px-6">المرجع</TableHead>
-                        <TableHead className="font-black text-xs uppercase tracking-widest text-right">المدين / الدائن</TableHead>
-                        <TableHead className="font-black text-xs uppercase tracking-widest text-right">تاريخ الاستحقاق</TableHead>
-                        <TableHead className="font-black text-xs uppercase tracking-widest text-right">المبلغ</TableHead>
-                        <TableHead className="font-black text-xs uppercase tracking-widest text-center">الحالة</TableHead>
+                        <TableHead className="font-bold text-xs uppercase tracking-widest text-right px-6">المرجع</TableHead>
+                        <TableHead className="font-bold text-xs uppercase tracking-widest text-right">المدين / الدائن</TableHead>
+                        <TableHead className="font-bold text-xs uppercase tracking-widest text-right">تاريخ الاستحقاق</TableHead>
+                        <TableHead className="font-bold text-xs uppercase tracking-widest text-right">المبلغ</TableHead>
+                        <TableHead className="font-bold text-xs uppercase tracking-widest text-center">الحالة</TableHead>
                         <TableHead className="w-[80px]"></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -71,11 +71,11 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                                     </div>
                                     <div className="flex flex-col">
                                         <div className="flex items-center gap-2">
-                                            <span className="font-black text-foreground text-sm">
+                                            <span className="font-bold text-foreground text-sm">
                                                 {debt.referenceType === 'Invoice' ? 'فاتورة مبيعات' : 'أمر شراء'}
                                             </span>
                                             {debt.meta?.isScheduled && (
-                                                <Badge variant="outline" className="text-xs font-black h-4 px-1 border-primary/20 bg-primary/5 text-primary">مجدول</Badge>
+                                                <Badge variant="outline" className="text-xs font-bold h-4 px-1 border-primary/20 bg-primary/5 text-primary">مجدول</Badge>
                                             )}
                                         </div>
                                         <span className="text-xs text-muted-foreground font-bold font-mono">
@@ -107,7 +107,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                             </TableCell>
                             <TableCell>
                                 <div className="flex flex-col">
-                                    <div className="flex items-center gap-1 font-black text-foreground">
+                                    <div className="flex items-center gap-1 font-bold text-foreground">
                                         <span className="font-mono text-base">{debt.remainingAmount.toLocaleString()}</span>
                                         <span className="text-xs text-muted-foreground italic">د.ل</span>
                                     </div>
@@ -117,7 +117,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
                                 <Badge
                                     variant="outline"
                                     className={cn(
-                                        "font-black text-xs h-6 px-3 rounded-lg border-2",
+                                        "font-bold text-xs h-6 px-3 rounded-lg border-2",
                                         STATUS_STYLES[debt.status] || ''
                                     )}
                                 >

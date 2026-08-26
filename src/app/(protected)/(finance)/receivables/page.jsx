@@ -146,7 +146,7 @@ export default function ReceivablesPage() {
                             <Wallet className="h-8 w-8 text-destructive" />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-black text-foreground tracking-tight">
+                            <h1 className="text-3xl font-bold text-foreground tracking-tight">
                                 {customerId ? `مستحقات العميل: ${customerData?.name || '...'}` : 'ذمم العملاء (الديون)'}
                             </h1>
                             <p className="text-muted-foreground font-medium">متابعة الفواتير الآجلة وتحصيل الدفعات المستحقة</p>
@@ -172,7 +172,7 @@ export default function ReceivablesPage() {
                             <h3 className="text-sm font-bold text-destructive/80 uppercase tracking-wider">إجمالي الديون</h3>
                         </div>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-4xl font-black text-foreground">{data?.totalReceivables?.toLocaleString()}</span>
+                            <span className="text-4xl font-bold text-foreground">{data?.totalReceivables?.toLocaleString()}</span>
                             <span className="text-lg font-bold text-muted-foreground">ج.م</span>
                         </div>
                     </div>
@@ -191,7 +191,7 @@ export default function ReceivablesPage() {
                         <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">الفواتير المفتوحة</h3>
                     </div>
                     <div className="flex items-baseline gap-1">
-                        <span className="text-4xl font-black text-foreground">{data?.count || 0}</span>
+                        <span className="text-4xl font-bold text-foreground">{data?.count || 0}</span>
                         <span className="text-lg font-bold text-muted-foreground">فاتورة</span>
                     </div>
                 </motion.div>
@@ -209,7 +209,7 @@ export default function ReceivablesPage() {
                         <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">متأخرة السداد</h3>
                     </div>
                     <div className="flex items-baseline gap-1">
-                        <span className="text-4xl font-black text-foreground">{data?.invoices?.filter(i => new Date(i.dueDate) < new Date()).length || 0}</span>
+                        <span className="text-4xl font-bold text-foreground">{data?.invoices?.filter(i => new Date(i.dueDate) < new Date()).length || 0}</span>
                         <span className="text-lg font-bold text-muted-foreground">فاتورة</span>
                     </div>
                 </motion.div>
@@ -247,7 +247,7 @@ export default function ReceivablesPage() {
                             <CheckCircle2 className="h-10 w-10 text-success opacity-50" />
                         </div>
                         <div>
-                            <h3 className="text-xl font-black">لا توجد ديون مستحقة</h3>
+                            <h3 className="text-xl font-bold">لا توجد ديون مستحقة</h3>
                             <p className="text-muted-foreground mt-2 font-medium">جميع الفواتير مدفوعة بالكامل ✅</p>
                         </div>
                     </motion.div>
@@ -282,7 +282,7 @@ export default function ReceivablesPage() {
                                                             className="hover:text-primary transition-colors"
                                                             onClick={(e) => e.stopPropagation()}
                                                         >
-                                                            <h3 className="font-black text-lg">{inv.customerName}</h3>
+                                                            <h3 className="font-bold text-lg">{inv.customerName}</h3>
                                                         </Link>
                                                         <Badge variant="outline" className="font-mono text-xs bg-white/5 border-white/10 hover:bg-white/10">
                                                             {inv.player || 'عميل'}
@@ -315,7 +315,7 @@ export default function ReceivablesPage() {
                                                 </div>
                                                 <div className="text-center relative">
                                                     <p className="text-xs font-bold text-destructive uppercase opacity-80 mb-1">المتبقي</p>
-                                                    <p className="text-2xl font-black font-mono text-destructive">{remaining.toLocaleString()}</p>
+                                                    <p className="text-2xl font-bold font-mono text-destructive">{remaining.toLocaleString()}</p>
                                                 </div>
                                             </div>
 
@@ -343,7 +343,7 @@ export default function ReceivablesPage() {
                 <DialogContent className="sm:max-w-[480px]  border-white/10 p-0 rounded-[2.5rem] overflow-hidden" dir="rtl">
                     <div className="bg-secondary p-6 border-b border-white/10">
                         <DialogHeader>
-                            <DialogTitle className="text-xl font-black flex items-center gap-2">
+                            <DialogTitle className="text-xl font-bold flex items-center gap-2">
                                 <span className="p-2 rounded-xl bg-primary/10 text-primary"><Wallet className="h-5 w-5" /></span>
                                 تسجيل دفعة جديدة
                             </DialogTitle>
@@ -358,7 +358,7 @@ export default function ReceivablesPage() {
                         <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center">
                             <div>
                                 <p className="text-xs font-bold text-muted-foreground mb-1">المبلغ المتبقي</p>
-                                <p className="text-2xl font-black text-destructive">{(selectedInvoice?.total - selectedInvoice?.paidAmount).toLocaleString()}</p>
+                                <p className="text-2xl font-bold text-destructive">{(selectedInvoice?.total - selectedInvoice?.paidAmount).toLocaleString()}</p>
                             </div>
                             <Button
                                 variant="ghost"
@@ -411,7 +411,7 @@ export default function ReceivablesPage() {
                         </div>
 
                         <Button
-                            className="w-full h-14 rounded-2xl text-lg font-black bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
+                            className="w-full h-14 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
                             onClick={() => paymentMutation.mutate()}
                             disabled={paymentMutation.isPending || !paymentAmount}
                         >

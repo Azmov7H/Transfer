@@ -29,7 +29,7 @@ export function TrialBalanceTab() {
                         {data?.isBalanced ? <CheckCircle2 className="h-8 w-8" /> : <AlertCircle className="h-8 w-8" />}
                     </div>
                     <div>
-                        <h3 className={cn("text-xl font-black", data?.isBalanced ? "text-success" : "text-destructive")}>
+                        <h3 className={cn("text-xl font-bold", data?.isBalanced ? "text-success" : "text-destructive")}>
                             {data?.isBalanced ? "ميزان المراجعة متوازن" : "تحذير: الميزان غير متوازن"}
                         </h3>
                         <p className="text-sm font-medium opacity-80">
@@ -60,7 +60,7 @@ export function TrialBalanceTab() {
                         </div>
                     ))}
                 </div>
-                <div className="grid grid-cols-4 bg-white/5 p-4 font-black text-sm text-center border-t border-white/10">
+                <div className="grid grid-cols-4 bg-white/5 p-4 font-bold text-sm text-center border-t border-white/10">
                     <div className="text-right pr-4">الإجمالي</div>
                     <div className="font-mono text-info">{data?.totalDebit.toLocaleString()}</div>
                     <div className="font-mono text-success">{data?.totalCredit.toLocaleString()}</div>

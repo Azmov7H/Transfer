@@ -122,7 +122,7 @@ export default function PhysicalInventoryDetailPage({ params }) {
     if (error) return (
         <div className="flex flex-col items-center justify-center p-40 gap-4 text-destructive">
             <AlertTriangle className="h-16 w-16" />
-            <p className="text-xl font-black">خطأ في التحميل: {error.message}</p>
+            <p className="text-xl font-bold">خطأ في التحميل: {error.message}</p>
             <Button onClick={() => router.refresh()} variant="outline">إعادة المحاولة</Button>
         </div>
     );

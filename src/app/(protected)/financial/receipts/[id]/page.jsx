@@ -40,7 +40,7 @@ export default function ReceiptPage() {
                     <ArrowRight className="h-10 w-10 rotate-45" />
                 </div>
                 <div className="space-y-2">
-                    <h2 className="text-2xl font-black">خطأ في تحميل السند</h2>
+                    <h2 className="text-2xl font-bold">خطأ في تحميل السند</h2>
                     <p className="text-muted-foreground">{error?.message || 'السند المطلوب غير موجود'}</p>
                 </div>
                 <Button onClick={() => router.back()} className="rounded-xl px-8 font-bold">العودة للخلف</Button>
@@ -101,7 +101,7 @@ export default function ReceiptPage() {
                 </Button>
 
                 <div className="flex items-center gap-3">
-                    <Button onClick={handlePrint} className="rounded-2xl gap-2 font-black h-12 px-8 gradient-primary shadow-colored border-0 hover:scale-105 transition-all">
+                    <Button onClick={handlePrint} className="rounded-2xl gap-2 font-bold h-12 px-8 gradient-primary shadow-colored border-0 hover:scale-105 transition-all">
                         <Printer className="h-4 w-4" /> طباعة السند
                     </Button>
                 </div>
@@ -119,20 +119,20 @@ export default function ReceiptPage() {
                             {settings.showLogo && settings.companyLogo ? (
                                 <Image src={settings.companyLogo} alt="Logo" width={120} height={60} className="object-contain" />
                             ) : (
-                                <div className="h-16 w-16 bg-primary rounded-2xl flex items-center justify-center text-white font-black text-3xl shadow-lg ring-4 ring-primary/10">
+                                <div className="h-16 w-16 bg-primary rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-lg ring-4 ring-primary/10">
                                     {(settings.companyName || 'N').charAt(0)}
                                 </div>
                             )}
                             <div>
-                                <h1 className="text-3xl font-black tracking-tight">{settings.companyName}</h1>
+                                <h1 className="text-3xl font-bold tracking-tight">{settings.companyName}</h1>
                                 <p className="text-muted-foreground font-bold mt-1">سند تحصيل مالي إلكتروني</p>
                             </div>
                         </div>
 
                         <div className="space-y-2 text-right">
                             <div className="bg-muted50 px-6 py-3 rounded-2xl border border-border">
-                                <span className="text-xs text-muted-foreground font-black uppercase tracking-widest block mb-1">رقم السند</span>
-                                <span className="text-xl font-black font-mono text-primary">{transaction.receiptNumber || `TR- ${transaction._id.toString().slice(-6).toUpperCase()}`}</span>
+                                <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest block mb-1">رقم السند</span>
+                                <span className="text-xl font-bold font-mono text-primary">{transaction.receiptNumber || `TR- ${transaction._id.toString().slice(-6).toUpperCase()}`}</span>
                             </div>
                             <div className="flex flex-col gap-1 pr-6">
                                 <div className="flex items-center justify-end gap-2 text-xs font-bold text-muted-foreground">
@@ -151,11 +151,11 @@ export default function ReceiptPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         {/* Payer Info */}
                         <div className="space-y-6">
-                            <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                                 <div className="h-1 w-8 bg-secondary" /> يُصرف لـ / السيد
                             </h3>
                             <div className="space-y-4 pr-4">
-                                <div className="text-2xl font-black text-foreground">{partner?.name || 'عميل نقدي'}</div>
+                                <div className="text-2xl font-bold text-foreground">{partner?.name || 'عميل نقدي'}</div>
                                 <div className="space-y-2">
                                     {partner?.phone && (
                                         <div className="flex items-center gap-3 text-sm font-medium text-muted-foreground">
@@ -176,9 +176,9 @@ export default function ReceiptPage() {
                             {/* Watermark Logo */}
                             <CheckCircle2 className="absolute -right-8 -bottom-8 h-48 w-48 opacity-10" />
 
-                            <span className="text-xs font-black uppercase tracking-widest text-muted-foreground block mb-2 relative z-10">المبلغ المُستلم</span>
+                            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-2 relative z-10">المبلغ المُستلم</span>
                             <div className="flex items-baseline gap-2 relative z-10">
-                                <span className="text-5xl font-black tracking-tighter font-mono">{transaction.amount.toLocaleString()}</span>
+                                <span className="text-5xl font-bold tracking-tighter font-mono">{transaction.amount.toLocaleString()}</span>
                                 <span className="text-lg font-bold text-muted-foreground italic">ج.م</span>
                             </div>
                             <div className="mt-6 pt-4 border-t border-white/10 relative z-10 flex items-center gap-2">
@@ -195,20 +195,20 @@ export default function ReceiptPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="md:col-span-2 space-y-6 bg-muted50 p-8 rounded-3xl border border-border">
                             <div className="space-y-2">
-                                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground block">وذلك عـن / البيان</span>
+                                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block">وذلك عـن / البيان</span>
                                 <p className="text-xl font-bold leading-relaxed pr-2 border-r-4 border-primary/20">{transaction.description}</p>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 mt-6 border-t border-border/50">
                                 <div>
-                                    <span className="text-xs font-black uppercase tracking-widest text-muted-foreground block mb-1">مرجع العملية</span>
+                                    <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-1">مرجع العملية</span>
                                     <span className="font-bold text-foreground">
                                         {transaction.referenceType === 'Invoice' ? 'فاتورة مبيعات' :
                                             transaction.referenceType === 'Debt' ? 'مديونية سابقة' : 'تحصيل يدوي'}
                                     </span>
                                 </div>
                                 <div>
-                                    <span className="text-xs font-black uppercase tracking-widest text-muted-foreground block mb-1">مُحرر السند</span>
+                                    <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-1">مُحرر السند</span>
                                     <span className="font-bold text-foreground">{transaction.createdBy?.name || 'النظام'}</span>
                                 </div>
                             </div>
@@ -216,8 +216,8 @@ export default function ReceiptPage() {
 
                         {/* Balance Info */}
                         <div className="bg-destructive/10 p-8 rounded-3xl border border-destructive/30 flex flex-col justify-center items-center text-center">
-                            <span className="text-xs font-black uppercase tracking-widest text-destructive block mb-2">إجمالي الرصيد المتبقي للحساب</span>
-                            <div className="text-3xl font-black text-destructive font-mono">
+                            <span className="text-xs font-bold uppercase tracking-widest text-destructive block mb-2">إجمالي الرصيد المتبقي للحساب</span>
+                            <div className="text-3xl font-bold text-destructive font-mono">
                                 {(remainingBalance ?? 0).toLocaleString()}
                                 <span className="text-xs font-bold mr-1 italic">ج.م</span>
                             </div>
@@ -230,16 +230,16 @@ export default function ReceiptPage() {
                         {/* Company Seal */}
                         <div className="absolute left-[50%] top-[-50px] -translate-x-[50%] opacity-20 hidden print:block pointer-events-none">
                             <div className="w-40 h-40 rounded-full border-8 border-primary flex flex-col items-center justify-center p-4 text-center">
-                                <span className="text-xs font-black uppercase text-primary leading-none mb-1">مدفوع / PAID</span>
+                                <span className="text-xs font-bold uppercase text-primary leading-none mb-1">مدفوع / PAID</span>
                                 <div className="h-px bg-primary w-full my-2" />
-                                <span className="text-xs font-black text-primary leading-tight">{settings.companyName}</span>
+                                <span className="text-xs font-bold text-primary leading-tight">{settings.companyName}</span>
                                 <div className="h-px bg-primary w-full my-2" />
-                                <span className="text-xs font-black text-primary">{format(new Date(), 'yyyy/MM/dd')}</span>
+                                <span className="text-xs font-bold text-primary">{format(new Date(), 'yyyy/MM/dd')}</span>
                             </div>
                         </div>
 
                         <div className="space-y-4 max-w-sm">
-                            <h4 className="text-sm font-black text-foreground">معلومات الاتصال</h4>
+                            <h4 className="text-sm font-bold text-foreground">معلومات الاتصال</h4>
                             <div className="grid grid-cols-1 gap-2 text-xs font-bold text-muted-foreground">
                                 {settings.phone && <div className="flex items-center gap-2"><Phone className="h-3 w-3" /> {settings.phone}</div>}
                                 {settings.email && <div className="flex items-center gap-2"><Mail className="h-3 w-3" /> {settings.email}</div>}
@@ -249,10 +249,10 @@ export default function ReceiptPage() {
 
                         {/* Visual Seal Container */}
                         <div className="w-48 h-48 rounded-full border-[6px] border-border/50 flex flex-col items-center justify-center p-6 text-center rotate-6 scale-90 sm:scale-100">
-                            <div className="text-primary font-black text-lg leading-tight mb-2">{settings.companyName}</div>
+                            <div className="text-primary font-bold text-lg leading-tight mb-2">{settings.companyName}</div>
                             <div className="h-[2px] w-12 bg-secondary my-1" />
-                            <div className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">Certified Receipt</div>
-                            <div className="text-xs font-black text-muted-foreground mt-1 italic">محرر إلكترونياً</div>
+                            <div className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">Certified Receipt</div>
+                            <div className="text-xs font-bold text-muted-foreground mt-1 italic">محرر إلكترونياً</div>
                         </div>
 
                         <div className="text-center space-y-8 min-w-[200px]">

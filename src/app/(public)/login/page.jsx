@@ -81,7 +81,7 @@ export default function LoginPage() {
                                     transition={{ duration: 3, repeat: Infinity }}
                                 />
                                 <div className="relative w-32 h-32 bg-gradient-to-br from-info via-info to-info rounded-[3rem] flex items-center justify-center shadow-2xl shadow-purple-500/50 group-hover:scale-110 transition-transform duration-300">
-                                    <span className="text-6xl font-black text-white">ج</span>
+                                    <span className="text-6xl font-bold text-white">ج</span>
                                     <Sparkles className="absolute top-2 right-2 h-6 w-6 text-white/60 animate-pulse" />
                                 </div>
                             </div>
@@ -94,7 +94,7 @@ export default function LoginPage() {
                             transition={{ delay: 0.5 }}
                             className="space-y-4"
                         >
-                            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black">
+                            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold">
                                 <span className="bg-gradient-to-l from-info via-info to-info bg-clip-text text-transparent">
                                     مخازن الجماز
                                 </span>
@@ -146,7 +146,7 @@ export default function LoginPage() {
                                 transition={{ delay: 0.3 }}
                                 className="text-center mb-8"
                             >
-                                <h2 className="text-3xl md:text-4xl font-black mb-2 bg-gradient-to-l from-info to-info bg-clip-text text-transparent">
+                                <h2 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-l from-info to-info bg-clip-text text-transparent">
                                     تسجيل الدخول
                                 </h2>
                                 <p className="text-foreground/60 text-sm font-medium">
@@ -243,7 +243,7 @@ export default function LoginPage() {
                                     <Button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full h-14 text-base font-black bg-gradient-to-r from-info to-info hover:from-info hover:to-info rounded-2xl shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full h-14 text-base font-bold bg-gradient-to-r from-info to-info hover:from-info hover:to-info rounded-2xl shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         {loading ? (
                                             <span className="flex items-center gap-2">

@@ -31,7 +31,7 @@ export function FiltersBar({ filters, setFilters, onReset, onExport, totalEntrie
                         variant="outline"
                         onClick={() => setShowFilters(!showFilters)}
                         className={cn(
-                            "h-14 px-6 rounded-2xl font-black text-sm glass-card border-white/10 transition-all",
+                            "h-14 px-6 rounded-2xl font-bold text-sm glass-card border-white/10 transition-all",
                             showFilters && "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
                         )}
                     >
@@ -41,7 +41,7 @@ export function FiltersBar({ filters, setFilters, onReset, onExport, totalEntrie
 
                     <Button
                         onClick={onExport}
-                        className="h-14 px-6 rounded-2xl font-black text-sm bg-success hover:bg-success text-white shadow-lg shadow-success/20 gap-2"
+                        className="h-14 px-6 rounded-2xl font-bold text-sm bg-success hover:bg-success text-white shadow-lg shadow-success/20 gap-2"
                     >
                         <Download className="w-4 h-4" />
                         تصدير ({totalEntries})
@@ -51,7 +51,7 @@ export function FiltersBar({ filters, setFilters, onReset, onExport, totalEntrie
                         <Button
                             variant="ghost"
                             onClick={onReset}
-                            className="h-14 px-4 rounded-2xl font-black text-sm text-destructive hover:bg-destructive/10"
+                            className="h-14 px-4 rounded-2xl font-bold text-sm text-destructive hover:bg-destructive/10"
                         >
                             <X className="w-4 h-4" />
                         </Button>

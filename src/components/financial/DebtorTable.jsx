@@ -23,10 +23,10 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
             <Table aria-label="ديون العملاء">
                 <TableHeader className="bg-muted/30">
                     <TableRow className="border-white/5 hover:bg-transparent h-16">
-                        <TableHead className="font-black text-xs uppercase tracking-widest text-right px-6">العميل / المورد</TableHead>
-                        <TableHead className="font-black text-xs uppercase tracking-widest text-right">رقم الهاتف</TableHead>
-                        <TableHead className="font-black text-xs uppercase tracking-widest text-right">عدد الفواتير</TableHead>
-                        <TableHead className="font-black text-xs uppercase tracking-widest text-right">إجمالي المديونية</TableHead>
+                        <TableHead className="font-bold text-xs uppercase tracking-widest text-right px-6">العميل / المورد</TableHead>
+                        <TableHead className="font-bold text-xs uppercase tracking-widest text-right">رقم الهاتف</TableHead>
+                        <TableHead className="font-bold text-xs uppercase tracking-widest text-right">عدد الفواتير</TableHead>
+                        <TableHead className="font-bold text-xs uppercase tracking-widest text-right">إجمالي المديونية</TableHead>
                         <TableHead className="w-[120px]"></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -41,7 +41,7 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
                                     <div className="flex flex-col">
                                         <Link
                                             href={`/customers/${item.debtor._id}`}
-                                            className="hover:text-primary transition-colors font-black text-foreground text-sm"
+                                            className="hover:text-primary transition-colors font-bold text-foreground text-sm"
                                         >
                                             {item.debtor.name}
                                         </Link>
@@ -60,12 +60,12 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
                             <TableCell>
                                 <div className="flex items-center gap-2">
                                     <FileText size={14} className="text-muted-foreground" />
-                                    <span className="font-mono text-sm font-black">{item.invoicesCount}</span>
+                                    <span className="font-mono text-sm font-bold">{item.invoicesCount}</span>
                                 </div>
                             </TableCell>
                             <TableCell>
                                 <div className="flex flex-col">
-                                    <div className="flex items-center gap-1 font-black text-foreground">
+                                    <div className="flex items-center gap-1 font-bold text-foreground">
                                         <span className="font-mono text-lg text-destructive">{item.totalDebt.toLocaleString()}</span>
                                         <span className="text-xs text-muted-foreground italic">ج.م</span>
                                     </div>
@@ -75,7 +75,7 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
                                 <div className="flex gap-2 justify-end">
                                     <Button
                                         size="sm"
-                                        className="h-9 px-4 rounded-xl gap-2 font-black bg-success/10 text-success hover:bg-success hover:text-white border border-success/20 transition-all"
+                                        className="h-9 px-4 rounded-xl gap-2 font-bold bg-success/10 text-success hover:bg-success hover:text-white border border-success/20 transition-all"
                                         onClick={() => onUnifiedCollection(item)}
                                     >
                                         <Coins size={16} /> تحصيل

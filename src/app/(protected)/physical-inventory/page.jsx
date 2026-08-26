@@ -53,21 +53,21 @@ export default function PhysicalInventoryPage() {
         switch (status) {
             case 'completed':
                 return (
-                    <Badge className="bg-success/10 text-success border-success/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
+                    <Badge className="bg-success/10 text-success border-success/20 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
                         <div className="h-1.5 w-1.5 rounded-full bg-success" />
                         مكتمل
                     </Badge>
                 );
             case 'draft':
                 return (
-                    <Badge className="bg-warning/10 text-warning border-warning/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
+                    <Badge className="bg-warning/10 text-warning border-warning/20 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
                         <div className="h-1.5 w-1.5 rounded-full bg-warning animate-pulse" />
                         مسودة جارية
                     </Badge>
                 );
             case 'cancelled':
                 return (
-                    <Badge variant="destructive" className="px-3 py-1 rounded-lg font-black">
+                    <Badge variant="destructive" className="px-3 py-1 rounded-lg font-bold">
                         ملغي
                     </Badge>
                 );
@@ -107,7 +107,7 @@ export default function PhysicalInventoryPage() {
                             <ClipboardCheck className="w-8 h-8 text-white" />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-black tracking-tight">مركز الجرد الفعلي</h1>
+                            <h1 className="text-4xl font-bold tracking-tight">مركز الجرد الفعلي</h1>
                             <p className="text-muted-foreground font-medium">إدارة ومطابقة المخزون والرقابة المالية على الأصناف</p>
                         </div>
                     </div>
@@ -115,7 +115,7 @@ export default function PhysicalInventoryPage() {
 
                 <Button
                     onClick={() => router.push('/physical-inventory/new')}
-                    className="h-14 px-8 rounded-2xl gradient-primary border-0 shadow-lg shadow-primary/20 hover-scale group font-black text-lg"
+                    className="h-14 px-8 rounded-2xl gradient-primary border-0 shadow-lg shadow-primary/20 hover-scale group font-bold text-lg"
                 >
                     <Plus className="ml-2 h-5 w-5 transition-transform group-hover:rotate-90" />
                     بدء جرد جديد
@@ -171,12 +171,12 @@ export default function PhysicalInventoryPage() {
                         <Table aria-label="جلسات الجرد">
                             <TableHeader className="bg-muted/30">
                                 <TableRow className="border-0 hover:bg-transparent">
-                                    <TableHead className="font-black py-6 pr-8 text-primary">التاريخ والمعلومات</TableHead>
-                                    <TableHead className="font-black text-center">الموقع والقسم</TableHead>
-                                    <TableHead className="font-black text-center">الحالة</TableHead>
-                                    <TableHead className="font-black text-center">نوع الجرد</TableHead>
-                                    <TableHead className="font-black text-center">الفروقات المكتشفة</TableHead>
-                                    <TableHead className="font-black text-left pl-8">الإجراءات</TableHead>
+                                    <TableHead className="font-bold py-6 pr-8 text-primary">التاريخ والمعلومات</TableHead>
+                                    <TableHead className="font-bold text-center">الموقع والقسم</TableHead>
+                                    <TableHead className="font-bold text-center">الحالة</TableHead>
+                                    <TableHead className="font-bold text-center">نوع الجرد</TableHead>
+                                    <TableHead className="font-bold text-center">الفروقات المكتشفة</TableHead>
+                                    <TableHead className="font-bold text-left pl-8">الإجراءات</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -194,7 +194,7 @@ export default function PhysicalInventoryPage() {
                                         <TableCell colSpan={6} className="h-64 text-center">
                                             <div className="flex flex-col items-center justify-center gap-4 opacity-40">
                                                 <Activity className="w-16 h-16" />
-                                                <p className="text-xl font-black">لا توجد عمليات جرد مسجلة حالياً</p>
+                                                <p className="text-xl font-bold">لا توجد عمليات جرد مسجلة حالياً</p>
                                             </div>
                                         </TableCell>
                                     </TableRow>
@@ -214,7 +214,7 @@ export default function PhysicalInventoryPage() {
                                                             <Calendar className="w-5 h-5 text-muted-foreground/60" />
                                                         </div>
                                                         <div>
-                                                            <div className="font-black text-base">
+                                                            <div className="font-bold text-base">
                                                                 {format(new Date(count.date), 'dd MMMM yyyy', { locale: ar })}
                                                             </div>
                                                             <div className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest mt-0.5">
@@ -228,7 +228,7 @@ export default function PhysicalInventoryPage() {
                                                     <div className="flex flex-col items-center gap-1.5">
                                                         {getLocationBadge(count.location)}
                                                         {count.category && (
-                                                            <Badge variant="outline" className="text-xs font-black border-primary/20 text-primary/70">
+                                                            <Badge variant="outline" className="text-xs font-bold border-primary/20 text-primary/70">
                                                                 SECTION: {count.category}
                                                             </Badge>
                                                         )}
@@ -244,12 +244,12 @@ export default function PhysicalInventoryPage() {
                                                 <TableCell className="text-center">
                                                     <div className="flex justify-center">
                                                         {count.isBlind ? (
-                                                            <Badge className="bg-info/10 text-info border-info/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
+                                                            <Badge className="bg-info/10 text-info border-info/20 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
                                                                 <EyeOff size={14} />
                                                                 جرد أعمى
                                                             </Badge>
                                                         ) : (
-                                                            <Badge variant="outline" className="border-muted-foreground/20 text-muted-foreground/60 font-black">
+                                                            <Badge variant="outline" className="border-muted-foreground/20 text-muted-foreground/60 font-bold">
                                                                 عادي
                                                             </Badge>
                                                         )}
@@ -258,11 +258,11 @@ export default function PhysicalInventoryPage() {
 
                                                 <TableCell className="text-center">
                                                     {(count.status === 'draft' && count.isBlind) ? (
-                                                        <span className="text-muted-foreground/30 font-black italic">مخفي</span>
+                                                        <span className="text-muted-foreground/30 font-bold italic">مخفي</span>
                                                     ) : (
                                                         <div className="flex flex-col items-center">
                                                             <div className={cn(
-                                                                "text-lg font-black tabular-nums tracking-tighter",
+                                                                "text-lg font-bold tabular-nums tracking-tighter",
                                                                 count.netDifference > 0 ? "text-success" : count.netDifference < 0 ? "text-destructive" : "text-muted-foreground/40"
                                                             )} dir="ltr">
                                                                 {count.netDifference > 0 ? `+${count.netDifference}` : count.netDifference}
@@ -276,7 +276,7 @@ export default function PhysicalInventoryPage() {
                                                     <Button
                                                         variant="ghost"
                                                         size="lg"
-                                                        className="h-12 rounded-xl bg-muted/40 hover:bg-primary/10 hover:text-primary transition-all font-black gap-2 group/btn"
+                                                        className="h-12 rounded-xl bg-muted/40 hover:bg-primary/10 hover:text-primary transition-all font-bold gap-2 group/btn"
                                                         onClick={() => router.push(`/physical-inventory/${count._id}`)}
                                                     >
                                                         {count.status === 'draft' ? 'استكمال الجرد' : 'عرض التفاصيل'}

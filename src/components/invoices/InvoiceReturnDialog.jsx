@@ -28,7 +28,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                             <div className="p-8 pb-4">
                                 <DialogHeader>
                                     <div className="flex items-center justify-between">
-                                        <DialogTitle className="text-2xl font-black flex items-center gap-4 text-white">
+                                        <DialogTitle className="text-2xl font-bold flex items-center gap-4 text-white">
                                             <div className="p-3 bg-warning/10 rounded-2xl border border-warning/20 shadow-inner">
                                                 <ArrowRightLeft className="text-warning" size={24} />
                                             </div>
@@ -38,7 +38,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                             </div>
                                         </DialogTitle>
                                         <div className="text-left hidden md:block">
-                                            <span className="text-xs font-black text-muted-foreground uppercase tracking-widest block mb-1">تاريخ الفاتورة</span>
+                                            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest block mb-1">تاريخ الفاتورة</span>
                                             <span className="text-xs font-bold text-muted-foreground bg-white/5 px-3 py-1 rounded-full border border-white/5">
                                                 {format(new Date(invoice.date), 'd MMMM yyyy', { locale: ar })}
                                             </span>
@@ -77,7 +77,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                 <Package size={20} />
                                                             </div>
                                                             <div className="flex flex-col">
-                                                                <h4 className="font-black text-white text-lg group-hover:text-warning transition-colors uppercase tracking-tight">
+                                                                <h4 className="font-bold text-white text-lg group-hover:text-warning transition-colors uppercase tracking-tight">
                                                                     {item.productName || item.name || 'منتج'}
                                                                 </h4>
                                                                 <div className="flex items-center gap-3 text-xs font-bold mt-1">
@@ -103,12 +103,12 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                         }
                                                                     }}
                                                                 >
-                                                                    <span className="text-2xl font-black leading-none">-</span>
+                                                                    <span className="text-2xl font-bold leading-none">-</span>
                                                                 </Button>
 
                                                                 <div className="w-14 text-center">
                                                                     <span className={cn(
-                                                                        "text-2xl font-black tracking-tighter transition-all duration-300",
+                                                                        "text-2xl font-bold tracking-tighter transition-all duration-300",
                                                                         isSelected ? "text-warning scale-110" : "text-muted-foreground"
                                                                     )}>
                                                                         {currentReturnQty}
@@ -126,14 +126,14 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                         }
                                                                     }}
                                                                 >
-                                                                    <span className="text-xl font-black leading-none">+</span>
+                                                                    <span className="text-xl font-bold leading-none">+</span>
                                                                 </Button>
                                                             </div>
                                                             {isSelected && (
                                                                 <motion.div
                                                                     initial={{ opacity: 0, scale: 0.9 }}
                                                                     animate={{ opacity: 1, scale: 1 }}
-                                                                    className="text-xs font-black text-warning/60 uppercase tracking-widest"
+                                                                    className="text-xs font-bold text-warning/60 uppercase tracking-widest"
                                                                 >
                                                                     سيتم استرداد {(currentReturnQty * item.unitPrice).toLocaleString()} ج.م
                                                                 </motion.div>
@@ -159,7 +159,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                                     <div className="md:col-span-5 space-y-4">
                                         <div className="space-y-3">
-                                            <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2 mr-1">
+                                            <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2 mr-1">
                                                 <Wallet size={12} className="text-warning" /> طريقة رد المبلغ
                                             </Label>
                                             <div className="grid grid-cols-2 gap-2">
@@ -178,7 +178,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                     )}>
                                                         <Banknote size={16} />
                                                     </div>
-                                                    <span className="text-xs font-black uppercase tracking-tighter">خزينة نقداً</span>
+                                                    <span className="text-xs font-bold uppercase tracking-tighter">خزينة نقداً</span>
                                                 </button>
                                                 <button
                                                     onClick={() => setRefundMethod('customerBalance')}
@@ -195,7 +195,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                     )}>
                                                         <Wallet size={16} />
                                                     </div>
-                                                    <span className="text-xs font-black uppercase tracking-tighter">محفظة العميل</span>
+                                                    <span className="text-xs font-bold uppercase tracking-tighter">محفظة العميل</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -205,9 +205,9 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                         <div className="bg-foreground/1080 rounded-3xl p-6 border border-white/5 shadow-inner relative overflow-hidden group">
                                             <div className="flex justify-between items-center relative z-10">
                                                 <div className="flex flex-col">
-                                                    <span className="text-xs font-black text-muted-foreground uppercase tracking-widest mb-1">صافي القيمة المستردة</span>
+                                                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">صافي القيمة المستردة</span>
                                                     <div className="flex items-baseline gap-2">
-                                                        <span className="text-4xl font-black text-warning tracking-tighter">
+                                                        <span className="text-4xl font-bold text-warning tracking-tighter">
                                                             {
                                                                 invoice.items.reduce((sum, item) => {
                                                                     const qty = returnItems[item.productId?._id || item.productId] || 0;
@@ -215,13 +215,13 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                 }, 0).toLocaleString()
                                                             }
                                                         </span>
-                                                        <span className="text-sm font-black text-muted-foreground">ج.م</span>
+                                                        <span className="text-sm font-bold text-muted-foreground">ج.م</span>
                                                     </div>
                                                 </div>
                                                 <Button
                                                     onClick={onSubmit}
                                                     disabled={isReturning || Object.values(returnItems).every(q => q === 0)}
-                                                    className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 text-white font-black shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all gap-2 disabled:opacity-50 disabled:scale-100"
+                                                    className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all gap-2 disabled:opacity-50 disabled:scale-100"
                                                 >
                                                     {isReturning ? <Loader2 className="animate-spin" /> : (
                                                         <>

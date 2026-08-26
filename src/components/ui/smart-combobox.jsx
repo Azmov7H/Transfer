@@ -77,13 +77,13 @@ export function SmartCombobox({ options = [], value, onChange, placeholder = "Se
                                     <Package className="w-8 h-8 text-primary/40" />
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="font-black text-foreground/80">لم نجد ما تبحث عنه</p>
+                                    <p className="font-bold text-foreground/80">لم نجد ما تبحث عنه</p>
                                     <p className="text-xs text-muted-foreground font-medium">حاول البحث بكلمات مختلفة</p>
                                 </div>
 
                                 {onCreate && searchValue && !exactMatch && (
                                     <button
-                                        className="mt-2 flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm bg-primary text-primary-foreground font-black hover:scale-105 transition-transform shadow-lg shadow-primary/20"
+                                        className="mt-2 flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm bg-primary text-primary-foreground font-bold hover:scale-105 transition-transform shadow-lg shadow-primary/20"
                                         onClick={() => {
                                             const nameToCreate = searchValue;
                                             setOpen(false);
@@ -113,7 +113,7 @@ export function SmartCombobox({ options = [], value, onChange, placeholder = "Se
                                         value === option.value ? "bg-primary scale-125 shadow-[0_0_8px_rgba(var(--primary),0.6)]" : "bg-white/10"
                                     )} />
                                     <div className="flex-1 flex flex-col">
-                                        <span className="font-black text-sm tracking-tight leading-tight">{option.label}</span>
+                                        <span className="font-bold text-sm tracking-tight leading-tight">{option.label}</span>
                                         {/* Optional subtitle if label has | separator */}
                                         {option.label.includes('|') && (
                                             <span className="text-xs text-muted-foreground font-bold mt-1 uppercase tracking-widest">

@@ -50,7 +50,7 @@ const StockActionCard = ({ title, description, icon: Icon, onClick, color, delay
     <div className={cn("absolute inset-0 bg-gradient-to-br opacity-5 group-hover:opacity-10 transition-opacity", color)} />
     <div className="flex items-start justify-between relative z-10">
       <div className="space-y-2">
-        <h3 className="text-xl font-black">{title}</h3>
+        <h3 className="text-xl font-bold">{title}</h3>
         <p className="text-sm text-muted-foreground font-medium leading-tight max-w-[180px]">
           {description}
         </p>
@@ -59,7 +59,7 @@ const StockActionCard = ({ title, description, icon: Icon, onClick, color, delay
         <Icon size={24} />
       </div>
     </div>
-    <div className="mt-6 flex items-center text-xs font-black text-primary gap-1 group-hover:translate-x-1 transition-transform">
+    <div className="mt-6 flex items-center text-xs font-bold text-primary gap-1 group-hover:translate-x-1 transition-transform">
       تنفيذ العملية <ArrowLeftRight size={12} className="rotate-90" />
     </div>
   </motion.div>
@@ -164,7 +164,7 @@ export default function StockPage() {
             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20 shadow-lg shadow-primary/5">
               <History className="w-8 h-8 text-primary animate-spin-slow" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tighter bg-gradient-to-r from-primary via-info to-primary bg-clip-text text-transparent animate-gradient-x">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tighter bg-gradient-to-r from-primary via-info to-primary bg-clip-text text-transparent animate-gradient-x">
               لوحة تحكم المخزون
             </h1>
           </div>
@@ -176,12 +176,12 @@ export default function StockPage() {
         {/* Real-time Clock / Metadata */}
         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-[2rem] border border-white/10">
           <div className="flex flex-col items-end">
-            <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">آخر تحديث للمخزون</span>
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">آخر تحديث للمخزون</span>
             <span className="text-xl font-bold tabular-nums">{new Date().toLocaleTimeString('ar-EG')}</span>
           </div>
           <div className="w-px h-10 bg-white/10" />
           <div className="flex flex-col items-end">
-            <span className="text-xs font-black text-success uppercase tracking-[0.2em]">حالة النظام</span>
+            <span className="text-xs font-bold text-success uppercase tracking-[0.2em]">حالة النظام</span>
             <span className="text-xl font-bold">متصل ومؤمن</span>
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function StockPage() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -mr-32 -mt-32" />
           <div className="relative z-10 space-y-8">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-black flex items-center gap-3">
+              <h2 className="text-2xl font-bold flex items-center gap-3">
                 <TrendingUp className="text-primary" />
                 اتجاهات الحركة (آخر 7 أيام)
               </h2>
@@ -281,8 +281,8 @@ export default function StockPage() {
               className="glass-card p-6 rounded-[2rem] border border-white/10 flex items-center justify-between shadow-xl"
             >
               <div className="space-y-1">
-                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">{stat.label}</p>
-                <h3 className="text-3xl font-black tabular-nums">{stat.value}</h3>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</p>
+                <h3 className="text-3xl font-bold tabular-nums">{stat.value}</h3>
               </div>
               <div className={cn("p-4 rounded-2xl bg-white/5 border border-white/10", stat.color)}>
                 <stat.icon size={24} />
@@ -304,7 +304,7 @@ export default function StockPage() {
           placeholder="ابحث بعمق في قائمة الحركات والأصناف..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="h-16 pr-16 pl-8 rounded-[2rem] bg-white/[0.03] border-white/5 focus:bg-white/[0.07] focus:border-primary/30 transition-all font-black text-xl placeholder:text-muted-foreground/30 shadow-inner ring-0 focus-visible:ring-0"
+          className="h-16 pr-16 pl-8 rounded-[2rem] bg-white/[0.03] border-white/5 focus:bg-white/[0.07] focus:border-primary/30 transition-all font-bold text-xl placeholder:text-muted-foreground/30 shadow-inner ring-0 focus-visible:ring-0"
         />
 
         {/* Type Filter */}
@@ -335,20 +335,20 @@ export default function StockPage() {
         <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-3 h-3 rounded-full bg-success animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
-            <h2 className="text-2xl font-black tracking-tight">سجل الحركات الأخير</h2>
+            <h2 className="text-2xl font-bold tracking-tight">سجل الحركات الأخير</h2>
           </div>
-          <Badge className="bg-primary/20 text-primary border-primary/20 hover:bg-primary/30 font-black px-4 py-1.5 rounded-full text-xs">
+          <Badge className="bg-primary/20 text-primary border-primary/20 hover:bg-primary/30 font-bold px-4 py-1.5 rounded-full text-xs">
             {filteredMovements.length} حركة مطابقة
           </Badge>
         </div>
 
         <ResponsiveTable
           columns={[
-            { label: 'المنتج والتفاصيل', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-            { label: 'نوع الحركة', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-            { label: 'الكمية', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-            { label: 'التوقيت', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-            { label: 'بواسطة', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' }
+            { label: 'المنتج والتفاصيل', headerClassName: 'text-right font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+            { label: 'نوع الحركة', headerClassName: 'text-right font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+            { label: 'الكمية', headerClassName: 'text-right font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+            { label: 'التوقيت', headerClassName: 'text-right font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+            { label: 'بواسطة', headerClassName: 'text-right font-bold text-white/40 uppercase tracking-widest text-xs px-8' }
           ]}
           data={filteredMovements.slice(0, 15)}
           isPending={loadingMovements}
@@ -367,7 +367,7 @@ export default function StockPage() {
                     <Package className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-black text-lg group-hover:text-primary transition-colors leading-tight">
+                    <span className="font-bold text-lg group-hover:text-primary transition-colors leading-tight">
                       {m.productId?.name || 'منتج غير معروف'}
                     </span>
                     <span className="text-xs font-bold text-muted-foreground/50 tracking-widest uppercase">{m.productId?.code}</span>
@@ -376,7 +376,7 @@ export default function StockPage() {
               </TableCell>
               <TableCell className="px-8"><MovementTypeBadge type={m.type} /></TableCell>
               <TableCell className="px-8">
-                <div className="text-2xl font-black tabular-nums tracking-tighter">
+                <div className="text-2xl font-bold tabular-nums tracking-tighter">
                   {m.qty}
                 </div>
               </TableCell>
@@ -385,10 +385,10 @@ export default function StockPage() {
               </TableCell>
               <TableCell className="px-8">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 border border-white/10 flex items-center justify-center text-xs font-black">
+                  <div className="w-8 h-8 rounded-full bg-primary/20 border border-white/10 flex items-center justify-center text-xs font-bold">
                     {(m.createdBy?.name || 'A')[0].toUpperCase()}
                   </div>
-                  <span className="text-sm font-black text-muted-foreground">
+                  <span className="text-sm font-bold text-muted-foreground">
                     {m.createdBy?.name || 'غير معروف'}
                   </span>
                 </div>

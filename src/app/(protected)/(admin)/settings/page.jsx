@@ -21,7 +21,7 @@ import { AlertsSettingsTab } from '@/components/settings/AlertsSettingsTab';
 import { GrowthSettingsTab } from '@/components/settings/GrowthSettingsTab';
 import { DefaultsSettingsTab } from '@/components/settings/DefaultsSettingsTab';
 
-const TAB_TRIGGER_CLASS = "rounded-2xl py-4 font-black transition-all data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-xl shadow-primary/20";
+const TAB_TRIGGER_CLASS = "rounded-2xl py-4 font-bold transition-all data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-xl shadow-primary/20";
 
 export default function SettingsPage() {
     const { invoiceSettings, setInvoiceSettings, loading, loadSettings, handleSave } = useInvoiceSettings();
@@ -46,7 +46,7 @@ export default function SettingsPage() {
                     <Button
                         onClick={handleSave}
                         disabled={loading}
-                        className="h-14 px-8 rounded-2xl font-black text-lg gap-3 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/20 transition-all active:scale-95 group"
+                        className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/20 transition-all active:scale-95 group"
                     >
                         {loading ? (
                             <Loader2 className="w-6 h-6 animate-spin ml-2" />

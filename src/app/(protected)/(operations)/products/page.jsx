@@ -99,12 +99,12 @@ export default function ProductsPage() {
                     <>
                         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-3xl border border-white/10 shadow-xl ml-4">
                             <div className="flex flex-col items-end">
-                                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي الأصناف</span>
+                                <span className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">إجمالي الأصناف</span>
                                 <span className="text-xl font-bold tabular-nums">{stats.total}</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col items-end text-success">
-                                <span className="text-xs font-black opacity-60 uppercase tracking-[0.2em]">القيمة الكلية</span>
+                                <span className="text-xs font-bold opacity-60 uppercase tracking-[0.2em]">القيمة الكلية</span>
                                 <span className="text-xl font-bold tabular-nums">{(stats.value || 0).toLocaleString()} ج.م</span>
                             </div>
                         </div>
@@ -122,7 +122,7 @@ export default function ProductsPage() {
                             {canManage && (
                                 <Button
                                     onClick={() => setIsAddDialogOpen(true)}
-                                    className="h-14 px-8 rounded-2xl font-black text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 flex-1 lg:flex-none bg-primary text-primary-foreground"
+                                    className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 flex-1 lg:flex-none bg-primary text-primary-foreground"
                                 >
                                     <Plus size={24} />
                                     صنف جديد
@@ -142,7 +142,7 @@ export default function ProductsPage() {
                     <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-primary h-6 w-6 group-focus-within:animate-pulse transition-all" />
                     <Input
                         placeholder="ابحث بعمق في قائمة الأصناف..."
-                        className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-black text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
+                        className="h-16 pr-16 pl-8 rounded-[2rem] bg-card/40 border-white/10 focus:bg-card/60 focus:border-primary/50 transition-all font-bold text-xl placeholder:text-muted-foreground/30 shadow-2xl backdrop-blur-xl ring-0 focus-visible:ring-0"
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                     />
@@ -160,7 +160,7 @@ export default function ProductsPage() {
                                 key={tab.id}
                                 onClick={() => setFilter(tab.id)}
                                 className={cn(
-                                    "px-8 py-3 rounded-2xl font-black transition-all text-sm whitespace-nowrap flex items-center gap-3",
+                                    "px-8 py-3 rounded-2xl font-bold transition-all text-sm whitespace-nowrap flex items-center gap-3",
                                     filter === tab.id
                                         ? "bg-primary text-primary-foreground shadow-xl scale-105"
                                         : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
@@ -179,21 +179,21 @@ export default function ProductsPage() {
                 <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_15px_rgba(var(--primary),0.5)]" />
-                        <h2 className="text-2xl font-black tracking-tight">قائمة المستودع</h2>
+                        <h2 className="text-2xl font-bold tracking-tight">قائمة المستودع</h2>
                     </div>
-                    <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-black">
+                    <Badge variant="outline" className="px-4 py-1.5 rounded-full border-primary/20 bg-primary/5 text-primary font-bold">
                         {pagination.total} صنف مطابقة
                     </Badge>
                 </div>
 
                 <ResponsiveTable
                     columns={[
-                        { label: 'المنتج والتفاصيل', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-                        { label: 'الماركة والفئة', headerClassName: 'text-right font-black text-white/40 uppercase tracking-widest text-xs px-8 hidden lg:table-cell' },
-                        { label: 'سعر البيع', headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8' },
-                        { label: 'المخزون الحالي', headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8 hidden sm:table-cell' },
-                        { label: 'حالة التوفر', headerClassName: 'text-center font-black text-white/40 uppercase tracking-widest text-xs px-8 hidden md:table-cell' },
-                        { label: '', headerClassName: 'text-left font-black px-8 w-[100px]' }
+                        { label: 'المنتج والتفاصيل', headerClassName: 'text-right font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: 'الماركة والفئة', headerClassName: 'text-right font-bold text-white/40 uppercase tracking-widest text-xs px-8 hidden lg:table-cell' },
+                        { label: 'سعر البيع', headerClassName: 'text-center font-bold text-white/40 uppercase tracking-widest text-xs px-8' },
+                        { label: 'المخزون الحالي', headerClassName: 'text-center font-bold text-white/40 uppercase tracking-widest text-xs px-8 hidden sm:table-cell' },
+                        { label: 'حالة التوفر', headerClassName: 'text-center font-bold text-white/40 uppercase tracking-widest text-xs px-8 hidden md:table-cell' },
+                        { label: '', headerClassName: 'text-left font-bold px-8 w-[100px]' }
                     ]}
                     data={filteredProducts}
                     isPending={isLoading}
@@ -248,7 +248,7 @@ export default function ProductsPage() {
                                             <React.Fragment key={p}>
                                                 {prev && p - prev > 1 && (
                                                     <PaginationItem>
-                                                        <span className="px-3 text-muted-foreground/30 font-black">•••</span>
+                                                        <span className="px-3 text-muted-foreground/30 font-bold">•••</span>
                                                     </PaginationItem>
                                                 )}
                                                 <PaginationItem>
@@ -256,7 +256,7 @@ export default function ProductsPage() {
                                                         isActive={page === p}
                                                         onClick={() => setPage(p)}
                                                         className={cn(
-                                                            "h-10 w-10 text-base font-black rounded-xl transition-all cursor-pointer",
+                                                            "h-10 w-10 text-base font-bold rounded-xl transition-all cursor-pointer",
                                                             page === p
                                                                 ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                                                                 : "border-white/5 hover:bg-white/5 text-muted-foreground"

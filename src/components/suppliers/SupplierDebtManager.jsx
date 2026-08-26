@@ -174,9 +174,9 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                 <div className="p-4 rounded-2xl bg-info/10 border border-info/10 flex justify-between items-center">
                     <div className="flex items-center gap-2 text-info">
                         <DollarSign size={18} />
-                        <span className="text-xs font-black">المبلغ المتبقي (محسوب تلقائياً)</span>
+                        <span className="text-xs font-bold">المبلغ المتبقي (محسوب تلقائياً)</span>
                     </div>
-                    <span className="text-xl font-black text-info font-mono">
+                    <span className="text-xl font-bold text-info font-mono">
                         {(parseFloat(formData.originalAmount) - collectedAmount).toLocaleString()} <span className="text-xs">د.ل</span>
                     </span>
                 </div>
@@ -208,7 +208,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="h-12 rounded-xl px-8 font-black gradient-primary shadow-colored border-0 hover:scale-105 transition-all flex-1"
+                        className="h-12 rounded-xl px-8 font-bold gradient-primary shadow-colored border-0 hover:scale-105 transition-all flex-1"
                     >
                         {isPending && <Loader2 className="animate-spin w-4 h-4 ml-2" />}
                         حفظ التعديلات
@@ -229,7 +229,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                 <ChevronLeft className="w-5 h-5 rotate-180" />
                             </Button>
                         )}
-                        <DialogTitle className="text-xl font-black">
+                        <DialogTitle className="text-xl font-bold">
                             {view === 'list' && `مديونية: ${supplier?.name}`}
                             {view === 'payment' && 'تسجيل دفعة سداد'}
                             {view === 'schedule' && 'جدولة الديون'}
@@ -290,7 +290,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                                 </TableCell>
 
                                                 <TableCell className="text-center">
-                                                    <span className="font-black text-destructive">{debt.remainingAmount?.toLocaleString()}</span>
+                                                    <span className="font-bold text-destructive">{debt.remainingAmount?.toLocaleString()}</span>
                                                 </TableCell>
                                                 <TableCell className="text-center text-sm">
                                                     {format(new Date(debt.dueDate), 'yyyy/MM/dd')}
@@ -344,11 +344,11 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                             <div className="bg-primary/5 p-4 rounded-xl border border-primary/20 flex justify-between items-center">
                                 <div>
                                     <p className="text-sm font-bold text-primary mb-1">المبلغ المتبقي</p>
-                                    <p className="text-2xl font-black text-primary">{selectedDebt.remainingAmount?.toLocaleString()} د.ل</p>
+                                    <p className="text-2xl font-bold text-primary">{selectedDebt.remainingAmount?.toLocaleString()} د.ل</p>
                                 </div>
                                 <div className="text-left">
                                     <p className="text-xs font-bold text-success mb-0.5">تم سداد</p>
-                                    <p className="text-lg font-black text-success">{(selectedDebt.originalAmount - selectedDebt.remainingAmount).toLocaleString()} د.ل</p>
+                                    <p className="text-lg font-bold text-success">{(selectedDebt.originalAmount - selectedDebt.remainingAmount).toLocaleString()} د.ل</p>
                                 </div>
                             </div>
 
@@ -389,7 +389,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                 </div>
 
                                 <Button
-                                    className="w-full h-14 rounded-xl font-black text-lg gradient-primary shadow-colored"
+                                    className="w-full h-14 rounded-xl font-bold text-lg gradient-primary shadow-colored"
                                     onClick={handleRecordPayment}
                                     disabled={recordPaymentMutation.isPending || !paymentAmount}
                                 >
@@ -403,7 +403,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                         <div className="max-w-md mx-auto space-y-6">
                             <div className="bg-info/10 p-4 rounded-xl border border-info/20">
                                 <p className="text-sm font-bold text-info mb-1">إجمالي المديونية للجدولة</p>
-                                <p className="text-2xl font-black text-info">{selectedDebt.remainingAmount?.toLocaleString()} د.ل</p>
+                                <p className="text-2xl font-bold text-info">{selectedDebt.remainingAmount?.toLocaleString()} د.ل</p>
                             </div>
 
                             <div className="space-y-4">
@@ -443,13 +443,13 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
 
                                 <div className="p-4 bg-muted/30 rounded-xl text-center">
                                     <p className="text-xs text-muted-foreground font-bold mb-1">قيمة القسط التقريبية</p>
-                                    <p className="text-xl font-black">
+                                    <p className="text-xl font-bold">
                                         {(selectedDebt.remainingAmount / (Number(installmentsCount) || 1)).toLocaleString()} د.ل
                                     </p>
                                 </div>
 
                                 <Button
-                                    className="w-full h-14 rounded-xl font-black text-lg bg-info hover:bg-info shadow-lg text-white"
+                                    className="w-full h-14 rounded-xl font-bold text-lg bg-info hover:bg-info shadow-lg text-white"
                                     onClick={handleSchedule}
                                     disabled={scheduleMutation.isPending || !installmentsCount}
                                 >

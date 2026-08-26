@@ -53,7 +53,7 @@ export default function Sidebar() {
                                 <Sparkles className="w-5 h-5" />
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-xl font-black tracking-tight text-foreground">
+                                <span className="text-xl font-bold tracking-tight text-foreground">
                                     مخازن الجماز
                                 </span>
                                 <span className="text-xs font-bold text-primary tracking-widest uppercase opacity-70">
@@ -138,7 +138,7 @@ export default function Sidebar() {
                         <div className="relative shrink-0">
                             <Avatar className="h-10 w-10 border-2 border-primary/20 ring-4 ring-primary/5 shadow-2xl transition-transform group-hover:scale-110">
                                 <AvatarImage src={user?.picture} />
-                                <AvatarFallback className="bg-gradient-to-br from-primary to-primary/60 text-white font-black">
+                                <AvatarFallback className="bg-gradient-to-br from-primary to-primary/60 text-white font-bold">
                                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : user?.name?.charAt(0)}
                                 </AvatarFallback>
                             </Avatar>
@@ -147,7 +147,7 @@ export default function Sidebar() {
 
                         {(isOpen || isMobile) && (
                             <div className="flex-1 min-w-0 pr-1">
-                                <p className="text-sm font-black text-foreground truncate leading-tight">
+                                <p className="text-sm font-bold text-foreground truncate leading-tight">
                                     {loading ? 'جاري التحميل...' : user?.name}
                                 </p>
                                 <p className="text-xs font-bold text-primary/80 uppercase tracking-widest mt-0.5">

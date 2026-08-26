@@ -51,7 +51,7 @@ export function CustomerDetailsSheet({
                     <div className="flex flex-col items-center text-center gap-6">
                         <div className="relative">
                             <Avatar className="h-24 w-24 border-4 border-border shadow-2xl ring-2 ring-primary/20">
-                                <AvatarFallback className="bg-gradient-to-tr from-primary to-info text-white text-3xl font-black">
+                                <AvatarFallback className="bg-gradient-to-tr from-primary to-info text-white text-3xl font-bold">
                                     {customer.name.charAt(0)}
                                 </AvatarFallback>
                             </Avatar>
@@ -62,7 +62,7 @@ export function CustomerDetailsSheet({
                         </div>
 
                         <div className="space-y-2">
-                            <SheetTitle className="text-3xl font-black tracking-tight">{customer.name}</SheetTitle>
+                            <SheetTitle className="text-3xl font-bold tracking-tight">{customer.name}</SheetTitle>
                             <SheetDescription className="text-muted-foreground font-bold">
                                 {customer.isActive ? 'عميل نشط' : 'حساب متوقف'} • {customer.priceType === 'wholesale' ? 'جملة' : customer.priceType === 'special' ? 'خاص' : 'قطاعي'}
                             </SheetDescription>
@@ -70,9 +70,9 @@ export function CustomerDetailsSheet({
 
                         {/* Total Balance Card */}
                         <div className="w-full bg-black/40 p-6 rounded-[2.5rem] border border-white/10 backdrop-blur-md shadow-2xl">
-                            <span className="text-xs text-muted-foreground font-black uppercase tracking-widest block mb-2 opacity-50">إجمالي المتبقي للتحصيل</span>
+                            <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest block mb-2 opacity-50">إجمالي المتبقي للتحصيل</span>
                             <div className={cn(
-                                "text-5xl font-black font-mono leading-none tracking-tighter mb-1",
+                                "text-5xl font-bold font-mono leading-none tracking-tighter mb-1",
                                 totalBalance > 0 ? "text-destructive" : "text-success"
                             )}>
                                 {totalBalance.toLocaleString()}
@@ -91,7 +91,7 @@ export function CustomerDetailsSheet({
                                 <div className="mt-6">
                                     <Button
                                         onClick={() => onUnifiedCollection(customer, totalBalance)}
-                                        className="w-full h-16 rounded-2xl bg-white text-black hover:bg-white/90 font-black text-xl shadow-[0_20px_40px_rgba(255,255,255,0.1)] transition-all hover:scale-[1.02] active:scale-95 group"
+                                        className="w-full h-16 rounded-2xl bg-white text-black hover:bg-white/90 font-bold text-xl shadow-[0_20px_40px_rgba(255,255,255,0.1)] transition-all hover:scale-[1.02] active:scale-95 group"
                                     >
                                         تحصيل المتبقي الآن
                                         <Wallet className="w-6 h-6 mr-3 text-primary group-hover:rotate-12 transition-transform" />
@@ -118,7 +118,7 @@ export function CustomerDetailsSheet({
                             <div className="bg-warning/5 rounded-3xl p-6 border border-warning/10">
                                 <div className="flex items-center gap-3 text-warning/80 mb-3">
                                     <FileSignature size={18} />
-                                    <h3 className="font-black text-sm">ملاحظات العميل</h3>
+                                    <h3 className="font-bold text-sm">ملاحظات العميل</h3>
                                 </div>
                                 <p className="text-base text-warning/80 leading-relaxed font-bold">
                                     {customer.notes}
@@ -139,7 +139,7 @@ export function CustomerDetailsSheet({
                             سجل الحركات <ArrowRightLeft className="w-5 h-5 mr-3" />
                         </Button>
                         <Button
-                            className="flex-1 h-14 rounded-2xl font-black text-lg bg-white/5 text-white hover:bg-white/10 border border-white/10 shadow-2xl"
+                            className="flex-1 h-14 rounded-2xl font-bold text-lg bg-white/5 text-white hover:bg-white/10 border border-white/10 shadow-2xl"
                             onClick={() => onOpenChange(false)}
                         >
                             إغلاق

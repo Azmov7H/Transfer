@@ -123,7 +123,7 @@ export function InvoicePrintView({ invoice, settings, returns }) {
                                     <td className="py-4 px-4 font-bold" style={{ color: primaryColor }}>{item.productName || item.name || 'منتج'}</td>
                                     <td className="py-4 px-4 text-center font-semibold">{item.qty}</td>
                                     <td className="py-4 px-4 text-center font-mono">{item.unitPrice.toLocaleString()} ج.م</td>
-                                    <td className="py-4 px-4 text-center font-black text-foreground">{(item.qty * item.unitPrice).toLocaleString()} ج.م</td>
+                                    <td className="py-4 px-4 text-center font-bold text-foreground">{(item.qty * item.unitPrice).toLocaleString()} ج.م</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -159,7 +159,7 @@ export function InvoicePrintView({ invoice, settings, returns }) {
                                             </div>
                                             <div className="text-left flex flex-col justify-center">
                                                 <span className="text-xs font-bold text-muted-foreground uppercase">المبلغ المرتجع</span>
-                                                <span className="text-2xl font-black text-warning">-{ret.totalRefund?.toLocaleString()} <span className="text-sm">ج.م</span></span>
+                                                <span className="text-2xl font-bold text-warning">-{ret.totalRefund?.toLocaleString()} <span className="text-sm">ج.م</span></span>
                                             </div>
                                         </div>
                                         <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -193,7 +193,7 @@ export function InvoicePrintView({ invoice, settings, returns }) {
                                 <span className="font-semibold">{invoice.tax?.toLocaleString() || '0'} ج.م</span>
                             </div>
                             <div
-                                className="pt-4 flex justify-between text-2xl font-black border-t-2"
+                                className="pt-4 flex justify-between text-2xl font-bold border-t-2"
                                 style={{ color: primaryColor, borderTopColor: primaryColor }}
                             >
                                 <span>الإجمالي:</span>
@@ -205,7 +205,7 @@ export function InvoicePrintView({ invoice, settings, returns }) {
 
                 {/* Footer */}
                 <div className="mt-16 pt-8 border-t border-border text-center">
-                    <p className="font-black text-xl mb-3" style={{ color: primaryColor }}>
+                    <p className="font-bold text-xl mb-3" style={{ color: primaryColor }}>
                         {settings?.footerText || 'شكراً لتعاملكم مع شركة الجماز'}
                     </p>
                     <p className="text-xs text-muted-foreground mb-1">{settings?.address || 'القاهرة، مصر - العطبة'}</p>

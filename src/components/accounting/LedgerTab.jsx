@@ -59,7 +59,7 @@ export function LedgerTab({ chartOfAccounts }) {
                         <div className="relative z-10 flex justify-between items-center">
                             <div>
                                 <p className="text-sm font-bold text-primary/80 mb-1">الرصيد النهائي للحساب</p>
-                                <h3 className="text-4xl font-black">{ledger.ledger.finalBalance.toLocaleString()}</h3>
+                                <h3 className="text-4xl font-bold">{ledger.ledger.finalBalance.toLocaleString()}</h3>
                             </div>
                             <div className="p-4 bg-primary/20 rounded-2xl text-primary backdrop-blur-md">
                                 <Wallet className="h-8 w-8" />

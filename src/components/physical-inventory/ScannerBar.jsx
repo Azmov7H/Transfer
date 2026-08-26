@@ -23,7 +23,7 @@ export function ScannerBar({ isCompleted, isScannerFocused, barcode, setBarcode,
                         <CardContent className="p-6">
                             <form onSubmit={onSubmit} className="flex flex-col md:flex-row items-center gap-6">
                                 <div className="flex-1 w-full space-y-2">
-                                    <Label className="text-sm font-black flex items-center gap-2 mr-2">
+                                    <Label className="text-sm font-bold flex items-center gap-2 mr-2">
                                         <ScanBarcode className="w-5 h-5 text-primary rotate-12" /> وضع الماسح السريع (Scanner Mode)
                                     </Label>
                                     <div className="relative">
@@ -51,7 +51,7 @@ export function ScannerBar({ isCompleted, isScannerFocused, barcode, setBarcode,
                                             <History className="w-5 h-5 text-success" />
                                         </div>
                                         <div>
-                                            <p className="text-xs font-black text-success/60 uppercase tracking-widest leading-none mb-1">Last Scanned</p>
+                                            <p className="text-xs font-bold text-success/60 uppercase tracking-widest leading-none mb-1">Last Scanned</p>
                                             <h4 className="text-sm font-bold truncate max-w-44 leading-none">{lastScanned.name}</h4>
                                         </div>
                                     </motion.div>

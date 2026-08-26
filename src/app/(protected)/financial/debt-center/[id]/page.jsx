@@ -70,7 +70,7 @@ export default function DebtDetailPage({ params }) {
                     <ArrowLeft size={18} />
                 </Button>
                 <div>
-                    <h1 className="text-2xl font-black tracking-tight flex items-center gap-2">
+                    <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
                         {debt.referenceType === 'Invoice' ? 'فاتورة' : 'أمر شراء'}
                         <span className="font-mono text-muted-foreground">#{debt.referenceId?.toString().slice(-6)}</span>
                     </h1>
@@ -110,11 +110,11 @@ export default function DebtDetailPage({ params }) {
 
                                 <div>
                                     <p className="text-sm text-muted-foreground mb-1">المبلغ الأصلي</p>
-                                    <p className="text-3xl font-black">{formatCurrency(debt.originalAmount)}</p>
+                                    <p className="text-3xl font-bold">{formatCurrency(debt.originalAmount)}</p>
                                 </div>
                                 <div className="text-left border-r border-white/10 pr-8">
                                     <p className="text-sm text-muted-foreground mb-1">المتبقي</p>
-                                    <p className="text-3xl font-black text-destructive">{formatCurrency(debt.remainingAmount)}</p>
+                                    <p className="text-3xl font-bold text-destructive">{formatCurrency(debt.remainingAmount)}</p>
                                 </div>
                             </div>
 
@@ -207,7 +207,7 @@ export default function DebtDetailPage({ params }) {
                                                 <span className="text-xs text-muted-foreground font-mono">{formatDate(item.dueDate)}</span>
                                             </div>
                                             <div className="flex flex-col items-end gap-1">
-                                                <span className="font-black">{formatCurrency(item.amount)}</span>
+                                                <span className="font-bold">{formatCurrency(item.amount)}</span>
                                                 <Badge
                                                     variant="outline"
                                                     className={`text-xs h-4 px-1 ${item.status === 'PAID'
