@@ -9,6 +9,7 @@ import {
     Wallet,
     Trash2,
     FileEdit,
+    Coins,
     History
 } from 'lucide-react';
 import Link from 'next/link';
@@ -24,7 +25,7 @@ export const CustomerCard = React.memo(({
     onEdit,
     onDelete,
     onRowClick,
-    onHistory,
+    onCollect,
     router
 }) => {
     const lastPurchase = customer.lastPurchaseDate ? new Date(customer.lastPurchaseDate) : null;
@@ -155,11 +156,11 @@ export const CustomerCard = React.memo(({
                         variant="ghost"
                         size="icon"
                         className="h-11 w-11 rounded-xl bg-white/5 hover:bg-success/20 hover:text-success text-white/40 border border-white/5 transition-all"
-                        onClick={(e) => { e.stopPropagation(); onHistory && onHistory(customer); }}
-                        aria-label="سجل المعاملات"
-                        title="سجل المعاملات"
+                        onClick={(e) => { e.stopPropagation(); onCollect && onCollect(customer, customerDebtsList.reduce((sum, d) => sum + (d.remainingAmount || 0), 0)); }}
+                        aria-label="تحصيل دفعة"
+                        title="تحصيل دفعة"
                     >
-                        <History size={16} />
+                        <Coins size={16} />
                     </Button>
                     <Button
                         variant="ghost"
