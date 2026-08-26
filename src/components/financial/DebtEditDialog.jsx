@@ -88,7 +88,7 @@ export function DebtEditDialog({ open, onOpenChange, debt }) {
                         </div>
                     </div>
 
-                    <div className="p-4 rounded-2xl bg-info/100/5 border border-info/10 flex justify-between items-center">
+                    <div className="p-4 rounded-2xl bg-info/10 border border-info/10 flex justify-between items-center">
                         <div className="flex items-center gap-2 text-info">
                             <Calculator size={18} />
                             <span className="text-xs font-black">المبلغ المتبقي (محسوب تلقائياً)</span>

@@ -171,7 +171,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                     </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-info/100/5 border border-info/10 flex justify-between items-center">
+                <div className="p-4 rounded-2xl bg-info/10 border border-info/10 flex justify-between items-center">
                     <div className="flex items-center gap-2 text-info">
                         <DollarSign size={18} />
                         <span className="text-xs font-black">المبلغ المتبقي (محسوب تلقائياً)</span>
@@ -316,7 +316,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                                         <Button
                                                             size="sm"
                                                             variant="outline"
-                                                            className="h-8 gap-1 border-info/20 hover:bg-info/100/5 text-info"
+                                                            className="h-8 gap-1 border-info/20 hover:bg-info/10 text-info"
                                                             onClick={() => { setSelectedDebt(debt); setView('schedule'); }}
                                                         >
                                                             <CalendarCheck size={14} /> جدولة
@@ -401,7 +401,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
 
                     {view === 'schedule' && selectedDebt && (
                         <div className="max-w-md mx-auto space-y-6">
-                            <div className="bg-info/100/5 p-4 rounded-xl border border-info/20">
+                            <div className="bg-info/10 p-4 rounded-xl border border-info/20">
                                 <p className="text-sm font-bold text-info mb-1">إجمالي المديونية للجدولة</p>
                                 <p className="text-2xl font-black text-info">{selectedDebt.remainingAmount?.toLocaleString()} د.ل</p>
                             </div>

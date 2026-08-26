@@ -78,7 +78,7 @@ export default function PhysicalInventoryPage() {
 
     const getLocationBadge = (location) => {
         const styles = {
-            warehouse: { label: 'المخزن الرئيسي', icon: Warehouse, color: 'text-info bg-info/100/10' },
+            warehouse: { label: 'المخزن الرئيسي', icon: Warehouse, color: 'text-info bg-info/10' },
             shop: { label: 'المحل', icon: Store, color: 'text-destructive bg-destructive/10' },
             both: { label: 'شامل', icon: Layers, color: 'text-primary bg-primary/10' }
         };
@@ -244,7 +244,7 @@ export default function PhysicalInventoryPage() {
                                                 <TableCell className="text-center">
                                                     <div className="flex justify-center">
                                                         {count.isBlind ? (
-                                                            <Badge className="bg-info/100/10 text-info border-info/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
+                                                            <Badge className="bg-info/10 text-info border-info/20 px-3 py-1 rounded-lg font-black flex items-center gap-1.5">
                                                                 <EyeOff size={14} />
                                                                 جرد أعمى
                                                             </Badge>

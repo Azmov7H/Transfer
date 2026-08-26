@@ -147,7 +147,7 @@ export default function DebtDetailPage({ params }) {
                             <div className="relative space-y-8 pl-6 border-r-2 border-white/5 mr-4 border-r-0 border-l-2 ml-0 pr-6 border-l-gray-800">
                                 {/* Creation Event */}
                                 <div className="relative">
-                                    <div className="absolute -left-[33px] top-1 w-4 h-4 rounded-full bg-info/100 ring-4 ring-background" />
+                                    <div className="absolute -left-[33px] top-1 w-4 h-4 rounded-full bg-info/10 ring-4 ring-background" />
                                     <div className="flex flex-col">
                                         <span className="text-sm font-bold">إنشاء المديونية</span>
                                         <span className="text-xs text-muted-foreground">{formatDate(debt.createdAt)}</span>

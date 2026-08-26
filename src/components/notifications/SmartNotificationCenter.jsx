@@ -59,7 +59,7 @@ const CATEGORY_STYLES = {
         label: 'فرصة'
     },
     INSIGHT: {
-        bg: 'bg-info/100/10',
+        bg: 'bg-info/10',
         border: 'border-info/20',
         text: 'text-info',
         icon: PieChart,

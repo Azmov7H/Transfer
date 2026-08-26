@@ -25,7 +25,7 @@ import { DebtEditDialog } from './DebtEditDialog';
 import { useState } from 'react';
 
 const STATUS_STYLES = {
-    active: 'bg-info/100/10 text-info border-info/20',
+    active: 'bg-info/10 text-info border-info/20',
     overdue: 'bg-destructive/10 text-destructive border-destructive/20',
     settled: 'bg-success/10 text-success border-success/20',
     'written-off': 'bg-muted500/10 text-muted-foreground border-border/20',
@@ -164,7 +164,7 @@ export function DebtTable({ debts, onRecordPayment, onScheduleInstallment, onUni
 
                                                 {debt.debtorType === 'Customer' && (
                                                     <DropdownMenuItem
-                                                        className="gap-2 p-3 rounded-xl cursor-pointer font-bold text-info focus:text-info focus:bg-info/100/10 transition-colors"
+                                                        className="gap-2 p-3 rounded-xl cursor-pointer font-bold text-info focus:text-info focus:bg-info/10 transition-colors"
                                                         onClick={() => onUnifiedCollection(debt)}
                                                     >
                                                         <Coins size={16} /> تحصيل من الرصيد الإجمالي

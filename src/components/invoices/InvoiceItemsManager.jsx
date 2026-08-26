@@ -59,7 +59,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                         className="p-4 hover:bg-white/5 cursor-pointer flex justify-between items-center border-b border-white/5 last:border-0 transition-all group"
                                     >
                                         <div className="flex items-center gap-3">
-                                            <div className="p-2 bg-info/100/10 rounded-lg group-hover:bg-info/100/20 transition-colors">
+                                            <div className="p-2 bg-info/10 rounded-lg group-hover:bg-info/10 transition-colors">
                                                 <Package className="h-5 w-5 text-info" />
                                             </div>
                                             <div>
@@ -215,7 +215,7 @@ export function InvoiceItemsManager({ items, setItems, onReportShortage, default
                                     className={cn(
                                         "glass-card p-4 rounded-xl border transition-all hover:bg-white/5",
                                         item.isService ? "border-white/5" : item.source === 'warehouse'
-                                            ? "border-info/30 text-info bg-info/100/5"
+                                            ? "border-info/30 text-info bg-info/10"
                                             : "border-success/30 text-success bg-success/5"
                                     )}
                                 >

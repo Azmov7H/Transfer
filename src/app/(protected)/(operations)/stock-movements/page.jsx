@@ -70,8 +70,8 @@ export default function StockMovementsPage() {
             case 'SALE': return { label: 'مبيعات', icon: TrendingDown, color: 'red', bg: 'bg-destructive/10', text: 'text-destructive', border: 'border-destructive/20' };
             case 'OUT': return { label: 'صرف مخزني', icon: ArrowUpRight, color: 'orange', bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning/20' };
             case 'IN': return { label: 'توريد جديد', icon: TrendingUp, color: 'emerald', bg: 'bg-success/10', text: 'text-success', border: 'border-success/20' };
-            case 'TRANSFER_TO_SHOP': return { label: 'تحويل للمحل', icon: ArrowRightLeft, color: 'blue', bg: 'bg-info/100/10', text: 'text-info', border: 'border-info/20' };
-            case 'TRANSFER_TO_WAREHOUSE': return { label: 'تحويل للمخزن', icon: ArrowRightLeft, color: 'indigo', bg: 'bg-info/100/10', text: 'text-info', border: 'border-info/20' };
+            case 'TRANSFER_TO_SHOP': return { label: 'تحويل للمحل', icon: ArrowRightLeft, color: 'blue', bg: 'bg-info/10', text: 'text-info', border: 'border-info/20' };
+            case 'TRANSFER_TO_WAREHOUSE': return { label: 'تحويل للمخزن', icon: ArrowRightLeft, color: 'indigo', bg: 'bg-info/10', text: 'text-info', border: 'border-info/20' };
             case 'ADJUST': return { label: 'تسوية جردية', icon: FileEdit, color: 'amber', bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning/20' };
             default: return { label: 'حركة عامة', icon: Package, color: 'slate', bg: 'bg-muted500/10', text: 'text-muted-foreground', border: 'border-border/20' };
         }

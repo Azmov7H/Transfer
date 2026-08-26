@@ -104,7 +104,7 @@ export default function CustomerProfitReportPage() {
                                                 {item.profitMargin > 20 ? (
                                                     <Badge className="bg-success">مربح جداً</Badge>
                                                 ) : item.profitMargin > 10 ? (
-                                                    <Badge className="bg-info/100">جيد</Badge>
+                                                    <Badge className="bg-info/10">جيد</Badge>
                                                 ) : (
                                                     <Badge variant="outline">عادي</Badge>
                                                 )}

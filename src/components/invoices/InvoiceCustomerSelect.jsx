@@ -78,7 +78,7 @@ export function InvoiceCustomerSelect({
     return (
         <div className="glass-card p-6 rounded-[2rem] border border-white/5 space-y-4">
             <div className="flex items-center gap-2 font-bold text-lg text-foreground mb-4">
-                <div className="p-2 bg-info/100/10 rounded-xl">
+                <div className="p-2 bg-info/10 rounded-xl">
                     <UserPlus className="w-5 h-5 text-info" />
                 </div>
                 بيانات العميل
@@ -109,7 +109,7 @@ export function InvoiceCustomerSelect({
                                     className="p-4 hover:bg-white/5 cursor-pointer flex justify-between items-center border-b border-white/5 last:border-0 transition-all group"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className="p-2 bg-info/100/10 rounded-lg group-hover:bg-info/100/20 transition-colors">
+                                        <div className="p-2 bg-info/10 rounded-lg group-hover:bg-info/10 transition-colors">
                                             <User className="h-4 w-4 text-info" />
                                         </div>
                                         <div>
@@ -128,7 +128,7 @@ export function InvoiceCustomerSelect({
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="glass-card p-4 rounded-xl bg-info/100/5 border border-info/20 space-y-3"
+                    className="glass-card p-4 rounded-xl bg-info/10 border border-info/20 space-y-3"
                 >
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-muted-foreground font-medium">الاسم:</span>
