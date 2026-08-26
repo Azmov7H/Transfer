@@ -173,7 +173,7 @@ export default function AuditPage() {
                 <Card className="border shadow-sm">
                     <CardContent className="pt-6">
                         <div className="text-sm text-muted-foreground">رصيد المخزن (قطع)</div>
-                        <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">{products.reduce((acc, p) => acc + (p.warehouseQty || 0), 0)}</div>
+                        <div className="text-2xl font-bold text-warning dark:text-warning">{products.reduce((acc, p) => acc + (p.warehouseQty || 0), 0)}</div>
                     </CardContent>
                 </Card>
             </div>
@@ -196,7 +196,7 @@ export default function AuditPage() {
                         <TableRow>
                             <TableHead className="text-right">المنتج</TableHead>
                             <TableHead className="text-center bg-primary/5">رصيد المحل</TableHead>
-                            <TableHead className="text-center bg-amber-50 dark:bg-amber-950/20">رصيد المخزن</TableHead>
+                            <TableHead className="text-center bg-warning/10 dark:bg-warning/20">رصيد المخزن</TableHead>
                             <TableHead className="text-center">الإجمالي</TableHead>
                             <TableHead className="text-center">إجراءات</TableHead>
                         </TableRow>
@@ -224,7 +224,7 @@ export default function AuditPage() {
                                     <TableCell className="text-center font-bold bg-primary/5 text-primary text-lg">
                                         {product.shopQty || 0}
                                     </TableCell>
-                                    <TableCell className="text-center font-bold bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 text-lg">
+                                    <TableCell className="text-center font-bold bg-warning/10 dark:bg-warning/20 text-warning dark:text-warning text-lg">
                                         {product.warehouseQty || 0}
                                     </TableCell>
                                     <TableCell className="text-center font-bold">
@@ -269,7 +269,7 @@ export default function AuditPage() {
                             <button
                                 className={cn(
                                     "flex-1 py-2 text-sm font-semibold rounded-md transition-all",
-                                    direction === 'shop_to_warehouse' ? 'bg-background shadow text-amber-600' : 'text-muted-foreground'
+                                    direction === 'shop_to_warehouse' ? 'bg-background shadow text-warning' : 'text-muted-foreground'
                                 )}
                                 onClick={() => setDirection('shop_to_warehouse')}
                             >
@@ -302,12 +302,12 @@ export default function AuditPage() {
             <Dialog open={isAdjustOpen} onOpenChange={setIsAdjustOpen}>
                 <DialogContent dir="rtl" className="sm:max-w-[500px]">
                     <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                        <DialogTitle className="flex items-center gap-2 text-warning dark:text-warning">
                             <AlertCircle size={20} /> تصحيح أرصدة (جرد فعلي)
                         </DialogTitle>
                     </DialogHeader>
                     <div className="py-4 space-y-6">
-                        <div className="p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded text-sm text-amber-800 dark:text-amber-400">
+                        <div className="p-3 bg-warning/10 dark:bg-warning/20 border border-warning/30 dark:border-warning rounded text-sm text-warning dark:text-warning">
                             تنبيه: هذا الإجراء يقوم <strong>بتغيير الكميات مباشرة</strong> دون عملية شراء أو بيع. يستخدم فقط عند اكتشاف أخطاء في الجرد.
                         </div>
 

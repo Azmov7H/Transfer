@@ -84,7 +84,7 @@ export default function PhysicalInventoryDetailPage({ params }) {
             });
             setBarcode('');
             toast.success(`تمت إضافة: ${targetItem.productName}`, {
-                icon: <Zap className="w-4 h-4 text-emerald-500" />,
+                icon: <Zap className="w-4 h-4 text-success" />,
                 duration: 1500
             });
         } else {
@@ -120,7 +120,7 @@ export default function PhysicalInventoryDetailPage({ params }) {
     );
 
     if (error) return (
-        <div className="flex flex-col items-center justify-center p-40 gap-4 text-rose-500">
+        <div className="flex flex-col items-center justify-center p-40 gap-4 text-destructive">
             <AlertTriangle className="h-16 w-16" />
             <p className="text-xl font-black">خطأ في التحميل: {error.message}</p>
             <Button onClick={() => router.refresh()} variant="outline">إعادة المحاولة</Button>

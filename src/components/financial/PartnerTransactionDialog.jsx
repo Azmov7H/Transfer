@@ -139,7 +139,7 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                                                 <TableCell className="px-6 text-center">
                                                     {tx.type === 'INCOME' ? (
                                                         <div className="flex flex-col items-center">
-                                                            <div className="flex items-center gap-1.5 text-emerald-500 font-black text-lg">
+                                                            <div className="flex items-center gap-1.5 text-success font-black text-lg">
                                                                 <ArrowDownCircle size={14} />
                                                                 <span>{tx.amount.toLocaleString()}</span>
                                                             </div>
@@ -149,7 +149,7 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                                                 <TableCell className="px-6 text-center">
                                                     {tx.type === 'EXPENSE' ? (
                                                         <div className="flex flex-col items-center">
-                                                            <div className="flex items-center gap-1.5 text-rose-500 font-black text-lg">
+                                                            <div className="flex items-center gap-1.5 text-destructive font-black text-lg">
                                                                 <ArrowUpCircle size={14} />
                                                                 <span>{tx.amount.toLocaleString()}</span>
                                                             </div>
@@ -181,14 +181,14 @@ export function PartnerTransactionDialog({ partner, open, onOpenChange }) {
                         <div className="flex gap-4">
                             <div className="flex flex-col">
                                 <span className="text-xs font-black text-muted-foreground uppercase opacity-50">إجمالي الوارد</span>
-                                <span className="text-xl font-black text-emerald-500 leading-none">
+                                <span className="text-xl font-black text-success leading-none">
                                     {filteredTransactions.filter(t => t.type === 'INCOME').reduce((s, t) => s + t.amount, 0).toLocaleString()}
                                 </span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col">
                                 <span className="text-xs font-black text-muted-foreground uppercase opacity-50">إجمالي الصادر</span>
-                                <span className="text-xl font-black text-rose-500 leading-none">
+                                <span className="text-xl font-black text-destructive leading-none">
                                     {filteredTransactions.filter(t => t.type === 'EXPENSE').reduce((s, t) => s + t.amount, 0).toLocaleString()}
                                 </span>
                             </div>

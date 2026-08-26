@@ -51,7 +51,7 @@ export default function FinancialReportPage() {
             {/* Report Paper */}
             <Card className="border shadow-lg print:shadow-none print:border-none">
                 <CardHeader className="text-center border-b pb-8">
-                    <CardTitle className="text-3xl font-bold text-gray-900">قائمة الدخل</CardTitle>
+                    <CardTitle className="text-3xl font-bold text-foreground">قائمة الدخل</CardTitle>
                     <CardDescription className="text-lg mt-2">
                         عن الفترة من {format(new Date(startDate), 'dd MMM yyyy', { locale: ar })} إلى {format(new Date(endDate), 'dd MMM yyyy', { locale: ar })}
                     </CardDescription>
@@ -60,10 +60,10 @@ export default function FinancialReportPage() {
 
                     {/* 1. Revenue */}
                     <section>
-                        <h3 className="text-lg font-bold text-gray-700 mb-4 border-b pb-2">الإيرادات</h3>
+                        <h3 className="text-lg font-bold text-foreground mb-4 border-b pb-2">الإيرادات</h3>
                         <div className="space-y-2">
                             {Object.entries(financials?.revenue?.breakdown || {}).map(([name, val]) => (
-                                <div key={name} className="flex justify-between text-gray-600">
+                                <div key={name} className="flex justify-between text-muted-foreground">
                                     <span>{name}</span>
                                     <span>{Number(val || 0).toLocaleString()} ج.م</span>
                                 </div>
@@ -77,11 +77,11 @@ export default function FinancialReportPage() {
 
                     {/* 2. COGS */}
                     <section>
-                        <div className="flex justify-between text-red-600 mb-2">
+                        <div className="flex justify-between text-destructive mb-2">
                             <span>تكلفة البضاعة المباعة</span>
                             <span>({Number(financials?.cogs || 0).toLocaleString()}) ج.م</span>
                         </div>
-                        <div className="flex justify-between font-bold text-xl bg-gray-50 p-4 rounded-lg mt-4 border">
+                        <div className="flex justify-between font-bold text-xl bg-muted50 p-4 rounded-lg mt-4 border">
                             <span>مجمل الربح (Gross Profit)</span>
                             <span>{Number(financials?.grossProfit || 0).toLocaleString()} ج.م</span>
                         </div>
@@ -89,17 +89,17 @@ export default function FinancialReportPage() {
 
                     {/* 3. Expenses */}
                     <section>
-                        <h3 className="text-lg font-bold text-gray-700 mb-4 border-b pb-2">المسروفات التشغيلية</h3>
+                        <h3 className="text-lg font-bold text-foreground mb-4 border-b pb-2">المسروفات التشغيلية</h3>
                         <div className="space-y-2">
                             {Object.entries(financials?.operatingExpenses?.breakdown || {}).map(([name, val]) => (
-                                <div key={name} className="flex justify-between text-gray-600">
+                                <div key={name} className="flex justify-between text-muted-foreground">
                                     <span>{name}</span>
                                     <span>({Number(val || 0).toLocaleString()}) ج.م</span>
                                 </div>
                             ))}
                             <div className="flex justify-between font-bold text-black pt-2 mt-2 border-t border-dashed">
                                 <span>إجمالي المصروفات</span>
-                                <span className="text-red-600">({Number(financials?.operatingExpenses?.total || 0).toLocaleString()}) ج.م</span>
+                                <span className="text-destructive">({Number(financials?.operatingExpenses?.total || 0).toLocaleString()}) ج.م</span>
                             </div>
                         </div>
                     </section>
@@ -108,7 +108,7 @@ export default function FinancialReportPage() {
                     <section className="mt-8 pt-8 border-t-2 border-black">
                         <div className="flex justify-between items-center">
                             <span className="text-2xl font-bold">صافي الربح (Net Profit)</span>
-                            <span className={`text-3xl font-bold ${financials?.netProfit >= 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'} px-6 py-2 rounded-xl`}>
+                            <span className={`text-3xl font-bold ${financials?.netProfit >= 0 ? 'text-success bg-success/10' : 'text-destructive bg-destructive/10'} px-6 py-2 rounded-xl`}>
                                 {Number(financials?.netProfit || 0).toLocaleString()} ج.م
                             </span>
                         </div>

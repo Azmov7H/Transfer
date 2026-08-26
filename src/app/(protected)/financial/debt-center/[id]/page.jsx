@@ -58,7 +58,7 @@ export default function DebtDetailPage({ params }) {
     const schedule = installments || [];
 
     if (isLoading) return <div className="p-12 text-center text-muted-foreground">جاري تحميل التفاصيل...</div>;
-    if (!debt) return <div className="p-12 text-center text-rose-500">الدين غير موجود</div>;
+    if (!debt) return <div className="p-12 text-center text-destructive">الدين غير موجود</div>;
 
     const progress = ((debt.originalAmount - debt.remainingAmount) / debt.originalAmount) * 100;
 
@@ -76,7 +76,7 @@ export default function DebtDetailPage({ params }) {
                     </h1>
                 </div>
                 <div className="mr-auto flex gap-2">
-                    <Button variant="outline" className="gap-2 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10">
+                    <Button variant="outline" className="gap-2 text-destructive hover:text-destructive hover:bg-destructive/10">
                         شطب الدين (Write-off)
                     </Button>
                     {debt.remainingAmount > 0 && (
@@ -105,7 +105,7 @@ export default function DebtDetailPage({ params }) {
                             {/* Amounts */}
                             <div className="grid grid-cols-2 gap-8 p-6 bg-black/20 rounded-xl relative overflow-hidden">
                                 <div className="absolute top-0 left-0 w-full h-1 bg-white/10">
-                                    <div className="h-full bg-emerald-500 transition-all duration-1000" style={{ width: `${progress}%` }} />
+                                    <div className="h-full bg-success transition-all duration-1000" style={{ width: `${progress}%` }} />
                                 </div>
 
                                 <div>
@@ -114,7 +114,7 @@ export default function DebtDetailPage({ params }) {
                                 </div>
                                 <div className="text-left border-r border-white/10 pr-8">
                                     <p className="text-sm text-muted-foreground mb-1">المتبقي</p>
-                                    <p className="text-3xl font-black text-rose-500">{formatCurrency(debt.remainingAmount)}</p>
+                                    <p className="text-3xl font-black text-destructive">{formatCurrency(debt.remainingAmount)}</p>
                                 </div>
                             </div>
 
@@ -147,7 +147,7 @@ export default function DebtDetailPage({ params }) {
                             <div className="relative space-y-8 pl-6 border-r-2 border-white/5 mr-4 border-r-0 border-l-2 ml-0 pr-6 border-l-gray-800">
                                 {/* Creation Event */}
                                 <div className="relative">
-                                    <div className="absolute -left-[33px] top-1 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-background" />
+                                    <div className="absolute -left-[33px] top-1 w-4 h-4 rounded-full bg-info/100 ring-4 ring-background" />
                                     <div className="flex flex-col">
                                         <span className="text-sm font-bold">إنشاء المديونية</span>
                                         <span className="text-xs text-muted-foreground">{formatDate(debt.createdAt)}</span>
@@ -160,16 +160,16 @@ export default function DebtDetailPage({ params }) {
                                 {/* Payments */}
                                 {payments.map((payment) => (
                                     <div key={payment._id} className="relative">
-                                        <div className="absolute -left-[33px] top-1 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-background" />
+                                        <div className="absolute -left-[33px] top-1 w-4 h-4 rounded-full bg-success ring-4 ring-background" />
                                         <div className="flex flex-col">
-                                            <span className="text-sm font-bold text-emerald-500">سداد دفعة</span>
+                                            <span className="text-sm font-bold text-success">سداد دفعة</span>
                                             <span className="text-xs text-muted-foreground">{formatDate(payment.date)}</span>
-                                            <div className="mt-2 p-3 bg-emerald-500/5 border border-emerald-500/10 rounded-lg flex justify-between items-center">
+                                            <div className="mt-2 p-3 bg-success/5 border border-success/10 rounded-lg flex justify-between items-center">
                                                 <div>
                                                     <p className="font-bold">{formatCurrency(payment.amount)}</p>
                                                     <p className="text-xs opacity-70">{payment.method} - {payment.notes || 'No notes'}</p>
                                                 </div>
-                                                <CheckCircle2 size={16} className="text-emerald-500" />
+                                                <CheckCircle2 size={16} className="text-success" />
                                             </div>
                                         </div>
                                     </div>
@@ -211,8 +211,8 @@ export default function DebtDetailPage({ params }) {
                                                 <Badge
                                                     variant="outline"
                                                     className={`text-xs h-4 px-1 ${item.status === 'PAID'
-                                                        ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-                                                        : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
+                                                        ? 'bg-success/10 text-success border-success/20'
+                                                        : 'bg-warning/10 text-warning border-warning/20'
                                                         }`}
                                                 >
                                                     {item.status === 'PAID' ? 'تم السداد' : 'انتظار'}

@@ -170,9 +170,9 @@ export default function NewPhysicalInventoryPage() {
                             </Button>
                         </form>
 
-                        <div className="mt-8 flex items-start gap-3 p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10">
-                            <ShieldCheck className="w-5 h-5 text-amber-500 mt-1 flex-shrink-0" />
-                            <p className="text-xs text-amber-900/60 font-bold leading-relaxed">
+                        <div className="mt-8 flex items-start gap-3 p-4 rounded-2xl bg-warning/5 border border-warning/10">
+                            <ShieldCheck className="w-5 h-5 text-warning mt-1 flex-shrink-0" />
+                            <p className="text-xs text-warning/60 font-bold leading-relaxed">
                                 سيتم تسجيل &quot;لقطة&quot; (Snapshot) لمخزون اللحظة الحالية. جميع المبيعات أو المشتريات التي تتم أثناء الجرد ستحتاج مراجعة يدوية إذا تقاطعت مع المنتجات المجرودة.
                             </p>
                         </div>

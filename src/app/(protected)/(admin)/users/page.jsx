@@ -66,9 +66,9 @@ export default function UsersPage() {
 
     const getRoleBadge = (r) => {
         const configs = {
-            owner: { variant: 'default', label: 'المالك', className: 'bg-purple-600 hover:bg-purple-700' },
+            owner: { variant: 'default', label: 'المالك', className: 'bg-info hover:bg-info' },
             manager: { variant: 'secondary', label: 'مدير' },
-            warehouse: { variant: 'outline', label: 'مخزن', className: 'bg-orange-50 text-orange-700 border-orange-300' },
+            warehouse: { variant: 'outline', label: 'مخزن', className: 'bg-warning/10 text-warning border-warning/30' },
             cashier: { variant: 'outline', label: 'كاشير' }
         };
         const config = configs[r] || configs.cashier;
@@ -182,7 +182,7 @@ export default function UsersPage() {
 function UnauthorizedState() {
     return (
         <div className="p-8 text-center animate-fade-in">
-            <div className="inline-block p-4 bg-red-50 rounded-full mb-4">
+            <div className="inline-block p-4 bg-destructive/10 rounded-full mb-4">
                 <Shield className="w-12 h-12 text-destructive" />
             </div>
             <h3 className="text-xl font-bold text-foreground mb-2">غير مصرح</h3>

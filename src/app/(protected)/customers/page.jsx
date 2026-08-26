@@ -180,11 +180,11 @@ export default function CustomersPage() {
     } = LABELS.customers;
 
     return (
-        <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
                 <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-700" />
+                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-info/100/10 rounded-full blur-[120px] animate-pulse delay-700" />
             </div>
 
             {/* Header Section */}
@@ -200,7 +200,7 @@ export default function CustomersPage() {
                                 <span className="text-xl font-bold tabular-nums">{(pagination.total || 0).toLocaleString()}</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
-                            <div className="flex flex-col items-end text-rose-500">
+                            <div className="flex flex-col items-end text-destructive">
                                 <span className="text-xs font-black opacity-60 uppercase tracking-[0.2em]">إجمالي المديونيات</span>
                                 <span className="text-xl font-bold tabular-nums">{(totalReceivables || 0).toLocaleString()} ج.م</span>
                             </div>

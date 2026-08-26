@@ -39,11 +39,11 @@ export default function DailySalesPage() {
     const topProducts = summary.topProducts || [];
 
     return (
-        <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
                 <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-700" />
+                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-info/100/10 rounded-full blur-[120px] animate-pulse delay-700" />
             </div>
 
             {/* Header Section */}
@@ -150,15 +150,15 @@ export default function DailySalesPage() {
                                                     <Badge variant={invoice.paymentType === 'credit' ? 'outline' : 'secondary'} className={cn(
                                                         "px-4 py-1.5 rounded-full font-black text-xs uppercase tracking-widest border-2",
                                                         invoice.paymentType === 'credit'
-                                                            ? "border-amber-500/20 bg-amber-500/5 text-amber-500"
-                                                            : "border-emerald-500/20 bg-emerald-500/5 text-emerald-500"
+                                                            ? "border-warning/20 bg-warning/5 text-warning"
+                                                            : "border-success/20 bg-success/5 text-success"
                                                     )}>
                                                         {invoice.paymentType === 'credit' ? 'آجل' : 'نقدي'}
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell className="px-8 text-center font-black text-xl tabular-nums">{invoice.total.toLocaleString()} <span className="text-xs opacity-40 mr-1">ج.م</span></TableCell>
                                                 <TableCell className="px-8 text-center">
-                                                    <span className="bg-emerald-500/10 text-emerald-500 px-4 py-1.5 rounded-full font-black text-sm border border-emerald-500/20">
+                                                    <span className="bg-success/10 text-success px-4 py-1.5 rounded-full font-black text-sm border border-success/20">
                                                         +{invoice.profit?.toLocaleString()}
                                                     </span>
                                                 </TableCell>
@@ -175,8 +175,8 @@ export default function DailySalesPage() {
                 <div className="glass-card shadow-2xl border border-white/10 rounded-[3rem] overflow-hidden h-fit group">
                     <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="w-4 h-4 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
-                            <h2 className="text-3xl font-black tracking-tight group-hover:text-emerald-500 transition-colors">الأكثر مبيعاً</h2>
+                            <div className="w-4 h-4 rounded-full bg-success animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
+                            <h2 className="text-3xl font-black tracking-tight group-hover:text-success transition-colors">الأكثر مبيعاً</h2>
                         </div>
                     </div>
                     <div className="p-8 space-y-6">
@@ -193,7 +193,7 @@ export default function DailySalesPage() {
                                 </div>
                                 <div className="text-right">
                                     <div className="font-black text-xl tabular-nums">{product.revenue.toLocaleString()}</div>
-                                    <div className="text-xs font-black text-emerald-500 tracking-tighterUppercase uppercase">ج.م كلي</div>
+                                    <div className="text-xs font-black text-success tracking-tighterUppercase uppercase">ج.م كلي</div>
                                 </div>
                             </div>
                         ))}

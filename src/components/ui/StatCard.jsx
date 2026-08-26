@@ -17,11 +17,11 @@ export function StatCard({
 }) {
     const variants = {
         primary: 'from-primary/20 to-primary/5 border-primary/20 text-primary shadow-primary/10',
-        success: 'from-emerald-500/20 to-emerald-500/5 border-emerald-500/20 text-emerald-500 shadow-emerald-500/10',
-        info: 'from-blue-500/20 to-blue-500/5 border-blue-500/20 text-blue-500 shadow-blue-500/10',
-        warning: 'from-amber-500/20 to-amber-500/5 border-amber-500/20 text-amber-500 shadow-amber-500/10',
-        destructive: 'from-rose-500/20 to-rose-500/5 border-rose-500/20 text-rose-500 shadow-rose-500/10',
-        slate: 'from-slate-500/20 to-slate-500/5 border-slate-500/20 text-slate-400 shadow-slate-500/10',
+        success: 'from-success/20 to-success/5 border-success/20 text-success shadow-success/10',
+        info: 'from-info/20 to-info/5 border-info/20 text-info shadow-blue-500/10',
+        warning: 'from-warning/20 to-warning/5 border-warning/20 text-warning shadow-warning/10',
+        destructive: 'from-destructive/20 to-destructive/5 border-destructive/20 text-destructive shadow-destructive/10',
+        slate: 'from-foreground/20 to-foreground/5 border-border/20 text-muted-foreground shadow-slate-500/10',
     };
 
     return (
@@ -60,8 +60,8 @@ export function StatCard({
                 <div className="flex items-center gap-2 text-xs font-black opacity-40 group-hover:opacity-100 transition-opacity">
                     {trend ? (
                         <>
-                            <TrendingUp size={12} className={trend === 'up' ? 'text-emerald-500' : 'text-rose-500'} />
-                            <span className={trend === 'up' ? 'text-emerald-500' : 'text-rose-500'}>{trendValue}</span>
+                            <TrendingUp size={12} className={trend === 'up' ? 'text-success' : 'text-destructive'} />
+                            <span className={trend === 'up' ? 'text-success' : 'text-destructive'}>{trendValue}</span>
                         </>
                     ) : (
                         <>

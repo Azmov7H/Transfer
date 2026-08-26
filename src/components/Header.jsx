@@ -39,7 +39,7 @@ function NotificationTrigger() {
         >
             <Bell className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
             {unreadCount > 0 && (
-                <span className="absolute top-2.5 left-2.5 h-2.5 w-2.5 bg-rose-500 rounded-full border-2 border-background animate-pulse" />
+                <span className="absolute top-2.5 left-2.5 h-2.5 w-2.5 bg-destructive rounded-full border-2 border-background animate-pulse" />
             )}
         </Button>
     );
@@ -105,7 +105,7 @@ export default function Header() {
                                 theme === 'dark' ? "opacity-0 scale-75" : "opacity-100 scale-100"
                             )}
                         >
-                            <Sun className="h-5 w-5 text-amber-500" />
+                            <Sun className="h-5 w-5 text-warning" />
                         </div>
                         <div
                             className={cn(
@@ -158,7 +158,7 @@ export default function Header() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator className="bg-white/5" />
                             <DropdownMenuItem
-                                className="rounded-xl font-bold gap-3 p-3 text-rose-500 hover:text-rose-600 focus:bg-rose-500/10 focus:text-rose-500"
+                                className="rounded-xl font-bold gap-3 p-3 text-destructive hover:text-destructive focus:bg-destructive/10 focus:text-destructive"
                                 onClick={handleLogout}
                             >
                                 <LogOut className="w-4 h-4" />

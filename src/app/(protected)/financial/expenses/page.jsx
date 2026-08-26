@@ -49,10 +49,10 @@ export default function ExpensesPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-                <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-rose-500/10 rounded-full blur-[120px] animate-pulse" />
+                <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-destructive/10 rounded-full blur-[120px] animate-pulse" />
                 <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse delay-700" />
             </div>
 
@@ -67,7 +67,7 @@ export default function ExpensesPage() {
                 <div className="glass-card shadow-[0_40px_80px_rgba(0,0,0,0.3)] border border-white/10 rounded-[2.5rem] overflow-hidden">
                     <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 bg-rose-500/10 rounded-2xl flex items-center justify-center border border-rose-500/20 text-rose-500">
+                            <div className="w-12 h-12 bg-destructive/10 rounded-2xl flex items-center justify-center border border-destructive/20 text-destructive">
                                 <ArrowDownRight size={24} />
                             </div>
                             <div>
@@ -88,10 +88,10 @@ export default function ExpensesPage() {
                                         required
                                         value={amount}
                                         onChange={(e) => setAmount(e.target.value)}
-                                        className="h-16 pl-14 pr-6 rounded-2xl bg-white/[0.03] border-white/10 focus:bg-white/[0.05] focus:border-rose-500/50 transition-all font-black text-2xl tabular-nums shadow-inner ring-0 focus-visible:ring-0"
+                                        className="h-16 pl-14 pr-6 rounded-2xl bg-white/[0.03] border-white/10 focus:bg-white/[0.05] focus:border-destructive/50 transition-all font-black text-2xl tabular-nums shadow-inner ring-0 focus-visible:ring-0"
                                         placeholder="0.00"
                                     />
-                                    <Wallet className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-rose-500/50 group-focus-within:text-rose-500 transition-colors" />
+                                    <Wallet className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-destructive/50 group-focus-within:text-destructive transition-colors" />
                                 </div>
                             </div>
                             <div className="space-y-4">
@@ -142,7 +142,7 @@ export default function ExpensesPage() {
 
                             <Button
                                 type="submit"
-                                className="w-full h-16 text-xl font-black uppercase tracking-widest rounded-2xl bg-rose-500 hover:bg-rose-600 text-white shadow-2xl shadow-rose-500/30 transition-all duration-300 disabled:opacity-50 group"
+                                className="w-full h-16 text-xl font-black uppercase tracking-widest rounded-2xl bg-destructive hover:bg-destructive text-white shadow-2xl shadow-destructive/30 transition-all duration-300 disabled:opacity-50 group"
                                 disabled={mutation.isPending}
                             >
                                 {mutation.isPending ? (

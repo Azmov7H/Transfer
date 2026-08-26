@@ -12,7 +12,7 @@ export function AddTransactionDialog({ open, onOpenChange, formData, setFormData
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogTrigger asChild>
                 <Button
-                    className="flex-1 gap-2 bg-green-600 hover:bg-green-700 text-white"
+                    className="flex-1 gap-2 bg-success hover:bg-success text-white"
                     onClick={() => setFormData({ ...formData, type: 'INCOME' })}
                 >
                     <Plus size={18} />
@@ -116,7 +116,7 @@ export function AddTransactionDialog({ open, onOpenChange, formData, setFormData
                     <Button variant="outline" onClick={() => onOpenChange(false)}>إلغاء</Button>
                     <Button
                         onClick={onSubmit}
-                        className={formData.type === 'INCOME' ? 'bg-green-600 hover:bg-green-700' : ''}
+                        className={formData.type === 'INCOME' ? 'bg-success hover:bg-success' : ''}
                     >
                         {isPending ? 'جاري الحفظ...' : 'حفظ المعاملة'}
                     </Button>

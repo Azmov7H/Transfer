@@ -70,7 +70,7 @@ export function DefaultsSettingsTab({ settings, onChange }) {
 
                     <div className="space-y-10">
                         <div className="flex items-center gap-5">
-                            <div className="h-14 w-14 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500 border border-amber-500/20 shadow-inner">
+                            <div className="h-14 w-14 bg-warning/10 rounded-2xl flex items-center justify-center text-warning border border-warning/20 shadow-inner">
                                 <HandCoins size={28} />
                             </div>
                             <div>
@@ -79,21 +79,21 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                             </div>
                         </div>
 
-                        <div className="space-y-8 pr-6 border-r-4 border-amber-500/10">
+                        <div className="space-y-8 pr-6 border-r-4 border-warning/10">
                             <div className="space-y-4">
-                                <Label className="text-sm font-black text-amber-500/40 uppercase tracking-[0.2em]">الحد الأدنى لقيمة التنبيه</Label>
+                                <Label className="text-sm font-black text-warning/40 uppercase tracking-[0.2em]">الحد الأدنى لقيمة التنبيه</Label>
                                 <div className="relative group">
-                                    <div className="absolute inset-x-0 bottom-0 h-1 bg-amber-500/20 rounded-full overflow-hidden">
-                                        <div className="h-full bg-amber-500 animate-pulse w-[30%]" />
+                                    <div className="absolute inset-x-0 bottom-0 h-1 bg-warning/20 rounded-full overflow-hidden">
+                                        <div className="h-full bg-warning animate-pulse w-[30%]" />
                                     </div>
-                                    <div className="flex items-center gap-4 bg-amber-500/5 p-8 rounded-[2.5rem] border border-amber-500/10 transition-all">
+                                    <div className="flex items-center gap-4 bg-warning/5 p-8 rounded-[2.5rem] border border-warning/10 transition-all">
                                         <Input
                                             type="number"
                                             value={settings.minDebtNotificationAmount || 0}
                                             onChange={e => set({ minDebtNotificationAmount: parseInt(e.target.value) || 0 })}
-                                            className="h-12 text-5xl font-black text-center border-0 bg-transparent text-amber-500 ring-0 focus-visible:ring-0 tabular-nums"
+                                            className="h-12 text-5xl font-black text-center border-0 bg-transparent text-warning ring-0 focus-visible:ring-0 tabular-nums"
                                         />
-                                        <span className="text-xl font-black text-amber-500/20">ج.م</span>
+                                        <span className="text-xl font-black text-warning/20">ج.م</span>
                                     </div>
                                 </div>
                                 <p className="text-xs text-white/20 font-bold leading-relaxed pr-2 italic">
@@ -102,7 +102,7 @@ export function DefaultsSettingsTab({ settings, onChange }) {
                             </div>
 
                             <div className="p-8 rounded-[2.5rem] bg-white/[0.03] border border-dashed border-white/10 flex items-start gap-4">
-                                <div className="h-3 w-3 rounded-full bg-amber-500 mt-1 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
+                                <div className="h-3 w-3 rounded-full bg-warning mt-1 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
                                 <p className="text-xs font-bold leading-relaxed text-white/30">
                                     تلميح: ربط وسيلة الدفع بالنظام يسمح بحساب صافي الربح بدقة متناهية بناءً على التكاليف المدخلة أعلاه.
                                 </p>

@@ -59,17 +59,17 @@ export default function CustomerProfitReportPage() {
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="bg-blue-50 border-blue-100">
-                    <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-blue-900">إجمالي المبيعات (للفترة)</CardTitle></CardHeader>
-                    <CardContent className="text-2xl font-bold text-blue-700">{totalRevenue.toLocaleString()}</CardContent>
+                <Card className="bg-info/10 border-info/30">
+                    <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-info">إجمالي المبيعات (للفترة)</CardTitle></CardHeader>
+                    <CardContent className="text-2xl font-bold text-info">{totalRevenue.toLocaleString()}</CardContent>
                 </Card>
-                <Card className="bg-green-50 border-green-100">
-                    <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-green-900">إجمالي الأرباح</CardTitle></CardHeader>
-                    <CardContent className="text-2xl font-bold text-green-700">{totalProfit.toLocaleString()}</CardContent>
+                <Card className="bg-success/10 border-success/30">
+                    <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-success">إجمالي الأرباح</CardTitle></CardHeader>
+                    <CardContent className="text-2xl font-bold text-success">{totalProfit.toLocaleString()}</CardContent>
                 </Card>
-                <Card className="bg-purple-50 border-purple-100">
-                    <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-purple-900">هامش الربح العام</CardTitle></CardHeader>
-                    <CardContent className="text-2xl font-bold text-purple-700">
+                <Card className="bg-info/10 border-info/30">
+                    <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-info">هامش الربح العام</CardTitle></CardHeader>
+                    <CardContent className="text-2xl font-bold text-info">
                         {totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : 0}%
                     </CardContent>
                 </Card>
@@ -98,13 +98,13 @@ export default function CustomerProfitReportPage() {
                                             <TableCell className="font-medium">{item.customerName}</TableCell>
                                             <TableCell>{item.invoiceCount}</TableCell>
                                             <TableCell>{item.totalRevenue.toLocaleString()}</TableCell>
-                                            <TableCell className="text-green-600">{item.totalProfit.toLocaleString()}</TableCell>
+                                            <TableCell className="text-success">{item.totalProfit.toLocaleString()}</TableCell>
                                             <TableCell>{item.profitMargin.toFixed(1)}%</TableCell>
                                             <TableCell>
                                                 {item.profitMargin > 20 ? (
-                                                    <Badge className="bg-green-500">مربح جداً</Badge>
+                                                    <Badge className="bg-success">مربح جداً</Badge>
                                                 ) : item.profitMargin > 10 ? (
-                                                    <Badge className="bg-blue-500">جيد</Badge>
+                                                    <Badge className="bg-info/100">جيد</Badge>
                                                 ) : (
                                                     <Badge variant="outline">عادي</Badge>
                                                 )}

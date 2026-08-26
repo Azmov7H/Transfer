@@ -73,14 +73,14 @@ export default function LoginPage() {
                         >
                             <div className="relative group">
                                 <motion.div
-                                    className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 rounded-[3rem] blur-2xl opacity-60"
+                                    className="absolute inset-0 bg-gradient-to-br from-info to-info rounded-[3rem] blur-2xl opacity-60"
                                     animate={{
                                         scale: [1, 1.1, 1],
                                         opacity: [0.6, 0.8, 0.6]
                                     }}
                                     transition={{ duration: 3, repeat: Infinity }}
                                 />
-                                <div className="relative w-32 h-32 bg-gradient-to-br from-purple-600 via-blue-600 to-purple-700 rounded-[3rem] flex items-center justify-center shadow-2xl shadow-purple-500/50 group-hover:scale-110 transition-transform duration-300">
+                                <div className="relative w-32 h-32 bg-gradient-to-br from-info via-info to-info rounded-[3rem] flex items-center justify-center shadow-2xl shadow-purple-500/50 group-hover:scale-110 transition-transform duration-300">
                                     <span className="text-6xl font-black text-white">ج</span>
                                     <Sparkles className="absolute top-2 right-2 h-6 w-6 text-white/60 animate-pulse" />
                                 </div>
@@ -95,7 +95,7 @@ export default function LoginPage() {
                             className="space-y-4"
                         >
                             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black">
-                                <span className="bg-gradient-to-l from-purple-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
+                                <span className="bg-gradient-to-l from-info via-info to-info bg-clip-text text-transparent">
                                     مخازن الجماز
                                 </span>
                             </h1>
@@ -122,7 +122,7 @@ export default function LoginPage() {
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: 0.8 + i * 0.1 }}
-                                    className="glass-card p-4 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-blue-500/5 hover:border-purple-500/40 transition-all duration-300 hover:scale-105"
+                                    className="glass-card p-4 rounded-2xl border border-info/20 bg-gradient-to-br from-info/5 to-info/5 hover:border-info/40 transition-all duration-300 hover:scale-105"
                                 >
                                     <div className="text-2xl mb-2">{feature.icon}</div>
                                     <div className="text-sm font-bold text-foreground/80">{feature.text}</div>
@@ -146,7 +146,7 @@ export default function LoginPage() {
                                 transition={{ delay: 0.3 }}
                                 className="text-center mb-8"
                             >
-                                <h2 className="text-3xl md:text-4xl font-black mb-2 bg-gradient-to-l from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                                <h2 className="text-3xl md:text-4xl font-black mb-2 bg-gradient-to-l from-info to-info bg-clip-text text-transparent">
                                     تسجيل الدخول
                                 </h2>
                                 <p className="text-foreground/60 text-sm font-medium">
@@ -162,7 +162,7 @@ export default function LoginPage() {
                                             initial={{ opacity: 0, y: -10, scale: 0.95 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                            className="p-4 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 text-amber-400 text-sm rounded-2xl text-center font-bold backdrop-blur-sm"
+                                            className="p-4 bg-gradient-to-r from-warning/20 to-warning/20 border border-warning/30 text-warning text-sm rounded-2xl text-center font-bold backdrop-blur-sm"
                                         >
                                             انتهت صلاحية الجلسة، يرجى تسجيل الدخول مرة أخرى
                                         </motion.div>
@@ -172,7 +172,7 @@ export default function LoginPage() {
                                             initial={{ opacity: 0, y: -10, scale: 0.95 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                            className="p-4 bg-gradient-to-r from-red-500/20 to-pink-500/20 border border-red-500/30 text-red-400 text-sm rounded-2xl text-center font-bold backdrop-blur-sm"
+                                            className="p-4 bg-gradient-to-r from-destructive/20 to-pink/20 border border-destructive/30 text-destructive text-sm rounded-2xl text-center font-bold backdrop-blur-sm"
                                         >
                                             {error}
                                         </motion.div>
@@ -187,14 +187,14 @@ export default function LoginPage() {
                                     className="space-y-2"
                                 >
                                     <Label className="text-sm font-bold text-foreground/80 flex items-center gap-2">
-                                        <Mail size={16} className="text-purple-500" />
+                                        <Mail size={16} className="text-info" />
                                         البريد الإلكتروني
                                     </Label>
                                     <div className="relative">
                                         <Input
                                             type="email"
                                             required
-                                            className="h-14 pr-12 text-right glass-card bg-white/5 border-white/10 focus:border-purple-500/50 focus:bg-white/10 transition-all rounded-2xl text-base font-medium"
+                                            className="h-14 pr-12 text-right glass-card bg-white/5 border-white/10 focus:border-info/50 focus:bg-white/10 transition-all rounded-2xl text-base font-medium"
                                             placeholder="example@domain.com"
                                             value={formData.email}
                                             onChange={e => setFormData({ ...formData, email: e.target.value })}
@@ -211,14 +211,14 @@ export default function LoginPage() {
                                     className="space-y-2"
                                 >
                                     <Label className="text-sm font-bold text-foreground/80 flex items-center gap-2">
-                                        <Lock size={16} className="text-purple-500" />
+                                        <Lock size={16} className="text-info" />
                                         كلمة المرور
                                     </Label>
                                     <div className="relative">
                                         <Input
                                             type={showPassword ? "text" : "password"}
                                             required
-                                            className="h-14 pr-12 pl-12 text-right glass-card bg-white/5 border-white/10 focus:border-purple-500/50 focus:bg-white/10 transition-all rounded-2xl text-base font-medium"
+                                            className="h-14 pr-12 pl-12 text-right glass-card bg-white/5 border-white/10 focus:border-info/50 focus:bg-white/10 transition-all rounded-2xl text-base font-medium"
                                             placeholder="••••••••"
                                             value={formData.password}
                                             onChange={e => setFormData({ ...formData, password: e.target.value })}
@@ -243,7 +243,7 @@ export default function LoginPage() {
                                     <Button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full h-14 text-base font-black bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-2xl shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full h-14 text-base font-black bg-gradient-to-r from-info to-info hover:from-info hover:to-info rounded-2xl shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         {loading ? (
                                             <span className="flex items-center gap-2">
@@ -268,7 +268,7 @@ export default function LoginPage() {
                                 className="mt-8 text-center"
                             >
                                 <div className="flex items-center justify-center gap-2 text-xs text-foreground/40 font-medium">
-                                    <Sparkles size={12} className="text-purple-500/60" />
+                                    <Sparkles size={12} className="text-info/60" />
                                     <span>© 2025 جميع الحقوق محفوظة - مخازن الجماز</span>
                                 </div>
                             </motion.div>

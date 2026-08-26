@@ -66,7 +66,7 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
                             <TableCell>
                                 <div className="flex flex-col">
                                     <div className="flex items-center gap-1 font-black text-foreground">
-                                        <span className="font-mono text-lg text-red-500">{item.totalDebt.toLocaleString()}</span>
+                                        <span className="font-mono text-lg text-destructive">{item.totalDebt.toLocaleString()}</span>
                                         <span className="text-xs text-muted-foreground italic">ج.م</span>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@ export function DebtorTable({ debtors, onUnifiedCollection }) {
                                 <div className="flex gap-2 justify-end">
                                     <Button
                                         size="sm"
-                                        className="h-9 px-4 rounded-xl gap-2 font-black bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 transition-all"
+                                        className="h-9 px-4 rounded-xl gap-2 font-black bg-success/10 text-success hover:bg-success hover:text-white border border-success/20 transition-all"
                                         onClick={() => onUnifiedCollection(item)}
                                     >
                                         <Coins size={16} /> تحصيل

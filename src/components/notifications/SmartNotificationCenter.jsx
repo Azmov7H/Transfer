@@ -29,46 +29,46 @@ import { ar } from 'date-fns/locale';
 
 const TABS = [
     { id: 'all', label: 'الكل', icon: Bell },
-    { id: 'CRITICAL', label: 'عاجل', icon: Zap, color: 'text-rose-500' },
-    { id: 'WARNING', label: 'تنبيهات', icon: AlertTriangle, color: 'text-amber-500' },
-    { id: 'FINANCIAL', label: 'مالي', icon: Zap, color: 'text-emerald-500' },
-    { id: 'OPPORTUNITY', label: 'فرص', icon: TrendingUp, color: 'text-emerald-500' },
-    { id: 'INSIGHT', label: 'رؤى', icon: PieChart, color: 'text-blue-500' },
+    { id: 'CRITICAL', label: 'عاجل', icon: Zap, color: 'text-destructive' },
+    { id: 'WARNING', label: 'تنبيهات', icon: AlertTriangle, color: 'text-warning' },
+    { id: 'FINANCIAL', label: 'مالي', icon: Zap, color: 'text-success' },
+    { id: 'OPPORTUNITY', label: 'فرص', icon: TrendingUp, color: 'text-success' },
+    { id: 'INSIGHT', label: 'رؤى', icon: PieChart, color: 'text-info' },
 ];
 
 const CATEGORY_STYLES = {
     CRITICAL: {
-        bg: 'bg-rose-500/10',
-        border: 'border-rose-500/20',
-        text: 'text-rose-500',
+        bg: 'bg-destructive/10',
+        border: 'border-destructive/20',
+        text: 'text-destructive',
         icon: Zap,
         label: 'عاجل'
     },
     WARNING: {
-        bg: 'bg-amber-500/10',
-        border: 'border-amber-500/20',
-        text: 'text-amber-500',
+        bg: 'bg-warning/10',
+        border: 'border-warning/20',
+        text: 'text-warning',
         icon: AlertTriangle,
         label: 'تنبيه'
     },
     OPPORTUNITY: {
-        bg: 'bg-emerald-500/10',
-        border: 'border-emerald-500/20',
-        text: 'text-emerald-500',
+        bg: 'bg-success/10',
+        border: 'border-success/20',
+        text: 'text-success',
         icon: TrendingUp,
         label: 'فرصة'
     },
     INSIGHT: {
-        bg: 'bg-blue-500/10',
-        border: 'border-blue-500/20',
-        text: 'text-blue-500',
+        bg: 'bg-info/100/10',
+        border: 'border-info/20',
+        text: 'text-info',
         icon: PieChart,
         label: 'رؤية'
     },
     FINANCIAL: {
-        bg: 'bg-emerald-500/10',
-        border: 'border-emerald-500/20',
-        text: 'text-emerald-500',
+        bg: 'bg-success/10',
+        border: 'border-success/20',
+        text: 'text-success',
         icon: TrendingUp,
         label: 'مالي'
     },
@@ -152,7 +152,7 @@ export function SmartNotificationCenter() {
                                                 {unreadCount > 0 ? `${unreadCount} تنبيهات نشطة` : 'جميع الأنظمة مستقرة'}
                                             </p>
                                             {unreadCount > 0 && (
-                                                <div className="w-1.5 h-1.5 bg-rose-500 rounded-full animate-pulse" />
+                                                <div className="w-1.5 h-1.5 bg-destructive rounded-full animate-pulse" />
                                             )}
                                         </div>
                                     </div>
@@ -256,7 +256,7 @@ export function SmartNotificationCenter() {
                             <div className="flex gap-4 w-full sm:w-auto">
                                 <Button
                                     variant="ghost"
-                                    className="flex-1 sm:flex-none h-12 px-6 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 font-black rounded-xl transition-all"
+                                    className="flex-1 sm:flex-none h-12 px-6 text-muted-foreground hover:text-destructive hover:bg-destructive/10 font-black rounded-xl transition-all"
                                     onClick={() => deleteNotification('all')}
                                 >
                                     <Trash2 size={16} className="ml-3" /> مسح السجل
@@ -337,7 +337,7 @@ function SmartActionCard({ notif, onRead, onDelete, onAction, isLoading }) {
                         <Button
                             className={cn(
                                 "flex-1 lg:flex-none h-12 px-6 rounded-xl text-xs font-black shadow-lg transition-all hover:scale-[1.02] group/btn",
-                                notif.category === 'CRITICAL' ? "bg-rose-600 hover:bg-rose-700" : "bg-primary hover:bg-primary/90"
+                                notif.category === 'CRITICAL' ? "bg-destructive hover:bg-destructive" : "bg-primary hover:bg-primary/90"
                             )}
                             onClick={onAction}
                             disabled={isLoading}
@@ -362,7 +362,7 @@ function SmartActionCard({ notif, onRead, onDelete, onAction, isLoading }) {
                     <Button
                         variant="ghost"
                         onClick={onDelete}
-                        className="h-12 w-12 rounded-xl bg-white/5 text-muted-foreground flex items-center justify-center hover:bg-rose-500/10 hover:text-rose-500 transition-all border border-white/5"
+                        className="h-12 w-12 rounded-xl bg-white/5 text-muted-foreground flex items-center justify-center hover:bg-destructive/10 hover:text-destructive transition-all border border-white/5"
                     >
                         <Trash2 size={18} />
                     </Button>

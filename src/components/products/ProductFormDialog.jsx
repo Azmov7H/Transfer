@@ -214,12 +214,12 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
 
                                 {/* Handover Section - ONLY on Add Mode */}
                                 {mode === 'add' && (
-                                    <div className="p-6 bg-emerald-500/5 rounded-3xl border border-emerald-500/10 space-y-4">
+                                    <div className="p-6 bg-success/5 rounded-3xl border border-success/10 space-y-4">
                                         <div className="flex items-center justify-between">
-                                            <h3 className="flex items-center gap-2 font-black text-emerald-500 text-sm uppercase tracking-wider">
+                                            <h3 className="flex items-center gap-2 font-black text-success text-sm uppercase tracking-wider">
                                                 <History className="h-4 w-4" /> الرصيد الافتتاحي
                                             </h3>
-                                            <Badge className="bg-emerald-500/20 text-emerald-500 border-emerald-500/30 text-xs font-black uppercase">التسجيل الأول</Badge>
+                                            <Badge className="bg-success/20 text-success border-success/30 text-xs font-black uppercase">التسجيل الأول</Badge>
                                         </div>
 
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -228,7 +228,7 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                                                     type="number"
                                                     placeholder="0"
                                                     {...register('warehouseQty')}
-                                                    className="h-12 rounded-xl bg-white/5 border-emerald-500/20 text-center font-bold"
+                                                    className="h-12 rounded-xl bg-white/5 border-success/20 text-center font-bold"
                                                 />
                                             </FormField>
                                             <FormField label="الكمية بالمحل" error={errors.shopQty}>
@@ -236,11 +236,11 @@ export function ProductFormDialog({ open, onOpenChange, mode, defaultValues, onS
                                                     type="number"
                                                     placeholder="0"
                                                     {...register('shopQty')}
-                                                    className="h-12 rounded-xl bg-white/5 border-emerald-500/20 text-center font-bold"
+                                                    className="h-12 rounded-xl bg-white/5 border-success/20 text-center font-bold"
                                                 />
                                             </FormField>
                                         </div>
-                                        <p className="text-xs text-muted-foreground font-medium bg-emerald-500/5 p-2 rounded-lg leading-relaxed">
+                                        <p className="text-xs text-muted-foreground font-medium bg-success/5 p-2 rounded-lg leading-relaxed">
                                             💡 هذه هي الكميات التي يتم تسجيلها لأول مرة عند استلام المحل للنظام. سيتم إنشاء حركة &quot;رصيد افتتاحي&quot; آلياً بهذه القيم.
                                         </p>
                                     </div>

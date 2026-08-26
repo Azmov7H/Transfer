@@ -86,11 +86,11 @@ export default function InvoicesPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
                 <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-700" />
+                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-info/100/10 rounded-full blur-[120px] animate-pulse delay-700" />
             </div>
 
             {/* Header Section */}
@@ -103,7 +103,7 @@ export default function InvoicesPage() {
                         <div className="hidden xl:flex items-center gap-6 glass-card px-8 py-4 rounded-3xl border border-white/10 shadow-xl ml-4">
                             <div className="flex flex-col items-end">
                                 <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">إجمالي المبيعات</span>
-                                <span className="text-xl font-bold tabular-nums text-emerald-500">{(totalSales || 0).toLocaleString()} ج.م</span>
+                                <span className="text-xl font-bold tabular-nums text-success">{(totalSales || 0).toLocaleString()} ج.م</span>
                             </div>
                             <div className="w-px h-10 bg-white/10" />
                             <div className="flex flex-col items-end">

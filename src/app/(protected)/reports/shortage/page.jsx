@@ -34,11 +34,11 @@ export default function ShortageReportsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-900/20 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
                 <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-700" />
+                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-info/100/10 rounded-full blur-[120px] animate-pulse delay-700" />
             </div>
 
             {/* Header Section */}
@@ -100,7 +100,7 @@ export default function ShortageReportsPage() {
                             {/* Status Indicator Bar */}
                             <div className={cn(
                                 "absolute top-0 right-0 left-0 h-1.5",
-                                report.status === 'PENDING' ? 'bg-amber-500/50' : 'bg-emerald-500/50'
+                                report.status === 'PENDING' ? 'bg-warning/50' : 'bg-success/50'
                             )}></div>
 
                             <div className="p-8 space-y-6">
@@ -110,8 +110,8 @@ export default function ShortageReportsPage() {
                                             className={cn(
                                                 "font-black text-xs uppercase tracking-widest px-4 py-1.5 rounded-full border shadow-lg",
                                                 report.status === 'PENDING'
-                                                    ? 'bg-amber-500/10 text-amber-500 border-amber-500/20'
-                                                    : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                                                    ? 'bg-warning/10 text-warning border-warning/20'
+                                                    : 'bg-success/10 text-success border-success/20'
                                             )}
                                         >
                                             <div className="flex items-center gap-2">

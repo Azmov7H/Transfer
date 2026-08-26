@@ -15,7 +15,7 @@ export function UnsavedChangesToast({ show, isPending, onSave }) {
                     exit={{ opacity: 0, y: 100 }}
                     className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 overflow-hidden"
                 >
-                    <div className="bg-amber-600 px-8 py-4 rounded-[2rem] shadow-2xl flex items-center gap-4 border border-amber-500/50">
+                    <div className="bg-warning px-8 py-4 rounded-[2rem] shadow-2xl flex items-center gap-4 border border-warning/50">
                         <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
                             <AlertTriangle className="w-5 h-5 text-white animate-bounce" />
                         </div>
@@ -26,7 +26,7 @@ export function UnsavedChangesToast({ show, isPending, onSave }) {
                         <Button
                             size="sm"
                             variant="secondary"
-                            className="h-10 rounded-xl px-4 font-black bg-white text-amber-600 hover:bg-white/90"
+                            className="h-10 rounded-xl px-4 font-black bg-white text-warning hover:bg-white/90"
                             onClick={onSave}
                             disabled={isPending}
                         >

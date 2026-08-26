@@ -138,7 +138,7 @@ export default function InvoiceDetailPage({ params }) {
     };
 
     if (loading) return <div className="text-center py-20">جاري تحميل الفاتورة...</div>;
-    if (!invoice) return <div className="text-center py-20 text-red-500">الفاتورة غير موجودة</div>;
+    if (!invoice) return <div className="text-center py-20 text-destructive">الفاتورة غير موجودة</div>;
 
     return (
         <div className="p-6 max-w-4xl mx-auto pb-20">
@@ -164,7 +164,7 @@ export default function InvoiceDetailPage({ params }) {
                     <Button onClick={handlePrint} className="gap-2 bg-primary">
                         <Printer size={16} /> طباعة / PDF
                     </Button>
-                    <Button variant="destructive" onClick={() => setDeleteOpen(true)} className="gap-2 bg-red-600 hover:bg-red-700 text-white shadow-lg">
+                    <Button variant="destructive" onClick={() => setDeleteOpen(true)} className="gap-2 bg-destructive hover:bg-destructive text-white shadow-lg">
                         <Trash2 size={16} /> حذف
                     </Button>
                 </div>

@@ -73,9 +73,9 @@ export default function DashboardPage() {
                         <div className={cn(
                             "w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:rotate-12",
                             action.color === 'primary' ? 'bg-primary/10 text-primary' :
-                                action.color === 'success' ? 'bg-emerald-500/10 text-emerald-500' :
-                                    action.color === 'secondary' ? 'bg-blue-500/10 text-blue-500' :
-                                        'bg-amber-500/10 text-amber-500'
+                                action.color === 'success' ? 'bg-success/10 text-success' :
+                                    action.color === 'secondary' ? 'bg-info/100/10 text-info' :
+                                        'bg-warning/10 text-warning'
                         )}>
                             <action.icon className="w-6 h-6" />
                         </div>
@@ -156,10 +156,10 @@ export default function DashboardPage() {
                 <div className="space-y-8">
                     {/* Inventory Alerts */}
                     <Card className="bg-card border-border shadow-md relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-1 h-full bg-amber-500" />
+                        <div className="absolute top-0 right-0 w-1 h-full bg-warning" />
                         <CardHeader>
                             <CardTitle className="text-xl font-black flex items-center gap-2">
-                                <AlertTriangle className="text-amber-500 w-6 h-6" />
+                                <AlertTriangle className="text-warning w-6 h-6" />
                                 تنبيهات المخزون
                             </CardTitle>
                         </CardHeader>
@@ -167,22 +167,22 @@ export default function DashboardPage() {
                             {lowStockProducts.map((product) => (
                                 <div key={product._id} className="flex items-center justify-between p-4 rounded-xl bg-muted/50 border border-border hover:bg-muted transition-colors">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
+                                        <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center text-warning">
                                             <Package className="w-5 h-5" />
                                         </div>
                                         <div>
                                             <p className="text-sm font-bold truncate max-w-[120px]">{product.name}</p>
-                                            <p className="text-xs text-amber-500 font-bold">المتبقي: {product.stockQty}</p>
+                                            <p className="text-xs text-warning font-bold">المتبقي: {product.stockQty}</p>
                                         </div>
                                     </div>
-                                    <Button size="sm" variant="outline" className="h-8 text-xs font-bold border-amber-500/20 hover:bg-amber-500/10 text-amber-500">
+                                    <Button size="sm" variant="outline" className="h-8 text-xs font-bold border-warning/20 hover:bg-warning/10 text-warning">
                                         طلب
                                     </Button>
                                 </div>
                             ))}
                             {lowStockProducts.length === 0 && (
-                                <div className="text-center py-6 text-sm font-medium text-emerald-500 flex flex-col items-center gap-2">
-                                    <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center">✨</div>
+                                <div className="text-center py-6 text-sm font-medium text-success flex flex-col items-center gap-2">
+                                    <div className="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center">✨</div>
                                     مخزونك في حالة ممتازة
                                 </div>
                             )}

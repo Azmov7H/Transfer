@@ -18,28 +18,28 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
     return (
                     <Dialog open={open} onOpenChange={onOpenChange}>
                         <DialogTrigger asChild>
-                            <Button variant="secondary" className="gap-2 bg-amber-50 text-amber-900 hover:bg-amber-100 border border-amber-200 shadow-sm hover-lift">
+                            <Button variant="secondary" className="gap-2 bg-warning/10 text-warning hover:bg-warning/10 border border-warning/30 shadow-sm hover-lift">
                                 <ArrowRightLeft size={16} /> استرجاع منتجات
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-5xl bg-slate-950/90 backdrop-blur-2xl border-white/5 shadow-[0_32px_64px_rgba(0,0,0,0.5)] p-0 gap-0 overflow-hidden rounded-[2.5rem]" dir="rtl">
-                            <div className="absolute top-0 right-0 w-full h-1.5 bg-gradient-to-l from-amber-500 via-amber-400 to-amber-500 opacity-80" />
+                        <DialogContent className="max-w-5xl bg-foreground/1090 backdrop-blur-2xl border-white/5 shadow-[0_32px_64px_rgba(0,0,0,0.5)] p-0 gap-0 overflow-hidden rounded-[2.5rem]" dir="rtl">
+                            <div className="absolute top-0 right-0 w-full h-1.5 bg-gradient-to-l from-warning via-warning to-warning opacity-80" />
 
                             <div className="p-8 pb-4">
                                 <DialogHeader>
                                     <div className="flex items-center justify-between">
                                         <DialogTitle className="text-2xl font-black flex items-center gap-4 text-white">
-                                            <div className="p-3 bg-amber-500/10 rounded-2xl border border-amber-500/20 shadow-inner">
-                                                <ArrowRightLeft className="text-amber-500" size={24} />
+                                            <div className="p-3 bg-warning/10 rounded-2xl border border-warning/20 shadow-inner">
+                                                <ArrowRightLeft className="text-warning" size={24} />
                                             </div>
                                             <div className="flex flex-col">
                                                 <span>استرجاع منتجات معتمدة</span>
-                                                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-0.5">الفاتورة #{invoice.number}</span>
+                                                <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-0.5">الفاتورة #{invoice.number}</span>
                                             </div>
                                         </DialogTitle>
                                         <div className="text-left hidden md:block">
-                                            <span className="text-xs font-black text-slate-500 uppercase tracking-widest block mb-1">تاريخ الفاتورة</span>
-                                            <span className="text-xs font-bold text-slate-300 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                                            <span className="text-xs font-black text-muted-foreground uppercase tracking-widest block mb-1">تاريخ الفاتورة</span>
+                                            <span className="text-xs font-bold text-muted-foreground bg-white/5 px-3 py-1 rounded-full border border-white/5">
                                                 {format(new Date(invoice.date), 'd MMMM yyyy', { locale: ar })}
                                             </span>
                                         </div>
@@ -72,20 +72,20 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                         <div className="flex items-center gap-4 flex-1">
                                                             <div className={cn(
                                                                 "h-12 w-12 rounded-2xl flex items-center justify-center transition-all duration-500",
-                                                                isSelected ? "bg-amber-500 text-white shadow-lg shadow-amber-500/20" : "bg-white/5 text-slate-500"
+                                                                isSelected ? "bg-warning text-white shadow-lg shadow-warning/20" : "bg-white/5 text-muted-foreground"
                                                             )}>
                                                                 <Package size={20} />
                                                             </div>
                                                             <div className="flex flex-col">
-                                                                <h4 className="font-black text-white text-lg group-hover:text-amber-400 transition-colors uppercase tracking-tight">
+                                                                <h4 className="font-black text-white text-lg group-hover:text-warning transition-colors uppercase tracking-tight">
                                                                     {item.productName || item.name || 'منتج'}
                                                                 </h4>
                                                                 <div className="flex items-center gap-3 text-xs font-bold mt-1">
-                                                                    <span className="text-slate-500">سعر الوحدة:</span>
-                                                                    <span className="text-slate-300">{item.unitPrice.toLocaleString()} ج.م</span>
-                                                                    <div className="w-1 h-1 rounded-full bg-slate-700" />
-                                                                    <span className="text-slate-500">المباع:</span>
-                                                                    <Badge variant="outline" className="h-5 px-2 bg-white/5 border-white/10 text-slate-300">{item.qty}</Badge>
+                                                                    <span className="text-muted-foreground">سعر الوحدة:</span>
+                                                                    <span className="text-muted-foreground">{item.unitPrice.toLocaleString()} ج.م</span>
+                                                                    <div className="w-1 h-1 rounded-full bg-secondary" />
+                                                                    <span className="text-muted-foreground">المباع:</span>
+                                                                    <Badge variant="outline" className="h-5 px-2 bg-white/5 border-white/10 text-muted-foreground">{item.qty}</Badge>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -96,7 +96,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                     variant="ghost"
                                                                     size="icon"
                                                                     aria-label="إنقاص الكمية"
-                                                                    className="h-10 w-10 rounded-xl hover:bg-white/10 text-slate-400 hover:text-white transition-all active:scale-95"
+                                                                    className="h-10 w-10 rounded-xl hover:bg-white/10 text-muted-foreground hover:text-white transition-all active:scale-95"
                                                                     onClick={() => {
                                                                         if (currentReturnQty > 0) {
                                                                             setReturnItems(prev => ({ ...prev, [itemId]: currentReturnQty - 1 }));
@@ -109,7 +109,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                 <div className="w-14 text-center">
                                                                     <span className={cn(
                                                                         "text-2xl font-black tracking-tighter transition-all duration-300",
-                                                                        isSelected ? "text-amber-500 scale-110" : "text-slate-600"
+                                                                        isSelected ? "text-warning scale-110" : "text-muted-foreground"
                                                                     )}>
                                                                         {currentReturnQty}
                                                                     </span>
@@ -119,7 +119,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                     variant="ghost"
                                                                     size="icon"
                                                                     aria-label="زيادة الكمية"
-                                                                    className="h-10 w-10 rounded-xl hover:bg-white/10 text-slate-400 hover:text-white transition-all active:scale-95"
+                                                                    className="h-10 w-10 rounded-xl hover:bg-white/10 text-muted-foreground hover:text-white transition-all active:scale-95"
                                                                     onClick={() => {
                                                                         if (currentReturnQty < item.qty) {
                                                                             setReturnItems(prev => ({ ...prev, [itemId]: currentReturnQty + 1 }));
@@ -133,7 +133,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                 <motion.div
                                                                     initial={{ opacity: 0, scale: 0.9 }}
                                                                     animate={{ opacity: 1, scale: 1 }}
-                                                                    className="text-xs font-black text-amber-500/60 uppercase tracking-widest"
+                                                                    className="text-xs font-black text-warning/60 uppercase tracking-widest"
                                                                 >
                                                                     سيتم استرداد {(currentReturnQty * item.unitPrice).toLocaleString()} ج.م
                                                                 </motion.div>
@@ -145,7 +145,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                     {isSelected && (
                                                         <motion.div
                                                             layoutId={`accent-${i}`}
-                                                            className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent pointer-events-none"
+                                                            className="absolute inset-0 bg-gradient-to-r from-warning/5 to-transparent pointer-events-none"
                                                         />
                                                     )}
                                                 </motion.div>
@@ -155,12 +155,12 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                 </ScrollArea>
                             </div>
 
-                            <div className="p-8 pt-6 bg-slate-900/50 border-t border-white/5">
+                            <div className="p-8 pt-6 bg-foreground/1050 border-t border-white/5">
                                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                                     <div className="md:col-span-5 space-y-4">
                                         <div className="space-y-3">
-                                            <Label className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 mr-1">
-                                                <Wallet size={12} className="text-amber-500" /> طريقة رد المبلغ
+                                            <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2 mr-1">
+                                                <Wallet size={12} className="text-warning" /> طريقة رد المبلغ
                                             </Label>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <button
@@ -168,13 +168,13 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                     className={cn(
                                                         "flex flex-col items-center gap-2 p-3 rounded-2xl border-2 transition-all group/btn",
                                                         refundMethod === 'cash'
-                                                            ? "bg-amber-500/10 border-amber-500/50 text-amber-500"
-                                                            : "bg-white/20 border-transparent text-slate-400 hover:bg-white/5 hover:border-white/10"
+                                                            ? "bg-warning/10 border-warning/50 text-warning"
+                                                            : "bg-white/20 border-transparent text-muted-foreground hover:bg-white/5 hover:border-white/10"
                                                     )}
                                                 >
                                                     <div className={cn(
                                                         "p-2 rounded-xl transition-all",
-                                                        refundMethod === 'cash' ? "bg-amber-500 text-white" : "bg-white/5 group-hover/btn:bg-white/10"
+                                                        refundMethod === 'cash' ? "bg-warning text-white" : "bg-white/5 group-hover/btn:bg-white/10"
                                                     )}>
                                                         <Banknote size={16} />
                                                     </div>
@@ -185,13 +185,13 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                     className={cn(
                                                         "flex flex-col items-center gap-2 p-3 rounded-2xl border-2 transition-all group/btn",
                                                         refundMethod === 'customerBalance'
-                                                            ? "bg-blue-500/10 border-blue-500/50 text-blue-500"
-                                                            : "bg-white/20 border-transparent text-slate-400 hover:bg-white/5 hover:border-white/10"
+                                                            ? "bg-info/100/10 border-info/50 text-info"
+                                                            : "bg-white/20 border-transparent text-muted-foreground hover:bg-white/5 hover:border-white/10"
                                                     )}
                                                 >
                                                     <div className={cn(
                                                         "p-2 rounded-xl transition-all",
-                                                        refundMethod === 'customerBalance' ? "bg-blue-500 text-white" : "bg-white/5 group-hover/btn:bg-white/10"
+                                                        refundMethod === 'customerBalance' ? "bg-info/100 text-white" : "bg-white/5 group-hover/btn:bg-white/10"
                                                     )}>
                                                         <Wallet size={16} />
                                                     </div>
@@ -202,12 +202,12 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                     </div>
 
                                     <div className="md:col-span-7 flex flex-col justify-end">
-                                        <div className="bg-slate-950/80 rounded-3xl p-6 border border-white/5 shadow-inner relative overflow-hidden group">
+                                        <div className="bg-foreground/1080 rounded-3xl p-6 border border-white/5 shadow-inner relative overflow-hidden group">
                                             <div className="flex justify-between items-center relative z-10">
                                                 <div className="flex flex-col">
-                                                    <span className="text-xs font-black text-slate-500 uppercase tracking-widest mb-1">صافي القيمة المستردة</span>
+                                                    <span className="text-xs font-black text-muted-foreground uppercase tracking-widest mb-1">صافي القيمة المستردة</span>
                                                     <div className="flex items-baseline gap-2">
-                                                        <span className="text-4xl font-black text-amber-400 tracking-tighter">
+                                                        <span className="text-4xl font-black text-warning tracking-tighter">
                                                             {
                                                                 invoice.items.reduce((sum, item) => {
                                                                     const qty = returnItems[item.productId?._id || item.productId] || 0;
@@ -215,7 +215,7 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                                 }, 0).toLocaleString()
                                                             }
                                                         </span>
-                                                        <span className="text-sm font-black text-slate-500">ج.م</span>
+                                                        <span className="text-sm font-black text-muted-foreground">ج.م</span>
                                                     </div>
                                                 </div>
                                                 <Button

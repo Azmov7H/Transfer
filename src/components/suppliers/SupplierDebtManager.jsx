@@ -171,12 +171,12 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                     </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/10 flex justify-between items-center">
-                    <div className="flex items-center gap-2 text-blue-600">
+                <div className="p-4 rounded-2xl bg-info/100/5 border border-info/10 flex justify-between items-center">
+                    <div className="flex items-center gap-2 text-info">
                         <DollarSign size={18} />
                         <span className="text-xs font-black">المبلغ المتبقي (محسوب تلقائياً)</span>
                     </div>
-                    <span className="text-xl font-black text-blue-600 font-mono">
+                    <span className="text-xl font-black text-info font-mono">
                         {(parseFloat(formData.originalAmount) - collectedAmount).toLocaleString()} <span className="text-xs">د.ل</span>
                     </span>
                 </div>
@@ -290,7 +290,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                                 </TableCell>
 
                                                 <TableCell className="text-center">
-                                                    <span className="font-black text-rose-500">{debt.remainingAmount?.toLocaleString()}</span>
+                                                    <span className="font-black text-destructive">{debt.remainingAmount?.toLocaleString()}</span>
                                                 </TableCell>
                                                 <TableCell className="text-center text-sm">
                                                     {format(new Date(debt.dueDate), 'yyyy/MM/dd')}
@@ -300,7 +300,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                                         <Button
                                                             size="sm"
                                                             variant="outline"
-                                                            className="h-8 gap-1 border-amber-500/20 hover:bg-amber-500/5 text-amber-500"
+                                                            className="h-8 gap-1 border-warning/20 hover:bg-warning/5 text-warning"
                                                             onClick={() => { setSelectedDebt(debt); setView('edit'); }}
                                                         >
                                                             <Edit2 size={14} /> تعديل
@@ -316,7 +316,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                                         <Button
                                                             size="sm"
                                                             variant="outline"
-                                                            className="h-8 gap-1 border-blue-500/20 hover:bg-blue-500/5 text-blue-500"
+                                                            className="h-8 gap-1 border-info/20 hover:bg-info/100/5 text-info"
                                                             onClick={() => { setSelectedDebt(debt); setView('schedule'); }}
                                                         >
                                                             <CalendarCheck size={14} /> جدولة
@@ -347,8 +347,8 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                     <p className="text-2xl font-black text-primary">{selectedDebt.remainingAmount?.toLocaleString()} د.ل</p>
                                 </div>
                                 <div className="text-left">
-                                    <p className="text-xs font-bold text-emerald-600 mb-0.5">تم سداد</p>
-                                    <p className="text-lg font-black text-emerald-600">{(selectedDebt.originalAmount - selectedDebt.remainingAmount).toLocaleString()} د.ل</p>
+                                    <p className="text-xs font-bold text-success mb-0.5">تم سداد</p>
+                                    <p className="text-lg font-black text-success">{(selectedDebt.originalAmount - selectedDebt.remainingAmount).toLocaleString()} د.ل</p>
                                 </div>
                             </div>
 
@@ -401,9 +401,9 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
 
                     {view === 'schedule' && selectedDebt && (
                         <div className="max-w-md mx-auto space-y-6">
-                            <div className="bg-blue-500/5 p-4 rounded-xl border border-blue-500/20">
-                                <p className="text-sm font-bold text-blue-600 mb-1">إجمالي المديونية للجدولة</p>
-                                <p className="text-2xl font-black text-blue-600">{selectedDebt.remainingAmount?.toLocaleString()} د.ل</p>
+                            <div className="bg-info/100/5 p-4 rounded-xl border border-info/20">
+                                <p className="text-sm font-bold text-info mb-1">إجمالي المديونية للجدولة</p>
+                                <p className="text-2xl font-black text-info">{selectedDebt.remainingAmount?.toLocaleString()} د.ل</p>
                             </div>
 
                             <div className="space-y-4">
@@ -449,7 +449,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                 </div>
 
                                 <Button
-                                    className="w-full h-14 rounded-xl font-black text-lg bg-blue-600 hover:bg-blue-700 shadow-lg text-white"
+                                    className="w-full h-14 rounded-xl font-black text-lg bg-info hover:bg-info shadow-lg text-white"
                                     onClick={handleSchedule}
                                     disabled={scheduleMutation.isPending || !installmentsCount}
                                 >

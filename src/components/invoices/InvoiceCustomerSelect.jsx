@@ -78,8 +78,8 @@ export function InvoiceCustomerSelect({
     return (
         <div className="glass-card p-6 rounded-[2rem] border border-white/5 space-y-4">
             <div className="flex items-center gap-2 font-bold text-lg text-foreground mb-4">
-                <div className="p-2 bg-blue-500/10 rounded-xl">
-                    <UserPlus className="w-5 h-5 text-blue-500" />
+                <div className="p-2 bg-info/100/10 rounded-xl">
+                    <UserPlus className="w-5 h-5 text-info" />
                 </div>
                 بيانات العميل
             </div>
@@ -109,8 +109,8 @@ export function InvoiceCustomerSelect({
                                     className="p-4 hover:bg-white/5 cursor-pointer flex justify-between items-center border-b border-white/5 last:border-0 transition-all group"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
-                                            <User className="h-4 w-4 text-blue-500" />
+                                        <div className="p-2 bg-info/100/10 rounded-lg group-hover:bg-info/100/20 transition-colors">
+                                            <User className="h-4 w-4 text-info" />
                                         </div>
                                         <div>
                                             <span className="font-bold text-sm block">{c.name}</span>
@@ -128,7 +128,7 @@ export function InvoiceCustomerSelect({
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="glass-card p-4 rounded-xl bg-blue-500/5 border border-blue-500/20 space-y-3"
+                    className="glass-card p-4 rounded-xl bg-info/100/5 border border-info/20 space-y-3"
                 >
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-muted-foreground font-medium">الاسم:</span>
@@ -136,21 +136,21 @@ export function InvoiceCustomerSelect({
                     </div>
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-muted-foreground font-medium">حد الائتمان:</span>
-                        <span className={!selectedCustomer.creditLimit ? "text-emerald-500 font-bold" : "font-bold"}>
+                        <span className={!selectedCustomer.creditLimit ? "text-success font-bold" : "font-bold"}>
                             {!selectedCustomer.creditLimit ? 'مفتوح ∞' : `${selectedCustomer.creditLimit.toLocaleString()} ج.م`}
                         </span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-muted-foreground font-medium">المديونية:</span>
-                        <span className={selectedCustomer.balance > 0 ? "text-red-500 font-bold" : "text-emerald-500 font-bold"}>
+                        <span className={selectedCustomer.balance > 0 ? "text-destructive font-bold" : "text-success font-bold"}>
                             {(selectedCustomer.balance || 0).toLocaleString()} ج.م
                         </span>
                     </div>
                     {/* Credit logic if needed */}
                     {(selectedCustomer.creditBalance || 0) > 0 && (
-                        <div className="flex justify-between items-center text-sm bg-emerald-500/10 px-3 py-2 rounded-lg">
-                            <span className="text-emerald-500 font-medium">رصيد متاح:</span>
-                            <span className="text-emerald-500 font-bold">
+                        <div className="flex justify-between items-center text-sm bg-success/10 px-3 py-2 rounded-lg">
+                            <span className="text-success font-medium">رصيد متاح:</span>
+                            <span className="text-success font-bold">
                                 {selectedCustomer.creditBalance.toLocaleString()} ج.م
                             </span>
                         </div>
@@ -158,7 +158,7 @@ export function InvoiceCustomerSelect({
                     <Button
                         size="sm"
                         variant="outline"
-                        className="w-full h-9 text-xs text-red-500 border-red-200 hover:bg-red-50 rounded-lg"
+                        className="w-full h-9 text-xs text-destructive border-destructive/30 hover:bg-destructive/10 rounded-lg"
                         onClick={() => {
                             setQuery('');
                             onClear();
@@ -267,13 +267,13 @@ export function InvoiceCustomerSelect({
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
                                         <Label className="text-xs text-muted-foreground">المديونية الحالية</Label>
-                                        <p className={`font-bold ${selectedCustomer.balance > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
+                                        <p className={`font-bold ${selectedCustomer.balance > 0 ? 'text-destructive' : 'text-success'}`}>
                                             {(selectedCustomer.balance || 0).toLocaleString()} ج.م
                                         </p>
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-xs text-muted-foreground">الرصيد المتاح</Label>
-                                        <p className="font-bold text-emerald-500">
+                                        <p className="font-bold text-success">
                                             {(selectedCustomer.creditBalance || 0).toLocaleString()} ج.م
                                         </p>
                                     </div>

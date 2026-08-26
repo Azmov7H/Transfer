@@ -28,19 +28,19 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                 variant={typeFilter === 'INCOME' ? 'secondary' : 'ghost'}
                                 size="sm"
                                 onClick={() => setTypeFilter('INCOME')}
-                                className="text-xs h-7 px-3 text-green-600"
+                                className="text-xs h-7 px-3 text-success"
                             >إيرادات</Button>
                             <Button
                                 variant={typeFilter === 'SUPPLIER_PAYMENTS' ? 'secondary' : 'ghost'}
                                 size="sm"
                                 onClick={() => setTypeFilter('SUPPLIER_PAYMENTS')}
-                                className="text-xs h-7 px-3 text-orange-600"
+                                className="text-xs h-7 px-3 text-warning"
                             >دفعات موردين</Button>
                             <Button
                                 variant={typeFilter === 'SHOP_EXPENSES' ? 'secondary' : 'ghost'}
                                 size="sm"
                                 onClick={() => setTypeFilter('SHOP_EXPENSES')}
-                                className="text-xs h-7 px-3 text-red-600"
+                                className="text-xs h-7 px-3 text-destructive"
                             >مصروفات</Button>
                         </div>
                     </CardHeader>
@@ -119,7 +119,7 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                         </span>
                                                     </div>
                                                 </TableCell>
-                                                <TableCell className={`font-bold text-base ${tx.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}`}>
+                                                <TableCell className={`font-bold text-base ${tx.type === 'INCOME' ? 'text-success' : 'text-destructive'}`}>
                                                     {tx.amount.toLocaleString()} ج.م
                                                 </TableCell>
                                                 <TableCell>
@@ -157,21 +157,21 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                         {/* Quick Access Buttons */}
                                                         {tx.referenceType === 'Invoice' && tx.referenceId?._id && (
                                                             <Link href={`/invoices/${tx.referenceId._id}`} onClick={(e) => e.stopPropagation()}>
-                                                                <Button variant="ghost" size="icon" aria-label="عرض الفاتورة" className="text-muted-foreground hover:text-blue-500 h-8 w-8">
+                                                                <Button variant="ghost" size="icon" aria-label="عرض الفاتورة" className="text-muted-foreground hover:text-info h-8 w-8">
                                                                     <Eye size={16} />
                                                                 </Button>
                                                             </Link>
                                                         )}
                                                         {tx.referenceType === 'PurchaseOrder' && tx.referenceId?._id && (
                                                             <Link href={`/purchase-orders/${tx.referenceId._id}`} onClick={(e) => e.stopPropagation()}>
-                                                                <Button variant="ghost" size="icon" aria-label="عرض أمر الشراء" className="text-muted-foreground hover:text-orange-500 h-8 w-8">
+                                                                <Button variant="ghost" size="icon" aria-label="عرض أمر الشراء" className="text-muted-foreground hover:text-warning h-8 w-8">
                                                                     <Eye size={16} />
                                                                 </Button>
                                                             </Link>
                                                         )}
                                                         {(tx.type === 'INCOME' || tx.referenceType === 'UnifiedCollection') && (
                                                             <Link href={`/financial/receipts/${tx._id}`} onClick={(e) => e.stopPropagation()}>
-                                                                <Button variant="ghost" size="icon" aria-label="عرض الإيصال" className="text-muted-foreground hover:text-green-500 h-8 w-8">
+                                                                <Button variant="ghost" size="icon" aria-label="عرض الإيصال" className="text-muted-foreground hover:text-success h-8 w-8">
                                                                     <ReceiptCent size={16} />
                                                                 </Button>
                                                             </Link>

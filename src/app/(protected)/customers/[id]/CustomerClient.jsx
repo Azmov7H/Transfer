@@ -135,7 +135,7 @@ export default function CustomerClient({ id }) {
                 </div>
                 <div className="bg-muted p-4 rounded-lg flex flex-col items-center gap-2">
                     <p className="text-sm text-muted-foreground">الرصيد الحالي</p>
-                    <p className={`text-2xl font-bold ${customer.balance > 0 ? 'text-red-500' : 'text-green-500'}`}>
+                    <p className={`text-2xl font-bold ${customer.balance > 0 ? 'text-destructive' : 'text-success'}`}>
                         {customer.balance?.toLocaleString()} ج.م
                     </p>
                     {customer.balance > 0 && (
@@ -221,7 +221,7 @@ export default function CustomerClient({ id }) {
                                             <TableHead>المنتج</TableHead>
                                             <TableHead>سعر القطاعي</TableHead>
                                             <TableHead>سعر الجملة</TableHead>
-                                            <TableHead className="bg-blue-50">السعر الخاص للعميل</TableHead>
+                                            <TableHead className="bg-info/10">السعر الخاص للعميل</TableHead>
                                             <TableHead>إجراءات</TableHead>
                                         </TableRow>
                                     </TableHeader>
@@ -236,9 +236,9 @@ export default function CustomerClient({ id }) {
                                                     <TableCell className="font-medium">{item.productName}</TableCell>
                                                     <TableCell>{item.retailPrice.toLocaleString()}</TableCell>
                                                     <TableCell>{item.wholesalePrice.toLocaleString()}</TableCell>
-                                                    <TableCell className="bg-blue-50 font-bold text-blue-700">{item.customPrice.toLocaleString()}</TableCell>
+                                                    <TableCell className="bg-info/10 font-bold text-info">{item.customPrice.toLocaleString()}</TableCell>
                                                     <TableCell>
-                                                        <Button variant="ghost" size="sm" className="text-red-600" onClick={() => removePriceMutation.mutate(item.productId)}>
+                                                        <Button variant="ghost" size="sm" className="text-destructive" onClick={() => removePriceMutation.mutate(item.productId)}>
                                                             <Trash2 className="h-4 w-4" />
                                                         </Button>
                                                     </TableCell>
@@ -333,8 +333,8 @@ export default function CustomerClient({ id }) {
                                             <TableRow className="hover:bg-transparent border-white/5">
                                                 <TableHead className="w-[120px] text-right font-black text-xs uppercase tracking-widest px-8">التاريخ</TableHead>
                                                 <TableHead className="text-right font-black text-xs uppercase tracking-widest">نوع الحركة / البيان</TableHead>
-                                                <TableHead className="text-center font-black text-xs uppercase tracking-widest text-red-500 bg-red-500/5">مدين (+)</TableHead>
-                                                <TableHead className="text-center font-black text-xs uppercase tracking-widest text-emerald-500 bg-emerald-500/5">دائن (-)</TableHead>
+                                                <TableHead className="text-center font-black text-xs uppercase tracking-widest text-destructive bg-destructive/5">مدين (+)</TableHead>
+                                                <TableHead className="text-center font-black text-xs uppercase tracking-widest text-success bg-success/5">دائن (-)</TableHead>
                                                 <TableHead className="text-center font-black text-xs uppercase tracking-widest bg-primary/5">الرصيد التراكمي</TableHead>
                                             </TableRow>
                                         </TableHeader>
@@ -376,9 +376,9 @@ export default function CustomerClient({ id }) {
                                                             <div className="flex items-center gap-4">
                                                                 <div className={cn(
                                                                     "h-10 w-10 rounded-xl flex items-center justify-center border transition-all duration-500 group-hover:scale-110",
-                                                                    entry.type === 'SALES' ? "bg-red-500/10 text-red-500 border-red-500/20" :
-                                                                        entry.type === 'PAYMENT' ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" :
-                                                                            "bg-amber-500/10 text-amber-500 border-amber-500/20"
+                                                                    entry.type === 'SALES' ? "bg-destructive/10 text-destructive border-destructive/20" :
+                                                                        entry.type === 'PAYMENT' ? "bg-success/10 text-success border-success/20" :
+                                                                            "bg-warning/10 text-warning border-warning/20"
                                                                 )}>
                                                                     {entry.type === 'SALES' ? <ShoppingCart className="w-5 h-5" /> :
                                                                         entry.type === 'PAYMENT' ? <ArrowDownLeft className="w-5 h-5" /> :
@@ -401,18 +401,18 @@ export default function CustomerClient({ id }) {
                                                                 </div>
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell className="text-center bg-red-500/[0.02]">
+                                                        <TableCell className="text-center bg-destructive/[0.02]">
                                                             <span className={cn(
                                                                 "font-mono font-black text-lg",
-                                                                entry.debit > 0 ? "text-red-500" : "text-muted-foreground/20"
+                                                                entry.debit > 0 ? "text-destructive" : "text-muted-foreground/20"
                                                             )}>
                                                                 {entry.debit ? entry.debit.toLocaleString() : '-'}
                                                             </span>
                                                         </TableCell>
-                                                        <TableCell className="text-center bg-emerald-500/[0.02]">
+                                                        <TableCell className="text-center bg-success/[0.02]">
                                                             <span className={cn(
                                                                 "font-mono font-black text-lg",
-                                                                entry.credit > 0 ? "text-emerald-500" : "text-muted-foreground/20"
+                                                                entry.credit > 0 ? "text-success" : "text-muted-foreground/20"
                                                             )}>
                                                                 {entry.credit ? entry.credit.toLocaleString() : '-'}
                                                             </span>
@@ -421,7 +421,7 @@ export default function CustomerClient({ id }) {
                                                             <div className="flex items-center justify-center gap-2">
                                                                 <span className={cn(
                                                                     "text-xl font-black font-mono tracking-tighter",
-                                                                    entry.balance > 0 ? "text-red-500" : entry.balance < 0 ? "text-emerald-500" : "text-muted-foreground"
+                                                                    entry.balance > 0 ? "text-destructive" : entry.balance < 0 ? "text-success" : "text-muted-foreground"
                                                                 )}>
                                                                     {entry.balance.toLocaleString()}
                                                                 </span>

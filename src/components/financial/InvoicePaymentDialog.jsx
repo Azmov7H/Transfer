@@ -65,7 +65,7 @@ export function InvoicePaymentDialog({ open, onOpenChange, invoice }) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[480px] border-white/10 p-0 rounded-[2.5rem] overflow-hidden" dir="rtl">
-                <div className="bg-slate-900 p-6 border-b border-white/10">
+                <div className="bg-secondary p-6 border-b border-white/10">
                     <DialogHeader>
                         <DialogTitle className="text-xl font-black flex items-center gap-2">
                             <span className="p-2 rounded-xl bg-primary/10 text-primary"><Wallet className="h-5 w-5" /></span>
@@ -77,12 +77,12 @@ export function InvoicePaymentDialog({ open, onOpenChange, invoice }) {
                     </DialogHeader>
                 </div>
 
-                <div className="p-6 space-y-6 bg-gradient-to-b from-slate-900 to-slate-900/95">
+                <div className="p-6 space-y-6 bg-gradient-to-b from-foreground to-foreground/95">
                     {/* Short Info */}
                     <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center">
                         <div>
                             <p className="text-xs font-bold text-muted-foreground mb-1">المبلغ المتبقي</p>
-                            <p className="text-2xl font-black text-red-500">{remaining.toLocaleString()}</p>
+                            <p className="text-2xl font-black text-destructive">{remaining.toLocaleString()}</p>
                         </div>
                         <Button
                             variant="ghost"
@@ -115,7 +115,7 @@ export function InvoicePaymentDialog({ open, onOpenChange, invoice }) {
                                 <SelectTrigger className="h-14 rounded-2xl bg-white/5 border-white/5 font-bold">
                                     <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-2xl border-white/10 bg-slate-800">
+                                <SelectContent className="rounded-2xl border-white/10 bg-secondary">
                                     <SelectItem value="cash" className="font-bold"><span className="flex items-center gap-2"><Banknote className="h-4 w-4" /> نقداً (الخزينة)</span></SelectItem>
                                     <SelectItem value="bank" className="font-bold"><span className="flex items-center gap-2"><Building2 className="h-4 w-4" /> تحويل بنكي</span></SelectItem>
                                     <SelectItem value="check" className="font-bold"><span className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> شيك</span></SelectItem>

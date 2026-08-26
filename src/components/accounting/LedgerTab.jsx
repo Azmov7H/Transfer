@@ -81,8 +81,8 @@ export function LedgerTab({ chartOfAccounts }) {
                                     <div>
                                         <p className="font-bold text-sm mb-0.5">{item.description}</p>
                                         <div className="flex items-center gap-3 text-xs font-medium">
-                                            {item.debit > 0 && <span className="text-blue-400">مدين: {item.debit.toLocaleString()}</span>}
-                                            {item.credit > 0 && <span className="text-emerald-400">دائن: {item.credit.toLocaleString()}</span>}
+                                            {item.debit > 0 && <span className="text-info">مدين: {item.debit.toLocaleString()}</span>}
+                                            {item.credit > 0 && <span className="text-success">دائن: {item.credit.toLocaleString()}</span>}
                                         </div>
                                     </div>
                                 </div>

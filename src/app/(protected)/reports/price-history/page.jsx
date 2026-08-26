@@ -106,11 +106,11 @@ export default function PriceHistoryPage() {
                                                 <TableCell className="font-bold">{item.newPrice?.toLocaleString()}</TableCell>
                                                 <TableCell dir="ltr" className="text-right">
                                                     {item.changeAmount > 0 ? (
-                                                        <span className="text-green-600 flex items-center justify-end gap-1">
+                                                        <span className="text-success flex items-center justify-end gap-1">
                                                             {item.changePercentage}% <ArrowUpRight className="h-3 w-3" />
                                                         </span>
                                                     ) : (
-                                                        <span className="text-red-600 flex items-center justify-end gap-1">
+                                                        <span className="text-destructive flex items-center justify-end gap-1">
                                                             {item.changePercentage}% <ArrowDownRight className="h-3 w-3" />
                                                         </span>
                                                     )}

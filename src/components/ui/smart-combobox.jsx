@@ -49,7 +49,7 @@ export function SmartCombobox({ options = [], value, onChange, placeholder = "Se
                 </Button>
             </PopoverTrigger>
             <PopoverContent
-                className="p-0 border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] bg-slate-900/95 backdrop-blur-2xl rounded-[1.5rem] overflow-hidden border-t-white/20 animate-in fade-in zoom-in duration-200"
+                className="p-0 border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] bg-foreground/1095 backdrop-blur-2xl rounded-[1.5rem] overflow-hidden border-t-white/20 animate-in fade-in zoom-in duration-200"
                 align="start"
                 sideOffset={12}
             >

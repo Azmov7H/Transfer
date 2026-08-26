@@ -192,7 +192,7 @@ export default function PurchaseOrdersPage() {
                                                 <Button
                                                     size="sm"
                                                     variant="ghost"
-                                                    className="text-green-600 hover:bg-green-50"
+                                                    className="text-success hover:bg-success/10"
                                                     onClick={() => handleReceive(po._id)}
                                                 >
                                                     <CheckCircle size={16} className="ml-1" /> استلام

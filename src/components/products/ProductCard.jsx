@@ -52,9 +52,9 @@ export const ProductCard = React.memo(({
                 </div>
                 <div className={cn(
                     "shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-black uppercase tracking-widest",
-                    stockStatus === 'out' ? "bg-red-500/10 text-red-500 border-red-500/20" :
-                        stockStatus === 'low' ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
-                            "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                    stockStatus === 'out' ? "bg-destructive/10 text-destructive border-destructive/20" :
+                        stockStatus === 'low' ? "bg-warning/10 text-warning border-warning/20" :
+                            "bg-success/10 text-success border-success/20"
                 )}>
                     {stockStatus === 'out' ? (
                         <><XCircle size={11} /> نفذت</>
@@ -83,9 +83,9 @@ export const ProductCard = React.memo(({
                     <div className="flex flex-col items-center">
                         <div className={cn(
                             "h-8 px-4 rounded-xl border flex items-center justify-center font-black tabular-nums",
-                            stockStatus === 'out' ? "bg-red-500/10 text-red-500 border-red-500/20" :
-                                stockStatus === 'low' ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
-                                    "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                            stockStatus === 'out' ? "bg-destructive/10 text-destructive border-destructive/20" :
+                                stockStatus === 'low' ? "bg-warning/10 text-warning border-warning/20" :
+                                    "bg-success/10 text-success border-success/20"
                         )}>
                             {product.stockQty}
                         </div>
@@ -112,7 +112,7 @@ export const ProductCard = React.memo(({
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => onEdit(product)}
-                                    className="h-11 w-11 rounded-xl bg-white/5 hover:bg-amber-500/20 hover:text-amber-500 text-white/40 border border-white/5 transition-all"
+                                    className="h-11 w-11 rounded-xl bg-white/5 hover:bg-warning/20 hover:text-warning text-white/40 border border-white/5 transition-all"
                                     aria-label="تعديل الصنف"
                                     title="تعديل الصنف"
                                 >
@@ -122,7 +122,7 @@ export const ProductCard = React.memo(({
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => onDelete(product._id)}
-                                    className="h-11 w-11 rounded-xl bg-white/5 hover:bg-red-500/20 hover:text-red-500 text-white/40 border border-white/5 transition-all"
+                                    className="h-11 w-11 rounded-xl bg-white/5 hover:bg-destructive/20 hover:text-destructive text-white/40 border border-white/5 transition-all"
                                     aria-label="حذف نهائي"
                                     title="حذف نهائي"
                                 >
