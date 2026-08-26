@@ -14,10 +14,8 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { CustomerFormDialog } from '@/components/customers/CustomerFormDialog';
-import { PaymentDialog } from '@/components/financial/PaymentDialog';
-import { InvoicePaymentDialog } from '@/components/financial/InvoicePaymentDialog';
+import { UnifiedPaymentDialog } from '@/components/financial/PaymentDialog';
 import { InstallmentDialog } from '@/components/financial/InstallmentDialog';
-import { UnifiedPaymentDialog } from '@/components/financial/UnifiedPaymentDialog';
 import { CustomerDetailsSheet } from '@/components/customers/CustomerDetailsSheet';
 import { CustomerRow } from '@/components/customers/CustomerRow';
 import { CustomerCard } from '@/components/customers/CustomerCard';
@@ -433,20 +431,19 @@ export default function CustomersPage() {
                 isPending={addMutation.isPending || updateMutation.isPending}
             />
 
-            <PaymentDialog
+            <UnifiedPaymentDialog
                 open={isPaymentOpen}
                 onOpenChange={setIsPaymentOpen}
-                debt={selectedDebt}
+                target={{ kind: 'debt', debt: selectedDebt }}
             />
 
-            <InvoicePaymentDialog
+            <UnifiedPaymentDialog
                 open={isInvoicePaymentOpen}
-                onOpenChange={setIsInvoicePaymentOpen}
-                invoice={selectedInvoice}
-                onSuccess={() => {
-                    setIsInvoicePaymentOpen(false);
-                    setSelectedInvoice(null);
+                onOpenChange={(o) => {
+                    setIsInvoicePaymentOpen(o);
+                    if (!o) setSelectedInvoice(null);
                 }}
+                target={{ kind: 'invoice', invoice: selectedInvoice }}
             />
 
             <InstallmentDialog
@@ -458,9 +455,7 @@ export default function CustomersPage() {
             <UnifiedPaymentDialog
                 open={isUnifiedOpen}
                 onOpenChange={setIsUnifiedOpen}
-                customerId={unifiedPaymentData?.id}
-                customerName={unifiedPaymentData?.name}
-                totalBalance={unifiedPaymentData?.balance}
+                target={{ kind: 'customer-total', customerId: unifiedPaymentData?.id, customerName: unifiedPaymentData?.name, totalBalance: unifiedPaymentData?.balance }}
             />
 
             <PartnerTransactionDialog

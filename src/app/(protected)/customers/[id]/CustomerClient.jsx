@@ -33,7 +33,7 @@ import {
     Loader2, User, Phone, MapPin, DollarSign, Plus, Trash2,
     ShoppingCart, ArrowDownLeft, ArrowUpRight, Activity, Coins
 } from 'lucide-react';
-import { UnifiedPaymentDialog } from '@/components/financial/UnifiedPaymentDialog';
+import { UnifiedPaymentDialog } from '@/components/financial/PaymentDialog';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { cn } from '@/utils';
@@ -443,9 +443,7 @@ export default function CustomerClient({ id }) {
             <UnifiedPaymentDialog
                 open={isUnifiedOpen}
                 onOpenChange={setIsUnifiedOpen}
-                customerId={id}
-                customerName={customer.name}
-                totalBalance={customer.balance}
+                target={{ kind: 'customer-total', customerId: id, customerName: customer.name, totalBalance: customer.balance }}
             />
         </div>
     );
