@@ -42,8 +42,8 @@ export function AlertsSettingsTab({ settings, onChange }) {
                         </div>
                     </div>
 
-                    <div className="group space-y-6 p-8 rounded-[2.5rem] bg-info/100/5 border border-info/10 hover:bg-info/100/10 transition-all duration-300">
-                        <div className="h-16 w-16 rounded-2xl bg-info/100/20 flex items-center justify-center text-info shadow-lg shadow-blue-500/10 group-hover:rotate-6 transition-transform">
+                    <div className="group space-y-6 p-8 rounded-[2.5rem] bg-info/10 border border-info/10 hover:bg-info/10 transition-all duration-300">
+                        <div className="h-16 w-16 rounded-2xl bg-info/10 flex items-center justify-center text-info shadow-lg shadow-blue-500/10 group-hover:rotate-6 transition-transform">
                             <Calendar size={32} />
                         </div>
                         <div className="space-y-2">

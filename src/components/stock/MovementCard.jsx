@@ -16,8 +16,8 @@ export const MovementTypeBadge = ({ type }) => {
     const variants = {
         'IN': { variant: "default", label: 'إدخال (شراء)', className: "bg-success/10 text-success border-success/20", icon: TrendingUp },
         'OUT': { variant: "destructive", label: 'إخراج', className: "bg-destructive/10 text-destructive border-destructive/20", icon: TrendingDown },
-        'TRANSFER_TO_SHOP': { variant: "secondary", label: 'تحويل للمحل', className: "bg-info/100/10 text-info border-info/20", icon: ArrowLeftRight },
-        'TRANSFER_TO_WAREHOUSE': { variant: "outline", label: 'إرجاع للمخزن', className: "bg-info/100/10 text-info border-info/20", icon: ArrowLeftRight },
+        'TRANSFER_TO_SHOP': { variant: "secondary", label: 'تحويل للمحل', className: "bg-info/10 text-info border-info/20", icon: ArrowLeftRight },
+        'TRANSFER_TO_WAREHOUSE': { variant: "outline", label: 'إرجاع للمخزن', className: "bg-info/10 text-info border-info/20", icon: ArrowLeftRight },
         'ADJUST': { variant: "outline", label: 'تسوية جردية', className: "bg-warning/10 text-warning border-warning/20", icon: Layers },
     };
 

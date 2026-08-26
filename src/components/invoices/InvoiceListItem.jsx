@@ -28,22 +28,22 @@ export const InvoiceListItem = memo(function InvoiceListItem({ invoice, onDelete
                 return {
                     label: 'دفع بنكي',
                     icon: Landmark,
-                    color: "bg-info/100/5 text-info border-info/20 shadow-blue-500/5",
-                    accent: "bg-info/100"
+                    color: "bg-info/10 text-info border-info/20 shadow-blue-500/5",
+                    accent: "bg-info/10"
                 };
             case 'wallet':
                 return {
                     label: 'محفظة',
                     icon: Wallet,
-                    color: "bg-info/100/5 text-info border-info/20 shadow-purple-500/5",
-                    accent: "bg-info/100"
+                    color: "bg-info/10 text-info border-info/20 shadow-purple-500/5",
+                    accent: "bg-info/10"
                 };
             case 'check':
                 return {
                     label: 'شيك',
                     icon: Ticket,
-                    color: "bg-info/100/5 text-info border-info/20 shadow-indigo-500/5",
-                    accent: "bg-info/100"
+                    color: "bg-info/10 text-info border-info/20 shadow-indigo-500/5",
+                    accent: "bg-info/10"
                 };
             case 'credit':
                 return {

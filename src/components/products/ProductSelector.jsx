@@ -162,7 +162,7 @@ export function ProductSelector({
                                                             {shopQty}
                                                         </Badge>
                                                         <Badge variant="outline" className={cn(
-                                                            "bg-info/100/10 text-info border-info/30 flex items-center gap-1",
+                                                            "bg-info/10 text-info border-info/30 flex items-center gap-1",
                                                             warehouseQty <= 0 && "opacity-50 grayscale"
                                                         )}>
                                                             <Warehouse className="w-3 h-3" />

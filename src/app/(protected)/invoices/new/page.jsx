@@ -206,7 +206,7 @@ export default function NewInvoicePage() {
                         className={cn(
                             "px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2",
                             defaultSource === 'warehouse'
-                                ? "bg-info/100/10 text-info shadow-sm"
+                                ? "bg-info/10 text-info shadow-sm"
                                 : "text-muted-foreground hover:bg-white/5"
                         )}
                     >

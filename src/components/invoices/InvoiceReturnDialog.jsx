@@ -185,13 +185,13 @@ export function InvoiceReturnDialog({ invoice, open, onOpenChange, returnItems, 
                                                     className={cn(
                                                         "flex flex-col items-center gap-2 p-3 rounded-2xl border-2 transition-all group/btn",
                                                         refundMethod === 'customerBalance'
-                                                            ? "bg-info/100/10 border-info/50 text-info"
+                                                            ? "bg-info/10 border-info/50 text-info"
                                                             : "bg-white/20 border-transparent text-muted-foreground hover:bg-white/5 hover:border-white/10"
                                                     )}
                                                 >
                                                     <div className={cn(
                                                         "p-2 rounded-xl transition-all",
-                                                        refundMethod === 'customerBalance' ? "bg-info/100 text-white" : "bg-white/5 group-hover/btn:bg-white/10"
+                                                        refundMethod === 'customerBalance' ? "bg-info/10 text-white" : "bg-white/5 group-hover/btn:bg-white/10"
                                                     )}>
                                                         <Wallet size={16} />
                                                     </div>

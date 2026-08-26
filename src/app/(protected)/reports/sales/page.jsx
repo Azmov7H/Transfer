@@ -58,10 +58,6 @@ export default function SalesReportPage() {
     return (
         <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
-            <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-                <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-success/10 rounded-full blur-[120px] animate-pulse delay-700" />
-            </div>
 
             {/* Header Section */}
             <PageHeader
@@ -147,7 +143,7 @@ export default function SalesReportPage() {
                         </div>
                         <div className="flex justify-between items-center group/item p-2 rounded-xl transition-colors hover:bg-white/5">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 bg-info/100/10 rounded-lg">
+                                <div className="p-2 bg-info/10 rounded-lg">
                                     <CreditCard size={14} className="text-info" />
                                 </div>
                                 <span className="text-xs font-black opacity-60">آجل</span>
@@ -160,7 +156,7 @@ export default function SalesReportPage() {
                                 style={{ width: `${stats.totalRevenue ? (totalCash / stats.totalRevenue) * 100 : 0}%` }}
                             />
                             <div
-                                className="h-full bg-info/100 transition-all duration-[1500ms]"
+                                className="h-full bg-info/10 transition-all duration-[1500ms]"
                                 style={{ width: `${stats.totalRevenue ? (totalCredit / stats.totalRevenue) * 100 : 0}%` }}
                             />
                         </div>

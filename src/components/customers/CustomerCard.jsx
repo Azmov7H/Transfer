@@ -88,8 +88,8 @@ export const CustomerCard = React.memo(({
                     variant="outline"
                     className={cn(
                         "shrink-0 font-black py-1 px-2.5 rounded-xl border text-xs uppercase tracking-widest",
-                        customer.priceType === 'wholesale' && "bg-info/100/10 text-info border-info/20",
-                        customer.priceType === 'special' && "bg-info/100/10 text-info border-info/20",
+                        customer.priceType === 'wholesale' && "bg-info/10 text-info border-info/20",
+                        customer.priceType === 'special' && "bg-info/10 text-info border-info/20",
                         customer.priceType === 'retail' && "bg-success/10 text-success border-success/20"
                     )}
                 >
@@ -145,7 +145,7 @@ export const CustomerCard = React.memo(({
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-11 w-11 rounded-xl bg-white/5 hover:bg-info/100/20 hover:text-info text-white/40 border border-white/5 transition-all"
+                        className="h-11 w-11 rounded-xl bg-white/5 hover:bg-info/10 hover:text-info text-white/40 border border-white/5 transition-all"
                         onClick={(e) => { e.stopPropagation(); router.push(`/receivables?customerId=${customer._id}`); }}
                         aria-label="عرض المستحقات"
                         title="المستحقات"

@@ -158,7 +158,7 @@ export function JournalEntriesTab({ filters }) {
                                         </div>
                                         <div className="flex flex-wrap gap-x-8 gap-y-2">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-info/100 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+                                                <div className="w-1.5 h-1.5 rounded-full bg-info/10 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
                                                 <span className="text-xs font-bold text-white/40 tracking-tight">{entry.debitAccount}</span>
                                             </div>
                                             <div className="flex items-center gap-2">
