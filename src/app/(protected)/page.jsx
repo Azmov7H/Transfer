@@ -1,91 +1,81 @@
 'use client';
 
 import { useDashboard } from '@/hooks/useDashboard';
+import { useDebtOverview } from '@/hooks/useFinancial';
 import {
     TrendingUp, DollarSign, Package,
-    AlertTriangle, ShoppingCart, Users
-    , ArrowUpRight, Wallet, Activity,
+    AlertTriangle, ShoppingCart,
+    ArrowUpRight, Wallet, Activity,
     Box, FileText, RefreshCcw,
-
+    Plus
 } from 'lucide-react';
 import Link from 'next/link';
 import { KPICard } from '@/components/dashboard/KPICard';
 import { RevenueChart } from '@/components/dashboard/RevenueChart';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/utils';
+import { EmptyState } from '@/components/common/EmptyState';
 import { format } from 'date-fns';
 
 export default function DashboardPage() {
     const {
         kpis,
-
         recentActivity,
         lowStockProducts,
-
         chartData,
-
         strategy,
         isLoading,
         refetch
     } = useDashboard();
 
+    const { data: debtOverview } = useDebtOverview();
+    const overdueAmount = debtOverview?.receivables?.overdue || 0;
+
     if (isLoading) return <DashboardSkeleton />;
 
+    const attentionItems = [
+        ...(overdueAmount > 0 ? [{
+            key: 'overdue',
+            severity: 'destructive',
+            icon: AlertTriangle,
+            label: 'ديون متأخرة',
+            value: `${overdueAmount.toLocaleString()} ج.م`,
+            href: '/financial/debt-center'
+        }] : []),
+        ...lowStockProducts.slice(0, 5).map((p) => ({
+            key: p._id,
+            severity: 'warning',
+            icon: Package,
+            label: p.name,
+            value: `المتبقي: ${p.stockQty}`,
+            href: '/products'
+        }))
+    ];
+
     return (
-        <div className="space-y-8 animate-fade-in" dir="rtl">
-            {/* Header Section */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div>
-                    <h1 className="text-4xl font-black tracking-tight flex items-center gap-3 text-gradient-primary">
-                        <Activity className="w-10 h-10" />
-                        نظرة استراتيجية
-                    </h1>
-                    <p className="text-muted-foreground font-medium mt-2">تحليل ذكي لأداء متجرك وقرارات مدعومة بالبيانات</p>
-                </div>
-                <div className="flex items-center gap-3">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        aria-label="تحديث البيانات"
-                        className="rounded-full w-12 h-12 bg-card border border-border hover:bg-muted transition-all"
-                        onClick={() => refetch()}
-                    >
-                        <RefreshCcw className="w-5 h-5" />
-                    </Button>
-                </div>
-            </div>
+        <div className="space-y-6 animate-fade-in" dir="rtl">
+            {/* Header */}
+            <PageHeader
+                title="لوحة التحكم"
+                subtitle={`نظرة على أداء اليوم — ${format(new Date(), 'EEEE d MMMM yyyy')}`}
+                actions={
+                    <>
+                        <Button variant="outline" size="icon" aria-label="تحديث البيانات" onClick={() => refetch()}>
+                            <RefreshCcw className="w-4 h-4" />
+                        </Button>
+                        <Button asChild>
+                            <Link href="/invoices/new">
+                                <Plus className="w-4 h-4 ml-2" />
+                                فاتورة جديدة
+                            </Link>
+                        </Button>
+                    </>
+                }
+            />
 
-            {/* Quick Actions Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
-                    { label: 'فاتورة جديدة', icon: ShoppingCart, href: '/invoices/new', color: 'primary' },
-                    { label: 'إضافة منتج', icon: Package, href: '/products', color: 'success' },
-                    { label: 'سجل المبيعات', icon: FileText, href: '/reports/sales', color: 'secondary' },
-                    { label: 'العملاء', icon: Users, href: '/customers', color: 'warning' },
-                ].map((action, i) => (
-                    <Link
-                        key={i}
-                        href={action.href}
-                        className="bg-card hover:bg-accent p-4 rounded-2xl flex flex-col items-center justify-center gap-3 text-center transition-all group border border-border hover:shadow-md cursor-pointer hover:-translate-y-1"
-                    >
-                        <div className={cn(
-                            "w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:rotate-12",
-                            action.color === 'primary' ? 'bg-primary/10 text-primary' :
-                                action.color === 'success' ? 'bg-success/10 text-success' :
-                                    action.color === 'secondary' ? 'bg-info/100/10 text-info' :
-                                        'bg-warning/10 text-warning'
-                        )}>
-                            <action.icon className="w-6 h-6" />
-                        </div>
-                        <span className="font-bold text-sm">{action.label}</span>
-                    </Link>
-                ))}
-            </div>
-
-            {/* KPI Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* KPI Strip */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 <KPICard
                     title="مبيعات اليوم"
                     value={kpis.todaySales?.toLocaleString() || 0}
@@ -118,107 +108,105 @@ export default function DashboardPage() {
                 />
             </div>
 
-            {/* Middle Section: Chart & Strategic Suggestions */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-8">
-                    <RevenueChart data={chartData} />
+            {/* Needs Attention */}
+            <section aria-label="يحتاج انتباهك" className="rounded-xl border border-border bg-card">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                    <h2 className="text-lg font-semibold flex items-center gap-2">
+                        <AlertTriangle className="w-5 h-5 text-warning" />
+                        يحتاج انتباهك
+                    </h2>
+                    {attentionItems.length > 0 && (
+                        <Badge variant="outline">{attentionItems.length}</Badge>
+                    )}
+                </div>
+                {attentionItems.length === 0 ? (
+                    <EmptyState
+                        title="لا يوجد ما يستدعي الانتباه"
+                        hint="الديون والمخزون في حالة جيدة"
+                    />
+                ) : (
+                    <ul className="divide-y divide-border">
+                        {attentionItems.map((item) => (
+                            <li key={item.key}>
+                                <Link
+                                    href={item.href}
+                                    className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-muted/40 transition-colors"
+                                >
+                                    <span className="flex items-center gap-3 min-w-0">
+                                        <item.icon className={`w-4 h-4 shrink-0 ${item.severity === 'destructive' ? 'text-destructive' : 'text-warning'}`} />
+                                        <span className="text-sm font-medium truncate">{item.label}</span>
+                                    </span>
+                                    <span className={`text-sm tabular-nums shrink-0 font-medium ${item.severity === 'destructive' ? 'text-destructive' : 'text-warning'}`}>
+                                        {item.value}
+                                    </span>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </section>
 
-                    {/* Strategic Suggestions */}
-                    <div className="space-y-4">
-                        <h2 className="text-xl font-black flex items-center gap-2 px-1">
-                            <Activity className="text-primary w-5 h-5" />
-                            توصيات ذكية
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {strategy.suggestions.map((s, i) => (
-                                <Card key={i} className="bg-card border-border hover:bg-accent/30 transition-all group overflow-hidden">
-                                    <div className="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition-opacity">
-                                        <TrendingUp className="w-16 h-16 text-primary" />
-                                    </div>
-                                    <CardHeader className="pb-2">
-                                        <div className="flex justify-between items-start">
-                                            <CardTitle className="text-lg font-black">{s.title}</CardTitle>
-                                            <Badge variant={s.impact === 'عالي' ? 'destructive' : 'secondary'} className="rounded-lg px-2 py-0.5">
-                                                أثر {s.impact}
-                                            </Badge>
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-sm text-muted-foreground font-medium leading-relaxed">{s.desc}</p>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
+            {/* Chart + Recent Sales */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                    <RevenueChart data={chartData} />
                 </div>
 
-                {/* Right Column: Inventory & Recent Sales */}
-                <div className="space-y-8">
-                    {/* Inventory Alerts */}
-                    <Card className="bg-card border-border shadow-md relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-1 h-full bg-warning" />
-                        <CardHeader>
-                            <CardTitle className="text-xl font-black flex items-center gap-2">
-                                <AlertTriangle className="text-warning w-6 h-6" />
-                                تنبيهات المخزون
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            {lowStockProducts.map((product) => (
-                                <div key={product._id} className="flex items-center justify-between p-4 rounded-xl bg-muted/50 border border-border hover:bg-muted transition-colors">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center text-warning">
-                                            <Package className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-bold truncate max-w-[120px]">{product.name}</p>
-                                            <p className="text-xs text-warning font-bold">المتبقي: {product.stockQty}</p>
-                                        </div>
-                                    </div>
-                                    <Button size="sm" variant="outline" className="h-8 text-xs font-bold border-warning/20 hover:bg-warning/10 text-warning">
-                                        طلب
-                                    </Button>
-                                </div>
-                            ))}
-                            {lowStockProducts.length === 0 && (
-                                <div className="text-center py-6 text-sm font-medium text-success flex flex-col items-center gap-2">
-                                    <div className="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center">✨</div>
-                                    مخزونك في حالة ممتازة
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
-
-                    {/* Recent Invoices Mini-List */}
-                    <Card className="bg-card border-border shadow-md">
-                        <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle className="text-xl font-black">آخر المبيعات</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-4">
-                                {recentActivity.slice(0, 4).map((invoice, i) => (
-                                    <div key={invoice._id} className="flex items-center justify-between group">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary transition-transform">
-                                                <ShoppingCart className="w-4 h-4" />
-                                            </div>
-                                            <div>
-                                                <p className="text-sm font-bold truncate max-w-[100px]">#{invoice.number}</p>
-                                                <p className="text-xs text-muted-foreground">{format(new Date(invoice.date), 'hh:mm a')}</p>
-                                            </div>
-                                        </div>
-                                        <div className="text-left">
-                                            <p className="font-black text-sm">{invoice.total?.toLocaleString()} ج.م</p>
-                                        </div>
-                                    </div>
+                <div className="space-y-6">
+                    {/* Smart Suggestions (collapsed by default) */}
+                    {strategy.suggestions.length > 0 && (
+                        <details className="rounded-xl border border-border bg-card">
+                            <summary className="cursor-pointer select-none px-4 py-3 text-base font-semibold flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+                                <Activity className="w-4 h-4 text-primary" />
+                                توصيات ذكية ({strategy.suggestions.length})
+                            </summary>
+                            <ul className="px-4 pb-4 space-y-3 border-t border-border pt-3">
+                                {strategy.suggestions.map((s, i) => (
+                                    <li key={i} className="flex items-start justify-between gap-2">
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
+                                            <span className="font-semibold text-foreground">{s.title}: </span>
+                                            {s.desc}
+                                        </p>
+                                        <Badge variant={s.impact === 'عالي' ? 'destructive' : 'secondary'}>أثر {s.impact}</Badge>
+                                    </li>
                                 ))}
-                            </div>
-                            <Button variant="ghost" className="w-full mt-6 rounded-xl font-bold hover:bg-primary/10 hover:text-primary gap-2">
-                                عرض كل الفواتير
-                                <ArrowUpRight className="w-4 h-4" />
+                            </ul>
+                        </details>
+                    )}
+
+                    {/* Recent Invoices */}
+                    <div className="rounded-xl border border-border bg-card">
+                        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                            <h2 className="text-lg font-semibold">آخر المبيعات</h2>
+                            <Button asChild variant="ghost" size="sm" className="gap-1">
+                                <Link href="/invoices">
+                                    عرض الكل
+                                    <ArrowUpRight className="w-4 h-4" />
+                                </Link>
                             </Button>
-                        </CardContent>
-                    </Card>
+                        </div>
+                        <ul className="divide-y divide-border">
+                            {recentActivity.slice(0, 5).map((invoice) => (
+                                <li key={invoice._id}>
+                                    <Link
+                                        href={`/invoices/${invoice._id}`}
+                                        className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-muted/40 transition-colors"
+                                    >
+                                        <span className="flex items-center gap-3 min-w-0">
+                                            <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                                                <ShoppingCart className="w-4 h-4" />
+                                            </span>
+                                            <span className="min-w-0">
+                                                <span className="block text-sm font-medium truncate">#{invoice.number}</span>
+                                                <span className="block text-xs text-muted-foreground">{format(new Date(invoice.date), 'hh:mm a')}</span>
+                                            </span>
+                                        </span>
+                                        <span className="text-sm font-semibold tabular-nums shrink-0">{invoice.total?.toLocaleString()} ج.م</span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -227,15 +215,14 @@ export default function DashboardPage() {
 
 function DashboardSkeleton() {
     return (
-        <div className="space-y-8 p-6 animate-pulse" dir="rtl">
-            <div className="h-10 w-48 bg-muted rounded-xl mb-4" />
+        <div className="space-y-6 animate-pulse" dir="rtl">
+            <div className="h-10 w-48 bg-muted rounded-lg mb-4" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[1, 2, 3, 4].map(i => <div key={i} className="h-32 bg-muted rounded-xl" />)}
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
-                <div className="lg:col-span-2 space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                <div className="lg:col-span-2 space-y-6">
                     <div className="h-48 bg-muted rounded-xl" />
-                    <div className="h-96 bg-muted rounded-xl" />
                 </div>
                 <div className="h-96 bg-muted rounded-xl" />
             </div>
