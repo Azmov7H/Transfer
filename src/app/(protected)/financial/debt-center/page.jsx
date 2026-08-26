@@ -18,9 +18,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DebtorTable } from '@/components/financial/DebtorTable';
 import { DebtTable } from '@/components/financial/DebtTable';
-import { PaymentDialog } from '@/components/financial/PaymentDialog';
+import { UnifiedPaymentDialog } from '@/components/financial/PaymentDialog';
 import { InstallmentDialog } from '@/components/financial/InstallmentDialog';
-import { UnifiedPaymentDialog } from '@/components/financial/UnifiedPaymentDialog';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { StatCard } from '@/components/ui/StatCard';
 import { cn } from '@/utils';
@@ -188,10 +187,10 @@ export default function DebtCenterPage() {
                 </TabsContent>
             </Tabs>
 
-            <PaymentDialog
+            <UnifiedPaymentDialog
                 open={isPaymentOpen}
                 onOpenChange={setIsPaymentOpen}
-                debt={selectedDebt}
+                target={{ kind: 'debt', debt: selectedDebt }}
             />
 
             <InstallmentDialog
@@ -203,9 +202,7 @@ export default function DebtCenterPage() {
             <UnifiedPaymentDialog
                 open={isUnifiedOpen}
                 onOpenChange={setIsUnifiedOpen}
-                customerId={selectedDebtor?.id}
-                customerName={selectedDebtor?.name}
-                totalBalance={selectedDebtor?.balance}
+                target={{ kind: 'customer-total', customerId: selectedDebtor?.id, customerName: selectedDebtor?.name, totalBalance: selectedDebtor?.balance }}
             />
         </div>
     );

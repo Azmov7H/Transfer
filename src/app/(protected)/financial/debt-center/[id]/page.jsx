@@ -17,7 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formatCurrency, formatDate } from '@/utils';
-import { PaymentDialog } from '@/components/financial/PaymentDialog';
+import { UnifiedPaymentDialog } from '@/components/financial/PaymentDialog';
 import { useDebtInstallments } from '@/hooks/useFinancial';
 import { getDebts, getDebtPayments } from '@/services/financeService';
 import { useState, useEffect } from 'react';
@@ -262,11 +262,10 @@ export default function DebtDetailPage({ params }) {
                 </div>
             </div>
 
-            <PaymentDialog
+            <UnifiedPaymentDialog
                 open={isPaymentOpen}
                 onOpenChange={setIsPaymentOpen}
-                debt={debt}
-                targetInstallmentId={searchParams.get('installmentId')}
+                target={{ kind: 'debt', debt: debt, targetInstallmentId: searchParams.get('installmentId') }}
             />
         </div>
     );
