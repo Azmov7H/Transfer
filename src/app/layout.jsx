@@ -1,7 +1,6 @@
 import './globals.css';
 import QueryProvider from '@/providers/QueryProvider';
 import { Cairo } from 'next/font/google';
-import { LazyNotificationCenter } from '@/components/notifications/LazyNotificationCenter';
 
 const cairo = Cairo({
   subsets: ['arabic'],
@@ -24,7 +23,6 @@ export const metadata = {
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-import { NotificationProvider } from "@/context/NotificationContext";
 
 export default function RootLayout({ children }) {
   return (
@@ -37,11 +35,8 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <QueryProvider>
-            <NotificationProvider>
-              {children}
-              <LazyNotificationCenter />
-              <Toaster position="top-center" richColors />
-            </NotificationProvider>
+            {children}
+            <Toaster position="top-center" richColors />
           </QueryProvider>
         </ThemeProvider>
       </body>
