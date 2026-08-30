@@ -7,82 +7,71 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+    Tooltip,
+    TooltipTrigger,
+    TooltipContent,
+} from '@/components/ui/tooltip';
 import { toast } from 'sonner';
+import { buildCsv, downloadCsv } from '@/lib/exportCsv';
 
-export function ExportButton({ type, data = [], columns = [], pdfTitle = 'Report' }) {
+const SUPPORTED_TYPES = new Set([
+    'customers',
+    'suppliers',
+    'products',
+    'invoices',
+    'purchaseOrders',
+    'treasuryTransactions',
+]);
+
+export function ExportButton({ type, filters = {}, data = [], columns = [], pdfTitle = 'Report' }) {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleExcelExport = async () => {
         try {
             setIsLoading(true);
+
+            // Client-side variant for types the backend export endpoint
+            // doesn't support (e.g. users), still producing a CSV download.
+            if (data.length > 0 && columns.length > 0 && !SUPPORTED_TYPES.has(type)) {
+                const headers = columns.map(c => c.header);
+                const rows = data.map(item => columns.map(c => item[c.key] ?? ''));
+                downloadCsv(`${type}_export.csv`, buildCsv(rows, headers));
+                toast.success('تم تصدير ملف Excel بنجاح');
+                return;
+            }
+
             const res = await fetch('/api/export', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type, format: 'excel' })
+                body: JSON.stringify({ type, format: 'csv', filters })
             });
 
-            if (!res.ok) throw new Error('Export failed');
+            if (!res.ok) {
+                let message = 'حدث خطأ أثناء التصدير';
+                try {
+                    const err = await res.json();
+                    if (err?.message) message = err.message;
+                } catch { /* ignore parse errors */ }
+                throw new Error(message);
+            }
 
             const blob = await res.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${type}_report_${new Date().toISOString().split('T')[0]}.xlsx`;
+            a.download = `${type}_report_${new Date().toISOString().split('T')[0]}.csv`;
             document.body.appendChild(a);
             a.click();
             a.remove();
+            window.URL.revokeObjectURL(url);
             toast.success('تم تصدير ملف Excel بنجاح');
         } catch (err) {
             console.error(err);
-            toast.error('حدث خطأ أثناء التصدير');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handlePDFExport = async () => {
-        try {
-            setIsLoading(true);
-            // Heavy libs load on demand only (FE-PERF-001) — never in the route bundle.
-            const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
-                import('jspdf'),
-                import('jspdf-autotable'),
-            ]);
-            const doc = new jsPDF();
-
-            // Add Arabic Font support if needed (Client-side usually needs base64 font)
-            // For now, we use standard font or basic mapping. 
-            // Note: jsPDF default fonts don't support Arabic. 
-            // We needs a custom font. For MVP, we might see garbled text for Arabic.
-            // We will warn the user or try to use a compatible font if available in project.
-
-            doc.text(pdfTitle, 14, 22);
-
-            const tableColumn = columns.map(c => c.header);
-            const tableRows = [];
-
-            data.forEach(item => {
-                const rowData = columns.map(c => {
-                    // Access nested keys if 'key' is like 'user.name'
-                    return item[c.key] || '';
-                });
-                tableRows.push(rowData);
-            });
-
-            autoTable(doc, {
-                head: [tableColumn],
-                body: tableRows,
-                startY: 30,
-                styles: { font: 'helvetica' }, // Arabic needs custom font
-            });
-
-            doc.save(`${type}_report.pdf`);
-            toast.success('تم تصدير ملف PDF بنجاح');
-        } catch (err) {
-            console.error(err);
-            toast.error('حدث خطأ أثناء تصدير PDF');
+            toast.error(err.message || 'حدث خطأ أثناء التصدير');
         } finally {
             setIsLoading(false);
         }
@@ -99,12 +88,20 @@ export function ExportButton({ type, data = [], columns = [], pdfTitle = 'Report
             <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={handleExcelExport} className="gap-2 cursor-pointer">
                     <FileSpreadsheet className="w-4 h-4 text-success" />
-                    Excel (الكل)
+                    Excel / CSV
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handlePDFExport} className="gap-2 cursor-pointer">
-                    <FileText className="w-4 h-4 text-destructive" />
-                    PDF (الحالي)
-                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <DropdownMenuItem disabled className="gap-2 cursor-not-allowed">
+                            <FileText className="w-4 h-4 text-destructive" />
+                            PDF
+                        </DropdownMenuItem>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        تصدير PDF غير متاح حاليًا (النص العربي)
+                    </TooltipContent>
+                </Tooltip>
             </DropdownMenuContent>
         </DropdownMenu>
     );

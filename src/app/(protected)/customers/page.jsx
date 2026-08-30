@@ -30,6 +30,7 @@ import {
 } from '@/components/ui/pagination';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { ExportButton } from '@/components/common/ExportButton';
 
 export default function CustomersPage() {
     const router = useRouter();
@@ -179,6 +180,7 @@ export default function CustomersPage() {
                         </div>
 
                         <div className="flex items-center gap-3 flex-1 lg:flex-none">
+                            <ExportButton type="customers" filters={{ search }} />
                             <Button
                                 variant="outline"
                                 size="icon"

@@ -17,6 +17,7 @@ import { TreasuryStatsCards } from '@/components/financial/TreasuryStatsCards';
 import { TransactionsTable } from '@/components/financial/TransactionsTable';
 import { TransactionDetailsDialog } from '@/components/financial/TransactionDetailsDialog';
 import { AddTransactionDialog } from '@/components/financial/AddTransactionDialog';
+import { ExportButton } from '@/components/common/ExportButton';
 
 export default function FinancialPage() {
     const [period, setPeriod] = useState('TODAY'); // TODAY, MONTH, YEAR, CUSTOM
@@ -189,6 +190,13 @@ export default function FinancialPage() {
                     <Button asChild variant="outline" size="sm" className="h-8 text-xs">
                         <Link href="/reports/financial">التقارير المالية</Link>
                     </Button>
+                    <ExportButton
+                        type="treasuryTransactions"
+                        filters={{
+                            ...getDateRange(),
+                            type: typeFilter === 'ALL' ? undefined : typeFilter
+                        }}
+                    />
                 </nav>
 
                 {/* Period Filter */}

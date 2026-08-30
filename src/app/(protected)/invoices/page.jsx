@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/pagination';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Loader2, RefreshCw } from 'lucide-react';
+import { ExportButton } from '@/components/common/ExportButton';
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -108,12 +109,18 @@ export default function InvoicesPage() {
                             </div>
                         </div>
 
-                        <Link href="/invoices/new" className="flex-1 lg:flex-none">
+                        <div className="flex items-center gap-3">
+                            <ExportButton
+                                type="invoices"
+                                filters={{ paymentType: filterType === 'all' ? undefined : filterType }}
+                            />
+                            <Link href="/invoices/new" className="flex-1 lg:flex-none">
                             <Button className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 w-full lg:w-auto bg-primary text-primary-foreground">
                                 <Plus size={24} />
                                 فاتورة جديدة
                             </Button>
                         </Link>
+                        </div>
                     </>
                 }
             />

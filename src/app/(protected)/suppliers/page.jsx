@@ -24,6 +24,7 @@ import { toast } from 'sonner';
 import { SupplierDebtManager } from '@/components/suppliers/SupplierDebtManager';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { PartnerTransactionDialog } from '@/components/financial/PartnerTransactionDialog';
+import { ExportButton } from '@/components/common/ExportButton';
 
 export default function SuppliersPage() {
     const router = useRouter();
@@ -106,13 +107,16 @@ export default function SuppliersPage() {
                             </div>
                         </div>
 
-                        <Button
-                            onClick={() => { setSelectedSupplier(null); setIsAddOpen(true); }}
+                        <div className="flex items-center gap-3">
+                            <ExportButton type="suppliers" filters={{ search }} />
+                            <Button
+                                onClick={() => { setSelectedSupplier(null); setIsAddOpen(true); }}
                             className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 flex-1 lg:flex-none bg-primary text-primary-foreground"
                         >
                             <Plus size={24} />
                             إضافة مورد
                         </Button>
+                        </div>
                     </>
                 }
             />

@@ -31,6 +31,7 @@ import { ResponsiveTable } from '@/components/ui/responsive-table';
 import { ProductStatsCards } from '@/components/products/ProductStats';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { ExportButton } from '@/components/common/ExportButton';
 
 // Dynamic Imports for Heavy Dialogs
 const ProductFormDialog = dynamic(() => import('@/components/products/ProductFormDialog').then(mod => mod.ProductFormDialog), {
@@ -110,6 +111,7 @@ export default function ProductsPage() {
                         </div>
 
                         <div className="flex items-center gap-3 flex-1 lg:flex-none">
+                            <ExportButton type="products" filters={{ search }} />
                             <Button
                                 variant="outline"
                                 size="icon"
