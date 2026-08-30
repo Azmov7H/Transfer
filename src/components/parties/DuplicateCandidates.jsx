@@ -14,7 +14,8 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Link2, Loader2, Phone, FileDigit, Wallet } from 'lucide-react';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { Link2, Loader2, Phone, FileDigit, Wallet, Fingerprint } from 'lucide-react';
 
 function memberLabel(member) {
     const kind = member.kind === 'Customer' ? 'عميل' : 'مورد';
@@ -65,11 +66,22 @@ function CandidateGroup({ group, onLink, isLinking }) {
 
     const [sourceId, setSourceId] = useState(first?.id || '');
     const [targetId, setTargetId] = useState(firstOpposite?.id || '');
+    const [confirmOpen, setConfirmOpen] = useState(false);
 
     const sourceMember = members.find((m) => m.id === sourceId) || first;
     const sourceKind = sourceMember?.kind;
     const targetOptions = members.filter((m) => m.kind !== sourceKind);
     const canLink = Boolean(sourceKind && sourceId && targetId && sourceId !== targetId);
+
+    const sourceLabel = sourceMember ? memberLabel(sourceMember) : '';
+    const targetMember = members.find((m) => m.id === targetId);
+    const targetLabel = targetMember ? memberLabel(targetMember) : '';
+
+    // `group` carries no numeric confidence field; the matching basis is the
+    // shared data point already grouped by (name / phone / taxNumber → `group.key`).
+    const matchBasis = group?.key
+        ? String(group.key).trim()
+        : '';
 
     const handleSourceChange = (id) => {
         setSourceId(id);
@@ -85,11 +97,19 @@ function CandidateGroup({ group, onLink, isLinking }) {
     return (
         <Card>
             <CardHeader>
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
                     <CardTitle className="text-lg flex items-center gap-2">
                         <Link2 className="h-5 w-5 text-primary" /> مطابقة محتملة على &quot;{group.key}&quot;
                     </CardTitle>
-                    <Badge variant="secondary" className="font-bold">{members.length} أطراف</Badge>
+                    <div className="flex items-center gap-2">
+                        {matchBasis && (
+                            <Badge variant="secondary" className="font-bold gap-1 max-w-[16rem] truncate">
+                                <Fingerprint className="h-3.5 w-3.5 shrink-0" />
+                                <span className="truncate">أساس المطابقة: {matchBasis}</span>
+                            </Badge>
+                        )}
+                        <Badge variant="outline" className="font-bold">{members.length} أطراف</Badge>
+                    </div>
                 </div>
                 <CardDescription>بيانات متطابقة بين الأطراف — راجع يدويًا ثم اربط الطرفين لدمج أرصدتهما</CardDescription>
             </CardHeader>
@@ -130,7 +150,7 @@ function CandidateGroup({ group, onLink, isLinking }) {
                         </Select>
                     </div>
                     <Button
-                        onClick={handleConfirm}
+                        onClick={() => setConfirmOpen(true)}
                         disabled={!canLink || isLinking}
                         className="gap-2 rounded-xl font-bold"
                     >
@@ -139,6 +159,15 @@ function CandidateGroup({ group, onLink, isLinking }) {
                     </Button>
                 </div>
             </CardContent>
+            <ConfirmDialog
+                open={confirmOpen}
+                onOpenChange={setConfirmOpen}
+                title="تأكيد ربط الطرفين"
+                description={`سيتم دمج رصيد الطرفين: ${sourceLabel} و ${targetLabel}. هذا الإجراء يؤكد أن الطرفين هما نفس الكيان.`}
+                confirmLabel="تأكيد الربط"
+                pending={isLinking}
+                onConfirm={handleConfirm}
+            />
         </Card>
     );
 }

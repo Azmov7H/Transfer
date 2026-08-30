@@ -3,13 +3,17 @@
 // Keep in sync with the backend enum (be-Jammaz/models/TreasuryTransaction.js):
 //   cash | bank | wallet | check | adjustment | instapay
 
+import { Wallet, Landmark, Smartphone, Receipt, FileCheck, Scale } from 'lucide-react';
+
+// `icon`: lucide component for a distinct visual channel affordance (UX-002).
+// `color`: tailwind text/bg tokens reusing existing success/destructive/warning/primary semantics (UX-002, 06.7).
 export const PAYMENT_METHODS = [
-  { value: 'cash',       labelAr: 'نقدي',      labelEn: 'Cash',           channel: 'private_treasury', channelLabelAr: 'الخزينة الخاصة' },
-  { value: 'bank',       labelAr: 'تحويل بنكي', labelEn: 'Bank Transfer',  channel: 'bank',            channelLabelAr: 'البنك' },
-  { value: 'wallet',     labelAr: 'محفظة كاش',  labelEn: 'Cash Wallet',    channel: 'cash_wallet',      channelLabelAr: 'محفظة الكاش' },
-  { value: 'instapay',   labelAr: 'انستا باي',  labelEn: 'InstaPay',       channel: 'instapay',         channelLabelAr: 'انستا باي' },
-  { value: 'check',      labelAr: 'شيك',        labelEn: 'Check',          channel: 'check',            channelLabelAr: 'الشيكات' },
-  { value: 'adjustment', labelAr: 'تسوية',      labelEn: 'Adjustment',     channel: 'adjustment',       channelLabelAr: 'تسويات' },
+  { value: 'cash',       labelAr: 'نقدي',      labelEn: 'Cash',          channel: 'private_treasury', channelLabelAr: 'الخزينة الخاصة', icon: Wallet,     color: 'text-emerald-600' },
+  { value: 'bank',       labelAr: 'تحويل بنكي', labelEn: 'Bank Transfer',  channel: 'bank',           channelLabelAr: 'البنك',            icon: Landmark,   color: 'text-sky-600' },
+  { value: 'wallet',     labelAr: 'محفظة كاش',  labelEn: 'Cash Wallet',    channel: 'cash_wallet',     channelLabelAr: 'محفظة الكاش',      icon: Smartphone, color: 'text-violet-600' },
+  { value: 'instapay',   labelAr: 'انستا باي',  labelEn: 'InstaPay',      channel: 'instapay',        channelLabelAr: 'انستا باي',        icon: Receipt,    color: 'text-rose-600' },
+  { value: 'check',      labelAr: 'شيك',        labelEn: 'Check',          channel: 'check',           channelLabelAr: 'الشيكات',          icon: FileCheck,  color: 'text-amber-600' },
+  { value: 'adjustment', labelAr: 'تسوية',      labelEn: 'Adjustment',     channel: 'adjustment',      channelLabelAr: 'تسويات',           icon: Scale,      color: 'text-slate-500' },
 ];
 
 export const PAYMENT_METHOD_VALUES = PAYMENT_METHODS.map((m) => m.value);
@@ -39,11 +43,15 @@ export const isSourceNumberRequired = (method) =>
 export const getPaymentLabel = (value, locale = 'ar') =>
   (locale === 'en' ? PAYMENT_METHOD_LABELS_EN : PAYMENT_METHOD_LABELS_AR)[value] ?? value;
 
-// Mask a transfer source number for display (PII-friendly). Keeps head + last
-// 2 digits (e.g. `123****78`); blank/short values collapse to '****'.
+// Mask a transfer source number for display (PII-friendly, UX-005).
+// Shows `••••` + last 4 digits (e.g. `•••• 4821`); blank/short collapse accordingly.
 export const maskSource = (value) => {
   if (value == null || String(value).trim() === '') return '';
   const s = String(value).trim();
-  if (s.length <= 4) return '****';
-  return `${s.slice(0, 3)}****${s.slice(-2)}`;
+  if (s.length <= 4) return '••••';
+  return `•••• ${s.slice(-4)}`;
 };
+
+// Re-export lucide icon lookup so importers can pull a method's icon/color.
+export const getPaymentMethod = (value) =>
+  PAYMENT_METHODS.find((m) => m.value === value) ?? null;

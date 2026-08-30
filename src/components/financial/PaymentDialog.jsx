@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAddPayment, useCustomerTotalPayment, useDebtInstallments } from '@/hooks/useFinancial';
 import { formatCurrency } from '@/utils';
@@ -13,8 +12,9 @@ import { Loader2, Coins, Wallet } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { isSourceNumberRequired, PAYMENT_METHODS } from '@/lib/paymentMethods';
+import { isSourceNumberRequired } from '@/lib/paymentMethods';
 import { SourceNumberField } from '@/components/financial/SourceNumberField';
+import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
 
 /**
  * Single payment-collection dialog (UX-080).
@@ -282,16 +282,12 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
 
                     <div className="space-y-2">
                         <Label className="text-sm font-medium">طريقة السداد</Label>
-                        <Select value={method} onValueChange={setMethod}>
-                            <SelectTrigger className="h-11"><SelectValue /></SelectTrigger>
-                            <SelectContent>
-                                {PAYMENT_METHODS
-                                    .filter((m) => methodOptions.includes(m.value))
-                                    .map((m) => (
-                                        <SelectItem key={m.value} value={m.value}>{m.labelAr}</SelectItem>
-                                    ))}
-                            </SelectContent>
-                        </Select>
+                        <PaymentMethodSelect
+                            value={method}
+                            onValueChange={setMethod}
+                            methods={methodOptions}
+                            className="h-11"
+                        />
                     </div>
 
                     <SourceNumberField
@@ -299,6 +295,7 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
                         method={method}
                         value={sourceNumber}
                         onChange={setSourceNumber}
+                        autoFocus
                     />
 
                     <div className="space-y-2">

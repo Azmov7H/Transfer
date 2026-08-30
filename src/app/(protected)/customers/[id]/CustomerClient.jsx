@@ -136,10 +136,19 @@ export default function CustomerClient({ id }) {
                     <h1 className="text-3xl font-bold flex items-center gap-2">
                         {customer.name}
                         <Badge variant="outline">{customer.priceType === 'wholesale' ? 'تاجــر جملة' : customer.priceType === 'special' ? 'سعر خاص' : 'عميل قطاعي'}</Badge>
+                        {customer.isSupplier || customer.linkedSupplier
+                            ? <Badge variant="secondary" className="font-bold"><Link2 className="h-3.5 w-3.5" /> عميل + مورد</Badge>
+                            : <Badge variant="outline">عميل</Badge>}
                     </h1>
-                    <div className="flex gap-4 mt-2 text-muted-foreground">
+                    <div className="flex items-center gap-4 mt-2 text-muted-foreground">
                         <span className="flex items-center gap-1"><Phone className="w-4 h-4" /> {customer.phone || '-'}</span>
                         <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {customer.address || '-'}</span>
+                        <Button variant="outline" size="sm" asChild className="gap-2 rounded-lg font-bold">
+                            <Link href="/parties">
+                                <Link2 className="h-4 w-4" />
+                                {customer.isSupplier || customer.linkedSupplier ? 'إدارة دور المورد' : 'إضافة دور المورد'}
+                            </Link>
+                        </Button>
                     </div>
                 </div>
                 <div className="bg-muted p-4 rounded-lg flex flex-col items-center gap-2">

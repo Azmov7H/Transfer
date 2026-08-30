@@ -2,13 +2,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { TrendingUp, AlertTriangle } from 'lucide-react';
+import { TrendingUp, AlertTriangle, Receipt } from 'lucide-react';
 
 export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
     return (
         <>
                         <TooltipProvider>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-4">
                     {/* Total Balance Card */}
                     <Tooltip>
                         <TooltipTrigger asChild>
@@ -148,6 +148,26 @@ export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
                             </Card>
                         </TooltipTrigger>
                         <TooltipContent>صافي السيولة النقدية المحققة خلال الفترة</TooltipContent>
+                    </Tooltip>
+
+                    {/* InstaPay Balance */}
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Card className="border-none shadow-sm bg-info/10 dark:bg-info/20 cursor-help">
+                                <CardHeader className="pb-1 pt-4 px-4">
+                                    <CardTitle className="text-xs text-info dark:text-info flex items-center gap-1">
+                                        <Receipt size={12} />
+                                        انستا باي
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="px-4 pb-4">
+                                    <div className="text-xl font-bold text-info dark:text-info">
+                                        {(treasuryData?.breakdown?.instapay || 0).toLocaleString()}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </TooltipTrigger>
+                        <TooltipContent>انستا باي: إجمالي الرصيد في محفظة انستا باي</TooltipContent>
                     </Tooltip>
                 </div>
             </TooltipProvider>

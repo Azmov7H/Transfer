@@ -8,13 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { getCustomerById } from '@/services/customerService';
+import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
+import { SourceNumberField } from '@/components/financial/SourceNumberField';
 import {
     Search, Wallet, Loader2,
     Calendar, User, AlertCircle, CheckCircle2,
-    Banknote, CreditCard, Building2, TrendingDown,
+    TrendingDown,
     DollarSign, FileText
 } from 'lucide-react';
 import Link from 'next/link';
@@ -37,6 +38,7 @@ export default function ReceivablesPage() {
     const [paymentAmount, setPaymentAmount] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('cash');
     const [paymentNote, setPaymentNote] = useState('');
+    const [paymentSourceNumber, setPaymentSourceNumber] = useState('');
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
     // Fetch unpaid invoices
@@ -75,6 +77,7 @@ export default function ReceivablesPage() {
                     amount: parseFloat(paymentAmount),
                     method: paymentMethod,
                     note: paymentNote,
+                    sourceNumber: paymentSourceNumber,
                     type: 'receivable'
                 }),
             });
@@ -90,6 +93,7 @@ export default function ReceivablesPage() {
             setIsPaymentOpen(false);
             setPaymentAmount('');
             setPaymentNote('');
+            setPaymentSourceNumber('');
             setSelectedInvoice(null);
             invalidateAll();
 
@@ -387,16 +391,19 @@ export default function ReceivablesPage() {
 
                             <div className="space-y-2">
                                 <Label className="font-bold text-sm">طريقة الدفع</Label>
-                                <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                                    <SelectTrigger className="h-14 rounded-2xl bg-white/5 border-white/5 font-bold">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent className="rounded-2xl border-white/10 bg-secondary">
-                                        <SelectItem value="cash" className="font-bold"><span className="flex items-center gap-2"><Banknote className="h-4 w-4" /> نقداً (الخزينة)</span></SelectItem>
-                                        <SelectItem value="bank" className="font-bold"><span className="flex items-center gap-2"><Building2 className="h-4 w-4" /> تحويل بنكي</span></SelectItem>
-                                        <SelectItem value="check" className="font-bold"><span className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> شيك</span></SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                <PaymentMethodSelect
+                                    value={paymentMethod}
+                                    onValueChange={setPaymentMethod}
+                                    methods={['cash', 'bank', 'wallet', 'instapay', 'check']}
+                                    className="h-14 rounded-2xl bg-white/5 border-white/5 font-bold"
+                                />
+                                <SourceNumberField
+                                    id="receivable-source"
+                                    method={paymentMethod}
+                                    value={paymentSourceNumber}
+                                    onChange={setPaymentSourceNumber}
+                                    autoFocus
+                                />
                             </div>
 
                             <div className="space-y-2">

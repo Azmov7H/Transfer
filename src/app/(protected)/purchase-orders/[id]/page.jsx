@@ -9,8 +9,9 @@ import { useParams, useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
+import { SourceNumberField } from '@/components/financial/SourceNumberField';
 
 export default function PurchaseOrderInvoice() {
     const { id } = useParams();
@@ -190,55 +191,33 @@ export default function PurchaseOrderInvoice() {
                     <div className="py-4 space-y-4">
                         <div className="space-y-2">
                             <Label>طريقة الدفع للمورد</Label>
-                            <div className="flex gap-2">
+                            <div className="space-y-2">
+                                <PaymentMethodSelect
+                                    value={paymentType === 'credit' ? undefined : paymentType}
+                                    onValueChange={setPaymentType}
+                                    methods={['cash', 'bank', 'wallet', 'instapay']}
+                                    disabled={receiving || paymentType === 'credit'}
+                                    placeholder="اختر وسيلة الدفع"
+                                />
                                 <Button
-                                    variant={paymentType === 'cash' ? 'default' : 'outline'}
-                                    onClick={() => setPaymentType('cash')}
-                                    className="flex-1"
-                                >
-                                    نقدي (من الخزينة)
-                                </Button>
-                                <Button
-                                    variant={paymentType === 'bank' ? 'default' : 'outline'}
-                                    onClick={() => setPaymentType('bank')}
-                                    className="flex-1"
-                                >
-                                    تحويل بنكي
-                                </Button>
-                                <Button
+                                    type="button"
+                                    variant={paymentType === 'credit' ? 'default' : 'outline'}
                                     onClick={() => setPaymentType('credit')}
-                                    className="flex-1"
+                                    disabled={receiving}
+                                    className="w-full"
                                 >
                                     آجل (ذمم موردين)
                                 </Button>
-                                <Button
-                                    variant={paymentType === 'wallet' ? 'default' : 'outline'}
-                                    onClick={() => setPaymentType('wallet')}
-                                    className="flex-1"
-                                >
-                                    محفظة كاش
-                                </Button>
-                                <Button
-                                    variant={paymentType === 'instapay' ? 'default' : 'outline'}
-                                    onClick={() => setPaymentType('instapay')}
-                                    className="flex-1"
-                                >
-                                    انستا باي
-                                </Button>
                             </div>
                         </div>
-                        {(paymentType === 'instapay' || paymentType === 'wallet') && (
-                            <div className="space-y-2">
-                                <Label>رقم حساب التحويل *</Label>
-                                <Input
-                                    value={sourceNumber}
-                                    onChange={(e) => setSourceNumber(e.target.value)}
-                                    placeholder="مثال: IP-123456"
-                                    dir="ltr"
-                                    required
-                                />
-                            </div>
-                        )}
+                        <SourceNumberField
+                            autoFocus
+                            id="po-source"
+                            method={paymentType}
+                            value={sourceNumber}
+                            onChange={setSourceNumber}
+                            disabled={receiving}
+                        />
                         <div className="bg-muted50 p-3 rounded text-sm text-muted-foreground">
                             {paymentType === 'cash'
                                 ? 'سيتم خصم المبلغ من الخزينة وتسجيل قيد مصروفات.'
