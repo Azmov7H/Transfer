@@ -19,6 +19,7 @@ import { SmartCombobox } from '@/components/ui/smart-combobox';
 import { QuickAddProductDialog } from '@/components/products/QuickAddProductDialog';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { ExportButton } from '@/components/common/ExportButton';
+import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
 
 export default function PurchaseOrdersPage() {
     const searchParams = useSearchParams();
@@ -225,17 +226,22 @@ export default function PurchaseOrdersPage() {
                         </div>
                         <div>
                             <Label>طريقة الدفع</Label>
-                            <select
-                                className="w-full p-2 border rounded-md bg-background"
-                                value={paymentType}
-                                onChange={e => setPaymentType(e.target.value)}
+                            <PaymentMethodSelect
+                                value={paymentType === 'credit' ? undefined : paymentType}
+                                onValueChange={setPaymentType}
+                                methods={['cash', 'wallet', 'bank', 'check']}
+                                placeholder="اختر وسيلة الدفع"
+                            />
+                        </div>
+                        <div>
+                            <Button
+                                type="button"
+                                variant={paymentType === 'credit' ? 'default' : 'outline'}
+                                onClick={() => setPaymentType('credit')}
+                                className="w-full"
                             >
-                                <option value="cash">نقداً (كاش)</option>
-                                <option value="wallet">محفظة كاش</option>
-                                <option value="bank">تحويل بنكي</option>
-                                <option value="check">شيك مصرفي</option>
-                                <option value="credit">آجل (دين)</option>
-                            </select>
+                                آجل (دين)
+                            </Button>
                         </div>
                         <div className="bg-muted/30 p-4 rounded-lg space-y-3 border">
                             <h4 className="font-semibold text-sm">إضافة منتجات</h4>

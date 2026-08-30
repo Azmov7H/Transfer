@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Save, Printer, AlertTriangle, Loader2, Receipt, Banknote, Wallet, CreditCard, Calendar as CalendarIcon, Store, Warehouse, Landmark, Smartphone } from 'lucide-react';
+import { Save, Printer, AlertTriangle, Loader2, Wallet, CreditCard, Receipt, Calendar as CalendarIcon, Store, Warehouse } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils';
@@ -15,6 +15,8 @@ import { useCreateInvoice } from '@/hooks/useInvoices';
 import { InvoiceCustomerSelect } from '@/components/invoices/InvoiceCustomerSelect';
 import { InvoiceItemsManager } from '@/components/invoices/InvoiceItemsManager';
 import { useUnsavedGuard } from '@/hooks/useUnsavedGuard';
+import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
+import { SourceNumberField } from '@/components/financial/SourceNumberField';
 
 export default function NewInvoicePage() {
     const router = useRouter();
@@ -295,90 +297,28 @@ export default function NewInvoicePage() {
 
                         <div className="space-y-4">
                             <Label className="font-bold text-xs uppercase tracking-widest text-muted-foreground/60 mr-1">طريقة السداد</Label>
-                            <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+                            <div className="space-y-3">
+                                <PaymentMethodSelect
+                                    value={paymentType === 'credit' ? undefined : paymentType}
+                                    onValueChange={setPaymentType}
+                                    methods={['cash', 'bank', 'wallet', 'instapay', 'check']}
+                                    disabled={createInvoiceMutation.isPending || paymentType === 'credit'}
+                                    placeholder="اختر وسيلة الدفع"
+                                />
                                 <Button
-                                    variant={paymentType === 'cash' ? 'default' : 'outline'}
-                                    onClick={() => setPaymentType('cash')}
-                                    disabled={createInvoiceMutation.isPending}
-                                    className={cn(
-                                        "h-14 rounded-2xl font-bold transition-all border-2",
-                                        paymentType === 'cash'
-                                            ? "bg-success hover:bg-success shadow-lg shadow-success/20 border-success/50"
-                                            : "bg-white/5 border-white/5 hover:bg-white/10"
-                                    )}
-                                >
-                                    <Banknote className="ml-2 h-5 w-5" />
-                                    نقدي
-                                </Button>
-                                <Button
-                                    variant={paymentType === 'bank' ? 'default' : 'outline'}
-                                    onClick={() => setPaymentType('bank')}
-                                    disabled={createInvoiceMutation.isPending}
-                                    className={cn(
-                                        "h-14 rounded-2xl font-bold transition-all border-2",
-                                        paymentType === 'bank'
-                                            ? "bg-info hover:bg-info shadow-lg shadow-blue-500/20 border-info/50"
-                                            : "bg-white/5 border-white/5 hover:bg-white/10"
-                                    )}
-                                >
-                                    <Landmark className="ml-2 h-5 w-5" />
-                                    بنكي
-                                </Button>
-                                <Button
-                                    variant={paymentType === 'wallet' ? 'default' : 'outline'}
-                                    onClick={() => setPaymentType('wallet')}
-                                    disabled={createInvoiceMutation.isPending}
-                                    className={cn(
-                                        "h-14 rounded-2xl font-bold transition-all border-2",
-                                        paymentType === 'wallet'
-                                            ? "bg-info hover:bg-info shadow-lg shadow-purple-500/20 border-info/50"
-                                            : "bg-white/5 border-white/5 hover:bg-white/10"
-                                    )}
-                                >
-                                    <Wallet className="ml-2 h-5 w-5" />
-                                    محفظة
-                                </Button>
-                                <Button
-                                    variant={paymentType === 'instapay' ? 'default' : 'outline'}
-                                    onClick={() => setPaymentType('instapay')}
-                                    disabled={createInvoiceMutation.isPending}
-                                    className={cn(
-                                        "h-14 rounded-2xl font-bold transition-all border-2",
-                                        paymentType === 'instapay'
-                                            ? "bg-primary hover:bg-primary shadow-lg shadow-primary/20 border-primary/50"
-                                            : "bg-white/5 border-white/5 hover:bg-white/10"
-                                    )}
-                                >
-                                    <Smartphone className="ml-2 h-5 w-5" />
-                                    انستا باي
-                                </Button>
-                                <Button
-                                    variant={paymentType === 'check' ? 'default' : 'outline'}
-                                    onClick={() => setPaymentType('check')}
-                                    disabled={createInvoiceMutation.isPending}
-                                    className={cn(
-                                        "h-14 rounded-2xl font-bold transition-all border-2",
-                                        paymentType === 'check'
-                                            ? "bg-secondary hover:bg-secondary shadow-lg shadow-slate-500/20 border-border/50"
-                                            : "bg-white/5 border-white/5 hover:bg-white/10"
-                                    )}
-                                >
-                                    <Receipt className="ml-2 h-5 w-5" />
-                                    شيك
-                                </Button>
-                                <Button
+                                    type="button"
                                     variant={paymentType === 'credit' ? 'default' : 'outline'}
                                     onClick={() => setPaymentType('credit')}
                                     disabled={createInvoiceMutation.isPending}
                                     className={cn(
-                                        "h-14 rounded-2xl font-bold transition-all border-2",
+                                        "w-full h-14 rounded-2xl font-bold transition-all border-2",
                                         paymentType === 'credit'
                                             ? "bg-warning hover:bg-warning shadow-lg shadow-warning/20 border-warning/50"
                                             : "bg-white/5 border-white/5 hover:bg-white/10"
                                     )}
                                 >
                                     <CreditCard className="ml-2 h-5 w-5" />
-                                    آجل
+                                    آجل (دفع مؤجل)
                                 </Button>
                             </div>
                         </div>
@@ -403,23 +343,20 @@ export default function NewInvoicePage() {
                             </motion.div>
                         )}
 
-                        {(paymentType === 'instapay' || paymentType === 'wallet') && (
-                            <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                                className="space-y-3"
-                            >
-                                <Label className="font-bold text-xs uppercase tracking-widest text-muted-foreground/60 mr-1">رقم حساب التحويل *</Label>
-                                <Input
-                                    value={sourceNumber}
-                                    onChange={e => setSourceNumber(e.target.value)}
-                                    placeholder="مثال: IP-123456"
-                                    dir="ltr"
-                                    className="h-14 rounded-2xl bg-white/5 border-white/10 focus-visible:bg-white/10 font-bold transition-all"
-                                />
-                            </motion.div>
-                        )}
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="space-y-3"
+                        >
+                            <SourceNumberField
+                                autoFocus
+                                method={paymentType}
+                                value={sourceNumber}
+                                onChange={setSourceNumber}
+                                disabled={createInvoiceMutation.isPending}
+                            />
+                        </motion.div>
 
                         <div className="h-px bg-white/5 my-2"></div>
 

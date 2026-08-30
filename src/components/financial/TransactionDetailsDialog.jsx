@@ -7,14 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Info, User, Clock, Tag, ExternalLink, Eye, Wallet, ReceiptCent } from 'lucide-react';
-
-// SEC-PII-friendly: mask a transfer/source number shown in a details view.
-const maskSource = (s) => {
-    if (!s) return '';
-    const str = String(s);
-    if (str.length <= 4) return '****';
-    return `${str.slice(0, 2)}****${str.slice(-2)}`;
-};
+import { maskSource } from '@/lib/paymentMethods';
 
 export function TransactionDetailsDialog({ transaction, open, onOpenChange }) {
     const selectedTx = transaction;

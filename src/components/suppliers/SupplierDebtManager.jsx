@@ -33,6 +33,8 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { DebtEditDialog } from '../financial/DebtEditDialog';
+import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
+import { SourceNumberField } from '@/components/financial/SourceNumberField';
 
 export function SupplierDebtManager({ supplier, open, onOpenChange }) {
     const [view, setView] = useState('list'); // 'list', 'payment', 'schedule', 'details'
@@ -375,30 +377,21 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
 
                                 <div className="space-y-2">
                                     <Label>طريقة السداد</Label>
-                                    <select
-                                        className="w-full h-12 px-4 rounded-xl border bg-background font-bold"
+                                    <PaymentMethodSelect
                                         value={paymentMethod}
-                                        onChange={(e) => setPaymentMethod(e.target.value)}
-                                    >
-                                        <option value="cash">نقداً (الخزينة)</option>
-                                        <option value="wallet">محفظة كاش</option>
-                                        <option value="bank">تحويل بنكي</option>
-                                        <option value="check">شيك مصرفي</option>
-                                        <option value="instapay">انستا باي</option>
-                                    </select>
+                                        onValueChange={setPaymentMethod}
+                                        methods={['cash', 'wallet', 'bank', 'check', 'instapay']}
+                                        className="h-12 rounded-xl border bg-background font-bold"
+                                    />
                                 </div>
 
-                                {(paymentMethod === 'instapay' || paymentMethod === 'wallet') && (
-                                    <div className="space-y-2">
-                                        <Label>رقم حساب التحويل *</Label>
-                                        <Input
-                                            placeholder="مثال: IP-123456"
-                                            value={paymentSourceNumber}
-                                            onChange={(e) => setPaymentSourceNumber(e.target.value)}
-                                            dir="ltr"
-                                        />
-                                    </div>
-                                )}
+                                <SourceNumberField
+                                    autoFocus
+                                    id="supplier-source"
+                                    method={paymentMethod}
+                                    value={paymentSourceNumber}
+                                    onChange={setPaymentSourceNumber}
+                                />
 
                                 <div className="space-y-2">
                                     <Label>ملاحظات</Label>

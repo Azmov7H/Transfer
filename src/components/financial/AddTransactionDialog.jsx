@@ -6,8 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Minus } from 'lucide-react';
-import { PAYMENT_METHODS } from '@/lib/paymentMethods';
 import { SourceNumberField } from '@/components/financial/SourceNumberField';
+import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
 
 export function AddTransactionDialog({ open, onOpenChange, formData, setFormData, onSubmit, isPending, suppliers }) {
     return (
@@ -56,27 +56,18 @@ export function AddTransactionDialog({ open, onOpenChange, formData, setFormData
                     </div>
                     <div>
                         <Label>وسيلة الدفع / الاستلام</Label>
-                        <Select
+                        <PaymentMethodSelect
                             value={formData.method}
                             onValueChange={v => setFormData({ ...formData, method: v })}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder="اختر الوسيلة" />
-                            </SelectTrigger>
-                            <SelectContent dir="rtl">
-                                {PAYMENT_METHODS.map((m) => (
-                                    <SelectItem key={m.value} value={m.value}>
-                                        {m.labelAr}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                            placeholder="اختر الوسيلة"
+                        />
                     </div>
 
                     <SourceNumberField
                         method={formData.method}
                         value={formData.sourceNumber}
                         onChange={v => setFormData({ ...formData, sourceNumber: v })}
+                        autoFocus
                     />
 
                     {formData.type === 'EXPENSE' && (
