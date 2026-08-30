@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Info, Trash2, Eye, ReceiptCent } from 'lucide-react';
+import { getPaymentLabel, maskSource } from '@/lib/paymentMethods';
 
 export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange, onTxClick, onDelete, isDeleting }) {
     return (
@@ -124,8 +125,13 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                 </TableCell>
                                                 <TableCell>
                                                     <Badge variant="outline" className="text-xs bg-muted/30">
-                                                        {tx.method === 'bank' ? 'بنك' : tx.method === 'wallet' ? 'محفظة' : 'نقدي'}
+                                                        {getPaymentLabel(tx.method)}
                                                     </Badge>
+                                                    {maskSource(tx.sourceNumber) && (
+                                                        <div className="text-[11px] font-mono text-muted-foreground mt-0.5" dir="ltr">
+                                                            {maskSource(tx.sourceNumber)}
+                                                        </div>
+                                                    )}
                                                 </TableCell>
                                                 <TableCell className="hidden md:table-cell">
                                                     <div className="flex flex-col">

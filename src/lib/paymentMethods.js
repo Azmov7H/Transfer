@@ -38,3 +38,12 @@ export const isSourceNumberRequired = (method) =>
 
 export const getPaymentLabel = (value, locale = 'ar') =>
   (locale === 'en' ? PAYMENT_METHOD_LABELS_EN : PAYMENT_METHOD_LABELS_AR)[value] ?? value;
+
+// Mask a transfer source number for display (PII-friendly). Keeps head + last
+// 2 digits (e.g. `123****78`); blank/short values collapse to '****'.
+export const maskSource = (value) => {
+  if (value == null || String(value).trim() === '') return '';
+  const s = String(value).trim();
+  if (s.length <= 4) return '****';
+  return `${s.slice(0, 3)}****${s.slice(-2)}`;
+};
