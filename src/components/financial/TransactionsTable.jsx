@@ -9,8 +9,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Info, Trash2, Eye, ReceiptCent } from 'lucide-react';
 import { getPaymentLabel, maskSource } from '@/lib/paymentMethods';
+import { useUserRole } from '@/hooks/useUserRole';
+import { ROLES } from '@/lib/permissions';
 
 export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange, onTxClick, onDelete, isDeleting }) {
+    const { role } = useUserRole();
+    const canDelete = role === ROLES.OWNER;
     return (
         <>
                             <Card className="border shadow-sm">
@@ -183,7 +187,7 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                             </Link>
                                                         )}
 
-                                                        {tx.referenceType === 'Manual' && (
+                                                        {tx.referenceType === 'Manual' && canDelete && (
                                                             <Button
                                                                 variant="ghost"
                                                                 size="icon"
