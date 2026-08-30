@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,7 +15,8 @@ import {
     DialogFooter,
 } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Wallet, Loader2, Building2 } from 'lucide-react';
+import { Wallet, Loader2, Building2, Link2 } from 'lucide-react';
+import { getCustomers } from '@/services/customerService';
 
 export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialData, onSubmit, isPending }) {
     const [formData, setFormData] = useState({
@@ -26,11 +28,25 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
         paymentDay: 'None',
         supplyTerms: 0,
         openingBalance: '',
-        openingBalanceType: 'credit' // credit = we owe supplier (normal), debit = supplier owes us
+        openingBalanceType: 'credit', // credit = we owe supplier (normal), debit = supplier owes us
+        taxNumber: '',
+        isCustomer: false,
+        linkedCustomer: ''
     });
+
+    const { data: customersData, isLoading: customersLoading } = useQuery({
+        queryKey: ['customers', 'dialog', { limit: 100 }],
+        queryFn: ({ signal }) => getCustomers({ limit: 100 }, { signal }),
+        enabled: open
+    });
+    const customers = customersData?.customers || customersData?.data?.customers || customersData || [];
 
     useEffect(() => {
         if (mode === 'edit' && initialData) {
+            const linkedCustomer =
+                typeof initialData.linkedCustomer === 'object' && initialData.linkedCustomer !== null
+                    ? initialData.linkedCustomer._id || initialData.linkedCustomer.id || ''
+                    : initialData.linkedCustomer || '';
             setFormData({
                 name: initialData.name || '',
                 phone: initialData.phone || '',
@@ -38,7 +54,10 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
                 isActive: initialData.isActive !== undefined ? initialData.isActive : true,
                 financialTrackingEnabled: initialData.financialTrackingEnabled !== undefined ? initialData.financialTrackingEnabled : true,
                 paymentDay: initialData.paymentDay || 'None',
-                supplyTerms: initialData.supplyTerms || 0
+                supplyTerms: initialData.supplyTerms || 0,
+                taxNumber: initialData.taxNumber || '',
+                isCustomer: !!initialData.isCustomer,
+                linkedCustomer
             });
         } else if (mode === 'add' && open) {
             setFormData({
@@ -50,14 +69,21 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
                 paymentDay: 'None',
                 supplyTerms: 0,
                 openingBalance: '',
-                openingBalanceType: 'credit'
+                openingBalanceType: 'credit',
+                taxNumber: '',
+                isCustomer: false,
+                linkedCustomer: ''
             });
         }
     }, [mode, initialData, open]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit(formData);
+        onSubmit({
+            ...formData,
+            isCustomer: !!formData.isCustomer,
+            linkedCustomer: formData.isCustomer ? (formData.linkedCustomer || null) : null
+        });
     };
 
     return (
@@ -97,6 +123,16 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
                             className="h-12 rounded-xl bg-muted/30 border-white/10"
                             value={formData.address}
                             onChange={e => setFormData({ ...formData, address: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-xs font-bold mr-1">الرقم الضريبي <span className="font-normal text-muted-foreground">(اختياري)</span></Label>
+                        <Input
+                            className="h-12 rounded-xl bg-muted/30 border-white/10"
+                            value={formData.taxNumber}
+                            onChange={e => setFormData({ ...formData, taxNumber: e.target.value })}
+                            placeholder="الرقم الضريبي للسجل التجاري..."
                         />
                     </div>
 
@@ -188,6 +224,45 @@ export function SupplierFormDialog({ open, onOpenChange, mode = 'add', initialDa
                             </div>
                         </div>
                     )}
+
+                    <div className="bg-primary/5 p-5 rounded-2xl space-y-6 border border-primary/10">
+                        <h4 className="text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                            <Link2 size={14} /> إضافة كعميل / ربط بعميل
+                        </h4>
+
+                        <div className="flex items-center justify-between">
+                            <div className="space-y-0.5">
+                                <Label className="text-sm font-bold">هذا المورد عميل أيضًا</Label>
+                                <p className="text-xs text-muted-foreground">ربط المورد بعميل لتوحيد الأرصدة وحل التكرار</p>
+                            </div>
+                            <Switch
+                                checked={formData.isCustomer}
+                                onCheckedChange={checked => setFormData({ ...formData, isCustomer: checked })}
+                                className="data-[state=checked]:bg-primary"
+                            />
+                        </div>
+
+                        {formData.isCustomer && (
+                            <div className="space-y-2">
+                                <Label className="text-xs font-bold mr-1">العميل المرتبط</Label>
+                                <Select
+                                    value={formData.linkedCustomer}
+                                    onValueChange={val => setFormData({ ...formData, linkedCustomer: val })}
+                                >
+                                    <SelectTrigger className="h-11 rounded-xl bg-card border-white/10 text-xs">
+                                        <SelectValue placeholder={customersLoading ? 'جاري تحميل العملاء...' : 'اختر العميل لربطه...'} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {customers.map((c) => (
+                                            <SelectItem key={c._id} value={c._id}>
+                                                {c.name} {c.phone ? `(${c.phone})` : ''}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
+                    </div>
 
                     <DialogFooter className="gap-3 pt-4">
                         <Button

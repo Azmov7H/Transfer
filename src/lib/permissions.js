@@ -20,7 +20,8 @@ export const PERMISSIONS = {
         'transfers:manage',
         'users:manage',
         'activity:view',
-        'settings:manage'
+        'settings:manage',
+        'parties:manage'
     ],
     [ROLES.CASHIER]: [
         'dashboard:view',

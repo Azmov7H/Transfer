@@ -18,7 +18,8 @@ import {
     ChartPie,
     TrendingUp,
     History,
-    PackageX
+    PackageX,
+    Link2
 } from 'lucide-react';
 
 /**
@@ -58,6 +59,7 @@ export const navigationConfig = [
         items: [
             { name: 'الخزينة والحركات', href: '/financial', icon: Wallet, permission: 'financial:view' },
             { name: 'مركز الديون والمستحقات', href: '/financial/debt-center', icon: ShieldAlert, permission: 'financial:view' },
+            { name: 'الأطراف / التحقق من التكرار', href: '/parties', icon: Link2, permission: 'parties:manage' },
         ]
     },
     {
