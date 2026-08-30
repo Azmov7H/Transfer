@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Save, Printer, AlertTriangle, Loader2, Receipt, Banknote, Wallet, CreditCard, Calendar as CalendarIcon, Store, Warehouse, Landmark } from 'lucide-react';
+import { Save, Printer, AlertTriangle, Loader2, Receipt, Banknote, Wallet, CreditCard, Calendar as CalendarIcon, Store, Warehouse, Landmark, Smartphone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils';
@@ -33,6 +33,7 @@ export default function NewInvoicePage() {
     const [paymentType, setPaymentType] = useState('cash');
     const [dueDate, setDueDate] = useState('');
     const [shippingCompany, setShippingCompany] = useState('');
+    const [sourceNumber, setSourceNumber] = useState('');
 
     // Shortage Reporting
     const [shortageDialog, setShortageDialog] = useState({ open: false, product: null });
@@ -125,6 +126,11 @@ export default function NewInvoicePage() {
             return;
         }
 
+        if ((paymentType === 'instapay' || paymentType === 'wallet') && !sourceNumber.trim()) {
+            toast.error('رقم حساب التحويل مطلوب');
+            return;
+        }
+
         const invoiceData = {
             items,
             customerName: customerName || 'عميل نقدي',
@@ -132,7 +138,8 @@ export default function NewInvoicePage() {
             customerId: selectedCustomer?._id,
             paymentType,
             dueDate,
-            shippingCompany
+            shippingCompany,
+            sourceNumber
         };
 
         createInvoiceMutation.mutate(invoiceData, {
@@ -288,7 +295,7 @@ export default function NewInvoicePage() {
 
                         <div className="space-y-4">
                             <Label className="font-bold text-xs uppercase tracking-widest text-muted-foreground/60 mr-1">طريقة السداد</Label>
-                            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
                                 <Button
                                     variant={paymentType === 'cash' ? 'default' : 'outline'}
                                     onClick={() => setPaymentType('cash')}
@@ -330,6 +337,20 @@ export default function NewInvoicePage() {
                                 >
                                     <Wallet className="ml-2 h-5 w-5" />
                                     محفظة
+                                </Button>
+                                <Button
+                                    variant={paymentType === 'instapay' ? 'default' : 'outline'}
+                                    onClick={() => setPaymentType('instapay')}
+                                    disabled={createInvoiceMutation.isPending}
+                                    className={cn(
+                                        "h-14 rounded-2xl font-bold transition-all border-2",
+                                        paymentType === 'instapay'
+                                            ? "bg-primary hover:bg-primary shadow-lg shadow-primary/20 border-primary/50"
+                                            : "bg-white/5 border-white/5 hover:bg-white/10"
+                                    )}
+                                >
+                                    <Smartphone className="ml-2 h-5 w-5" />
+                                    انستا باي
                                 </Button>
                                 <Button
                                     variant={paymentType === 'check' ? 'default' : 'outline'}
@@ -379,6 +400,24 @@ export default function NewInvoicePage() {
                                         className="h-14 pr-12 rounded-2xl bg-white/5 border-white/10 focus-visible:bg-white/10 font-bold transition-all"
                                     />
                                 </div>
+                            </motion.div>
+                        )}
+
+                        {(paymentType === 'instapay' || paymentType === 'wallet') && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="space-y-3"
+                            >
+                                <Label className="font-bold text-xs uppercase tracking-widest text-muted-foreground/60 mr-1">رقم حساب التحويل *</Label>
+                                <Input
+                                    value={sourceNumber}
+                                    onChange={e => setSourceNumber(e.target.value)}
+                                    placeholder="مثال: IP-123456"
+                                    dir="ltr"
+                                    className="h-14 rounded-2xl bg-white/5 border-white/10 focus-visible:bg-white/10 font-bold transition-all"
+                                />
                             </motion.div>
                         )}
 

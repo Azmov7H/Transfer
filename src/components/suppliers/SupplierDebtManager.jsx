@@ -57,6 +57,7 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
     const [paymentAmount, setPaymentAmount] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('cash');
     const [paymentNote, setPaymentNote] = useState('');
+    const [paymentSourceNumber, setPaymentSourceNumber] = useState('');
 
     const [installmentsCount, setInstallmentsCount] = useState('3');
     const [interval, setInterval] = useState('monthly');
@@ -70,17 +71,24 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
     const handleRecordPayment = () => {
         if (!selectedDebt || !paymentAmount || Number(paymentAmount) <= 0) return;
 
+        if ((paymentMethod === 'instapay' || paymentMethod === 'wallet') && !paymentSourceNumber.trim()) {
+            toast.error('رقم حساب التحويل مطلوب');
+            return;
+        }
+
         recordPaymentMutation.mutate({
             debtId: selectedDebt._id,
             amount: Number(paymentAmount),
             method: paymentMethod,
-            notes: paymentNote
+            notes: paymentNote,
+            sourceNumber: paymentSourceNumber
         }, {
             onSuccess: () => {
                 toast.success('تم تسجيل الدفعة بنجاح');
                 setView('list');
                 setPaymentAmount('');
                 setPaymentNote('');
+                setPaymentSourceNumber('');
             },
             onError: (err) => {
                 toast.error(err.message || 'فشل تسجيل الدفعة');
@@ -376,8 +384,21 @@ export function SupplierDebtManager({ supplier, open, onOpenChange }) {
                                         <option value="wallet">محفظة كاش</option>
                                         <option value="bank">تحويل بنكي</option>
                                         <option value="check">شيك مصرفي</option>
+                                        <option value="instapay">انستا باي</option>
                                     </select>
                                 </div>
+
+                                {(paymentMethod === 'instapay' || paymentMethod === 'wallet') && (
+                                    <div className="space-y-2">
+                                        <Label>رقم حساب التحويل *</Label>
+                                        <Input
+                                            placeholder="مثال: IP-123456"
+                                            value={paymentSourceNumber}
+                                            onChange={(e) => setPaymentSourceNumber(e.target.value)}
+                                            dir="ltr"
+                                        />
+                                    </div>
+                                )}
 
                                 <div className="space-y-2">
                                     <Label>ملاحظات</Label>

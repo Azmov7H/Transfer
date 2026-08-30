@@ -9,6 +9,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
 export default function PurchaseOrderInvoice() {
@@ -18,10 +19,11 @@ export default function PurchaseOrderInvoice() {
     const { mutate: updateStatus, isPending: receiving } = useUpdatePOStatus();
     const [receiveDialog, setReceiveDialog] = useState(false);
     const [paymentType, setPaymentType] = useState('cash');
+    const [sourceNumber, setSourceNumber] = useState('');
 
     const handleReceive = () => {
         updateStatus(
-            { id, status: 'RECEIVED', paymentType },
+            { id, status: 'RECEIVED', paymentType, sourceNumber },
             {
                 onSuccess: () => {
                     setReceiveDialog(false);
@@ -86,7 +88,8 @@ export default function PurchaseOrderInvoice() {
                                             {
                                                 po.paymentType === 'cash' ? 'نقدي' :
                                                     po.paymentType === 'bank' ? 'تحويل بنكي' :
-                                                        po.paymentType === 'wallet' ? 'محفظة كاش' : 'آجل'
+                                                        po.paymentType === 'wallet' ? 'محفظة كاش' :
+                                                            po.paymentType === 'instapay' ? 'انستا باي' : 'آجل'
                                             }
                                         </Badge>
                                     </p>
@@ -215,8 +218,27 @@ export default function PurchaseOrderInvoice() {
                                 >
                                     محفظة كاش
                                 </Button>
+                                <Button
+                                    variant={paymentType === 'instapay' ? 'default' : 'outline'}
+                                    onClick={() => setPaymentType('instapay')}
+                                    className="flex-1"
+                                >
+                                    انستا باي
+                                </Button>
                             </div>
                         </div>
+                        {(paymentType === 'instapay' || paymentType === 'wallet') && (
+                            <div className="space-y-2">
+                                <Label>رقم حساب التحويل *</Label>
+                                <Input
+                                    value={sourceNumber}
+                                    onChange={(e) => setSourceNumber(e.target.value)}
+                                    placeholder="مثال: IP-123456"
+                                    dir="ltr"
+                                    required
+                                />
+                            </div>
+                        )}
                         <div className="bg-muted50 p-3 rounded text-sm text-muted-foreground">
                             {paymentType === 'cash'
                                 ? 'سيتم خصم المبلغ من الخزينة وتسجيل قيد مصروفات.'
@@ -224,12 +246,24 @@ export default function PurchaseOrderInvoice() {
                                     ? 'سيتم خصم المبلغ من المحفظة وتسجيل قيد مصروفات.'
                                     : paymentType === 'bank'
                                         ? 'سيتم تسجيل العملية بنكياً.'
-                                        : 'سيتم إضافة المبلغ لرصيد المورد وتسجيل قيد مستحقات.'}
+                                        : paymentType === 'instapay'
+                                            ? 'سيتم خصم المبلغ من انستا باي وتسجيل قيد مصروفات.'
+                                            : 'سيتم إضافة المبلغ لرصيد المورد وتسجيل قيد مستحقات.'}
                         </div>
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setReceiveDialog(false)}>إلغاء</Button>
-                        <Button onClick={handleReceive} disabled={receiving} className="bg-success hover:bg-success text-white">
+                        <Button
+                            onClick={() => {
+                                if ((paymentType === 'instapay' || paymentType === 'wallet') && !sourceNumber.trim()) {
+                                    toast.error('رقم حساب التحويل مطلوب');
+                                    return;
+                                }
+                                handleReceive();
+                            }}
+                            disabled={receiving}
+                            className="bg-success hover:bg-success text-white"
+                        >
                             {receiving ? <Loader2 className="animate-spin" /> : 'تأكيد الاستلام'}
                         </Button>
                     </DialogFooter>

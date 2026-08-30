@@ -41,7 +41,8 @@ export default function FinancialPage() {
         type: 'INCOME',
         category: 'other',
         supplierId: '',
-        method: 'cash'
+        method: 'cash',
+        sourceNumber: ''
     });
 
     const { data: suppliers } = useSuppliers({ limit: 100 });
@@ -92,7 +93,7 @@ export default function FinancialPage() {
             addPaymentApi(paymentData).then(() => {
                 queryClient.invalidateQueries({ queryKey: ['treasury'] });
                 setIsDialogOpen(false);
-                setFormData({ amount: '', description: '', type: 'INCOME', category: 'other', supplierId: '', method: 'cash' });
+                setFormData({ amount: '', description: '', type: 'INCOME', category: 'other', supplierId: '', method: 'cash', sourceNumber: '' });
             }).catch(err => {
                 console.error(err);
                 toast.error(err.message || 'فشل تسجيل الدفعة للمورد');
@@ -103,7 +104,7 @@ export default function FinancialPage() {
         addTransaction(formData, {
             onSuccess: () => {
                 setIsDialogOpen(false);
-                setFormData({ amount: '', description: '', type: 'INCOME', category: 'other', supplierId: '', method: 'cash' });
+                setFormData({ amount: '', description: '', type: 'INCOME', category: 'other', supplierId: '', method: 'cash', sourceNumber: '' });
             }
         });
     };

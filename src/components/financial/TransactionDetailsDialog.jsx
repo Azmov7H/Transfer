@@ -8,6 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Info, User, Clock, Tag, ExternalLink, Eye, Wallet, ReceiptCent } from 'lucide-react';
 
+// SEC-PII-friendly: mask a transfer/source number shown in a details view.
+const maskSource = (s) => {
+    if (!s) return '';
+    const str = String(s);
+    if (str.length <= 4) return '****';
+    return `${str.slice(0, 2)}****${str.slice(-2)}`;
+};
+
 export function TransactionDetailsDialog({ transaction, open, onOpenChange }) {
     const selectedTx = transaction;
     return (
@@ -73,10 +81,24 @@ export function TransactionDetailsDialog({ transaction, open, onOpenChange }) {
                                         <p className="text-sm font-medium text-muted-foreground">وسيلة المعاملة</p>
                                         <p className="text-base">
                                             {selectedTx.method === 'bank' ? 'تحويل بنكي' :
-                                                selectedTx.method === 'wallet' ? 'محفظة إلكترونية' : 'نقداً (كاش)'}
+                                                selectedTx.method === 'wallet' ? 'محفظة إلكترونية' :
+                                                    selectedTx.method === 'check' ? 'شيك' :
+                                                        selectedTx.method === 'instapay' ? 'انستا باي' : 'نقداً (كاش)'}
                                         </p>
                                     </div>
                                 </div>
+
+                                {selectedTx.sourceNumber && (
+                                    <div className="flex items-start gap-3">
+                                        <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                                            <Tag size={18} />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <p className="text-sm font-medium text-muted-foreground">رقم حساب التحويل</p>
+                                            <p className="text-base font-mono" dir="ltr">{maskSource(selectedTx.sourceNumber)}</p>
+                                        </div>
+                                    </div>
+                                )}
 
                                 {(selectedTx.referenceType === 'Invoice' || selectedTx.referenceType === 'PurchaseOrder' || selectedTx.referenceType === 'Debt') && (
                                     <div className="flex items-start gap-3">
