@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { isSourceNumberRequired, PAYMENT_METHODS } from '@/lib/paymentMethods';
+import { SourceNumberField } from '@/components/financial/SourceNumberField';
 
 /**
  * Single payment-collection dialog (UX-080).
@@ -293,19 +294,12 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
                         </Select>
                     </div>
 
-                    {isSourceNumberRequired(method) && (
-                        <div className="space-y-2">
-                            <Label htmlFor="payment-source" className="text-sm font-medium">رقم حساب التحويل *</Label>
-                            <Input
-                                id="payment-source"
-                                value={sourceNumber}
-                                onChange={(e) => setSourceNumber(e.target.value)}
-                                placeholder="مثال: IP-123456"
-                                dir="ltr"
-                                required
-                            />
-                        </div>
-                    )}
+                    <SourceNumberField
+                        id="payment-source"
+                        method={method}
+                        value={sourceNumber}
+                        onChange={setSourceNumber}
+                    />
 
                     <div className="space-y-2">
                         <Label htmlFor="payment-note" className="text-sm font-medium">ملاحظات إضافية</Label>

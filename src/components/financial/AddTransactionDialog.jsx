@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Minus } from 'lucide-react';
-import { PAYMENT_METHODS, isSourceNumberRequired } from '@/lib/paymentMethods';
+import { PAYMENT_METHODS } from '@/lib/paymentMethods';
+import { SourceNumberField } from '@/components/financial/SourceNumberField';
 
 export function AddTransactionDialog({ open, onOpenChange, formData, setFormData, onSubmit, isPending, suppliers }) {
     return (
@@ -72,18 +73,11 @@ export function AddTransactionDialog({ open, onOpenChange, formData, setFormData
                         </Select>
                     </div>
 
-                    {isSourceNumberRequired(formData.method) && (
-                        <div>
-                            <Label>رقم حساب التحويل *</Label>
-                            <Input
-                                value={formData.sourceNumber}
-                                onChange={e => setFormData({ ...formData, sourceNumber: e.target.value })}
-                                placeholder="مثال: IP-123456"
-                                dir="ltr"
-                                required
-                            />
-                        </div>
-                    )}
+                    <SourceNumberField
+                        method={formData.method}
+                        value={formData.sourceNumber}
+                        onChange={v => setFormData({ ...formData, sourceNumber: v })}
+                    />
 
                     {formData.type === 'EXPENSE' && (
                         <>
