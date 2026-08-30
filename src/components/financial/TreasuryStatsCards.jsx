@@ -31,6 +31,10 @@ export function TreasuryStatsCards({ balance, treasuryData, periodStats }) {
                                             <span>محفظة:</span>
                                             <span>{(treasuryData?.breakdown?.wallet || 0).toLocaleString()}</span>
                                         </div>
+                                        <div className="flex justify-between">
+                                            <span>انستا باي:</span>
+                                            <span>{(treasuryData?.breakdown?.instapay || 0).toLocaleString()}</span>
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>

@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Minus } from 'lucide-react';
+import { PAYMENT_METHODS, isSourceNumberRequired } from '@/lib/paymentMethods';
 
 export function AddTransactionDialog({ open, onOpenChange, formData, setFormData, onSubmit, isPending, suppliers }) {
     return (
@@ -62,13 +63,27 @@ export function AddTransactionDialog({ open, onOpenChange, formData, setFormData
                                 <SelectValue placeholder="اختر الوسيلة" />
                             </SelectTrigger>
                             <SelectContent dir="rtl">
-                                <SelectItem value="cash">نقداً (كاش)</SelectItem>
-                                <SelectItem value="bank">تحويل بنكي</SelectItem>
-                                <SelectItem value="wallet">محفظة إلكترونية</SelectItem>
-                                <SelectItem value="check">شيك</SelectItem>
+                                {PAYMENT_METHODS.map((m) => (
+                                    <SelectItem key={m.value} value={m.value}>
+                                        {m.labelAr}
+                                    </SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
                     </div>
+
+                    {isSourceNumberRequired(formData.method) && (
+                        <div>
+                            <Label>رقم حساب التحويل *</Label>
+                            <Input
+                                value={formData.sourceNumber}
+                                onChange={e => setFormData({ ...formData, sourceNumber: e.target.value })}
+                                placeholder="مثال: IP-123456"
+                                dir="ltr"
+                                required
+                            />
+                        </div>
+                    )}
 
                     {formData.type === 'EXPENSE' && (
                         <>

@@ -13,6 +13,7 @@ import { Loader2, Coins, Wallet } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { isSourceNumberRequired, PAYMENT_METHODS } from '@/lib/paymentMethods';
 
 /**
  * Single payment-collection dialog (UX-080).
@@ -31,6 +32,7 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
     const [amount, setAmount] = useState('');
     const [method, setMethod] = useState('cash');
     const [note, setNote] = useState('');
+    const [sourceNumber, setSourceNumber] = useState('');
 
     const kind = target?.kind;
 
@@ -54,7 +56,8 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
                     invoiceId: target.invoice._id,
                     amount: parseFloat(amount),
                     method,
-                    note
+                    note,
+                    sourceNumber
                 }),
             });
 
@@ -128,17 +131,24 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if (isSourceNumberRequired(method) && !sourceNumber.trim()) {
+            toast.error('رقم حساب التحويل مطلوب');
+            return;
+        }
+
         if (kind === 'debt' && debt) {
             addDebtPayment({
                 debtId: debt._id,
                 amount: parseFloat(amount),
                 method,
-                notes: note
+                notes: note,
+                sourceNumber
             }, {
                 onSuccess: (res) => {
                     onOpenChange(false);
                     setAmount('');
                     setNote('');
+                    setSourceNumber('');
                     onSuccess?.();
                     if (res.data?.transaction?._id) {
                         router.push(`/financial/receipts/${res.data.transaction._id}`);
@@ -154,7 +164,8 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
                 data: {
                     amount: parseFloat(amount),
                     method,
-                    note
+                    note,
+                    sourceNumber
                 }
             }, {
                 onSuccess: (res) => {
@@ -175,7 +186,7 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
 
     // ---- Summary block per kind (copy preserved from legacy variants) ----
     let summary;
-    let methodOptions = ['cash', 'bank', 'check'];
+    let methodOptions = ['cash', 'bank', 'check', 'instapay'];
 
     if (kind === 'debt' && debt) {
         methodOptions.push('wallet');
@@ -273,13 +284,28 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
                         <Select value={method} onValueChange={setMethod}>
                             <SelectTrigger className="h-11"><SelectValue /></SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="cash">نقدي (Cash)</SelectItem>
-                                <SelectItem value="bank">تحويل بنكي</SelectItem>
-                                <SelectItem value="check">شيك</SelectItem>
-                                {methodOptions.includes('wallet') && <SelectItem value="wallet">محفظة كاش</SelectItem>}
+                                {PAYMENT_METHODS
+                                    .filter((m) => methodOptions.includes(m.value))
+                                    .map((m) => (
+                                        <SelectItem key={m.value} value={m.value}>{m.labelAr}</SelectItem>
+                                    ))}
                             </SelectContent>
                         </Select>
                     </div>
+
+                    {isSourceNumberRequired(method) && (
+                        <div className="space-y-2">
+                            <Label htmlFor="payment-source" className="text-sm font-medium">رقم حساب التحويل *</Label>
+                            <Input
+                                id="payment-source"
+                                value={sourceNumber}
+                                onChange={(e) => setSourceNumber(e.target.value)}
+                                placeholder="مثال: IP-123456"
+                                dir="ltr"
+                                required
+                            />
+                        </div>
+                    )}
 
                     <div className="space-y-2">
                         <Label htmlFor="payment-note" className="text-sm font-medium">ملاحظات إضافية</Label>
