@@ -14,32 +14,32 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
         <>
                             <Card className="border shadow-sm">
                     <CardHeader className="border-b py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                        <CardTitle className="text-lg md:text-xl">سجل المعاملات ({filteredTransactions.length})</CardTitle>
+                        <CardTitle className="text-lg md:text-xl">سجل المعاملات ({transactions.length})</CardTitle>
 
                         {/* Type Filter */}
                         <div className="flex flex-wrap items-center gap-2 bg-muted p-1 rounded-lg">
                             <Button
                                 variant={typeFilter === 'ALL' ? 'secondary' : 'ghost'}
                                 size="sm"
-                                onClick={() => setTypeFilter('ALL')}
+                                onClick={() => onTypeFilterChange('ALL')}
                                 className="text-xs h-7 px-3"
                             >الكل</Button>
                             <Button
                                 variant={typeFilter === 'INCOME' ? 'secondary' : 'ghost'}
                                 size="sm"
-                                onClick={() => setTypeFilter('INCOME')}
+                                onClick={() => onTypeFilterChange('INCOME')}
                                 className="text-xs h-7 px-3 text-success"
                             >إيرادات</Button>
                             <Button
                                 variant={typeFilter === 'SUPPLIER_PAYMENTS' ? 'secondary' : 'ghost'}
                                 size="sm"
-                                onClick={() => setTypeFilter('SUPPLIER_PAYMENTS')}
+                                onClick={() => onTypeFilterChange('SUPPLIER_PAYMENTS')}
                                 className="text-xs h-7 px-3 text-warning"
                             >دفعات موردين</Button>
                             <Button
                                 variant={typeFilter === 'SHOP_EXPENSES' ? 'secondary' : 'ghost'}
                                 size="sm"
-                                onClick={() => setTypeFilter('SHOP_EXPENSES')}
+                                onClick={() => onTypeFilterChange('SHOP_EXPENSES')}
                                 className="text-xs h-7 px-3 text-destructive"
                             >مصروفات</Button>
                         </div>
@@ -59,18 +59,18 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {filteredTransactions.length === 0 ? (
+                                    {transactions.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
                                                 لا توجد معاملات مسجلة في هذه الفترة للفلتر المختار
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        filteredTransactions.map((tx) => (
+                                        transactions.map((tx) => (
                                             <TableRow
                                                 key={tx._id}
                                                 className="cursor-pointer hover:bg-muted/50"
-                                                onClick={() => handleTxClick(tx)}
+                                                onClick={() => onTxClick(tx)}
                                             >
                                                 <TableCell>
                                                     <Badge variant={tx.type === 'INCOME' ? 'default' : 'destructive'} className="gap-1 min-w-[70px] justify-center">
@@ -149,7 +149,7 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                             size="icon"
                                                             aria-label="تفاصيل الحركة"
                                                             className="text-muted-foreground hover:text-primary h-8 w-8"
-                                                            onClick={() => handleTxClick(tx)}
+                                                            onClick={() => onTxClick(tx)}
                                                         >
                                                             <Info size={16} />
                                                         </Button>
@@ -183,7 +183,7 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                                 size="icon"
                                                                 aria-label="حذف الحركة"
                                                                 className="text-muted-foreground hover:text-destructive h-8 w-8"
-                                                                onClick={() => handleDelete(tx._id)}
+                                                                onClick={() => onDelete(tx._id)}
                                                                 disabled={isDeleting}
                                                             >
                                                                 <Trash2 size={16} />
