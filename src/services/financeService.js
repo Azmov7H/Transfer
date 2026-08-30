@@ -35,10 +35,10 @@ export const deleteTreasuryTransaction = (id) => api.delete(`/api/financial/tran
 export const getDebts = (params = {}, options) => api.get('/api/financial/debts', params, options);
 
 /** @param {object} params @param {{signal?: AbortSignal}} [options] */
-export const getDebtors = (params = {}, options) => api.get('/api/financial/debtors', params, options);
+export const getDebtors = (params = {}, options) => api.get('/api/financial/debts/debtors', params, options);
 
 /** @param {{signal?: AbortSignal}} [options] */
-export const getDebtOverview = (options) => api.get('/api/financial/debt-overview', undefined, options);
+export const getDebtOverview = (options) => api.get('/api/financial/debts/overview', undefined, options);
 
 /** @param {object} data @returns {Promise<*>} */
 export const addPayment = (data) => api.post('/api/financial/payments', data);
