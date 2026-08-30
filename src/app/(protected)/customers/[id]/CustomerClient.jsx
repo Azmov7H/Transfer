@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/dialog';
 import {
     Loader2, User, Phone, MapPin, DollarSign, Plus, Trash2,
-    ShoppingCart, ArrowDownLeft, ArrowUpRight, Activity, Coins
+    ShoppingCart, ArrowDownLeft, ArrowUpRight, Activity, Coins, Link2
 } from 'lucide-react';
 import { UnifiedPaymentDialog } from '@/components/financial/PaymentDialog';
 import { toast } from 'sonner';
@@ -41,6 +41,7 @@ import {
     getCustomerById,
     getCustomerPricing,
     getCustomerStatement,
+    getCustomerNetPosition,
 } from '@/services/customerService';
 import { getProducts } from '@/services/productService';
 import { getInvoices } from '@/services/invoiceService';
@@ -82,6 +83,14 @@ export default function CustomerClient({ id }) {
         queryKey: ['customer-statement', id],
         queryFn: ({ signal }) => getCustomerStatement(id, { signal })
     });
+
+    // Fetch Linked-Supplier Net Position (only when this customer is unified with a supplier)
+    const { data: netPositionData, isLoading: isNetPositionLoading } = useQuery({
+        queryKey: ['customer-net-position', id],
+        queryFn: ({ signal }) => getCustomerNetPosition(id, { signal }),
+        enabled: !!customer?.linkedSupplier
+    });
+    const netPosition = netPositionData?.data ?? netPositionData;
 
     // Mutations
     const addPriceMutation = useMutation({
@@ -150,6 +159,59 @@ export default function CustomerClient({ id }) {
                     )}
                 </div>
             </div>
+
+            {customer?.linkedSupplier && (
+                <Card className="border-primary/20 bg-primary/5">
+                    <CardHeader>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                            <Link2 className="h-5 w-5 text-primary" /> الرصيد الصافي الموحد (عميل ↔ مورد)
+                        </CardTitle>
+                        <CardDescription className="text-muted-foreground">
+                            {netPosition?.supplier?.name
+                                ? `مرتبط بالمورد: ${netPosition.supplier.name}`
+                                : 'رصيد العميل والمورد الموحد — يُحتسب الصافي من الفروق بين الطرفين'}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {isNetPositionLoading ? (
+                            <div className="flex justify-center py-6"><Loader2 className="animate-spin text-primary" /></div>
+                        ) : netPosition ? (() => {
+                            const net = Number(netPosition.netPosition ?? 0);
+                            const side = netPosition.side === 'entityOwesUs'
+                                ? 'الطرف الموحد مدين لنا'
+                                : netPosition.side === 'weOweEntity'
+                                    ? 'علينا للطرف الموحد'
+                                    : 'متوازن الأرصدة';
+                            const netColor = net > 0 ? 'text-destructive' : net < 0 ? 'text-warning' : 'text-muted-foreground';
+                            return (
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="bg-card rounded-xl border border-border p-4 flex flex-col items-center gap-1">
+                                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">رصيد العميل</span>
+                                        <span className={`text-xl font-bold ${netPosition.customer?.balance > 0 ? 'text-destructive' : 'text-success'}`}>
+                                            {(netPosition.customer?.balance ?? 0).toLocaleString()} ج.م
+                                        </span>
+                                    </div>
+                                    <div className="bg-card rounded-xl border border-border p-4 flex flex-col items-center gap-1">
+                                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">رصيد المورد المرتبط</span>
+                                        <span className={`text-xl font-bold ${netPosition.supplier?.balance > 0 ? 'text-warning' : 'text-success'}`}>
+                                            {(netPosition.supplier?.balance ?? 0).toLocaleString()} ج.م
+                                        </span>
+                                    </div>
+                                    <div className="bg-card rounded-xl border-2 border-primary/20 p-4 flex flex-col items-center gap-1">
+                                        <span className="text-xs font-bold text-primary uppercase tracking-wider">الرصيد الصافي</span>
+                                        <span className={`text-2xl font-bold ${netColor}`}>
+                                            {net.toLocaleString()} ج.م
+                                        </span>
+                                        <Badge variant={net > 0 ? 'destructive' : net < 0 ? 'secondary' : 'outline'} className="font-bold">
+                                            {side}
+                                        </Badge>
+                                    </div>
+                                </div>
+                            );
+                        })() : null}
+                    </CardContent>
+                </Card>
+            )}
 
             <Tabs defaultValue="overview" className="space-y-4">
                 <TabsList>

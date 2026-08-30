@@ -40,6 +40,9 @@ export const getCustomerPricing = (id, options) => api.get(`/api/customers/${id}
 /** @param {string} id @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} financial statement */
 export const getCustomerStatement = (id, options) => api.get(`/api/customers/${id}/statement`, undefined, options);
 
+/** @param {string} id @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} linked-supplier net position */
+export const getCustomerNetPosition = (id, options) => api.get(`/api/customers/${id}/net-position`, undefined, options);
+
 /** Legacy namespace kept for existing consumers. */
 export const CustomerService = {
     getAll: getCustomers,

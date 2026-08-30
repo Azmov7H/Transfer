@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,7 +16,8 @@ import {
     DialogFooter,
 } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Wallet, Loader2, Truck } from 'lucide-react';
+import { Wallet, Loader2, Truck, Link2 } from 'lucide-react';
+import { getSuppliers } from '@/services/supplierService';
 
 import { FormField, mapServerFieldErrors } from '@/components/forms/FormField';
 import { zodResolver } from '@/components/forms/zodResolver';
@@ -33,7 +35,10 @@ const DEFAULT_VALUES = {
     paymentTerms: 0,
     openingBalance: '',
     openingBalanceType: 'debit',
-    shippingCompany: ''
+    shippingCompany: '',
+    taxNumber: '',
+    isSupplier: false,
+    linkedSupplier: ''
 };
 
 export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialData, onSubmit, isPending }) {
@@ -41,6 +46,7 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
         register,
         handleSubmit,
         control,
+        watch,
         reset,
         setError,
         formState: { errors, isSubmitting }
@@ -49,15 +55,30 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
         defaultValues: DEFAULT_VALUES
     });
 
+    const isSupplier = watch('isSupplier');
+
+    const { data: suppliersData, isLoading: suppliersLoading } = useQuery({
+        queryKey: ['suppliers', 'dialog', { limit: 100 }],
+        queryFn: ({ signal }) => getSuppliers({ limit: 100 }, { signal }),
+        enabled: open
+    });
+    const suppliers = suppliersData?.suppliers || suppliersData?.data?.suppliers || suppliersData || [];
+
     useEffect(() => {
         if (!open) return;
         if (mode === 'edit' && initialData) {
+            const linkedSupplier =
+                typeof initialData.linkedSupplier === 'object' && initialData.linkedSupplier !== null
+                    ? initialData.linkedSupplier._id || initialData.linkedSupplier.id || ''
+                    : initialData.linkedSupplier || '';
             reset({
                 ...DEFAULT_VALUES,
                 ...initialData,
                 creditLimit: initialData.creditLimit ?? '',
                 paymentTerms: initialData.paymentTerms ?? 0,
                 collectionDay: initialData.collectionDay || 'None',
+                isSupplier: !!initialData.isSupplier,
+                linkedSupplier
             });
         } else if (mode === 'add') {
             reset(DEFAULT_VALUES);
@@ -66,7 +87,11 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
 
     const onValid = async (values) => {
         try {
-            await onSubmit(values);
+            await onSubmit({
+                ...values,
+                isSupplier: !!values.isSupplier,
+                linkedSupplier: values.isSupplier ? (values.linkedSupplier || null) : null
+            });
         } catch (err) {
             const serverErrors = mapServerFieldErrors(err);
             if (serverErrors) {
@@ -115,6 +140,13 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
                             />
                         </FormField>
                     </div>
+
+                    <FormField label="الرقم الضريبي" hint="اختياري" error={errors.taxNumber}>
+                        <Input
+                            {...register('taxNumber')}
+                            placeholder="الرقم الضريبي للسجل التجاري..."
+                        />
+                    </FormField>
 
                     <FormField label="العنوان" error={errors.address}>
                         <Input {...register('address')} />
@@ -183,6 +215,49 @@ export function CustomerFormDialog({ open, onOpenChange, mode = 'add', initialDa
                             </div>
                         </div>
                     )}
+
+                    <div className="bg-primary/5 p-4 rounded-xl space-y-4 border border-primary/10">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-2">
+                            <Link2 size={14} /> إضافة كمورد / ربط بمورد
+                        </h4>
+
+                        <Controller
+                            control={control}
+                            name="isSupplier"
+                            render={({ field }) => (
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-0.5">
+                                        <Label className="text-sm">هذا العميل مورد أيضًا</Label>
+                                        <p className="text-xs text-muted-foreground">ربط العميل بمورد لتوحيد الأرصدة وحل التكرار</p>
+                                    </div>
+                                    <Switch checked={!!field.value} onCheckedChange={field.onChange} />
+                                </div>
+                            )}
+                        />
+
+                        {isSupplier && (
+                            <FormField label="المورد المرتبط" error={errors.linkedSupplier}>
+                                <Controller
+                                    control={control}
+                                    name="linkedSupplier"
+                                    render={({ field }) => (
+                                        <Select value={field.value || ''} onValueChange={field.onChange}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder={suppliersLoading ? 'جاري تحميل الموردين...' : 'اختر المورد لربطه...'} />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {suppliers.map((s) => (
+                                                    <SelectItem key={s._id} value={s._id}>
+                                                        {s.name} {s.phone ? `(${s.phone})` : ''}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    )}
+                                />
+                            </FormField>
+                        )}
+                    </div>
 
 
                     <DialogFooter>

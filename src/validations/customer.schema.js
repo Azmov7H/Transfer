@@ -13,4 +13,7 @@ export const customerSchema = z.object({
     openingBalance: z.coerce.number().min(0).optional(),
     openingBalanceType: z.enum(['debit', 'credit']).default('debit'),
     shippingCompany: z.string().optional(),
+    taxNumber: z.string().optional(),
+    isSupplier: z.boolean().default(false),
+    linkedSupplier: z.string().nullable().optional(),
 });
