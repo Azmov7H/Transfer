@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { cn } from '@/utils';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { StatCard } from '@/components/ui/StatCard';
+import { ExportButton } from '@/components/common/ExportButton';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
@@ -91,6 +92,7 @@ export default function SalesReportPage() {
                         >
                             <RefreshCcw className="w-6 h-6 text-muted-foreground" />
                         </Button>
+                        <ExportButton type="invoices" filters={{ startDate, endDate }} />
                     </div>
                 }
             />

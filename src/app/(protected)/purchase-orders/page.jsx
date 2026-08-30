@@ -18,6 +18,7 @@ import { useSearchParams } from 'next/navigation';
 import { SmartCombobox } from '@/components/ui/smart-combobox';
 import { QuickAddProductDialog } from '@/components/products/QuickAddProductDialog';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { ExportButton } from '@/components/common/ExportButton';
 
 export default function PurchaseOrdersPage() {
     const searchParams = useSearchParams();
@@ -130,9 +131,12 @@ export default function PurchaseOrdersPage() {
         <div className="space-y-6">
             <PageHeader title="أوامر الشراء" subtitle="طلبات التوريد من الموردين" icon={ShoppingCart}
                 actions={
-                    <Button onClick={() => setIsDialogOpen(true)} className="gap-2">
-                        <Plus size={18} /> طلب جديد
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <ExportButton type="purchaseOrders" filters={{ supplier: filterSupplierId || undefined }} />
+                        <Button onClick={() => setIsDialogOpen(true)} className="gap-2">
+                            <Plus size={18} /> طلب جديد
+                        </Button>
+                    </div>
                 }
             />
 

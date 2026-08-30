@@ -16,6 +16,7 @@ import { FiltersBar } from '@/components/accounting/FiltersBar';
 import { JournalEntriesTab } from '@/components/accounting/JournalEntriesTab';
 import { LedgerTab } from '@/components/accounting/LedgerTab';
 import { TrialBalanceTab } from '@/components/accounting/TrialBalanceTab';
+import { buildCsv, downloadCsv } from '@/lib/exportCsv';
 
 const exportToCSV = (entries) => {
     const headers = ['رقم القيد', 'التاريخ', 'النوع', 'الوصف', 'الحساب المدين', 'الحساب الدائن', 'المبلغ'];
@@ -29,16 +30,7 @@ const exportToCSV = (entries) => {
         e.amount
     ]);
 
-    const csvContent = [
-        headers.join(','),
-        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
-    ].join('\n');
-
-    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `accounting-entries-${format(new Date(), 'yyyy-MM-dd')}.csv`;
-    link.click();
+    downloadCsv(`accounting-entries-${format(new Date(), 'yyyy-MM-dd')}.csv`, buildCsv(rows, headers));
 };
 
 export default function AccountingPage() {
