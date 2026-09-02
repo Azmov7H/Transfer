@@ -12,6 +12,8 @@ import { ArrowRight, ArrowRightLeft, Printer, Trash2, Loader2 } from 'lucide-rea
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { InvoiceReturnDialog } from '@/components/invoices/InvoiceReturnDialog';
 import { InvoicePrintView } from '@/components/invoices/InvoicePrintView';
+import { DocumentActions } from '@/components/documents/DocumentActions';
+import { DOCUMENT_TYPES } from '@/services/documentService';
 
 export default function InvoiceDetailPage({ params }) {
     const router = useRouter();
@@ -141,14 +143,34 @@ export default function InvoiceDetailPage({ params }) {
     if (!invoice) return <div className="text-center py-20 text-destructive">الفاتورة غير موجودة</div>;
 
     return (
-        <div className="p-6 max-w-4xl mx-auto pb-20">
+        <div className="p-6 max-w-4xl mx-auto pb-20" data-document-root>
             {/* Action Bar (Hidden in Print) */}
-            <div className="flex justify-between items-center mb-8 print:hidden">
+            <div className="flex flex-wrap justify-between items-center gap-3 mb-8 print:hidden">
                 <Button variant="outline" onClick={() => router.back()} className="gap-2">
                     <ArrowRight size={16} /> العودة
                 </Button>
 
-                <div className="flex gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                    {/* DOC-SINV-005 — DocumentActions drives the server-side
+                        preview (HTML), print (auto-print), and PDF export
+                        through the document engine. The on-page "طباعة" still
+                        uses the legacy local InvoicePrintView for fast iteration. */}
+                    <DocumentActions
+                        documentType={DOCUMENT_TYPES.SALE_INVOICE}
+                        documentId={id}
+                        formats={['pdf', 'print']}
+                        size="sm"
+                    />
+
+                    <Button
+                        onClick={handlePrint}
+                        variant="outline"
+                        className="gap-2"
+                        data-testid="invoice-print-button"
+                    >
+                        <Printer size={16} /> طباعة سريعة
+                    </Button>
+
                     <InvoiceReturnDialog
                         invoice={invoice}
                         open={showReturnDialog}
@@ -161,16 +183,14 @@ export default function InvoiceDetailPage({ params }) {
                         isReturning={isReturning}
                     />
 
-                    <Button onClick={handlePrint} className="gap-2 bg-primary">
-                        <Printer size={16} /> طباعة / PDF
-                    </Button>
                     <Button variant="destructive" onClick={() => setDeleteOpen(true)} className="gap-2 bg-destructive hover:bg-destructive text-white shadow-lg">
                         <Trash2 size={16} /> حذف
                     </Button>
                 </div>
             </div>
 
-            {/* Invoice Container */}
+            {/* Invoice Container (local print view; the server-rendered
+                DocumentActions preview is the canonical doc for export) */}
             <InvoicePrintView invoice={invoice} settings={settings} returns={returns} />
 
             <ConfirmDialog
