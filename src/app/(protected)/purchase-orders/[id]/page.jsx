@@ -12,6 +12,8 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
 import { SourceNumberField } from '@/components/financial/SourceNumberField';
+import { DocumentActions } from '@/components/documents/DocumentActions';
+import { DOCUMENT_TYPES } from '@/services/documentService';
 
 export default function PurchaseOrderInvoice() {
     const { id } = useParams();
@@ -60,6 +62,16 @@ export default function PurchaseOrderInvoice() {
                             <CheckCircle size={18} /> استلام البضاعة
                         </Button>
                     )}
+                    {/* DOC-PINV-005 — DocumentActions drives the server-side
+                        preview (HTML), print (auto-print), and PDF export
+                        through the document engine. The on-page "طباعة" still
+                        uses the legacy local print for fast iteration. */}
+                    <DocumentActions
+                        documentType={DOCUMENT_TYPES.PURCHASE_INVOICE}
+                        documentId={id}
+                        formats={['pdf', 'print']}
+                        size="sm"
+                    />
                     <Button onClick={() => window.print()} variant="outline" className="gap-2">
                         <Printer size={18} /> طباعة الفاتورة
                     </Button>
