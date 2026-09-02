@@ -69,7 +69,7 @@ function formatMoney(n) {
 }
 
 export default function ReceiptPage() {
-    const params = React.useParams();
+    const params = useParams();
     const id = params?.id;
     const router = useRouter();
 
@@ -130,6 +130,14 @@ export default function ReceiptPage() {
                     {receiptType === 'customer' && (
                         <DocumentActions
                             documentType={DOCUMENT_TYPES.CUSTOMER_COLLECTION_RECEIPT}
+                            documentId={id}
+                            formats={['pdf', 'print']}
+                            size="sm"
+                        />
+                    )}
+                    {receiptType === 'supplier' && (
+                        <DocumentActions
+                            documentType={DOCUMENT_TYPES.SUPPLIER_PAYMENT_RECEIPT}
                             documentId={id}
                             formats={['pdf', 'print']}
                             size="sm"
