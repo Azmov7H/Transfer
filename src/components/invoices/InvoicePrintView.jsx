@@ -2,10 +2,34 @@
 
 import QRCode from "react-qr-code";
 import { ArrowRightLeft } from 'lucide-react';
+import { getPaymentMethod, getPaymentLabel, maskSource } from '@/lib/paymentMethods';
 
 export function InvoicePrintView({ invoice, settings, returns }) {
     const primaryColor = settings?.primaryColor || '#1B3C73';
     const headerBgColor = settings?.headerBgColor || '#1B3C73';
+
+    // DOC-SINV-005 — centralize the payment method lookup so instapay /
+    // wallet / check render their correct labels (and the channel badge
+    // appears next to the method). The legacy hard-coded ternary showed
+    // them all as 'آجل', which was factually wrong.
+    //
+    // `credit` is the Invoice.paymentType value that means "no
+    // payment received yet" (debt); it has no channel/source number
+    // of its own and maps to 'آجل' for the user.
+    const isCredit = invoice?.paymentType === 'credit';
+    const methodInfo = getPaymentMethod(invoice?.paymentType) || null;
+    const methodLabel = isCredit
+        ? 'آجل'
+        : (methodInfo?.labelAr || getPaymentLabel(invoice?.paymentType, 'ar') || '—');
+    const channelLabel = isCredit ? '' : (methodInfo?.channelLabelAr || '');
+    const sourceNumber = invoice?.sourceNumber || '';
+    const isElectronicMethod = invoice?.paymentType === 'instapay'
+        || invoice?.paymentType === 'wallet';
+    // On this legacy view we always show masked source — the masked
+    // value is informational; the unredacted one is available to
+    // owner/manager via the redesigned DocumentActions export.
+    const maskedSource = isElectronicMethod && sourceNumber
+        ? maskSource(sourceNumber) : '';
 
     return (
         <div className="bg-white border text-foreground p-10 rounded-xl shadow-2xl print:shadow-none print:border-none print:p-0" id="invoice-area">
@@ -97,10 +121,20 @@ export function InvoicePrintView({ invoice, settings, returns }) {
                             <p className="flex justify-between items-center"><span className="text-muted-foreground">الحالة:</span> <span className="text-success font-bold bg-success/10 px-2 py-0.5 rounded text-xs">مدفوع بالكامل</span></p>
                             <p className="flex justify-between items-center">
                                 <span className="text-muted-foreground">طريقة الدفع:</span>
-                                <span className="font-bold">
-                                    {invoice.paymentType === 'cash' ? 'نقدي' : invoice.paymentType === 'bank' ? 'تحويل بنكي' : 'آجل'}
-                                </span>
+                                <span className="font-bold">{methodLabel}</span>
                             </p>
+                            {channelLabel && (
+                                <p className="flex justify-between items-center">
+                                    <span className="text-muted-foreground">القناة:</span>
+                                    <span className="font-bold">{channelLabel}</span>
+                                </p>
+                            )}
+                            {isElectronicMethod && maskedSource && (
+                                <p className="flex justify-between items-center">
+                                    <span className="text-muted-foreground">رقم التحويل:</span>
+                                    <span className="font-mono font-bold">{maskedSource}</span>
+                                </p>
+                            )}
                             <p className="flex justify-between items-center"><span className="text-muted-foreground">بواسطة:</span> <span className="font-semibold">{invoice.createdBy?.name || 'المدير'}</span></p>
                         </div>
                     </div>
