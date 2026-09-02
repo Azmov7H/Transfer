@@ -34,6 +34,7 @@ import {
     ShoppingCart, ArrowDownLeft, ArrowUpRight, Activity, Coins, Link2
 } from 'lucide-react';
 import { UnifiedPaymentDialog } from '@/components/financial/PaymentDialog';
+import { CustomerStatementTab } from '@/components/documents/CustomerStatementTab';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { cn } from '@/utils';
@@ -228,6 +229,7 @@ export default function CustomerClient({ id }) {
                     <TabsTrigger value="pricing">الأسعار الخاصة</TabsTrigger>
                     <TabsTrigger value="history">سجل الفواتير</TabsTrigger>
                     <TabsTrigger value="statement" className="text-primary font-bold">كشف الحساب التفصيلي</TabsTrigger>
+                    <TabsTrigger value="statementDoc" className="text-primary font-bold">كشف رسمي</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="overview">
@@ -508,6 +510,10 @@ export default function CustomerClient({ id }) {
                             )}
                         </CardContent>
                     </Card>
+                </TabsContent>
+
+                <TabsContent value="statementDoc">
+                    <CustomerStatementTab customerId={id} />
                 </TabsContent>
             </Tabs>
 
