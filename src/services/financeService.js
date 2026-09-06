@@ -26,11 +26,14 @@ import { api } from '@/lib/api-utils';
 export const getTreasury = (params = {}, options) => api.get('/api/financial/treasury', params, options);
 
 /**
- * Paginated full ledger of treasury transactions for the requested
- * window. Returns `{ transactions: TreasuryTransaction[], pagination }`.
+ * Full ledger of treasury transactions for the requested window.
+ * Returns a bare `TreasuryTransaction[]` (envelope already unwrapped by
+ * `api.get`; tolerate `{ transactions: [...] }` / `{ data: [...] }` shapes
+ * at the call site for forward-compatibility).
  * Use this for the transaction-history table; `getTreasury` only returns
  * the latest 20 most-recent rows in the same window.
  * @param {object} params @param {{signal?: AbortSignal}} [options]
+ * @returns {Promise<TreasuryTransaction[]>}
  */
 export const getTreasuryTransactions = (params = {}, options) =>
     api.get('/api/treasury/transactions', params, options);
@@ -50,8 +53,28 @@ export const getDebtors = (params = {}, options) => api.get('/api/financial/debt
 /** @param {{signal?: AbortSignal}} [options] */
 export const getDebtOverview = (options) => api.get('/api/financial/debts/overview', undefined, options);
 
-/** @param {object} data @returns {Promise<*>} */
+/**
+ * Generic counterparty payment dispatcher (manager+).
+ * Body must include one of `customerId` / `supplierId` / `debtId`
+ * plus `amount`, `method`, optional `note` / `sourceNumber`.
+ * @param {object} data @returns {Promise<*>}
+ */
 export const addPayment = (data) => api.post('/api/financial/payments', data);
+
+/**
+ * Supplier payment against received, unpaid purchase orders.
+ * @param {{ supplierId: string, amount: number, method: string, note?: string, sourceNumber?: string }} data
+ * @returns {Promise<*>}
+ */
+export const addSupplierPayment = (data) => api.post('/api/financial/payments', data);
+
+/**
+ * Per-invoice customer collection (any authenticated role per
+ * POST /payments/customer — no manager gate, unlike the dispatcher).
+ * @param {{ invoice: string, amount: number, method: string, note?: string, sourceNumber?: string }} data
+ * @returns {Promise<{ invoice: *, transaction: TreasuryTransaction }>}
+ */
+export const recordInvoicePayment = (data) => api.post('/api/financial/payments/customer', data);
 
 /** @param {string} debtId @param {{signal?: AbortSignal}} [options] */
 export const getDebtPayments = (debtId, options) => api.get('/api/financial/payments', { debtId }, options);
@@ -100,29 +123,3 @@ export const getPartnerTransactions = (partnerId, params = {}, options) => api.g
 
 /** @param {string} receiptId @param {{signal?: AbortSignal}} [options] */
 export const getReceipt = (receiptId, options) => api.get(`/api/financial/receipts/${receiptId}`, undefined, options);
-
-/** Legacy namespace kept for existing consumers. */
-export const FinanceService = {
-    async recordPayment(data) {
-        return addPayment(data);
-    },
-    async recordCustomerPayment(invoice, amount, method, note, userId) {
-        return addPayment({
-            type: 'COLLECTION',
-            invoiceId: invoice._id,
-            amount,
-            method,
-            note,
-            customerId: invoice.customer?._id || invoice.customer
-        });
-    },
-    async recordTotalCustomerPayment(customerId, amount, method, note) {
-        return addPayment({
-            type: 'UNIFIED_COLLECTION',
-            customerId,
-            amount,
-            method,
-            note
-        });
-    },
-};

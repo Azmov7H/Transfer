@@ -4,15 +4,13 @@ import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { useTreasury, useAddTransaction, useDeleteTransaction } from '@/hooks/useFinancial';
-import { useQuery } from '@tanstack/react-query';
+import { useTreasury, useTreasuryTransactions, useAddTransaction, useDeleteTransaction, useSupplierPayment } from '@/hooks/useFinancial';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Wallet, Loader2, RefreshCcw, AlertCircle } from 'lucide-react';
 import { useSuppliers } from '@/hooks/useSuppliers';
-import { addPayment as addPaymentApi, getTreasuryTransactions } from '@/services/financeService';
 import { useQueryClient } from '@tanstack/react-query';
 import { cn } from '@/utils';
 import { TreasuryStatsCards } from '@/components/financial/TreasuryStatsCards';
@@ -20,6 +18,34 @@ import { TransactionsTable } from '@/components/financial/TransactionsTable';
 import { TransactionDetailsDialog } from '@/components/financial/TransactionDetailsDialog';
 import { AddTransactionDialog } from '@/components/financial/AddTransactionDialog';
 import { ExportButton } from '@/components/common/ExportButton';
+
+const isSupplierPaymentTx = (tx) =>
+    tx.type === 'EXPENSE' &&
+    (tx.referenceType === 'PurchaseOrder' ||
+        (tx.referenceType === 'Debt' && tx.referenceId?.debtorType === 'Supplier'));
+
+const isShopExpenseTx = (tx) =>
+    tx.type === 'EXPENSE' &&
+    (tx.referenceType === 'Manual' || tx.referenceType === 'SalesReturn');
+
+const matchesTypeFilter = (tx, typeFilter) => {
+    if (typeFilter === 'ALL') return true;
+    if (typeFilter === 'INCOME') return tx.type === 'INCOME';
+    if (typeFilter === 'EXPENSE') return tx.type === 'EXPENSE';
+    if (typeFilter === 'SHOP_EXPENSES') return isShopExpenseTx(tx);
+    if (typeFilter === 'SUPPLIER_PAYMENTS') return isSupplierPaymentTx(tx);
+    return true;
+};
+
+const EMPTY_TX_FORM = {
+    amount: '',
+    description: '',
+    type: 'INCOME',
+    category: 'other',
+    supplierId: '',
+    method: 'cash',
+    sourceNumber: ''
+};
 
 export default function FinancialPage() {
     const [period, setPeriod] = useState('TODAY'); // TODAY, MONTH, YEAR, CUSTOM
@@ -63,73 +89,49 @@ export default function FinancialPage() {
     const { data: treasuryData, isLoading } = useTreasury(getDateRange());
     const { mutate: addTransaction, isPending } = useAddTransaction();
     const { mutate: deleteTransaction, isPending: isDeleting } = useDeleteTransaction();
+    const { mutate: paySupplier, isPending: isPayingSupplier } = useSupplierPayment();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedTx, setSelectedTx] = useState(null);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
-    const [formData, setFormData] = useState({
-        amount: '',
-        description: '',
-        type: 'INCOME',
-        category: 'other',
-        supplierId: '',
-        method: 'cash',
-        sourceNumber: ''
-    });
+    const [formData, setFormData] = useState(EMPTY_TX_FORM);
 
     // T-PERF-03 contract: `/api/financial/treasury` only returns the most
-    // recent 20 rows. The user expects a full history, so we hit the
-    // dedicated `/api/treasury/transactions` ledger endpoint (90-day
-    // bounded range, server-side pagination) for the table below.
+    // recent 20 rows. The full history table reads the dedicated
+    // `/api/treasury/transactions` ledger endpoint instead.
+    // All hooks below MUST stay above any early-return (Rules of Hooks).
     const dateRange = getDateRange();
     const {
-        data: transactionsData,
+        data: allTransactions = [],
         isFetching: isTransactionsFetching,
         isError: isTransactionsError,
         error: transactionsError,
         refetch: refetchTransactions
-    } = useQuery({
-        queryKey: ['treasury-transactions', dateRange],
-        queryFn: ({ signal }) => getTreasuryTransactions(dateRange, { signal }),
-        keepPreviousData: true,
-    });
+    } = useTreasuryTransactions(dateRange);
 
-    // Client-side filtering and stats calculation.
-    // `/api/treasury/transactions` returns a bare array; tolerate the older
-    // `{ transactions: [...] }` wrapper shape too. All hooks below MUST
-    // stay above any early-return so React's Rules of Hooks are satisfied.
-    const allTransactions = useMemo(() => {
-        if (Array.isArray(transactionsData)) return transactionsData;
-        if (transactionsData?.transactions && Array.isArray(transactionsData.transactions)) return transactionsData.transactions;
-        if (transactionsData?.data && Array.isArray(transactionsData.data)) return transactionsData.data;
-        return [];
-    }, [transactionsData]);
+    const resetForm = useCallback(() => setFormData(EMPTY_TX_FORM), []);
 
     const handleSubmit = async () => {
         if (!formData.amount || !formData.description) return;
 
-        // If it's an expense and category is 'supplier', we use the generic payments API
+        // Supplier expense goes through the counterparty payments dispatcher
         if (formData.type === 'EXPENSE' && formData.category === 'supplier') {
             if (!formData.supplierId) {
                 toast.error('يرجى اختيار مورد');
                 return;
             }
 
-            const paymentData = {
+            paySupplier({
                 supplierId: formData.supplierId,
                 amount: parseFloat(formData.amount),
                 method: formData.method,
                 note: formData.description
-            };
-
-            addPaymentApi(paymentData).then(() => {
-                queryClient.invalidateQueries({ queryKey: ['treasury'] });
-                setIsDialogOpen(false);
-                setFormData({ amount: '', description: '', type: 'INCOME', category: 'other', supplierId: '', method: 'cash', sourceNumber: '' });
-            }).catch(err => {
-                console.error(err);
-                toast.error(err.message || 'فشل تسجيل الدفعة للمورد');
+            }, {
+                onSuccess: () => {
+                    setIsDialogOpen(false);
+                    resetForm();
+                }
             });
             return;
         }
@@ -137,12 +139,17 @@ export default function FinancialPage() {
         addTransaction(formData, {
             onSuccess: () => {
                 setIsDialogOpen(false);
-                setFormData({ amount: '', description: '', type: 'INCOME', category: 'other', supplierId: '', method: 'cash', sourceNumber: '' });
+                resetForm();
             }
         });
     };
 
     const [deleteTargetId, setDeleteTargetId] = useState(null);
+
+    const filteredTransactions = useMemo(
+        () => allTransactions.filter(tx => matchesTypeFilter(tx, typeFilter)),
+        [allTransactions, typeFilter]
+    );
 
     const handleDelete = (id) => {
         setDeleteTargetId(id);
@@ -171,21 +178,12 @@ export default function FinancialPage() {
     };
 
     const supplierPaymentsAmt = allTransactions
-        .filter(tx => tx.type === 'EXPENSE' && (tx.referenceType === 'PurchaseOrder' || (tx.referenceType === 'Debt' && tx.referenceId?.debtorType === 'Supplier')))
+        .filter(isSupplierPaymentTx)
         .reduce((sum, tx) => sum + tx.amount, 0);
 
     const shopExpensesAmt = allTransactions
-        .filter(tx => tx.type === 'EXPENSE' && (tx.referenceType === 'Manual' || tx.referenceType === 'SalesReturn'))
+        .filter(isShopExpenseTx)
         .reduce((sum, tx) => sum + tx.amount, 0);
-
-    const filteredTransactions = allTransactions.filter(tx => {
-        if (typeFilter === 'ALL') return true;
-        if (typeFilter === 'INCOME') return tx.type === 'INCOME';
-        if (typeFilter === 'EXPENSE') return tx.type === 'EXPENSE';
-        if (typeFilter === 'SHOP_EXPENSES') return tx.type === 'EXPENSE' && (tx.referenceType === 'Manual' || tx.referenceType === 'SalesReturn');
-        if (typeFilter === 'SUPPLIER_PAYMENTS') return tx.type === 'EXPENSE' && (tx.referenceType === 'PurchaseOrder' || (tx.referenceType === 'Debt' && tx.referenceId?.debtorType === 'Supplier'));
-        return true;
-    });
 
     const periodStats = {
         income: treasuryData?.totalIncome || 0,
@@ -311,7 +309,7 @@ export default function FinancialPage() {
                         formData={formData}
                         setFormData={setFormData}
                         onSubmit={handleSubmit}
-                        isPending={isPending}
+                        isPending={isPending || isPayingSupplier}
                         suppliers={suppliers}
                     />
                 </div>

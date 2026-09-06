@@ -1,13 +1,16 @@
 // Financial hooks for treasury and debts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData } from '@tanstack/react-query';
 import {
     getTreasury,
+    getTreasuryTransactions,
     addTreasuryTransaction,
     deleteTreasuryTransaction,
     getDebts,
     getDebtors,
     getDebtOverview,
     addPayment,
+    addSupplierPayment,
     getDebtInstallments,
     createInstallments,
     getReceivables,
@@ -22,6 +25,42 @@ export function useTreasury(params = {}) {
     return useQuery({
         queryKey: ['treasury', params],
         queryFn: ({ signal }) => getTreasury(params, { signal })
+    });
+}
+
+/**
+ * Full transaction ledger for a date range. Normalizes the bare-array
+ * response (tolerating legacy `{ transactions }` / `{ data }` wrappers)
+ * so consumers always get an array.
+ */
+export function useTreasuryTransactions(dateRange = {}, options = {}) {
+    return useQuery({
+        queryKey: ['treasury-transactions', dateRange],
+        queryFn: async ({ signal }) => {
+            const res = await getTreasuryTransactions(dateRange, { signal });
+            if (Array.isArray(res)) return res;
+            if (res?.transactions && Array.isArray(res.transactions)) return res.transactions;
+            if (res?.data && Array.isArray(res.data)) return res.data;
+            return [];
+        },
+        placeholderData: keepPreviousData,
+        enabled: options.enabled !== false
+    });
+}
+
+/** Supplier payment (manager+) with treasury + receivables invalidation. */
+export function useSupplierPayment() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (data) => addSupplierPayment(data),
+        ...withMutationFeedback({
+            successMessage: 'تم تسجيل الدفعة للمورد بنجاح',
+            fallbackErrorMessage: 'فشل تسجيل الدفعة للمورد',
+            afterSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['treasury'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury-transactions'] });
+            }
+        })
     });
 }
 
