@@ -74,9 +74,14 @@ export function FiltersBar({ filters, setFilters, onReset, onExport, totalEntrie
                                     <SelectItem value="all">جميع الأنواع</SelectItem>
                                     <SelectItem value="SALE">مبيعات</SelectItem>
                                     <SelectItem value="PURCHASE">مشتريات</SelectItem>
+                                    <SelectItem value="RETURN">مردودات</SelectItem>
+                                    <SelectItem value="RETURN_COGS">مردودات تكلفة</SelectItem>
                                     <SelectItem value="PAYMENT">دفع</SelectItem>
                                     <SelectItem value="ADJUSTMENT">تسوية</SelectItem>
+                                    <SelectItem value="COGS">تكلفة بضاعة</SelectItem>
                                     <SelectItem value="EXPENSE">مصروف</SelectItem>
+                                    <SelectItem value="INCOME">إيراد</SelectItem>
+                                    <SelectItem value="TRANSFER">تحويل</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>

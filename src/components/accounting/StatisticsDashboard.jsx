@@ -1,13 +1,23 @@
 'use client';
 
 import { useMemo } from 'react';
-import { ArrowUpRight, ArrowDownRight, CheckCircle2, AlertCircle, Receipt } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, CheckCircle2, AlertCircle, Receipt, Loader2 } from 'lucide-react';
 import { StatCard } from '@/components/ui/StatCard';
 
-export function StatisticsDashboard({ entries = [] }) {
+const safeNumber = (n) => (Number.isFinite(Number(n)) ? Number(n) : 0);
+
+export function StatisticsDashboard({ entries = [], isLoading = false }) {
     const stats = useMemo(() => {
-        const totalDebit = entries.reduce((sum, e) => sum + (e.amount || 0), 0);
-        const totalCredit = entries.reduce((sum, e) => sum + (e.amount || 0), 0);
+        // Each entry is a journal entry with one debit account and one credit
+        // account — they sum to the same amount by construction (double-entry).
+        // We aggregate total movements by side, not by summing `amount` twice.
+        let totalDebit = 0;
+        let totalCredit = 0;
+        for (const e of entries) {
+            const amt = safeNumber(e.amount);
+            if (e.debitAccount) totalDebit += amt;
+            if (e.creditAccount) totalCredit += amt;
+        }
         return {
             totalEntries: entries.length,
             totalDebit,
@@ -16,11 +26,23 @@ export function StatisticsDashboard({ entries = [] }) {
         };
     }, [entries]);
 
+    if (isLoading) {
+        return (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[...Array(4)].map((_, i) => (
+                    <div key={i} className="glass-card rounded-2xl p-6 border border-white/5 flex items-center justify-center h-32">
+                        <Loader2 className="animate-spin w-6 h-6 text-primary opacity-40" />
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard
                 title="إجمالي القيود"
-                value={stats.totalEntries}
+                value={stats.totalEntries.toLocaleString()}
                 icon={Receipt}
                 variant="primary"
                 subtitle="عمليات مسجلة"
@@ -46,7 +68,7 @@ export function StatisticsDashboard({ entries = [] }) {
                 value={stats.isBalanced ? 'متوازن' : 'غير متوازن'}
                 icon={stats.isBalanced ? CheckCircle2 : AlertCircle}
                 variant={stats.isBalanced ? 'success' : 'destructive'}
-                subtitle={stats.isBalanced ? "ميزان مطابق" : "ميزان غير مطابق"}
+                subtitle={stats.isBalanced ? 'ميزان مطابق' : 'ميزان غير مطابق'}
             />
         </div>
     );

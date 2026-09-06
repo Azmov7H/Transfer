@@ -1,44 +1,39 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Loader2, Calendar, Activity, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
+import { Loader2, Calendar, Activity, ChevronLeft, ChevronRight, RefreshCw, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/utils';
-import { getAccountingEntries } from '@/services/accountingService';
 
-export function JournalEntriesTab({ filters }) {
+const safeNumber = (n) => (Number.isFinite(Number(n)) ? Number(n) : 0);
+
+export function JournalEntriesTab({ filters, serverData, isLoading }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(20);
 
-    const { data, isLoading } = useQuery({
-        queryKey: ['accounting-entries', filters],
-        queryFn: async ({ signal }) => {
-            const res = await getAccountingEntries(500, { signal });
-            return { entries: res.data || [] };
-        }
-    });
-
+    // Server already filtered by type + date. Apply search client-side.
     const filteredEntries = useMemo(() => {
-        if (!data?.entries) return [];
-        return data.entries.filter(entry => {
-            if (filters.search) {
-                const searchLower = filters.search.toLowerCase();
-                if (!entry.description?.toLowerCase().includes(searchLower) &&
-                    !entry.entryNumber?.toString().includes(searchLower)) return false;
-            }
-            if (filters.type && filters.type !== 'all' && entry.type !== filters.type) return false;
-            if (filters.dateFrom && new Date(entry.date) < new Date(filters.dateFrom)) return false;
-            if (filters.dateTo && new Date(entry.date) > new Date(filters.dateTo)) return false;
-            return true;
+        const all = serverData?.entries || [];
+        if (!filters.search) return all;
+        const searchLower = filters.search.toLowerCase();
+        return all.filter(entry => {
+            return (
+                entry.description?.toLowerCase().includes(searchLower) ||
+                entry.entryNumber?.toString().includes(searchLower)
+            );
         });
-    }, [data?.entries, filters]);
+    }, [serverData, filters.search]);
 
-    const totalPages = Math.ceil(filteredEntries.length / pageSize);
+    // Reset to page 1 when filter changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filters.search, filters.type, filters.dateFrom, filters.dateTo]);
+
+    const totalPages = Math.max(1, Math.ceil(filteredEntries.length / pageSize));
     const paginatedEntries = useMemo(() => {
         return filteredEntries.slice((currentPage - 1) * pageSize, currentPage * pageSize);
     }, [filteredEntries, currentPage, pageSize]);
@@ -53,14 +48,27 @@ export function JournalEntriesTab({ filters }) {
         return Object.entries(groups).sort((a, b) => new Date(b[0]) - new Date(a[0]));
     }, [paginatedEntries]);
 
-    if (isLoading) return <div className="p-32 flex justify-center"><Loader2 className="animate-spin text-primary w-12 h-12 opacity-20" /></div>;
+    if (isLoading) {
+        return (
+            <div className="p-32 flex justify-center">
+                <Loader2 className="animate-spin text-primary w-12 h-12 opacity-40" />
+            </div>
+        );
+    }
 
     if (filteredEntries.length === 0) {
+        const hasFilters = filters.search || (filters.type && filters.type !== 'all') || filters.dateFrom || filters.dateTo;
         return (
             <div className="text-center p-24 glass-card rounded-[3rem] border-dashed border border-white/10">
                 <Activity className="w-20 h-20 mx-auto mb-6 text-muted-foreground/10" />
-                <h3 className="font-bold text-2xl text-white/20 mb-2 uppercase tracking-widest">لا توجد قيود حالياً</h3>
-                <p className="text-sm text-white/5 font-bold uppercase tracking-widest">تحقق من معايير البحث أو التاريخ</p>
+                <h3 className="font-bold text-2xl text-white/40 mb-2">
+                    {hasFilters ? 'لا توجد نتائج مطابقة' : 'لا توجد قيود حالياً'}
+                </h3>
+                <p className="text-sm text-muted-foreground font-medium max-w-md mx-auto">
+                    {hasFilters
+                        ? 'حاول توسيع نطاق البحث أو تعديل معايير التصفية.'
+                        : 'لم يتم تسجيل أي قيود محاسبية بعد. ستظهر هنا تلقائياً عند إنشائها.'}
+                </p>
             </div>
         );
     }
@@ -107,7 +115,7 @@ export function JournalEntriesTab({ filters }) {
                                 >
                                     {p}
                                 </Button>
-                            )
+                            );
                         })}
                     </div>
                     <Button
@@ -139,7 +147,7 @@ export function JournalEntriesTab({ filters }) {
                     </div>
 
                     <div className="grid gap-4">
-                        {entries.map((entry, i) => (
+                        {entries.map((entry) => (
                             <div
                                 key={entry._id}
                                 className="glass-card hover:bg-white/[0.04] p-6 rounded-[2.5rem] border border-white/5 transition-all duration-500 group shadow-xl"
@@ -170,7 +178,9 @@ export function JournalEntriesTab({ filters }) {
 
                                     <div className="flex items-center justify-end gap-6 pl-6 border-r border-white/5">
                                         <div className="text-right">
-                                            <div className="text-2xl font-bold tracking-tighter tabular-nums">{entry.amount.toLocaleString()}</div>
+                                            <div className="text-2xl font-bold tracking-tighter tabular-nums">
+                                                {safeNumber(entry.amount).toLocaleString()}
+                                            </div>
                                             <div className="text-xs font-bold text-success uppercase tracking-widest opacity-50">EGP</div>
                                         </div>
                                     </div>

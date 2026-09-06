@@ -1,6 +1,10 @@
 /**
  * Accounting Service — owns the /api/accounting endpoint contract.
  * UI/hooks must not hardcode these URLs (FE-DATA-005, D2/D10).
+ *
+ * Response envelope is auto-unwrapped by `api.get`/`api.post` in
+ * `lib/api-utils.js`, so functions here return the inner payload
+ * directly (e.g. `{ entries, total, page, limit }`).
  */
 import { api } from '@/lib/api-utils';
 
@@ -31,14 +35,38 @@ export const ACCOUNTS = {
     WALLET: 'محفظة كاش'
 };
 
-/** @param {string|number} limit @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *[]}>} */
-export const getAccountingEntries = (limit = 500, options) => api.get(`/api/accounting/entries?limit=${limit}`, undefined, options);
+/**
+ * Get accounting journal entries.
+ * @param {{ startDate?: string, endDate?: string, type?: string, account?: string, page?: number, limit?: number }} [params]
+ * @param {{signal?: AbortSignal}} [options]
+ * @returns {Promise<{ entries: any[], total: number, page: number, limit: number }>}
+ */
+export const getAccountingEntries = (params = {}, options) => {
+    const query = { ...params };
+    if (!query.limit) query.limit = 100;
+    return api.get('/api/accounting/entries', query, options);
+};
 
-/** @param {string} account @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} */
-export const getLedger = (account, options) => api.get(`/api/accounting/ledger?account=${encodeURIComponent(account)}`, undefined, options);
+/**
+ * Get ledger entries for a given account.
+ * @param {string} account
+ * @param {{ startDate?: string, endDate?: string }} [params]
+ * @param {{signal?: AbortSignal}} [options]
+ * @returns {Promise<{ account: string, entries: any[], finalBalance: number }>}
+ */
+export const getLedger = (account, params = {}, options) => {
+    const query = { account, ...(params || {}) };
+    return api.get('/api/accounting/ledger', query, options);
+};
 
-/** @param {{signal?: AbortSignal}} [options] @returns {Promise<{data?: *}>} */
-export const getTrialBalance = (options) => api.get('/api/accounting/trial-balance', undefined, options);
+/**
+ * Get trial balance as of a given date.
+ * @param {{ date?: string }} [params]
+ * @param {{signal?: AbortSignal}} [options]
+ * @returns {Promise<{ asOfDate: string, accounts: any[], totalDebit: number, totalCredit: number, difference: number, isBalanced: boolean }>}
+ */
+export const getTrialBalance = (params = {}, options) =>
+    api.get('/api/accounting/trial-balance', params, options);
 
 /** Legacy namespace kept for existing consumers. */
 export const AccountingService = {
