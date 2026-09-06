@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { useTreasury, useTreasuryTransactions, useCashFlow, useAddTransaction, useDeleteTransaction, useSupplierPayment } from '@/hooks/useFinancial';
+import { getTreasuryTransactions } from '@/services/financeService';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Wallet, Loader2, RefreshCcw, AlertCircle } from 'lucide-react';
+import { Wallet, Loader2, RefreshCcw, AlertCircle, Printer } from 'lucide-react';
 import { useSuppliers } from '@/hooks/useSuppliers';
 import { useQueryClient } from '@tanstack/react-query';
 import { cn } from '@/utils';
@@ -25,6 +26,8 @@ import { DebtSnapshotCard } from '@/components/financial/DebtSnapshotCard';
 import { labelCashFlowBuckets } from '@/components/financial/cashFlowUtils';
 import { matchesTypeFilter, exportFiltersFor } from '@/lib/treasuryFilters';
 import { ExportButton } from '@/components/common/ExportButton';
+import { TreasuryPrintView } from '@/components/financial/TreasuryPrintView';
+import { DocumentPrintStyles } from '@/components/documents/DocumentPrintStyles';
 
 const EMPTY_TX_FORM = {
     amount: '',
@@ -193,6 +196,57 @@ export default function FinancialPage() {
 
     const balance = treasuryData?.balance || 0;
 
+    // Direct print: fetch the FULL filtered ledger (the on-screen table is
+    // page-capped and must never feed the report), render the print-only
+    // view, then open the browser print dialog — the user picks "Save as
+    // PDF" there to keep a file on their device. No export step involved.
+    const [printRows, setPrintRows] = useState(null);
+    const [isPrintLoading, setIsPrintLoading] = useState(false);
+    const printAfterLoad = useRef(false);
+
+    useEffect(() => {
+        if (printAfterLoad.current && printRows) {
+            printAfterLoad.current = false;
+            const t = setTimeout(() => window.print(), 80);
+            return () => clearTimeout(t);
+        }
+    }, [printRows]);
+
+    const printSummary = useMemo(() => {
+        const rows = printRows ?? [];
+        let income = 0, expense = 0;
+        for (const tx of rows) {
+            if (tx.type === 'INCOME') income += Number(tx.amount) || 0;
+            else expense += Number(tx.amount) || 0;
+        }
+        return { income, expense, net: income - expense, count: rows.length };
+    }, [printRows]);
+
+    const handlePrint = useCallback(async () => {
+        setIsPrintLoading(true);
+        try {
+            const base = { ...dateRange, limit: 100 };
+            if (serverType) base.type = serverType;
+            if (serverCategory) base.category = serverCategory;
+            let page = 1, all = [], total = Infinity;
+            while (all.length < total && page <= 100) {
+                const res = await getTreasuryTransactions({ ...base, page });
+                const txs = Array.isArray(res) ? res : (res?.transactions ?? res?.data ?? []);
+                total = Array.isArray(res) ? txs.length : (Number(res?.total) || txs.length);
+                if (txs.length === 0) break;
+                all = all.concat(txs);
+                if (all.length >= total) break;
+                page += 1;
+            }
+            printAfterLoad.current = true;
+            setPrintRows(all);
+        } catch (e) {
+            toast.error(e?.message || 'تعذر تجهيز التقرير للطباعة');
+        } finally {
+            setIsPrintLoading(false);
+        }
+    }, [dateRange, serverType, serverCategory]);
+
     const handleTxClick = (tx) => {
         setSelectedTx(tx);
         setIsDetailsOpen(true);
@@ -228,7 +282,7 @@ export default function FinancialPage() {
         : 'تحديث تلقائي كل 30 ثانية';
 
     return (
-        <div className="space-y-6" dir="rtl">
+        <div className="space-y-6 print:hidden" dir="rtl">
             <PageHeader
                 title="الخزينة"
                 subtitle={liveSubtitle}
@@ -250,6 +304,19 @@ export default function FinancialPage() {
                             type="treasuryTransactions"
                             filters={exportFiltersFor(typeFilter, getDateRange())}
                         />
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handlePrint}
+                            disabled={isPrintLoading}
+                            className="gap-2"
+                            aria-label="طباعة التقرير"
+                        >
+                            {isPrintLoading
+                                ? <Loader2 className="h-4 w-4 animate-spin" />
+                                : <Printer className="h-4 w-4" />}
+                            {isPrintLoading ? 'جاري التجهيز…' : 'طباعة التقرير'}
+                        </Button>
                         <AddTransactionDialog
                             open={isDialogOpen}
                             onOpenChange={setIsDialogOpen}
@@ -427,6 +494,16 @@ export default function FinancialPage() {
                 open={isDetailsOpen}
                 onOpenChange={setIsDetailsOpen}
             />
+
+            {/* Print-only report (hidden on screen, rendered by the browser
+                print engine with native Arabic shaping/bidi). */}
+            <TreasuryPrintView
+                rows={printRows ?? []}
+                summary={printSummary}
+                periodLabel={periodLabel}
+                dateRange={dateRange}
+            />
+            <DocumentPrintStyles />
 
             <ConfirmDialog
                 open={deleteTargetId !== null}
