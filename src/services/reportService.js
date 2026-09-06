@@ -6,7 +6,7 @@ import { api } from '@/lib/api-utils';
 
 /** @param {string} startDate @param {string} endDate @param {{signal?: AbortSignal}} [options] */
 export const getFinancialReport = (startDate, endDate, options) =>
-    api.get(`/api/reports/financial?startDate=${startDate}&endDate=${endDate}`, undefined, options);
+    api.get('/api/reports/financial', { startDate, endDate }, options);
 
 /** @param {string} startDate @param {string} endDate @param {{signal?: AbortSignal}} [options] */
 export const getCustomerProfitReport = (startDate, endDate, options) =>
