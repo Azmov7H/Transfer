@@ -1,33 +1,31 @@
 'use client';
 
 /**
- * DOC-CSTMT-001 — CustomerStatementTab.
+ * DOC-CTX-001 — CustomerTransactionTab.
  *
- * The new official customer account statement tab on /customers/[id].
- * Lives next to the legacy in-app statement tab; this one drives the
- * redesigned document engine so the printed / PDF / Excel output is
- * the same as the on-screen preview.
+ * The new "حركات العميل" tab on /customers/[id]. The raw ledger
+ * (every transaction that touched the customer) — NOT the
+ * running-balance statement (that's CustomerStatementTab / S15).
  *
  * UX:
- *   - DateRangePicker with sensible presets
- *   - three summary cards: openingBalance / period debits / period credits
- *   - closing balance + reconciliation delta banner
- *   - line-by-line preview table (running balance, debit/credit columns)
- *   - DocumentActions: Preview, Print, PDF (PDF returns 501 until Sprint 10)
- *
- * Closes the opening-balance bug by reading openingBalance from
- * the document engine response (which is now computed via DB
- * aggregation, not started at 0).
+ *   - DateRangePicker (default: last 30 days, max 365)
+ *   - type filter (كل الحركات / فاتورة مبيعات / تحصيل / مرتجع /
+ *     مديونية) via a Select
+ *   - summary trio: debits / credits / net
+ *   - line-by-line preview table (Arabic dates, type pill, debit /
+ *     credit columns, method)
+ *   - DocumentActions: Print only (PDF/XLSX/CSV return 501 — backend
+ *     renderers not yet implemented)
  */
 
 import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
-import { AlertTriangle, CheckCircle2, Loader2, FileText, ArrowDownLeft, ArrowUpRight, ShoppingCart } from 'lucide-react';
+import { AlertTriangle, Loader2, FileText, ArrowDownLeft, ArrowUpRight, ShoppingCart, FileMinus2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DateRangePicker } from '@/components/documents/DateRangePicker';
 import { DocumentActions } from '@/components/documents/DocumentActions';
 import { getDocumentData, DOCUMENT_TYPES, OUTPUT_FORMATS } from '@/services/documentService';
@@ -41,6 +39,7 @@ function lineTypeMeta(type) {
     if (type === 'INVOICE') return { label: 'فاتورة مبيعات', icon: ShoppingCart, cls: 'bg-destructive/10 text-destructive border-destructive/20' };
     if (type === 'PAYMENT') return { label: 'تحصيل', icon: ArrowDownLeft, cls: 'bg-success/10 text-success border-success/20' };
     if (type === 'REFUND') return { label: 'مرتجع / صرف', icon: ArrowUpRight, cls: 'bg-warning/10 text-warning border-warning/20' };
+    if (type === 'DEBT') return { label: 'مديونية', icon: FileMinus2, cls: 'bg-info/10 text-info border-info/20' };
     return { label: type || '-', icon: FileText, cls: 'bg-muted text-muted-foreground' };
 }
 
@@ -54,30 +53,31 @@ function defaultRange() {
     };
 }
 
-export function CustomerStatementTab({ customerId }) {
+export function CustomerTransactionTab({ customerId }) {
     const [range, setRange] = React.useState(defaultRange);
+    const [typeFilter, setTypeFilter] = React.useState('all');
 
-    const filters = React.useMemo(() => ({
-        from: range.from ? `${range.from}T00:00:00.000Z` : undefined,
-        to: range.to ? `${range.to}T23:59:59.999Z` : undefined,
-        startDate: range.from ? `${range.from}T00:00:00.000Z` : undefined,
-        endDate: range.to ? `${range.to}T23:59:59.999Z` : undefined,
-    }), [range]);
+    const filters = React.useMemo(() => {
+        const f = {
+            from: range.from ? `${range.from}T00:00:00.000Z` : undefined,
+            to: range.to ? `${range.to}T23:59:59.999Z` : undefined,
+            startDate: range.from ? `${range.from}T00:00:00.000Z` : undefined,
+            endDate: range.to ? `${range.to}T23:59:59.999Z` : undefined,
+        };
+        if (typeFilter && typeFilter !== 'all') f.type = typeFilter;
+        return f;
+    }, [range, typeFilter]);
 
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ['customer-statement-doc', customerId, range],
-        queryFn: ({ signal }) => getDocumentData(DOCUMENT_TYPES.CUSTOMER_ACCOUNT_STATEMENT, customerId, filters, { signal }),
+        queryKey: ['customer-transaction-doc', customerId, range, typeFilter],
+        queryFn: ({ signal }) => getDocumentData(DOCUMENT_TYPES.CUSTOMER_TRANSACTION_STATEMENT, customerId, filters, { signal }),
         enabled: !!customerId && !!range.from && !!range.to,
     });
 
     const payload = data?.data ?? data;
-    const openingBalance = Number(payload?.openingBalance || 0);
-    const closingBalance = Number(payload?.closingBalance || 0);
-    const snapshotBalance = Number(payload?.currentSnapshotBalance || 0);
-    const delta = Number(payload?.balanceDelta || 0);
-    const totals = payload?.totals || { debits: 0, credits: 0 };
+    const totals = payload?.totals || { debits: 0, credits: 0, net: 0 };
     const lines = payload?.lines || [];
-    const hasDelta = Math.abs(delta) >= 0.01;
+    const availableTypes = payload?.availableTypes || [];
     const customerName = payload?.customer?.name || '';
 
     return (
@@ -85,9 +85,9 @@ export function CustomerStatementTab({ customerId }) {
             <CardHeader className="p-8 border-b border-white/5 bg-gradient-to-r from-primary/5 to-transparent">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <CardTitle className="text-2xl font-bold tracking-tight">كشف حساب رسمي</CardTitle>
+                        <CardTitle className="text-2xl font-bold tracking-tight">حركات العميل</CardTitle>
                         <CardDescription className="text-muted-foreground font-medium mt-1">
-                            كشف مفصّل من محرك المستندات — مع رصيد افتتاحي محسوب ووسم تسوية.
+                            سجل كل الحركات المالية — مع فلتر حسب نوع الحركة.
                         </CardDescription>
                     </div>
                     <div className="flex flex-col md:flex-row md:items-center gap-3">
@@ -97,13 +97,24 @@ export function CustomerStatementTab({ customerId }) {
                             maxDays={365}
                             className="min-w-[280px]"
                         />
+                        <Select value={typeFilter} onValueChange={setTypeFilter}>
+                            <SelectTrigger className="min-w-[180px] font-bold" data-testid="transaction-type-filter">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">كل الحركات</SelectItem>
+                                {availableTypes.map(t => (
+                                    <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                         <DocumentActions
-                            documentType={DOCUMENT_TYPES.CUSTOMER_ACCOUNT_STATEMENT}
+                            documentType={DOCUMENT_TYPES.CUSTOMER_TRANSACTION_STATEMENT}
                             documentId={customerId}
                             filters={filters}
-                            // XLSX/CSV renderers are not implemented on the
-                            // backend (501) — expose only working formats.
-                            formats={[OUTPUT_FORMATS.PRINT, OUTPUT_FORMATS.PDF]}
+                            // PDF/XLSX/CSV renderers are not implemented on
+                            // the backend (501) — expose only Print.
+                            formats={[OUTPUT_FORMATS.PRINT]}
                         />
                     </div>
                 </div>
@@ -113,7 +124,7 @@ export function CustomerStatementTab({ customerId }) {
                 {isError && (
                     <div className="bg-destructive/10 text-destructive border border-destructive/20 rounded-xl p-4 font-bold flex items-center gap-3">
                         <AlertTriangle className="w-5 h-5" />
-                        <span>{String(error?.message || 'تعذّر تحميل الكشف')}</span>
+                        <span>{String(error?.message || 'تعذّر تحميل الحركات')}</span>
                     </div>
                 )}
 
@@ -122,51 +133,9 @@ export function CustomerStatementTab({ customerId }) {
                 ) : (
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <SummaryCard label="الرصيد الافتتاحي" value={fmtMoney(openingBalance)} accent="muted" />
                             <SummaryCard label="إجمالي المدين" value={fmtMoney(totals.debits)} accent="destructive" />
                             <SummaryCard label="إجمالي الدائن" value={fmtMoney(totals.credits)} accent="success" />
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <Card className={cn(
-                                "border-2",
-                                closingBalance > 0 ? "border-warning/30 bg-warning/5" :
-                                    closingBalance < 0 ? "border-success/30 bg-success/5" :
-                                        "border-muted"
-                            )}>
-                                <CardContent className="p-6">
-                                    <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">الرصيد الختامي</div>
-                                    <div className={cn(
-                                        "text-3xl font-extrabold font-mono mt-2",
-                                        closingBalance > 0 ? "text-warning" :
-                                            closingBalance < 0 ? "text-success" : "text-foreground"
-                                    )}>
-                                        {fmtMoney(closingBalance)} <span className="text-sm text-muted-foreground font-sans">ج.م</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                            <Card>
-                                <CardContent className="p-6">
-                                    <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">الرصيد المسجّل بالنظام</div>
-                                    <div className="text-3xl font-extrabold font-mono mt-2 text-foreground">
-                                        {fmtMoney(snapshotBalance)} <span className="text-sm text-muted-foreground font-sans">ج.م</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
-
-                        <div className={cn(
-                            "rounded-xl p-4 border-2 font-bold flex items-center gap-3",
-                            hasDelta
-                                ? "bg-warning/5 border-warning/30 text-warning-foreground"
-                                : "bg-success/5 border-success/30 text-success-foreground"
-                        )}>
-                            {hasDelta ? <AlertTriangle className="w-5 h-5 text-warning" /> : <CheckCircle2 className="w-5 h-5 text-success" />}
-                            <span data-testid="reconciliation-banner">
-                                {hasDelta
-                                    ? `تنبيه: فرق تسوية ${fmtMoney(Math.abs(delta))} ج.م — راجع القيود قبل التسليم.`
-                                    : 'الرصيد متطابق مع السجل.'}
-                            </span>
+                            <SummaryCard label="الصافي" value={fmtMoney(totals.net)} accent="default" />
                         </div>
 
                         <div className="overflow-x-auto rounded-xl border border-white/5">
@@ -174,17 +143,17 @@ export function CustomerStatementTab({ customerId }) {
                                 <TableHeader className="bg-muted/40">
                                     <TableRow className="hover:bg-transparent border-white/5">
                                         <TableHead className="text-right font-bold text-xs uppercase tracking-widest px-6">التاريخ</TableHead>
-                                        <TableHead className="text-right font-bold text-xs uppercase tracking-widest">نوع الحركة / البيان</TableHead>
+                                        <TableHead className="text-right font-bold text-xs uppercase tracking-widest">النوع / البيان</TableHead>
+                                        <TableHead className="text-right font-bold text-xs uppercase tracking-widest">الطريقة</TableHead>
                                         <TableHead className="text-center font-bold text-xs uppercase tracking-widest text-destructive bg-destructive/5">مدين</TableHead>
                                         <TableHead className="text-center font-bold text-xs uppercase tracking-widest text-success bg-success/5">دائن</TableHead>
-                                        <TableHead className="text-center font-bold text-xs uppercase tracking-widest bg-primary/5">الرصيد</TableHead>
                                     </TableRow>
                                 </TableHeader>
-                                <TableBody data-testid="statement-lines" data-line-count={lines.length}>
+                                <TableBody data-testid="transaction-lines" data-line-count={lines.length}>
                                     {lines.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={5} className="text-center h-32 text-muted-foreground font-bold">
-                                                لا توجد حركات في هذه الفترة
+                                                لا توجد حركات في هذه الفترة / النوع
                                             </TableCell>
                                         </TableRow>
                                     ) : lines.map((line, idx) => {
@@ -193,11 +162,9 @@ export function CustomerStatementTab({ customerId }) {
                                         return (
                                             <TableRow key={line.id || idx} className="border-white/5 hover:bg-white/[0.02]">
                                                 <TableCell className="px-6">
-                                                    <div className="flex flex-col">
-                                                        <span className="font-mono font-bold text-sm">
-                                                            {line.dateFormatted ? format(new Date(line.dateFormatted), 'dd/MM/yyyy', { locale: ar }) : '-'}
-                                                        </span>
-                                                    </div>
+                                                    <span className="font-mono font-bold text-sm">
+                                                        {line.date ? format(new Date(line.date), 'dd/MM/yyyy', { locale: ar }) : '-'}
+                                                    </span>
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="flex items-center gap-3">
@@ -205,19 +172,20 @@ export function CustomerStatementTab({ customerId }) {
                                                             <Icon className="w-4 h-4" />
                                                         </div>
                                                         <div className="flex flex-col">
-                                                            <span className="font-bold text-sm">{meta.label}</span>
-                                                            <span className="text-xs text-muted-foreground font-mono">#{line.reference || '-'}</span>
+                                                            <span className="font-bold text-sm">{line.typeLabel || meta.label}</span>
+                                                            <span className="text-xs text-muted-foreground">{line.label}</span>
+                                                            <span className="text-[10px] text-muted-foreground/70 font-mono">#{line.reference || '-'}</span>
                                                         </div>
                                                     </div>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <span className="text-xs text-muted-foreground font-bold">{line.methodLabel || '—'}</span>
                                                 </TableCell>
                                                 <TableCell className="text-center font-mono font-bold text-destructive">
                                                     {Number(line.debit) > 0 ? fmtMoney(line.debit) : '—'}
                                                 </TableCell>
                                                 <TableCell className="text-center font-mono font-bold text-success">
                                                     {Number(line.credit) > 0 ? fmtMoney(line.credit) : '—'}
-                                                </TableCell>
-                                                <TableCell className="text-center font-mono font-extrabold text-primary">
-                                                    {fmtMoney(line.balance)}
                                                 </TableCell>
                                             </TableRow>
                                         );
@@ -235,13 +203,13 @@ export function CustomerStatementTab({ customerId }) {
 function SummaryCard({ label, value, accent }) {
     const accentCls = accent === 'destructive' ? 'text-destructive' :
         accent === 'success' ? 'text-success' :
-            'text-muted-foreground';
+            'text-foreground';
     return (
         <Card>
             <CardContent className="p-6">
                 <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{label}</div>
                 <div className={cn("text-2xl font-extrabold font-mono mt-2", accentCls)}>
-                    {value} <span className="text-sm font-sans">ج.م</span>
+                    {value} <span className="text-sm text-muted-foreground font-sans">ج.م</span>
                 </div>
             </CardContent>
         </Card>

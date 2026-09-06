@@ -77,7 +77,10 @@ function compactFilters(filters) {
  */
 export async function getDocumentData(type, id, filters = {}, options) {
     const params = compactFilters(filters);
-    return api.get(pathFor(type, id), params, options);
+    // NOTE: the JSON read model lives under /data — the bare
+    // /:type/:id route serves preview HTML (fetching it as JSON
+    // fails with "Invalid JSON response from server").
+    return api.get(pathFor(type, id) + '/data', params, options);
 }
 
 /**

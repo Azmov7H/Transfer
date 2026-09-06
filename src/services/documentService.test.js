@@ -61,7 +61,7 @@ describe('getDocumentData — URL construction', () => {
     test('omits the id for aggregate documents', async () => {
         await getDocumentData(DOCUMENT_TYPES.COMPANY_FINANCIAL_STATEMENT, undefined, { from: '2026-01-01' });
         const url = fetchMock.mock.calls[0][0];
-        expect(url).toContain('/api/documents/COMPANY_FINANCIAL_STATEMENT?');
+        expect(url).toContain('/api/documents/COMPANY_FINANCIAL_STATEMENT/data?');
         expect(url).not.toContain('/COMPANY_FINANCIAL_STATEMENT/null');
         expect(url).toContain('from=2026-01-01');
     });
