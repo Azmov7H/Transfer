@@ -17,11 +17,23 @@ export function InvoicePrintView({ invoice, settings, returns }) {
     // payment received yet" (debt); it has no channel/source number
     // of its own and maps to 'آجل' for the user.
     const isCredit = invoice?.paymentType === 'credit';
+    const paidAmount = Number(invoice?.paidAmount) || 0;
+    const invoiceTotal = Number(invoice?.total) || 0;
+    // Credit sales are created with paymentStatus 'pending' (unpaid);
+    // derive a fallback from amounts when the field is missing so the
+    // customer-facing status is never a hard-coded 'paid in full'.
+    const paymentStatus = invoice?.paymentStatus
+        || (paidAmount >= invoiceTotal && invoiceTotal > 0 ? 'paid'
+            : paidAmount > 0 ? 'partial' : 'pending');
+    const statusStyle = paymentStatus === 'paid'
+        ? { label: 'مدفوع بالكامل', classes: 'text-emerald-700 bg-emerald-50 border-emerald-200' }
+        : paymentStatus === 'partial'
+            ? { label: 'مدفوع جزئياً', classes: 'text-amber-700 bg-amber-50 border-amber-200' }
+            : { label: 'غير مدفوع', classes: 'text-rose-700 bg-rose-50 border-rose-200' };
     const methodInfo = getPaymentMethod(invoice?.paymentType) || null;
     const methodLabel = isCredit
         ? 'آجل'
         : (methodInfo?.labelAr || getPaymentLabel(invoice?.paymentType, 'ar') || '—');
-    const channelLabel = isCredit ? '' : (methodInfo?.channelLabelAr || '');
     const sourceNumber = invoice?.sourceNumber || '';
     const isElectronicMethod = invoice?.paymentType === 'instapay'
         || invoice?.paymentType === 'wallet';
@@ -118,24 +130,17 @@ export function InvoicePrintView({ invoice, settings, returns }) {
                     <div className="space-y-3">
                         <h3 className="font-bold mb-3 text-left border-b border-slate-200 pb-1" style={{ color: primaryColor }}>تفاصيل الفاتورة</h3>
                         <div className="space-y-2 text-slate-800">
-                            <p className="flex justify-between items-center"><span className="text-slate-600">الحالة:</span> <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded text-xs border border-emerald-200">مدفوع بالكامل</span></p>
+                            <p className="flex justify-between items-center"><span className="text-slate-600">الحالة:</span> <span className={`font-bold px-2 py-0.5 rounded text-xs border ${statusStyle.classes}`}>{statusStyle.label}</span></p>
                             <p className="flex justify-between items-center">
                                 <span className="text-slate-600">طريقة الدفع:</span>
                                 <span className="font-bold text-slate-900">{methodLabel}</span>
                             </p>
-                            {channelLabel && (
-                                <p className="flex justify-between items-center">
-                                    <span className="text-slate-600">القناة:</span>
-                                    <span className="font-bold text-slate-900">{channelLabel}</span>
-                                </p>
-                            )}
                             {isElectronicMethod && maskedSource && (
                                 <p className="flex justify-between items-center">
                                     <span className="text-slate-600">رقم التحويل:</span>
                                     <span className="font-mono font-bold text-slate-900">{maskedSource}</span>
                                 </p>
                             )}
-                            <p className="flex justify-between items-center"><span className="text-slate-600">بواسطة:</span> <span className="font-semibold text-slate-900">{invoice.createdBy?.name || 'المدير'}</span></p>
                         </div>
                     </div>
                 </div >

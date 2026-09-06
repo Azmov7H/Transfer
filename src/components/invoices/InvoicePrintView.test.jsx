@@ -4,8 +4,9 @@
  * The legacy view used a hard-coded ternary that rendered
  * `instapay / wallet / check` as 'آجل' (credit). The redesigned
  * component looks up the method via getPaymentMethod() and renders
- * the correct label + channel + (when electronic) the masked source
- * number.
+ * the correct label + (when electronic) the masked source number.
+ * Channel and creator rows are intentionally NOT customer-facing
+ * (removed from the printed invoice) and must stay absent.
  */
 import { render, screen } from '@testing-library/react';
 import { InvoicePrintView } from './InvoicePrintView';
@@ -48,9 +49,13 @@ describe('InvoicePrintView — payment method label (REQ-SINV-005)', () => {
             // Channel and method may share a label (e.g. instapay) — use
             // getAllByText + at-least-one so the assertion is stable.
             expect(screen.getAllByText(methodLabel).length).toBeGreaterThan(0);
+            // Channel row removed from the customer-facing invoice.
+            expect(screen.queryByText('القناة:')).not.toBeInTheDocument();
             if (channelLabel && channelLabel !== methodLabel) {
-                expect(screen.getByText(channelLabel)).toBeInTheDocument();
+                expect(screen.queryByText(channelLabel)).not.toBeInTheDocument();
             }
+            // Creator row removed from the customer-facing invoice.
+            expect(screen.queryByText('بواسطة:')).not.toBeInTheDocument();
             if (showsSource) {
                 // Source is masked: '•••• 7890' (last 4 of 'IP-1234567890')
                 expect(screen.getByText('•••• 7890')).toBeInTheDocument();
@@ -60,6 +65,30 @@ describe('InvoicePrintView — payment method label (REQ-SINV-005)', () => {
                 expect(screen.queryByText('رقم التحويل:')).not.toBeInTheDocument();
             }
         });
+});
+
+describe('InvoicePrintView — status badge follows payment state', () => {
+    const statusCases = [
+        // [paymentStatus, paidAmount, total, expectedLabel]
+        ['pending', 0, 1000, 'غير مدفوع'],   // credit sale: unpaid
+        ['partial', 400, 1000, 'مدفوع جزئياً'],
+        ['paid', 1000, 1000, 'مدفوع بالكامل'],
+    ];
+
+    it.each(statusCases)('status=%s paid=%s total=%s → "%s"',
+        (paymentStatus, paidAmount, total, expectedLabel) => {
+            const inv = { ...INVOICE, paymentStatus, paidAmount, total };
+            render(<InvoicePrintView invoice={inv} settings={SETTINGS} />);
+            expect(screen.getByText(expectedLabel)).toBeInTheDocument();
+        });
+
+    it('derives unpaid from amounts when paymentStatus is missing (credit sale)', () => {
+        const inv = { ...INVOICE, paymentType: 'credit', paidAmount: 0, total: 1000 };
+        delete inv.paymentStatus;
+        render(<InvoicePrintView invoice={inv} settings={SETTINGS} />);
+        expect(screen.getByText('غير مدفوع')).toBeInTheDocument();
+        expect(screen.queryByText('مدفوع بالكامل')).not.toBeInTheDocument();
+    });
 });
 
 describe('InvoicePrintView — backwards compat', () => {
