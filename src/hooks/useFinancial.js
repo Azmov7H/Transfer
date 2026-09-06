@@ -43,19 +43,31 @@ export function useTreasury(params = {}) {
 }
 
 /**
- * Full transaction ledger for a date range. Normalizes the bare-array
- * response (tolerating legacy `{ transactions }` / `{ data }` wrappers)
- * so consumers always get an array.
+ * Server-paginated transaction ledger for a date range. Returns
+ * `{ transactions, total, page, limit }` — `total` covers the whole
+ * window so the UI can page through the full history (the old bare-array
+ * contract is still tolerated for forward/backward compatibility).
  */
-export function useTreasuryTransactions(dateRange = {}, options = {}) {
+const LEDGER_PAGE_SIZE = 100;
+
+export function useTreasuryTransactions(dateRange = {}, { page = 1, limit = LEDGER_PAGE_SIZE, type, category } = {}, options = {}) {
+    const params = { ...dateRange, page, limit };
+    if (type) params.type = type;
+    if (category) params.category = category;
     return useQuery({
-        queryKey: ['treasury-transactions', dateRange],
+        queryKey: ['treasury-transactions', dateRange, page, limit, type, category],
         queryFn: async ({ signal }) => {
-            const res = await getTreasuryTransactions(dateRange, { signal });
-            if (Array.isArray(res)) return res;
-            if (res?.transactions && Array.isArray(res.transactions)) return res.transactions;
-            if (res?.data && Array.isArray(res.data)) return res.data;
-            return [];
+            const res = await getTreasuryTransactions(params, { signal });
+            if (Array.isArray(res)) return { transactions: res, total: res.length, page, limit };
+            const transactions = res?.transactions && Array.isArray(res.transactions)
+                ? res.transactions
+                : (res?.data && Array.isArray(res.data) ? res.data : []);
+            return {
+                transactions,
+                total: Number.isFinite(Number(res?.total)) ? Number(res.total) : transactions.length,
+                page: Number(res?.page) || page,
+                limit: Number(res?.limit) || limit,
+            };
         },
         placeholderData: keepPreviousData,
         enabled: options.enabled !== false,
@@ -249,7 +261,13 @@ export function useCustomerTotalPayment() {
 export function usePartnerTransactions(partnerId, params = {}) {
     return useQuery({
         queryKey: ['partner-transactions', partnerId, params],
-        queryFn: ({ signal }) => getPartnerTransactions(partnerId, params, { signal }),
+        queryFn: async ({ signal }) => {
+            const res = await getPartnerTransactions(partnerId, params, { signal });
+            if (Array.isArray(res)) return res;
+            if (res?.transactions && Array.isArray(res.transactions)) return res.transactions;
+            if (res?.data && Array.isArray(res.data)) return res.data;
+            return [];
+        },
         enabled: !!partnerId
     });
 }

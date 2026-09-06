@@ -104,13 +104,32 @@ export default function FinancialPage() {
     const [formData, setFormData] = useState(EMPTY_TX_FORM);
 
     const dateRange = getDateRange();
+
+    // Server-paginated ledger: the INCOME/EXPENSE views filter by `type`
+    // and the supplier/shop views by `category` — the table never pages
+    // through a client-side slice again.
+    const [txPage, setTxPage] = useState(1);
+    const resetTxPage = useCallback(() => setTxPage(1), []);
+    const handleTypeFilterChange = useCallback((f) => {
+        setTypeFilter(f);
+        setTxPage(1);
+    }, []);
+    const serverType = typeFilter === 'INCOME' || typeFilter === 'EXPENSE' ? typeFilter : undefined;
+    const serverCategory = typeFilter === 'SUPPLIER_PAYMENTS'
+        ? 'supplier_payments'
+        : typeFilter === 'SHOP_EXPENSES' ? 'shop_expenses' : undefined;
+
     const {
-        data: allTransactions = [],
+        data: ledger,
         isFetching: isTransactionsFetching,
         isError: isTransactionsError,
         error: transactionsError,
         refetch: refetchTransactions
-    } = useTreasuryTransactions(dateRange);
+    } = useTreasuryTransactions(dateRange, { page: txPage, type: serverType, category: serverCategory });
+
+    const allTransactions = useMemo(() => ledger?.transactions ?? [], [ledger]);
+    const totalTransactions = ledger?.total ?? 0;
+    const totalPages = Math.max(1, Math.ceil(totalTransactions / (ledger?.limit || 100)));
 
     // Full-period chart buckets, aggregated server-side so the chart always
     // covers the same window as the stat cards (the ledger above is capped
@@ -254,7 +273,7 @@ export default function FinancialPage() {
                             key={p.id}
                             variant={period === p.id ? 'default' : 'ghost'}
                             size="sm"
-                            onClick={() => setPeriod(p.id)}
+                            onClick={() => { setPeriod(p.id); resetTxPage(); }}
                             className="text-xs h-8"
                         >
                             {p.label}
@@ -269,7 +288,7 @@ export default function FinancialPage() {
                                 type="date"
                                 className="h-9 w-40"
                                 value={customDates.startDate}
-                                onChange={e => setCustomDates({ ...customDates, startDate: e.target.value })}
+                                onChange={e => { setCustomDates({ ...customDates, startDate: e.target.value }); resetTxPage(); }}
                             />
                         </div>
                         <div className="space-y-1">
@@ -278,7 +297,7 @@ export default function FinancialPage() {
                                 type="date"
                                 className="h-9 w-40"
                                 value={customDates.endDate}
-                                onChange={e => setCustomDates({ ...customDates, endDate: e.target.value })}
+                                onChange={e => { setCustomDates({ ...customDates, endDate: e.target.value }); resetTxPage(); }}
                             />
                         </div>
                     </div>
@@ -292,6 +311,7 @@ export default function FinancialPage() {
                             onChange={e => {
                                 setCustomDates({ startDate: e.target.value, endDate: e.target.value });
                                 setPeriod('CUSTOM');
+                                resetTxPage();
                             }}
                         />
                     </div>
@@ -349,16 +369,14 @@ export default function FinancialPage() {
             <div className="space-y-3">
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                        <SectionHeading title="سجل المعاملات" scope="أحدث 100" />
+                        <SectionHeading title="سجل المعاملات" scope="سجل كامل — صفحات" />
                         {isTransactionsFetching && (
                             <span className="text-xs text-muted-foreground font-medium inline-flex items-center gap-1">
                                 <Loader2 className="h-3 w-3 animate-spin" /> جاري التحديث…
                             </span>
                         )}
                         <span className="text-xs text-muted-foreground font-medium">
-                            ({periodStats.transactionCount > allTransactions.length
-                                ? `أحدث ${allTransactions.length} من أصل ${periodStats.transactionCount}`
-                                : `${allTransactions.length}`} معاملة)
+                            ({totalTransactions.toLocaleString()} معاملة — صفحة {txPage} من {totalPages})
                         </span>
                     </div>
                 </div>
@@ -392,10 +410,14 @@ export default function FinancialPage() {
                     <TransactionsTable
                         transactions={filteredTransactions}
                         typeFilter={typeFilter}
-                        onTypeFilterChange={setTypeFilter}
+                        onTypeFilterChange={handleTypeFilterChange}
                         onTxClick={handleTxClick}
                         onDelete={handleDelete}
                         isDeleting={isDeleting}
+                        page={txPage}
+                        totalPages={totalPages}
+                        total={totalTransactions}
+                        onPageChange={setTxPage}
                     />
                 )}
             </div>

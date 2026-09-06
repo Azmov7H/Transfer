@@ -4,15 +4,37 @@ import Link from "next/link";
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Info, Trash2, Eye, ReceiptCent } from 'lucide-react';
+import { Info, Trash2, Eye, ReceiptCent, ChevronRight, ChevronLeft } from 'lucide-react';
 import { getPaymentLabel, maskSource } from '@/lib/paymentMethods';
 import { useUserRole } from '@/hooks/useUserRole';
 import { ROLES } from '@/lib/permissions';
 
-export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange, onTxClick, onDelete, isDeleting }) {
+function PartyCell({ tx }) {
+    if (tx.referenceType === 'UnifiedCollection') {
+        return (
+            <div className="flex flex-col">
+                <span className="font-medium">
+                    {tx.referenceId?._id ? (
+                        <Link
+                            href={`/customers/${tx.referenceId._id}`}
+                            className="hover:text-primary underline-offset-4 hover:underline"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {tx.referenceId?.name || 'تحصيل مجمع'}
+                        </Link>
+                    ) : 'تحصيل مجمع'}
+                </span>
+                <span className="text-xs text-muted-foreground">تحصيل مجمع</span>
+            </div>
+        );
+    }
+    return null;
+}
+
+export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange, onTxClick, onDelete, isDeleting, page = 1, totalPages = 1, total = 0, onPageChange }) {
     const { role } = useUserRole();
     const canDelete = role === ROLES.OWNER;
     return (
@@ -66,7 +88,7 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                 <TableBody>
                                     {transactions.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                                            <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                                                 لا توجد معاملات مسجلة في هذه الفترة للفلتر المختار
                                             </TableCell>
                                         </TableRow>
@@ -83,6 +105,9 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell>
+                                                    {tx.referenceType === 'UnifiedCollection' ? (
+                                                        <PartyCell tx={tx} />
+                                                    ) : (
                                                     <div className="flex flex-col">
                                                         <span className="font-medium">
                                                             {tx.referenceType === 'Invoice' ? (
@@ -123,6 +148,7 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                                     tx.referenceType === 'Debt' ? `دين / مطالبات` : ''}
                                                         </span>
                                                     </div>
+                                                    )}
                                                 </TableCell>
                                                 <TableCell className={`font-bold text-base ${tx.type === 'INCOME' ? 'text-success' : 'text-destructive'}`}>
                                                     {tx.amount.toLocaleString()} ج.م
@@ -142,7 +168,8 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                                                         <span>{tx.description}</span>
                                                         <Badge variant="outline" className="text-xs w-fit mt-1 opacity-70">
                                                             {tx.type === 'INCOME' ?
-                                                                (tx.referenceType === 'Invoice' ? 'مبيعات' : 'إيداع إضافي') :
+                                                                (tx.referenceType === 'Invoice' ? 'مبيعات' :
+                                                                    tx.referenceType === 'UnifiedCollection' ? 'تحصيل مجمع' : 'إيداع إضافي') :
                                                                 (tx.referenceType === 'PurchaseOrder' || (tx.referenceType === 'Debt' && tx.referenceId?.debtorType === 'Supplier') ? 'دفعة مورد' :
                                                                     tx.referenceType === 'SalesReturn' ? 'مرتجع مبيعات' : 'مصاريف عامة')
                                                             }
@@ -208,6 +235,33 @@ export function TransactionsTable({ transactions, typeFilter, onTypeFilterChange
                             </Table>
                         </div>
                     </CardContent>
+                    {totalPages > 1 && (
+                        <CardFooter className="border-t py-3 flex items-center justify-between gap-2">
+                            <span className="text-xs font-bold text-muted-foreground">
+                                صفحة {page} من {totalPages} • إجمالي {total.toLocaleString()}
+                            </span>
+                            <div className="flex items-center gap-1">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-8 gap-1 text-xs"
+                                    disabled={page <= 1}
+                                    onClick={() => onPageChange?.(page - 1)}
+                                >
+                                    <ChevronRight size={14} /> السابق
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-8 gap-1 text-xs"
+                                    disabled={page >= totalPages}
+                                    onClick={() => onPageChange?.(page + 1)}
+                                >
+                                    التالي <ChevronLeft size={14} />
+                                </Button>
+                            </div>
+                        </CardFooter>
+                    )}
                 </Card>
         </>
     );

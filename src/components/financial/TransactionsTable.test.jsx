@@ -10,7 +10,7 @@ jest.mock('@/hooks/useUserRole', () => ({
 }));
 
 const React = require('react');
-const { screen } = require('@testing-library/react');
+const { screen, fireEvent } = require('@testing-library/react');
 const { ROLES } = require('@/lib/permissions');
 const { useUserRole } = require('@/hooks/useUserRole');
 const { TransactionsTable } = require('./TransactionsTable');
@@ -55,5 +55,75 @@ describe('TransactionsTable delete ACL', () => {
     it('keeps the details action visible for all roles', () => {
         renderTable(ROLES.MANAGER);
         expect(screen.getByLabelText('تفاصيل الحركة')).toBeInTheDocument();
+    });
+});
+
+describe('TransactionsTable pagination', () => {
+    function renderPaged(props = {}) {
+        useUserRole.mockReturnValue({ role: ROLES.OWNER, loading: false });
+        return renderWithProviders(
+            React.createElement(TransactionsTable, {
+                transactions: [manualTx],
+                typeFilter: 'ALL',
+                onTypeFilterChange: () => {},
+                onTxClick: () => {},
+                onDelete: () => {},
+                isDeleting: false,
+                page: 1,
+                totalPages: 3,
+                total: 250,
+                onPageChange: () => {},
+                ...props,
+            })
+        );
+    }
+
+    it('shows page position and total, advancing on next', () => {
+        const onPageChange = jest.fn();
+        renderPaged({ onPageChange });
+        expect(screen.getByText(/صفحة 1 من 3/)).toBeInTheDocument();
+        fireEvent.click(screen.getByRole('button', { name: /التالي/ }));
+        expect(onPageChange).toHaveBeenCalledWith(2);
+    });
+
+    it('disables previous on the first page and next on the last', () => {
+        renderPaged({ page: 1 });
+        expect(screen.getByRole('button', { name: /السابق/ })).toBeDisabled();
+        expect(screen.getByRole('button', { name: /التالي/ })).not.toBeDisabled();
+    });
+
+    it('hides the pager for a single page', () => {
+        renderPaged({ totalPages: 1 });
+        expect(screen.queryByRole('button', { name: /التالي/ })).not.toBeInTheDocument();
+    });
+});
+
+describe('TransactionsTable unified collections', () => {
+    const ucTx = {
+        ...manualTx,
+        _id: '64b000000000000000000002',
+        type: 'INCOME',
+        referenceType: 'UnifiedCollection',
+        referenceId: { _id: '64c000000000000000000001', name: 'عميل مجمع' },
+        description: 'تحصيل مجمع - عميل مجمع',
+    };
+
+    it('links the customer instead of showing ---', () => {
+        useUserRole.mockReturnValue({ role: ROLES.MANAGER, loading: false });
+        renderWithProviders(
+            React.createElement(TransactionsTable, {
+                transactions: [ucTx],
+                typeFilter: 'ALL',
+                onTypeFilterChange: () => {},
+                onTxClick: () => {},
+                onDelete: () => {},
+                isDeleting: false,
+            })
+        );
+        expect(screen.getByRole('link', { name: 'عميل مجمع' })).toHaveAttribute(
+            'href',
+            '/customers/64c000000000000000000001'
+        );
+        expect(screen.getAllByText('تحصيل مجمع').length).toBeGreaterThanOrEqual(2);
     });
 });

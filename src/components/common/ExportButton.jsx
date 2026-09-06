@@ -7,7 +7,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -30,6 +29,37 @@ const SUPPORTED_TYPES = new Set([
 export function ExportButton({ type, filters = {}, data = [], columns = [], pdfTitle = 'Report' }) {
     const [isLoading, setIsLoading] = useState(false);
 
+    const postExport = async (format) => {
+        const res = await fetch('/api/export', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type, format, filters })
+        });
+
+        if (!res.ok) {
+            let message = 'حدث خطأ أثناء التصدير';
+            try {
+                const err = await res.json();
+                if (err?.message) message = err.message;
+            } catch { /* ignore parse errors */ }
+            throw new Error(message);
+        }
+        return res.blob();
+    };
+
+    const downloadBlob = (blob, filename) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    };
+
+    const stamp = () => new Date().toISOString().split('T')[0];
+
     const handleCsvExport = async () => {
         try {
             setIsLoading(true);
@@ -49,22 +79,7 @@ export function ExportButton({ type, filters = {}, data = [], columns = [], pdfT
                 return;
             }
 
-            const res = await fetch('/api/export', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type, format: 'csv', filters })
-            });
-
-            if (!res.ok) {
-                let message = 'حدث خطأ أثناء التصدير';
-                try {
-                    const err = await res.json();
-                    if (err?.message) message = err.message;
-                } catch { /* ignore parse errors */ }
-                throw new Error(message);
-            }
-
-            const blob = await res.blob();
+            const blob = await postExport('csv');
 
             // Empty detection: read the blob text once; if it carries no data
             // rows beyond the header + BOM, warn (still allows the download).
@@ -75,19 +90,28 @@ export function ExportButton({ type, filters = {}, data = [], columns = [], pdfT
             }).catch(() => false);
             if (emptyHint) toast('لا توجد نتائج مطابقة للفلاتر');
 
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${type}_report_${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
+            downloadBlob(blob, `${type}_report_${stamp()}.csv`);
             toast.success('تم تصدير ملف Excel بنجاح');
         } catch (err) {
             console.error(err);
             toast.error(err.message || 'حدث خطأ أثناء التصدير', {
                 action: { label: 'إعادة المحاولة', onClick: () => handleCsvExport() }
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handlePdfExport = async () => {
+        try {
+            setIsLoading(true);
+            const blob = await postExport('pdf');
+            downloadBlob(blob, `${type}_report_${stamp()}.pdf`);
+            toast.success('تم تصدير ملف PDF بنجاح');
+        } catch (err) {
+            console.error(err);
+            toast.error(err.message || 'حدث خطأ أثناء التصدير', {
+                action: { label: 'إعادة المحاولة', onClick: () => handlePdfExport() }
             });
         } finally {
             setIsLoading(false);
@@ -112,18 +136,10 @@ export function ExportButton({ type, filters = {}, data = [], columns = [], pdfT
                                 <FileSpreadsheet className="w-4 h-4 text-success" />
                                 تصدير CSV
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <DropdownMenuItem disabled className="gap-2 cursor-not-allowed">
-                                        <FileText className="w-4 h-4 text-destructive" />
-                                        PDF
-                                    </DropdownMenuItem>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    تصدير PDF غير متاح حاليًا (النص العربي)
-                                </TooltipContent>
-                            </Tooltip>
+                            <DropdownMenuItem onClick={handlePdfExport} className="gap-2 cursor-pointer">
+                                <FileText className="w-4 h-4 text-destructive" />
+                                تصدير PDF
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </TooltipTrigger>
