@@ -9,14 +9,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
-import { Wallet, Loader2, RefreshCcw, AlertCircle } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Wallet, Loader2, RefreshCcw, AlertCircle, TrendingUp, TrendingDown, Scale, HandCoins } from 'lucide-react';
 import { useSuppliers } from '@/hooks/useSuppliers';
 import { useQueryClient } from '@tanstack/react-query';
 import { cn } from '@/utils';
-import { TreasuryStatsCards } from '@/components/financial/TreasuryStatsCards';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { StatCard } from '@/components/ui/StatCard';
 import { TransactionsTable } from '@/components/financial/TransactionsTable';
 import { TransactionDetailsDialog } from '@/components/financial/TransactionDetailsDialog';
 import { AddTransactionDialog } from '@/components/financial/AddTransactionDialog';
+import { CashFlowChart } from '@/components/financial/CashFlowChart';
+import { BalanceBreakdownChart } from '@/components/financial/BalanceBreakdownChart';
+import { useCashFlowData } from '@/components/financial/cashFlowUtils';
 import { ExportButton } from '@/components/common/ExportButton';
 
 const isSupplierPaymentTx = (tx) =>
@@ -47,9 +52,16 @@ const EMPTY_TX_FORM = {
     sourceNumber: ''
 };
 
+const PERIODS = [
+    { id: 'TODAY', label: 'اليوم' },
+    { id: 'MONTH', label: 'هذا الشهر' },
+    { id: 'YEAR', label: 'هذه السنة' },
+    { id: 'CUSTOM', label: 'مخصص' },
+];
+
 export default function FinancialPage() {
-    const [period, setPeriod] = useState('TODAY'); // TODAY, MONTH, YEAR, CUSTOM
-    const [typeFilter, setTypeFilter] = useState('ALL'); // ALL, INCOME, EXPENSE, EXPENSES (Manual), SUPPLIER_PAYMENTS
+    const [period, setPeriod] = useState('MONTH');
+    const [typeFilter, setTypeFilter] = useState('ALL');
     const [customDates, setCustomDates] = useState({
         startDate: new Date().toISOString().split('T')[0],
         endDate: new Date().toISOString().split('T')[0]
@@ -58,9 +70,6 @@ export default function FinancialPage() {
     const queryClient = useQueryClient();
     const { data: suppliers } = useSuppliers({ limit: 100 });
 
-    // Calculate actual dates based on period.
-    // NOTE: declared with useCallback so the object identity is stable
-    // across renders (it's a dependency of the useQuery below).
     const getDateRange = useCallback(() => {
         const end = new Date();
         const start = new Date();
@@ -97,10 +106,6 @@ export default function FinancialPage() {
 
     const [formData, setFormData] = useState(EMPTY_TX_FORM);
 
-    // T-PERF-03 contract: `/api/financial/treasury` only returns the most
-    // recent 20 rows. The full history table reads the dedicated
-    // `/api/treasury/transactions` ledger endpoint instead.
-    // All hooks below MUST stay above any early-return (Rules of Hooks).
     const dateRange = getDateRange();
     const {
         data: allTransactions = [],
@@ -115,7 +120,6 @@ export default function FinancialPage() {
     const handleSubmit = async () => {
         if (!formData.amount || !formData.description) return;
 
-        // Supplier expense goes through the counterparty payments dispatcher
         if (formData.type === 'EXPENSE' && formData.category === 'supplier') {
             if (!formData.supplierId) {
                 toast.error('يرجى اختيار مورد');
@@ -151,6 +155,8 @@ export default function FinancialPage() {
         [allTransactions, typeFilter]
     );
 
+    const cashFlowData = useCashFlowData(allTransactions);
+
     const handleDelete = (id) => {
         setDeleteTargetId(id);
     };
@@ -161,14 +167,6 @@ export default function FinancialPage() {
         }
         setDeleteTargetId(null);
     };
-
-    if (isLoading) {
-        return (
-            <div className="flex justify-center py-20">
-                <Loader2 className="animate-spin text-primary" size={40} />
-            </div>
-        );
-    }
 
     const balance = treasuryData?.balance || 0;
 
@@ -201,80 +199,75 @@ export default function FinancialPage() {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                    <Wallet className="w-6 h-6 md:w-8 md:h-8 text-primary" />
-                    <h1 className="text-2xl md:text-3xl font-bold text-foreground">الخزينة (النظام المالي)</h1>
-                </div>
-
-                {/* Reachability links for surfaces outside the sidebar (UX-100 interim) */}
-                <nav aria-label="أقسام مالية أخرى" className="flex flex-wrap items-center gap-2">
-                    <Button asChild variant="outline" size="sm" className="h-8 text-xs">
-                        <Link href="/financial/debt-center">مركز الديون والمستحقات</Link>
-                    </Button>
-                    <Button asChild variant="outline" size="sm" className="h-8 text-xs">
-                        <Link href="/receivables">المستحقات</Link>
-                    </Button>
-                    <Button asChild variant="outline" size="sm" className="h-8 text-xs">
-                        <Link href="/accounting">العرض المحاسبي</Link>
-                    </Button>
-                    <Button asChild variant="outline" size="sm" className="h-8 text-xs">
-                        <Link href="/reports/financial">التقارير المالية</Link>
-                    </Button>
-                    <ExportButton
-                        type="treasuryTransactions"
-                        filters={{
-                            ...getDateRange(),
-                            type: typeFilter === 'ALL' ? undefined : typeFilter
-                        }}
-                    />
-                </nav>
-
-                {/* Period Filter */}
-                <div className="flex flex-wrap items-center gap-2 bg-muted p-1 rounded-lg">
-                    <Button
-                        variant={period === 'TODAY' ? 'default' : 'ghost'}
-                        size="sm"
-                        onClick={() => setPeriod('TODAY')}
-                        className="text-xs h-8"
-                    >اليوم</Button>
-                    <div className="flex items-center gap-1 glass-card px-2 h-8 rounded-md bg-white/5 border border-white/10">
-                        <Label className="text-xs text-muted-foreground mr-1">تاريخ محدد:</Label>
-                        <Input
-                            type="date"
-                            className="h-6 w-32 text-xs bg-transparent border-none p-0 focus-visible:ring-0"
-                            value={customDates.startDate}
-                            onChange={e => {
-                                setCustomDates({ startDate: e.target.value, endDate: e.target.value });
-                                setPeriod('CUSTOM');
+        <div className="space-y-6" dir="rtl">
+            <PageHeader
+                title="الخزينة"
+                subtitle="لوحة التحكم المالي — الأرصدة والتدفق النقدي وسجل المعاملات"
+                icon={Wallet}
+                actions={
+                    <div className="flex flex-wrap items-center gap-2">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={refreshAll}
+                            disabled={isTransactionsFetching}
+                            className="gap-2"
+                            aria-label="تحديث"
+                        >
+                            <RefreshCcw className={cn("h-4 w-4", isTransactionsFetching && "animate-spin")} />
+                            تحديث
+                        </Button>
+                        <ExportButton
+                            type="treasuryTransactions"
+                            filters={{
+                                ...getDateRange(),
+                                type: typeFilter === 'ALL' ? undefined : typeFilter
                             }}
                         />
+                        <AddTransactionDialog
+                            open={isDialogOpen}
+                            onOpenChange={setIsDialogOpen}
+                            formData={formData}
+                            setFormData={setFormData}
+                            onSubmit={handleSubmit}
+                            isPending={isPending || isPayingSupplier}
+                            suppliers={suppliers}
+                        />
                     </div>
-                    <Button
-                        variant={period === 'MONTH' ? 'default' : 'ghost'}
-                        size="sm"
-                        onClick={() => setPeriod('MONTH')}
-                        className="text-xs h-8"
-                    >هذا الشهر</Button>
-                    <Button
-                        variant={period === 'YEAR' ? 'default' : 'ghost'}
-                        onClick={() => setPeriod('YEAR')}
-                        className="text-xs h-8"
-                    >هذه السنة</Button>
-                    <Button
-                        variant={period === 'CUSTOM' ? 'default' : 'ghost'}
-                        size="sm"
-                        onClick={() => setPeriod('CUSTOM')}
-                        className="text-xs h-8"
-                    >مخصص</Button>
-                </div>
-            </div>
+                }
+            />
 
-            {/* Custom Date Range Picker (Visible only if filter is CUSTOM) */}
-            {period === 'CUSTOM' && (
-                <Card className="p-4 bg-muted/30 border-dashed">
-                    <div className="flex flex-wrap items-end gap-4">
+            <nav aria-label="أقسام مالية أخرى" className="flex flex-wrap items-center gap-2">
+                <Button asChild variant="outline" size="sm" className="h-8 text-xs">
+                    <Link href="/financial/debt-center">مركز الديون والمستحقات</Link>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="h-8 text-xs">
+                    <Link href="/receivables">المستحقات</Link>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="h-8 text-xs">
+                    <Link href="/accounting">العرض المحاسبي</Link>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="h-8 text-xs">
+                    <Link href="/reports/financial">التقارير المالية</Link>
+                </Button>
+            </nav>
+
+            <Card className="p-2 flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-1 bg-muted p-1 rounded-lg">
+                    {PERIODS.map(p => (
+                        <Button
+                            key={p.id}
+                            variant={period === p.id ? 'default' : 'ghost'}
+                            size="sm"
+                            onClick={() => setPeriod(p.id)}
+                            className="text-xs h-8"
+                        >
+                            {p.label}
+                        </Button>
+                    ))}
+                </div>
+                {period === 'CUSTOM' ? (
+                    <div className="flex flex-wrap items-end gap-3 px-2">
                         <div className="space-y-1">
                             <Label className="text-xs">من تاريخ</Label>
                             <Input
@@ -294,92 +287,136 @@ export default function FinancialPage() {
                             />
                         </div>
                     </div>
+                ) : (
+                    <div className="flex items-center gap-2 px-2">
+                        <Label className="text-xs text-muted-foreground">تاريخ محدد:</Label>
+                        <Input
+                            type="date"
+                            className="h-8 w-36 text-xs"
+                            value={customDates.startDate}
+                            onChange={e => {
+                                setCustomDates({ startDate: e.target.value, endDate: e.target.value });
+                                setPeriod('CUSTOM');
+                            }}
+                        />
+                    </div>
+                )}
+            </Card>
+
+            {isLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {[0, 1, 2, 3].map(i => (
+                        <Skeleton key={i} className="h-32 rounded-[2.5rem]" />
+                    ))}
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <StatCard
+                        title="الرصيد الكلي"
+                        value={balance.toLocaleString()}
+                        unit="ج.م"
+                        icon={Wallet}
+                        variant="primary"
+                        subtitle="الصندوق والبنك والمحافظ"
+                    />
+                    <StatCard
+                        title="إيرادات الفترة"
+                        value={`+${periodStats.income.toLocaleString()}`}
+                        unit="ج.م"
+                        icon={TrendingUp}
+                        variant="success"
+                        subtitle="إجمالي المداخيل"
+                    />
+                    <StatCard
+                        title="مصروفات الفترة"
+                        value={`-${periodStats.expense.toLocaleString()}`}
+                        unit="ج.م"
+                        icon={TrendingDown}
+                        variant="destructive"
+                        subtitle={`موردين: ${periodStats.supplierPayments.toLocaleString()} • عامة: ${periodStats.shopExpenses.toLocaleString()}`}
+                    />
+                    <StatCard
+                        title="صافي الفترة"
+                        value={periodStats.net.toLocaleString()}
+                        unit="ج.م"
+                        icon={Scale}
+                        variant={periodStats.net >= 0 ? 'info' : 'destructive'}
+                        subtitle={`أرباح مبيعات: ${periodStats.salesProfit.toLocaleString()}`}
+                    />
+                </div>
+            )}
+
+            {periodStats.totalDebt > 0 && (
+                <Card className="p-4 border-warning/20 bg-warning/5 flex items-center gap-3">
+                    <span className="p-2 rounded-xl bg-warning/10 text-warning">
+                        <HandCoins className="h-5 w-5" />
+                    </span>
+                    <p className="text-sm font-bold">
+                        إجمالي المديونيات المستحقة: {periodStats.totalDebt.toLocaleString()} ج.م
+                    </p>
+                    <Button asChild variant="outline" size="sm" className="mr-auto h-8 text-xs">
+                        <Link href="/financial/debt-center">عرض مركز الديون</Link>
+                    </Button>
                 </Card>
             )}
 
-            {/* Balance and Period Stats Cards */}
-            <TreasuryStatsCards balance={balance} treasuryData={treasuryData} periodStats={periodStats} />
-
-            {/* Action Buttons */}
-            <div className="grid grid-cols-1 gap-6">
-                <div className="flex gap-4">
-                    <AddTransactionDialog
-                        open={isDialogOpen}
-                        onOpenChange={setIsDialogOpen}
-                        formData={formData}
-                        setFormData={setFormData}
-                        onSubmit={handleSubmit}
-                        isPending={isPending || isPayingSupplier}
-                        suppliers={suppliers}
-                    />
-                </div>
-
-                {/* Transactions History */}
-                <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2">
-                            <h2 className="text-lg font-bold tracking-tight">سجل المعاملات</h2>
-                            {isTransactionsFetching && (
-                                <span className="text-xs text-muted-foreground font-medium inline-flex items-center gap-1">
-                                    <Loader2 className="h-3 w-3 animate-spin" /> جاري التحديث…
-                                </span>
-                            )}
-                            <span className="text-xs text-muted-foreground font-medium">
-                                ({allTransactions.length} معاملة)
-                            </span>
-                        </div>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={refreshAll}
-                            disabled={isTransactionsFetching}
-                            className="gap-2"
-                            aria-label="تحديث"
-                        >
-                            <RefreshCcw className={cn("h-4 w-4", isTransactionsFetching && "animate-spin")} />
-                            تحديث
-                        </Button>
-                    </div>
-
-                    {isTransactionsError ? (
-                        <Card className="p-8 border border-destructive/20 bg-destructive/5">
-                            <div className="flex flex-col items-center gap-3 text-center">
-                                <AlertCircle className="h-10 w-10 text-destructive" />
-                                <div>
-                                    <h3 className="font-bold text-destructive">تعذر تحميل المعاملات</h3>
-                                    <p className="text-sm text-muted-foreground mt-1">
-                                        {transactionsError?.message || 'حدث خطأ أثناء جلب البيانات'}
-                                    </p>
-                                </div>
-                                <Button onClick={refreshAll} variant="outline" className="gap-2">
-                                    <RefreshCcw className="h-4 w-4" /> إعادة المحاولة
-                                </Button>
-                            </div>
-                        </Card>
-                    ) : allTransactions.length === 0 && !isTransactionsFetching ? (
-                        <Card className="p-8 border-dashed">
-                            <div className="flex flex-col items-center gap-2 text-center">
-                                <Wallet className="h-10 w-10 text-muted-foreground/40" />
-                                <h3 className="font-bold">لا توجد معاملات في هذه الفترة</h3>
-                                <p className="text-sm text-muted-foreground">
-                                    جرّب توسيع نطاق التاريخ أو أضف معاملة جديدة.
-                                </p>
-                            </div>
-                        </Card>
-                    ) : (
-                        <TransactionsTable
-                            transactions={filteredTransactions}
-                            typeFilter={typeFilter}
-                            onTypeFilterChange={setTypeFilter}
-                            onTxClick={handleTxClick}
-                            onDelete={handleDelete}
-                            isDeleting={isDeleting}
-                        />
-                    )}
-                </div>
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+                <CashFlowChart data={cashFlowData} className="xl:col-span-2" />
+                <BalanceBreakdownChart breakdown={treasuryData?.breakdown} />
             </div>
 
-            {/* Transaction Details Dialog */}
+            <div className="space-y-3">
+                <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                        <h2 className="text-lg font-bold tracking-tight">سجل المعاملات</h2>
+                        {isTransactionsFetching && (
+                            <span className="text-xs text-muted-foreground font-medium inline-flex items-center gap-1">
+                                <Loader2 className="h-3 w-3 animate-spin" /> جاري التحديث…
+                            </span>
+                        )}
+                        <span className="text-xs text-muted-foreground font-medium">
+                            ({allTransactions.length} معاملة)
+                        </span>
+                    </div>
+                </div>
+
+                {isTransactionsError ? (
+                    <Card className="p-8 border border-destructive/20 bg-destructive/5">
+                        <div className="flex flex-col items-center gap-3 text-center">
+                            <AlertCircle className="h-10 w-10 text-destructive" />
+                            <div>
+                                <h3 className="font-bold text-destructive">تعذر تحميل المعاملات</h3>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    {transactionsError?.message || 'حدث خطأ أثناء جلب البيانات'}
+                                </p>
+                            </div>
+                            <Button onClick={refreshAll} variant="outline" className="gap-2">
+                                <RefreshCcw className="h-4 w-4" /> إعادة المحاولة
+                            </Button>
+                        </div>
+                    </Card>
+                ) : allTransactions.length === 0 && !isTransactionsFetching ? (
+                    <Card className="p-8 border-dashed">
+                        <div className="flex flex-col items-center gap-2 text-center">
+                            <Wallet className="h-10 w-10 text-muted-foreground/40" />
+                            <h3 className="font-bold">لا توجد معاملات في هذه الفترة</h3>
+                            <p className="text-sm text-muted-foreground">
+                                جرّب توسيع نطاق التاريخ أو أضف معاملة جديدة.
+                            </p>
+                        </div>
+                    </Card>
+                ) : (
+                    <TransactionsTable
+                        transactions={filteredTransactions}
+                        typeFilter={typeFilter}
+                        onTypeFilterChange={setTypeFilter}
+                        onTxClick={handleTxClick}
+                        onDelete={handleDelete}
+                        isDeleting={isDeleting}
+                    />
+                )}
+            </div>
+
             <TransactionDetailsDialog
                 transaction={selectedTx}
                 open={isDetailsOpen}
