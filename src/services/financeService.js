@@ -62,8 +62,29 @@ export const getDebtInstallments = (debtId, options) => api.get(`/api/financial/
 /** @param {string} debtId @param {object} data @returns {Promise<*>} */
 export const createInstallments = (debtId, data) => api.post(`/api/financial/debts/${debtId}/installments`, data);
 
-/** @param {object} params @param {{signal?: AbortSignal}} [options] */
-export const getReceivables = (params = {}, options) => api.get('/api/payments', params, options);
+/**
+ * Receivables list (open invoices) — local DB only, no integration.
+ * Uses the canonical `GET /api/invoices` endpoint (InvoiceService.getAll)
+ * and merges `pending` + `partial` payment statuses, which the endpoint
+ * only filters one at a time. Returns `{ invoices, count, totalReceivables }`
+ * to match the page contract.
+ * @param {{ customerId?: string, page?: number, limit?: number }} [params]
+ * @param {{signal?: AbortSignal}} [options]
+ */
+export const getReceivables = async (params = {}, options) => {
+    const { customerId, limit = 100 } = params || {};
+    const base = { limit, ...(customerId ? { customerId } : {}) };
+    const [pending, partial] = await Promise.all([
+        api.get('/api/invoices', { ...base, status: 'pending' }, options),
+        api.get('/api/invoices', { ...base, status: 'partial' }, options),
+    ]);
+    const invoices = [...(pending?.invoices || []), ...(partial?.invoices || [])]
+        .sort((a, b) => new Date(a.dueDate || a.date) - new Date(b.dueDate || b.date));
+    const totalReceivables = invoices.reduce(
+        (sum, inv) => sum + (Number(inv.total) - Number(inv.paidAmount || 0)), 0
+    );
+    return { invoices, count: invoices.length, totalReceivables };
+};
 
 /** @param {object} data @returns {Promise<*>} */
 export const syncDebts = (data) => api.post('/api/financial/debts/sync', data);

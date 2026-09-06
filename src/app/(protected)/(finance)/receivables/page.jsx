@@ -15,9 +15,10 @@ import { SourceNumberField } from '@/components/financial/SourceNumberField';
 import {
     Search, Wallet, Loader2,
     Calendar, User, AlertCircle, CheckCircle2,
-    TrendingDown,
+    TrendingDown, RefreshCw,
     DollarSign, FileText
 } from 'lucide-react';
+import { api } from '@/lib/api-utils';
 import Link from 'next/link';
 import { useDebts } from '@/hooks/useFinancial';
 import { useSearchParams } from 'next/navigation';
@@ -41,9 +42,10 @@ export default function ReceivablesPage() {
     const [paymentSourceNumber, setPaymentSourceNumber] = useState('');
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
-    // Fetch unpaid invoices
-    const { data: receivablesData, isLoading: isReceivablesLoading } = useReceivables({ customerId }, { enabled: !customerId });
-    const { data: debtsData, isLoading: isDebtsLoading } = useDebts({ debtorId: customerId, debtorType: 'Customer', status: 'active' }, { enabled: !!customerId });
+    // Fetch unpaid invoices (local DB via /api/invoices; no integration).
+    // Per-customer mode reads open debts (active + overdue by default).
+    const { data: receivablesData, isLoading: isReceivablesLoading, isError: isReceivablesError, error: receivablesError, refetch: refetchReceivables, isFetching: isReceivablesFetching } = useReceivables({ customerId }, { enabled: !customerId });
+    const { data: debtsData, isLoading: isDebtsLoading, isError: isDebtsError, error: debtsError, refetch: refetchDebts, isFetching: isDebtsFetching } = useDebts({ debtorId: customerId, debtorType: 'Customer' }, { enabled: !!customerId });
 
     // Fetch Customer Name for header if customerId is present
     const { data: customerData } = useQuery({
@@ -52,7 +54,11 @@ export default function ReceivablesPage() {
         enabled: !!customerId
     });
 
-    const isLoading = isReceivablesLoading || isDebtsLoading;
+    const isLoading = customerId ? isDebtsLoading : isReceivablesLoading;
+    const isFetching = customerId ? isDebtsFetching : isReceivablesFetching;
+    const isError = customerId ? isDebtsError : isReceivablesError;
+    const queryError = customerId ? debtsError : receivablesError;
+    const refetchActive = customerId ? refetchDebts : refetchReceivables;
     const data = customerId ? debtsData : receivablesData;
 
     // Use queryClient to invalidate both
@@ -60,31 +66,25 @@ export default function ReceivablesPage() {
         queryClient.invalidateQueries({ queryKey: ['receivables'] });
         queryClient.invalidateQueries({ queryKey: ['debts'] });
         queryClient.invalidateQueries({ queryKey: ['debt-overview'] });
+        queryClient.invalidateQueries({ queryKey: ['invoices'] });
+        queryClient.invalidateQueries({ queryKey: ['treasury'] });
     };
 
     const router = useRouter();
 
-    // Make Payment Mutation
+    // Make Payment Mutation — local endpoint, no integration.
+    // Canonical per-invoice collection: POST /api/financial/payments/customer
+    // with { invoice, amount, method, note, sourceNumber } (customerPaymentSchema).
+    // Uses the shared api client so auth cookies + envelope unwrap apply.
     const paymentMutation = useMutation({
         mutationFn: async () => {
-            const url = '/api/financial/payments';
-
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: selectedInvoice._id,
-                    amount: parseFloat(paymentAmount),
-                    method: paymentMethod,
-                    note: paymentNote,
-                    sourceNumber: paymentSourceNumber,
-                    type: 'receivable'
-                }),
+            return await api.post('/api/financial/payments/customer', {
+                invoice: selectedInvoice._id,
+                amount: parseFloat(paymentAmount),
+                method: paymentMethod,
+                note: paymentNote,
+                sourceNumber: paymentSourceNumber,
             });
-
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Failed to record payment');
-            return data;
         },
         onSuccess: (res) => {
             toast.success('تم تسجيل الدفعة بنجاح', {
@@ -136,8 +136,15 @@ export default function ReceivablesPage() {
         toast.success('تم النسخ للحافظة');
     };
 
+    const openCount = customerId ? (data?.debts?.length || 0) : (data?.count || 0);
+    const totalOpen = customerId
+        ? (data?.debts || []).reduce((s, d) => s + Number(d.remainingAmount || 0), 0)
+        : (data?.totalReceivables || 0);
+    const overdueCount = (customerId ? (data?.debts || []) : (data?.invoices || []))
+        .filter(i => { const d = i.dueDate; return d && new Date(d) < new Date(); }).length;
+
     return (
-        <div className="min-h-screen bg-foreground/1020 space-y-8 p-6" dir="rtl">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 space-y-8 p-6" dir="rtl">
             {/* Header Area */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <motion.div
@@ -157,6 +164,16 @@ export default function ReceivablesPage() {
                         </div>
                     </div>
                 </motion.div>
+                <Button
+                    variant="outline"
+                    onClick={() => refetchActive()}
+                    disabled={isFetching}
+                    className="gap-2"
+                    aria-label="تحديث البيانات"
+                >
+                    <RefreshCw className={cn("w-4 h-4", isFetching && "animate-spin")} />
+                    تحديث
+                </Button>
             </div>
 
             {/* Stats Dashboard */}
@@ -176,7 +193,7 @@ export default function ReceivablesPage() {
                             <h3 className="text-sm font-bold text-destructive/80 uppercase tracking-wider">إجمالي الديون</h3>
                         </div>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-4xl font-bold text-foreground">{data?.totalReceivables?.toLocaleString()}</span>
+                            <span className="text-4xl font-bold text-foreground">{(totalOpen || 0).toLocaleString()}</span>
                             <span className="text-lg font-bold text-muted-foreground">ج.م</span>
                         </div>
                     </div>
@@ -195,7 +212,7 @@ export default function ReceivablesPage() {
                         <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">الفواتير المفتوحة</h3>
                     </div>
                     <div className="flex items-baseline gap-1">
-                        <span className="text-4xl font-bold text-foreground">{data?.count || 0}</span>
+                        <span className="text-4xl font-bold text-foreground">{openCount || 0}</span>
                         <span className="text-lg font-bold text-muted-foreground">فاتورة</span>
                     </div>
                 </motion.div>
@@ -213,7 +230,7 @@ export default function ReceivablesPage() {
                         <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">متأخرة السداد</h3>
                     </div>
                     <div className="flex items-baseline gap-1">
-                        <span className="text-4xl font-bold text-foreground">{data?.invoices?.filter(i => new Date(i.dueDate) < new Date()).length || 0}</span>
+                        <span className="text-4xl font-bold text-foreground">{overdueCount || 0}</span>
                         <span className="text-lg font-bold text-muted-foreground">فاتورة</span>
                     </div>
                 </motion.div>
@@ -240,6 +257,19 @@ export default function ReceivablesPage() {
                     <div className="flex flex-col items-center justify-center py-24 space-y-4">
                         <Loader2 className="h-12 w-12 animate-spin text-primary" />
                         <p className="font-bold text-muted-foreground">جاري تحميل الذمم...</p>
+                    </div>
+                ) : isError ? (
+                    <div className="glass-card p-12 rounded-[2.5rem] text-center border border-destructive/30 flex flex-col items-center gap-4">
+                        <AlertCircle className="h-10 w-10 text-destructive" />
+                        <div>
+                            <h3 className="text-xl font-bold text-destructive">تعذّر تحميل الذمم</h3>
+                            <p className="text-muted-foreground mt-2 font-medium text-sm">
+                                {queryError?.message || 'حدث خطأ أثناء جلب البيانات'}
+                            </p>
+                        </div>
+                        <Button onClick={() => refetchActive()} variant="outline" className="gap-2">
+                            <RefreshCw className="w-4 h-4" /> إعادة المحاولة
+                        </Button>
                     </div>
                 ) : filteredInvoices.length === 0 ? (
                     <motion.div

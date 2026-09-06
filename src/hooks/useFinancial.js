@@ -48,10 +48,11 @@ export function useDeleteTransaction() {
     });
 }
 
-export function useDebts(params = {}) {
+export function useDebts(params = {}, options = {}) {
     return useQuery({
         queryKey: ['debts', params],
-        queryFn: ({ signal }) => getDebts(params, { signal })
+        queryFn: ({ signal }) => getDebts(params, { signal }),
+        enabled: options.enabled !== false
     });
 }
 
@@ -108,10 +109,11 @@ export function useCreateInstallments() {
     });
 }
 
-export function useReceivables(params = {}) {
+export function useReceivables(params = {}, options = {}) {
     return useQuery({
         queryKey: ['receivables', params],
-        queryFn: ({ signal }) => getReceivables(params, { signal })
+        queryFn: ({ signal }) => getReceivables(params, { signal }),
+        enabled: options.enabled !== false
     });
 }
 
