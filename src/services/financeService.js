@@ -38,6 +38,16 @@ export const getTreasury = (params = {}, options) => api.get('/api/financial/tre
 export const getTreasuryTransactions = (params = {}, options) =>
     api.get('/api/treasury/transactions', params, options);
 
+/**
+ * Full-period cash-flow buckets (DB-aggregated, never page-capped).
+ * Returns `{ granularity: 'day'|'month', buckets: [{key,income,expense}] }`.
+ * Use this for the treasury chart; the ledger above only carries the
+ * latest page of rows and must never feed period aggregates.
+ * @param {object} params @param {{signal?: AbortSignal}} [options]
+ */
+export const getCashFlow = (params = {}, options) =>
+    api.get('/api/treasury/cashflow', params, options);
+
 /** @param {object} data @returns {Promise<*>} */
 export const addTreasuryTransaction = (data) => api.post('/api/financial/transaction', data);
 

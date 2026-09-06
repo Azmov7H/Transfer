@@ -49,3 +49,12 @@ export function bucketCashFlow(transactions = []) {
 export function useCashFlowData(transactions) {
     return useMemo(() => bucketCashFlow(transactions), [transactions]);
 }
+
+/**
+ * Attach display labels to server-aggregated cash-flow buckets
+ * ({ key, income, expense } with a day/month granularity, as returned by
+ * GET /api/treasury/cashflow).
+ */
+export function labelCashFlowBuckets(buckets = [], granularity = 'day') {
+    return buckets.map((b) => ({ ...b, label: bucketLabel(b.key, granularity) }));
+}

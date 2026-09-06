@@ -27,7 +27,7 @@ export function BalanceBreakdownChart({ breakdown, className }) {
                         <Wallet className="h-5 w-5" />
                     </span>
                     توزيع الرصيد
-                    <span className="text-xs font-medium text-muted-foreground">حسب طريقة الدفع</span>
+                    <span className="text-xs font-medium text-muted-foreground">للرصيد الحالي (تراكمي)</span>
                 </CardTitle>
             </CardHeader>
             <CardContent className="h-[280px] w-full pt-2">

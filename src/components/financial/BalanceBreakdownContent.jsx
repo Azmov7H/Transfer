@@ -8,6 +8,7 @@ const SEGMENTS = [
     { key: 'bank', label: 'بنك', color: 'hsl(var(--info))' },
     { key: 'wallet', label: 'محفظة', color: 'hsl(var(--warning))' },
     { key: 'instapay', label: 'انستا باي', color: 'hsl(var(--primary))' },
+    { key: 'check', label: 'شيك', color: 'hsl(var(--secondary))' },
 ];
 
 export function BalanceBreakdownContent({ breakdown = {} }) {

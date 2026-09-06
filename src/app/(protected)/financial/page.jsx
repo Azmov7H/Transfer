@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { useTreasury, useTreasuryTransactions, useAddTransaction, useDeleteTransaction, useSupplierPayment } from '@/hooks/useFinancial';
+import { useTreasury, useTreasuryTransactions, useCashFlow, useAddTransaction, useDeleteTransaction, useSupplierPayment } from '@/hooks/useFinancial';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,26 +21,9 @@ import { TransactionDetailsDialog } from '@/components/financial/TransactionDeta
 import { AddTransactionDialog } from '@/components/financial/AddTransactionDialog';
 import { CashFlowChart } from '@/components/financial/CashFlowChart';
 import { BalanceBreakdownChart } from '@/components/financial/BalanceBreakdownChart';
-import { useCashFlowData } from '@/components/financial/cashFlowUtils';
+import { labelCashFlowBuckets } from '@/components/financial/cashFlowUtils';
+import { matchesTypeFilter, exportFiltersFor } from '@/lib/treasuryFilters';
 import { ExportButton } from '@/components/common/ExportButton';
-
-const isSupplierPaymentTx = (tx) =>
-    tx.type === 'EXPENSE' &&
-    (tx.referenceType === 'PurchaseOrder' ||
-        (tx.referenceType === 'Debt' && tx.referenceId?.debtorType === 'Supplier'));
-
-const isShopExpenseTx = (tx) =>
-    tx.type === 'EXPENSE' &&
-    (tx.referenceType === 'Manual' || tx.referenceType === 'SalesReturn');
-
-const matchesTypeFilter = (tx, typeFilter) => {
-    if (typeFilter === 'ALL') return true;
-    if (typeFilter === 'INCOME') return tx.type === 'INCOME';
-    if (typeFilter === 'EXPENSE') return tx.type === 'EXPENSE';
-    if (typeFilter === 'SHOP_EXPENSES') return isShopExpenseTx(tx);
-    if (typeFilter === 'SUPPLIER_PAYMENTS') return isSupplierPaymentTx(tx);
-    return true;
-};
 
 const EMPTY_TX_FORM = {
     amount: '',
@@ -95,7 +78,7 @@ export default function FinancialPage() {
         };
     }, [period, customDates]);
 
-    const { data: treasuryData, isLoading } = useTreasury(getDateRange());
+    const { data: treasuryData, isLoading, dataUpdatedAt: treasuryUpdatedAt } = useTreasury(getDateRange());
     const { mutate: addTransaction, isPending } = useAddTransaction();
     const { mutate: deleteTransaction, isPending: isDeleting } = useDeleteTransaction();
     const { mutate: paySupplier, isPending: isPayingSupplier } = useSupplierPayment();
@@ -114,6 +97,15 @@ export default function FinancialPage() {
         error: transactionsError,
         refetch: refetchTransactions
     } = useTreasuryTransactions(dateRange);
+
+    // Full-period chart buckets, aggregated server-side so the chart always
+    // covers the same window as the stat cards (the ledger above is capped
+    // to the latest page and must not feed period figures).
+    const { data: cashFlow } = useCashFlow(dateRange);
+    const cashFlowData = useMemo(
+        () => labelCashFlowBuckets(cashFlow?.buckets, cashFlow?.granularity),
+        [cashFlow]
+    );
 
     const resetForm = useCallback(() => setFormData(EMPTY_TX_FORM), []);
 
@@ -155,8 +147,6 @@ export default function FinancialPage() {
         [allTransactions, typeFilter]
     );
 
-    const cashFlowData = useCashFlowData(allTransactions);
-
     const handleDelete = (id) => {
         setDeleteTargetId(id);
     };
@@ -175,28 +165,29 @@ export default function FinancialPage() {
         setIsDetailsOpen(true);
     };
 
-    const supplierPaymentsAmt = allTransactions
-        .filter(isSupplierPaymentTx)
-        .reduce((sum, tx) => sum + tx.amount, 0);
-
-    const shopExpensesAmt = allTransactions
-        .filter(isShopExpenseTx)
-        .reduce((sum, tx) => sum + tx.amount, 0);
-
+    // Period aggregates come from the server summary (same DB window as the
+    // stat cards) — never recomputed over the page-capped ledger list.
     const periodStats = {
         income: treasuryData?.totalIncome || 0,
         expense: treasuryData?.totalExpense || 0,
-        supplierPayments: supplierPaymentsAmt,
-        shopExpenses: shopExpensesAmt,
+        supplierPayments: treasuryData?.supplierPayments || 0,
+        shopExpenses: treasuryData?.shopExpenses || 0,
         salesProfit: treasuryData?.salesProfit || 0,
         totalDebt: treasuryData?.totalOutstandingDebt || 0,
-        net: treasuryData?.periodBalance || 0
+        net: treasuryData?.periodBalance || 0,
+        transactionCount: treasuryData?.transactionCount || 0
     };
 
     const refreshAll = () => {
         refetchTransactions();
         queryClient.invalidateQueries({ queryKey: ['treasury'] });
+        queryClient.invalidateQueries({ queryKey: ['treasury-cashflow'] });
     };
+
+    const lastUpdated = useMemo(() => {
+        if (!treasuryUpdatedAt) return null;
+        return new Date(treasuryUpdatedAt).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }, [treasuryUpdatedAt]);
 
     return (
         <div className="space-y-6" dir="rtl">
@@ -219,10 +210,7 @@ export default function FinancialPage() {
                         </Button>
                         <ExportButton
                             type="treasuryTransactions"
-                            filters={{
-                                ...getDateRange(),
-                                type: typeFilter === 'ALL' ? undefined : typeFilter
-                            }}
+                            filters={exportFiltersFor(typeFilter, getDateRange())}
                         />
                         <AddTransactionDialog
                             open={isDialogOpen}
@@ -317,7 +305,7 @@ export default function FinancialPage() {
                         unit="ج.م"
                         icon={Wallet}
                         variant="primary"
-                        subtitle="الصندوق والبنك والمحافظ"
+                        subtitle="رصيد لحظي — يشمل كل الفترات"
                     />
                     <StatCard
                         title="إيرادات الفترة"
@@ -325,7 +313,7 @@ export default function FinancialPage() {
                         unit="ج.م"
                         icon={TrendingUp}
                         variant="success"
-                        subtitle="إجمالي المداخيل"
+                        subtitle="في الفترة المحددة"
                     />
                     <StatCard
                         title="مصروفات الفترة"
@@ -341,7 +329,7 @@ export default function FinancialPage() {
                         unit="ج.م"
                         icon={Scale}
                         variant={periodStats.net >= 0 ? 'info' : 'destructive'}
-                        subtitle={`أرباح مبيعات: ${periodStats.salesProfit.toLocaleString()}`}
+                        subtitle={`أرباح مبيعات الفترة: ${periodStats.salesProfit.toLocaleString()}`}
                     />
                 </div>
             )}
@@ -364,6 +352,10 @@ export default function FinancialPage() {
                 <CashFlowChart data={cashFlowData} className="xl:col-span-2" />
                 <BalanceBreakdownChart breakdown={treasuryData?.breakdown} />
             </div>
+            <p className="text-[11px] text-muted-foreground font-medium -mt-2">
+                التدفق النقدي يغطي الفترة المحددة بالكامل من قاعدة البيانات، وتوزيع الرصيد يعكس الرصيد الحالي التراكمي حسب الوسيلة — سجل المعاملات أدناه يعرض أحدث 100 حركة فقط.
+                {lastUpdated && ` آخر تحديث تلقائي: ${lastUpdated} (كل 30 ثانية)`}
+            </p>
 
             <div className="space-y-3">
                 <div className="flex items-center justify-between gap-3">
@@ -375,7 +367,9 @@ export default function FinancialPage() {
                             </span>
                         )}
                         <span className="text-xs text-muted-foreground font-medium">
-                            ({allTransactions.length} معاملة)
+                            ({periodStats.transactionCount > allTransactions.length
+                                ? `أحدث ${allTransactions.length} من أصل ${periodStats.transactionCount}`
+                                : `${allTransactions.length}`} معاملة)
                         </span>
                     </div>
                 </div>

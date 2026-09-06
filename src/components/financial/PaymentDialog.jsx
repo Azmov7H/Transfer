@@ -67,6 +67,9 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
             onOpenChange(false);
             queryClient.invalidateQueries({ queryKey: ['receivables'] });
             queryClient.invalidateQueries({ queryKey: ['customers'] });
+            queryClient.invalidateQueries({ queryKey: ['treasury'] });
+            queryClient.invalidateQueries({ queryKey: ['treasury-transactions'] });
+            queryClient.invalidateQueries({ queryKey: ['treasury-cashflow'] });
             onSuccess?.();
 
             if (res?.transaction?._id) {

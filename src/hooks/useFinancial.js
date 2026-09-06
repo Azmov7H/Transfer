@@ -4,6 +4,7 @@ import { keepPreviousData } from '@tanstack/react-query';
 import {
     getTreasury,
     getTreasuryTransactions,
+    getCashFlow,
     addTreasuryTransaction,
     deleteTreasuryTransaction,
     getDebts,
@@ -21,10 +22,23 @@ import {
 } from '@/services/financeService';
 import { withMutationFeedback } from '@/lib/mutation-feedback';
 
+/**
+ * Treasury dashboard live options: the /financial page must reflect sales,
+ * purchases and collections recorded elsewhere, so its queries poll every
+ * 30s and refetch on focus (the app default disables focus refetch).
+ */
+const TREASURY_LIVE_OPTIONS = {
+    refetchInterval: 30 * 1000,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+};
+
 export function useTreasury(params = {}) {
     return useQuery({
         queryKey: ['treasury', params],
-        queryFn: ({ signal }) => getTreasury(params, { signal })
+        queryFn: ({ signal }) => getTreasury(params, { signal }),
+        placeholderData: keepPreviousData,
+        ...TREASURY_LIVE_OPTIONS,
     });
 }
 
@@ -44,7 +58,21 @@ export function useTreasuryTransactions(dateRange = {}, options = {}) {
             return [];
         },
         placeholderData: keepPreviousData,
-        enabled: options.enabled !== false
+        enabled: options.enabled !== false,
+        ...TREASURY_LIVE_OPTIONS,
+    });
+}
+
+/**
+ * Full-period cash-flow buckets for the treasury chart (server-aggregated).
+ */
+export function useCashFlow(dateRange = {}, options = {}) {
+    return useQuery({
+        queryKey: ['treasury-cashflow', dateRange],
+        queryFn: ({ signal }) => getCashFlow(dateRange, { signal }),
+        placeholderData: keepPreviousData,
+        enabled: options.enabled !== false,
+        ...TREASURY_LIVE_OPTIONS,
     });
 }
 
@@ -59,6 +87,7 @@ export function useSupplierPayment() {
             afterSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: ['treasury'] });
                 queryClient.invalidateQueries({ queryKey: ['treasury-transactions'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury-cashflow'] });
             }
         })
     });
@@ -73,6 +102,7 @@ export function useAddTransaction() {
             afterSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: ['treasury'] });
                 queryClient.invalidateQueries({ queryKey: ['treasury-transactions'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury-cashflow'] });
             }
         })
     });
@@ -88,6 +118,7 @@ export function useDeleteTransaction() {
             afterSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: ['treasury'] });
                 queryClient.invalidateQueries({ queryKey: ['treasury-transactions'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury-cashflow'] });
             }
         })
     });
@@ -126,6 +157,8 @@ export function useAddPayment() {
             afterSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: ['debts'] });
                 queryClient.invalidateQueries({ queryKey: ['debt-overview'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury-cashflow'] });
             }
         })
     });
@@ -207,6 +240,8 @@ export function useCustomerTotalPayment() {
                 queryClient.invalidateQueries({ queryKey: ['customer'] });
                 queryClient.invalidateQueries({ queryKey: ['customer-statement'] });
                 queryClient.invalidateQueries({ queryKey: ['treasury'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury-transactions'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury-cashflow'] });
             }
         })
     });
