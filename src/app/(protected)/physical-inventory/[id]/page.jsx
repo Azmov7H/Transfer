@@ -7,12 +7,21 @@ import {
     ArrowRight,
     AlertTriangle,
     Search,
+    Trash2,
     Zap
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { toast } from 'sonner';
 import { use } from 'react';
-import { usePhysicalInventory } from '@/hooks/usePhysicalInventory';
+import {
+    useInventoryCount,
+    useUpdateInventoryCount,
+    useCompleteInventoryCount,
+    useUnlockInventoryCount,
+    useDeleteInventoryCount,
+    useCountRecentMovements
+} from '@/hooks/usePhysicalInventory';
 import { CountHeader } from '@/components/physical-inventory/CountHeader';
 import { CountStatsDashboard } from '@/components/physical-inventory/CountStatsDashboard';
 import { ScannerBar } from '@/components/physical-inventory/ScannerBar';
@@ -30,11 +39,15 @@ export default function PhysicalInventoryDetailPage({ params }) {
     const [lastScanned, setLastScanned] = useState(null);
     const [unlockPassword, setUnlockPassword] = useState('');
     const [isUnlockDialogOpen, setIsUnlockDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const scannerInputRef = useRef(null);
 
-    const { useCount, updateMutation, completeMutation, unlockMutation, useRecentMovements } = usePhysicalInventory(id);
-    const { data: count, isLoading, error } = useCount(id);
-    const { data: movementsSinceSnapshot } = useRecentMovements(id);
+    const { data: count, isLoading, error, refetch } = useInventoryCount(id);
+    const { data: movementsSinceSnapshot } = useCountRecentMovements(id);
+    const updateMutation = useUpdateInventoryCount(id);
+    const completeMutation = useCompleteInventoryCount(id);
+    const unlockMutation = useUnlockInventoryCount(id);
+    const deleteMutation = useDeleteInventoryCount();
 
     // Initialize local state when data loads
     useEffect(() => {
@@ -123,7 +136,7 @@ export default function PhysicalInventoryDetailPage({ params }) {
         <div className="flex flex-col items-center justify-center p-40 gap-4 text-destructive">
             <AlertTriangle className="h-16 w-16" />
             <p className="text-xl font-bold">خطأ في التحميل: {error.message}</p>
-            <Button onClick={() => router.refresh()} variant="outline">إعادة المحاولة</Button>
+            <Button onClick={() => refetch()} variant="outline">إعادة المحاولة</Button>
         </div>
     );
 
@@ -155,7 +168,7 @@ export default function PhysicalInventoryDetailPage({ params }) {
     return (
         <div className="container max-w-7xl mx-auto space-y-8 pb-20 px-4 text-right" dir="rtl">
             {/* Action Bar & Quick Info */}
-            <div className="flex flex-col gap-1">
+            <div className="flex items-center justify-between gap-2">
                 <Button
                     variant="ghost"
                     size="sm"
@@ -165,7 +178,29 @@ export default function PhysicalInventoryDetailPage({ params }) {
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     العودة للمركز الرئيسي
                 </Button>
+                {!isCompleted && (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-fit mb-2 text-destructive hover:bg-destructive/10 hover:text-destructive font-bold"
+                        onClick={() => setIsDeleteDialogOpen(true)}
+                    >
+                        <Trash2 className="ml-2 h-4 w-4" />
+                        حذف المسودة
+                    </Button>
+                )}
             </div>
+            <ConfirmDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+                title="حذف مسودة الجرد"
+                description="سيتم حذف جلسة الجرد هذه نهائياً ولا يمكن التراجع. المتابعة؟"
+                confirmLabel="حذف نهائي"
+                pending={deleteMutation.isPending}
+                onConfirm={() => deleteMutation.mutate(id, {
+                    onSuccess: () => router.push('/physical-inventory')
+                })}
+            />
 
             <CountHeader
                 count={count}

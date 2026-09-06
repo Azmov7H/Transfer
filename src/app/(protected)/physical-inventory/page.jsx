@@ -27,6 +27,7 @@ import {
     Loader2,
     Eye,
     ClipboardCheck,
+    RefreshCw,
     Warehouse,
     Store,
     Layers,
@@ -38,7 +39,7 @@ import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils';
-import { usePhysicalInventory } from '@/hooks/usePhysicalInventory';
+import { useInventoryCounts } from '@/hooks/usePhysicalInventory';
 
 export default function PhysicalInventoryPage() {
     const router = useRouter();
@@ -46,8 +47,15 @@ export default function PhysicalInventoryPage() {
     const [statusFilter, setStatusFilter] = useState('all');
     const [locationFilter, setLocationFilter] = useState('all');
 
-    const { useCounts } = usePhysicalInventory();
-    const { data: counts, isLoading } = useCounts({ status: statusFilter, location: locationFilter });
+    const {
+        data,
+        isLoading,
+        isFetching,
+        isError,
+        error,
+        refetch
+    } = useInventoryCounts({ status: statusFilter, location: locationFilter });
+    const counts = data?.counts ?? [];
 
     const getStatusBadge = (status) => {
         switch (status) {
@@ -91,11 +99,14 @@ export default function PhysicalInventoryPage() {
         );
     };
 
-    const filteredCounts = counts?.filter(count =>
-        count._id.toLowerCase().includes(search.toLowerCase()) ||
-        count.category?.toLowerCase().includes(search.toLowerCase()) ||
-        count.createdBy?.name?.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredCounts = counts.filter(count => {
+        const q = search.toLowerCase();
+        return (
+            count._id?.toLowerCase().includes(q) ||
+            count.category?.toLowerCase().includes(q) ||
+            count.createdBy?.name?.toLowerCase().includes(q)
+        );
+    });
 
     return (
         <div className="container max-w-7xl mx-auto space-y-8 pb-20 px-4">
@@ -113,13 +124,24 @@ export default function PhysicalInventoryPage() {
                     </div>
                 </div>
 
-                <Button
-                    onClick={() => router.push('/physical-inventory/new')}
-                    className="h-14 px-8 rounded-2xl gradient-primary border-0 shadow-lg shadow-primary/20 hover-scale group font-bold text-lg"
-                >
-                    <Plus className="ml-2 h-5 w-5 transition-transform group-hover:rotate-90" />
-                    بدء جرد جديد
-                </Button>
+                <div className="flex items-center gap-3">
+                    <Button
+                        variant="outline"
+                        onClick={() => refetch()}
+                        disabled={isFetching}
+                        className="h-14 w-14 rounded-2xl"
+                        aria-label="تحديث القائمة"
+                    >
+                        <RefreshCw className={cn("h-5 w-5", isFetching && "animate-spin")} />
+                    </Button>
+                    <Button
+                        onClick={() => router.push('/physical-inventory/new')}
+                        className="h-14 px-8 rounded-2xl gradient-primary border-0 shadow-lg shadow-primary/20 hover-scale group font-bold text-lg"
+                    >
+                        <Plus className="ml-2 h-5 w-5 transition-transform group-hover:rotate-90" />
+                        بدء جرد جديد
+                    </Button>
+                </div>
             </div>
 
             {/* Filters Bar */}
@@ -189,7 +211,19 @@ export default function PhysicalInventoryPage() {
                                             </div>
                                         </TableCell>
                                     </TableRow>
-                                ) : filteredCounts?.length === 0 ? (
+                                ) : isError ? (
+                                    <TableRow>
+                                        <TableCell colSpan={6} className="h-64 text-center">
+                                            <div className="flex flex-col items-center justify-center gap-4">
+                                                <p className="text-xl font-bold text-destructive">فشل تحميل سجلات الجرد: {error?.message}</p>
+                                                <Button onClick={() => refetch()} variant="outline" className="font-bold">
+                                                    <RefreshCw className="ml-2 h-4 w-4" />
+                                                    إعادة المحاولة
+                                                </Button>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ) : filteredCounts.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={6} className="h-64 text-center">
                                             <div className="flex flex-col items-center justify-center gap-4 opacity-40">
@@ -200,7 +234,7 @@ export default function PhysicalInventoryPage() {
                                     </TableRow>
                                 ) : (
                                     <AnimatePresence mode="popLayout">
-                                        {filteredCounts?.map((count, index) => (
+                                        {filteredCounts.map((count, index) => (
                                             <motion.tr
                                                 key={count._id}
                                                 initial={{ opacity: 0, y: 10 }}

@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { usePhysicalInventory } from '@/hooks/usePhysicalInventory';
+import { useCreateInventoryCount } from '@/hooks/usePhysicalInventory';
 import { useProductMetadata } from '@/hooks/useProducts';
 
 export default function NewPhysicalInventoryPage() {
@@ -36,7 +36,7 @@ export default function NewPhysicalInventoryPage() {
     const [category, setCategory] = useState('all');
     const [isBlind, setIsBlind] = useState(false);
 
-    const { createMutation } = usePhysicalInventory();
+    const createMutation = useCreateInventoryCount();
     const { data: metadata, isLoading: fetchingMetadata } = useProductMetadata();
     const categories = metadata?.categories || [];
 
@@ -49,15 +49,14 @@ export default function NewPhysicalInventoryPage() {
             category: category === 'all' ? null : category,
             isBlind
         }, {
+            // Success/error toasts come from the mutation hook; here we
+            // only navigate. The api client strips the envelope so `res`
+            // is the document itself — tolerate legacy wrapped shapes.
             onSuccess: (res) => {
-                // The api client already strips the {success, data} envelope,
-                // so `res` is the PhysicalInventory document itself (it has
-                // `_id` directly). Guard against unexpected / malformed
-                // shapes (string, null, envelope re-wrapped, etc.) instead
-                // of crashing the page.
                 const inventoryId =
                     res?._id ||
                     res?.data?._id ||
+                    res?.count?._id ||
                     res?.id;
 
                 if (!inventoryId) {
@@ -65,11 +64,7 @@ export default function NewPhysicalInventoryPage() {
                     return;
                 }
 
-                toast.success('تم بدء عملية الجرد بنجاح');
                 router.push(`/physical-inventory/${inventoryId}`);
-            },
-            onError: (error) => {
-                toast.error(error.message || 'فشل بدء الجرد');
             }
         });
     };
