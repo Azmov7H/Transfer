@@ -28,9 +28,8 @@ export const DebtService = {
 
     // Create Debt (Manual)
     async createDebt(data) {
-        // Backend logic might be inside a "manual debt" endpoint or generally under debts
-        // Let's assume POST /api/financial/debts/manual for now, or use the financeRoutes generic "expense/income" if strict
-        // But debtService usually implies creating a formal debt record.
+        // POST /api/financial/debts — manual debt record (referenceType
+        // defaults to 'Manual' server-side; referenceId falls back to debtorId).
         const res = await fetch('/api/financial/debts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -42,7 +41,7 @@ export const DebtService = {
 
     async updateDebt(id, data) {
         const res = await fetch(`/api/financial/debts/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });

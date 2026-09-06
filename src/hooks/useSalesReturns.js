@@ -6,8 +6,9 @@ export function useSalesReturns(params = {}) {
     return useQuery({
         queryKey: ['sales-returns', params],
         queryFn: async ({ signal }) => {
-            const res = await getSalesReturns(params, { signal });
-            return res.data;
+            // api.get already unwraps the {success,data} envelope — the
+            // body itself is {returns,count,page,limit}.
+            return await getSalesReturns(params, { signal });
         }
     });
 }
@@ -18,7 +19,7 @@ export function useInvoiceReturns(invoiceId) {
         queryFn: async ({ signal }) => {
             if (!invoiceId) return { returns: [] };
             const res = await getInvoiceReturns(invoiceId, { signal });
-            return res.data;
+            return Array.isArray(res) ? { returns: res } : res;
         },
         enabled: !!invoiceId
     });

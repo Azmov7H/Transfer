@@ -43,7 +43,8 @@ export default function AuditPage() {
         try {
             const res = await fetch(`/api/products?search=${search}&limit=50`);
             const data = await res.json();
-            setProducts(data.products || []);
+            // Backend wraps payloads in a {success,data} envelope.
+            setProducts(data.data?.products || data.products || []);
         } catch (error) {
             console.error(error);
         } finally {
@@ -78,12 +79,12 @@ export default function AuditPage() {
         const to = direction === 'warehouse_to_shop' ? 'shop' : 'warehouse';
 
         try {
-            const res = await fetch('/api/inventory/transfer', {
+            const res = await fetch('/api/stock/transfer', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     productId: selectedProduct._id,
-                    quantity: Number(transferQty),
+                    qty: Number(transferQty),
                     from,
                     to
                 })
@@ -95,7 +96,7 @@ export default function AuditPage() {
                 fetchProducts();
             } else {
                 const data = await res.json();
-                toast.error(data.error || 'فشلت عملية النقل');
+                toast.error(data.data?.message || data.message || 'فشلت عملية النقل');
             }
         } catch (error) {
             console.error(error);
@@ -115,31 +116,45 @@ export default function AuditPage() {
     };
 
     const handleAdjust = async () => {
+        // The API sets one location per call — send one request per
+        // location that actually changed.
+        const calls = [];
+        const newShop = Number(adjustData.shopQty);
+        const newWarehouse = Number(adjustData.warehouseQty);
+        if (newShop !== Number(selectedProduct.shopQty || 0)) {
+            calls.push({ location: 'shop', newQty: newShop });
+        }
+        if (newWarehouse !== Number(selectedProduct.warehouseQty || 0)) {
+            calls.push({ location: 'warehouse', newQty: newWarehouse });
+        }
+        if (calls.length === 0) {
+            toast.error('لا يوجد تغيير في الأرصدة');
+            return;
+        }
         setIsAdjusting(true);
         try {
-            const res = await fetch('/api/stock/adjust', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    productId: selectedProduct._id,
-                    warehouseQty: adjustData.warehouseQty,
-                    shopQty: adjustData.shopQty,
-                    note: adjustData.note
-                })
-            });
-
-            const data = await res.json();
-
-            if (res.ok) {
-                toast.success('تم تصحيح الأرصدة بنجاح');
-                setIsAdjustOpen(false);
-                fetchProducts();
-            } else {
-                toast.error(data.error || 'فشلت عملية التصحيح');
+            for (const call of calls) {
+                const res = await fetch('/api/stock/adjust', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        productId: selectedProduct._id,
+                        location: call.location,
+                        newQty: call.newQty,
+                        reason: adjustData.note
+                    })
+                });
+                if (!res.ok) {
+                    const data = await res.json();
+                    throw new Error(data.data?.message || data.message || 'فشلت عملية التصحيح');
+                }
             }
+            toast.success('تم تصحيح الأرصدة بنجاح');
+            setIsAdjustOpen(false);
+            fetchProducts();
         } catch (error) {
             console.error(error);
-            toast.error('حدث خطأ أثناء الاتصال');
+            toast.error(error.message || 'حدث خطأ أثناء الاتصال');
         } finally {
             setIsAdjusting(false);
         }

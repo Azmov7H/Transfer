@@ -14,7 +14,10 @@ export default function LogsPage() {
     useEffect(() => {
         fetch('/api/logs')
             .then(res => res.json())
-            .then(data => setLogs(data))
+            .then(data => setLogs(
+                // Backend wraps payloads in a {success,data} envelope.
+                Array.isArray(data) ? data : (data.data || [])
+            ))
             .catch(console.error)
             .finally(() => setLoading(false));
     }, []);

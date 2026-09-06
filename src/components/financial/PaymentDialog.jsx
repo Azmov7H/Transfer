@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { isSourceNumberRequired } from '@/lib/paymentMethods';
+import { api } from '@/lib/api-utils';
 import { SourceNumberField } from '@/components/financial/SourceNumberField';
 import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
 
@@ -28,6 +29,11 @@ import { PaymentMethodSelect } from '@/components/common/PaymentMethodSelect';
  * Payloads and endpoints are preserved byte-for-byte from the legacy variants
  * (see docs/ux-ui-improvement/payment-parity-matrix.md) — do not change keys
  * (`notes` vs `note`) or endpoints without a business decision.
+ *
+ * Business decision (audit fix): the invoice target previously posted to
+ * POST /api/payments, which does not exist — it now uses the canonical
+ * POST /api/financial/payments/customer ({invoice,…}) via the api client
+ * (which unwraps the {success,data} envelope).
  */
 export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) {
     const [amount, setAmount] = useState('');
@@ -49,32 +55,22 @@ export function UnifiedPaymentDialog({ open, onOpenChange, target, onSuccess }) 
     // --- invoice target ---
     const queryClient = useQueryClient();
     const invoicePaymentMutation = useMutation({
-        mutationFn: async () => {
-            const res = await fetch('/api/payments', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    invoiceId: target.invoice._id,
-                    amount: parseFloat(amount),
-                    method,
-                    note,
-                    sourceNumber
-                }),
-            });
-
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Failed to record payment');
-            return data;
-        },
+        mutationFn: () => api.post('/api/financial/payments/customer', {
+            invoice: target.invoice._id,
+            amount: parseFloat(amount),
+            method,
+            note,
+            sourceNumber: sourceNumber || undefined
+        }),
         onSuccess: (res) => {
             toast.success('تم تسجيل الدفعة بنجاح');
             onOpenChange(false);
-            queryClient.invalidateQueries(['receivables']);
-            queryClient.invalidateQueries(['customers']);
+            queryClient.invalidateQueries({ queryKey: ['receivables'] });
+            queryClient.invalidateQueries({ queryKey: ['customers'] });
             onSuccess?.();
 
-            if (res.data?.transaction?._id) {
-                router.push(`/financial/receipts/${res.data.transaction._id}`);
+            if (res?.transaction?._id) {
+                router.push(`/financial/receipts/${res.transaction._id}`);
             }
         },
         onError: (err) => toast.error(err.message),
