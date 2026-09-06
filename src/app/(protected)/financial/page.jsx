@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import Link from 'next/link';
 import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { useTreasury, useTreasuryTransactions, useCashFlow, useAddTransaction, useDeleteTransaction, useSupplierPayment } from '@/hooks/useFinancial';
@@ -10,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Wallet, Loader2, RefreshCcw, AlertCircle, TrendingUp, TrendingDown, Scale, HandCoins } from 'lucide-react';
+import { Wallet, Loader2, RefreshCcw, AlertCircle } from 'lucide-react';
 import { useSuppliers } from '@/hooks/useSuppliers';
 import { useQueryClient } from '@tanstack/react-query';
 import { cn } from '@/utils';
@@ -20,7 +19,9 @@ import { TransactionsTable } from '@/components/financial/TransactionsTable';
 import { TransactionDetailsDialog } from '@/components/financial/TransactionDetailsDialog';
 import { AddTransactionDialog } from '@/components/financial/AddTransactionDialog';
 import { CashFlowChart } from '@/components/financial/CashFlowChart';
-import { BalanceBreakdownChart } from '@/components/financial/BalanceBreakdownChart';
+import { MethodBalancesCard } from '@/components/financial/MethodBalancesCard';
+import { PeriodPerformanceCard } from '@/components/financial/PeriodPerformanceCard';
+import { DebtSnapshotCard } from '@/components/financial/DebtSnapshotCard';
 import { labelCashFlowBuckets } from '@/components/financial/cashFlowUtils';
 import { matchesTypeFilter, exportFiltersFor } from '@/lib/treasuryFilters';
 import { ExportButton } from '@/components/common/ExportButton';
@@ -41,6 +42,19 @@ const PERIODS = [
     { id: 'YEAR', label: 'هذه السنة' },
     { id: 'CUSTOM', label: 'مخصص' },
 ];
+
+function SectionHeading({ title, scope }) {
+    return (
+        <div className="flex items-center gap-2">
+            <h2 className="text-lg font-bold tracking-tight">{title}</h2>
+            {scope && (
+                <span className="text-[11px] font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                    {scope}
+                </span>
+            )}
+        </div>
+    );
+}
 
 export default function FinancialPage() {
     const [period, setPeriod] = useState('MONTH');
@@ -189,11 +203,16 @@ export default function FinancialPage() {
         return new Date(treasuryUpdatedAt).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }, [treasuryUpdatedAt]);
 
+    const periodLabel = PERIODS.find((p) => p.id === period)?.label || 'مخصص';
+    const liveSubtitle = lastUpdated
+        ? `تحديث تلقائي كل 30 ثانية — آخر تحديث ${lastUpdated}`
+        : 'تحديث تلقائي كل 30 ثانية';
+
     return (
         <div className="space-y-6" dir="rtl">
             <PageHeader
                 title="الخزينة"
-                subtitle="لوحة التحكم المالي — الأرصدة والتدفق النقدي وسجل المعاملات"
+                subtitle={liveSubtitle}
                 icon={Wallet}
                 actions={
                     <div className="flex flex-wrap items-center gap-2">
@@ -225,22 +244,10 @@ export default function FinancialPage() {
                 }
             />
 
-            <nav aria-label="أقسام مالية أخرى" className="flex flex-wrap items-center gap-2">
-                <Button asChild variant="outline" size="sm" className="h-8 text-xs">
-                    <Link href="/financial/debt-center">مركز الديون والمستحقات</Link>
-                </Button>
-                <Button asChild variant="outline" size="sm" className="h-8 text-xs">
-                    <Link href="/receivables">المستحقات</Link>
-                </Button>
-                <Button asChild variant="outline" size="sm" className="h-8 text-xs">
-                    <Link href="/accounting">العرض المحاسبي</Link>
-                </Button>
-                <Button asChild variant="outline" size="sm" className="h-8 text-xs">
-                    <Link href="/reports/financial">التقارير المالية</Link>
-                </Button>
-            </nav>
-
             <Card className="p-2 flex flex-wrap items-center gap-2">
+                <span className="text-[11px] font-bold text-muted-foreground px-2">
+                    نطاق الفترة — للأداء والتدفق والسجل فقط (الوضع النقدي والمستحقات لحظية دائمًا)
+                </span>
                 <div className="flex items-center gap-1 bg-muted p-1 rounded-lg">
                     {PERIODS.map(p => (
                         <Button
@@ -291,76 +298,58 @@ export default function FinancialPage() {
                 )}
             </Card>
 
-            {isLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {[0, 1, 2, 3].map(i => (
-                        <Skeleton key={i} className="h-32 rounded-[2.5rem]" />
-                    ))}
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard
-                        title="الرصيد الكلي"
-                        value={balance.toLocaleString()}
-                        unit="ج.م"
-                        icon={Wallet}
-                        variant="primary"
-                        subtitle="رصيد لحظي — يشمل كل الفترات"
-                    />
-                    <StatCard
-                        title="إيرادات الفترة"
-                        value={`+${periodStats.income.toLocaleString()}`}
-                        unit="ج.م"
-                        icon={TrendingUp}
-                        variant="success"
-                        subtitle="في الفترة المحددة"
-                    />
-                    <StatCard
-                        title="مصروفات الفترة"
-                        value={`-${periodStats.expense.toLocaleString()}`}
-                        unit="ج.م"
-                        icon={TrendingDown}
-                        variant="destructive"
-                        subtitle={`موردين: ${periodStats.supplierPayments.toLocaleString()} • عامة: ${periodStats.shopExpenses.toLocaleString()}`}
-                    />
-                    <StatCard
-                        title="صافي الفترة"
-                        value={periodStats.net.toLocaleString()}
-                        unit="ج.م"
-                        icon={Scale}
-                        variant={periodStats.net >= 0 ? 'info' : 'destructive'}
-                        subtitle={`أرباح مبيعات الفترة: ${periodStats.salesProfit.toLocaleString()}`}
-                    />
-                </div>
-            )}
+            <section aria-label="الوضع النقدي الحالي" className="space-y-3">
+                <SectionHeading title="الوضع النقدي الحالي" scope="لحظي" />
+                {isLoading ? (
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+                        <Skeleton className="h-64 rounded-3xl" />
+                        <Skeleton className="h-64 rounded-3xl xl:col-span-2" />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+                        <StatCard
+                            title="الرصيد الكلي"
+                            value={balance.toLocaleString()}
+                            unit="ج.م"
+                            icon={Wallet}
+                            variant="primary"
+                            subtitle="الصندوق والبنك والمحافظ والشيكات"
+                        />
+                        <MethodBalancesCard
+                            breakdown={treasuryData?.breakdown}
+                            total={balance}
+                            className="xl:col-span-2"
+                        />
+                    </div>
+                )}
+            </section>
 
-            {periodStats.totalDebt > 0 && (
-                <Card className="p-4 border-warning/20 bg-warning/5 flex items-center gap-3">
-                    <span className="p-2 rounded-xl bg-warning/10 text-warning">
-                        <HandCoins className="h-5 w-5" />
-                    </span>
-                    <p className="text-sm font-bold">
-                        إجمالي المديونيات المستحقة: {periodStats.totalDebt.toLocaleString()} ج.م
-                    </p>
-                    <Button asChild variant="outline" size="sm" className="mr-auto h-8 text-xs">
-                        <Link href="/financial/debt-center">عرض مركز الديون</Link>
-                    </Button>
-                </Card>
-            )}
+            <section aria-label="أداء الفترة" className="space-y-3">
+                <SectionHeading title="أداء الفترة" scope={periodLabel} />
+                {isLoading ? (
+                    <Skeleton className="h-64 rounded-3xl" />
+                ) : (
+                    <PeriodPerformanceCard
+                        income={periodStats.income}
+                        expense={periodStats.expense}
+                        net={periodStats.net}
+                        supplierPayments={periodStats.supplierPayments}
+                        shopExpenses={periodStats.shopExpenses}
+                        salesProfit={periodStats.salesProfit}
+                        transactionCount={periodStats.transactionCount}
+                    />
+                )}
+            </section>
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
                 <CashFlowChart data={cashFlowData} className="xl:col-span-2" />
-                <BalanceBreakdownChart breakdown={treasuryData?.breakdown} />
+                <DebtSnapshotCard totalDebt={periodStats.totalDebt} />
             </div>
-            <p className="text-[11px] text-muted-foreground font-medium -mt-2">
-                التدفق النقدي يغطي الفترة المحددة بالكامل من قاعدة البيانات، وتوزيع الرصيد يعكس الرصيد الحالي التراكمي حسب الوسيلة — سجل المعاملات أدناه يعرض أحدث 100 حركة فقط.
-                {lastUpdated && ` آخر تحديث تلقائي: ${lastUpdated} (كل 30 ثانية)`}
-            </p>
 
             <div className="space-y-3">
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                        <h2 className="text-lg font-bold tracking-tight">سجل المعاملات</h2>
+                        <SectionHeading title="سجل المعاملات" scope="أحدث 100" />
                         {isTransactionsFetching && (
                             <span className="text-xs text-muted-foreground font-medium inline-flex items-center gap-1">
                                 <Loader2 className="h-3 w-3 animate-spin" /> جاري التحديث…
