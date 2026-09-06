@@ -25,6 +25,16 @@ import { api } from '@/lib/api-utils';
 /** @param {object} params @param {{signal?: AbortSignal}} [options] */
 export const getTreasury = (params = {}, options) => api.get('/api/financial/treasury', params, options);
 
+/**
+ * Paginated full ledger of treasury transactions for the requested
+ * window. Returns `{ transactions: TreasuryTransaction[], pagination }`.
+ * Use this for the transaction-history table; `getTreasury` only returns
+ * the latest 20 most-recent rows in the same window.
+ * @param {object} params @param {{signal?: AbortSignal}} [options]
+ */
+export const getTreasuryTransactions = (params = {}, options) =>
+    api.get('/api/treasury/transactions', params, options);
+
 /** @param {object} data @returns {Promise<*>} */
 export const addTreasuryTransaction = (data) => api.post('/api/financial/transaction', data);
 

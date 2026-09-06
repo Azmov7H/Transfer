@@ -151,14 +151,16 @@ export default function InvoiceDetailPage({ params }) {
                 </Button>
 
                 <div className="flex flex-wrap items-center gap-2">
-                    {/* DOC-SINV-005 — DocumentActions drives the server-side
-                        preview (HTML), print (auto-print), and PDF export
-                        through the document engine. The on-page "طباعة" still
-                        uses the legacy local InvoicePrintView for fast iteration. */}
+                    {/* Per product spec: keep only "Quick Print" and "Preview".
+                        The DocumentActions component renders Preview + Print + Export
+                        (dropdown) based on the `formats` prop. We pass an empty
+                        formats array here so the server-side Print and Export
+                        controls are removed; we render Preview through it and
+                        the local quick-print separately for clarity. */}
                     <DocumentActions
                         documentType={DOCUMENT_TYPES.SALE_INVOICE}
                         documentId={id}
-                        formats={['pdf', 'print']}
+                        formats={[]}
                         size="sm"
                     />
 

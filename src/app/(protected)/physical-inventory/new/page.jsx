@@ -50,8 +50,23 @@ export default function NewPhysicalInventoryPage() {
             isBlind
         }, {
             onSuccess: (res) => {
+                // The api client already strips the {success, data} envelope,
+                // so `res` is the PhysicalInventory document itself (it has
+                // `_id` directly). Guard against unexpected / malformed
+                // shapes (string, null, envelope re-wrapped, etc.) instead
+                // of crashing the page.
+                const inventoryId =
+                    res?._id ||
+                    res?.data?._id ||
+                    res?.id;
+
+                if (!inventoryId) {
+                    toast.error('تعذر الحصول على معرف الجلسة من الخادم');
+                    return;
+                }
+
                 toast.success('تم بدء عملية الجرد بنجاح');
-                router.push(`/physical-inventory/${res.data._id}`);
+                router.push(`/physical-inventory/${inventoryId}`);
             },
             onError: (error) => {
                 toast.error(error.message || 'فشل بدء الجرد');

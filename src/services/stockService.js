@@ -12,7 +12,7 @@ import { api } from '@/lib/api-utils';
  * @property {'IN'|'OUT'|'SALE'|'TRANSFER_TO_SHOP'|'TRANSFER_TO_WAREHOUSE'|'ADJUST'} type
  */
 
-/** @param {object} params @param {{signal?: AbortSignal}} [options] @returns {Promise<{movements?: StockMovement[]}>} */
+/** @param {object} params @param {{signal?: AbortSignal}} [options] @returns {Promise<StockMovement[]>} */
 export const getStockMovements = (params = {}, options) => api.get('/api/stock/movements', params, options);
 
 /** @param {object} params @param {{signal?: AbortSignal}} [options] @returns {Promise<*>} stock status per product */

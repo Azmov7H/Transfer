@@ -14,7 +14,7 @@ export default function ShortageReportsPage() {
     const searchParams = useSearchParams();
     const filter = searchParams.get('status') || 'ALL';
 
-    const { data: reports = [], isLoading, refetch } = useQuery({
+    const { data: reports = [], isLoading, isError, error, refetch, isFetching } = useQuery({
         queryKey: ['shortage-reports', filter],
         queryFn: ({ signal }) => ReportService.getShortageReports(filter, { signal })
     });
@@ -29,6 +29,25 @@ export default function ShortageReportsPage() {
         return (
             <div className="min-h-[400px] flex items-center justify-center">
                 <Loader2 className="w-12 h-12 animate-spin text-primary opacity-20" />
+            </div>
+        );
+    }
+
+    if (isError) {
+        return (
+            <div className="min-h-[400px] flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4 text-center">
+                    <AlertCircle className="w-16 h-16 text-destructive" />
+                    <div>
+                        <h3 className="text-xl font-bold text-destructive">تعذر تحميل البلاغات</h3>
+                        <p className="text-sm text-muted-foreground mt-1">
+                            {error?.message || 'حدث خطأ أثناء جلب البيانات'}
+                        </p>
+                    </div>
+                    <Button onClick={() => refetch()} variant="outline" className="gap-2">
+                        <RefreshCcw className="w-4 h-4" /> إعادة المحاولة
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -67,9 +86,10 @@ export default function ShortageReportsPage() {
                             size="icon"
                             aria-label="تحديث التقرير"
                             onClick={() => refetch()}
+                            disabled={isFetching}
                             className="w-12 h-12 rounded-2xl glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg"
                         >
-                            <RefreshCcw className="w-5 h-5 text-muted-foreground" />
+                            <RefreshCcw className={cn("w-5 h-5 text-muted-foreground", isFetching && "animate-spin text-primary")} />
                         </Button>
                     </>
                 }
@@ -83,7 +103,9 @@ export default function ShortageReportsPage() {
                             <AlertCircle className="h-20 w-20 text-muted-foreground/20 group-hover:scale-110 transition-transform" />
                         </div>
                         <div className="space-y-2 text-center">
-                            <p className="text-2xl font-bold text-white/30 uppercase tracking-widest">لا توجد بلاغات نواقص</p>
+                            <p className="text-2xl font-bold text-white/30 uppercase tracking-widest">
+                                {filter === 'ALL' ? 'لا توجد بلاغات نواقص' : `لا توجد بلاغات ${filterOptions.find(o => o.value === filter)?.label || ''}`}
+                            </p>
                             <p className="text-sm text-white/10 font-bold uppercase tracking-widest">تحقق من معايير التصفية</p>
                         </div>
                     </div>

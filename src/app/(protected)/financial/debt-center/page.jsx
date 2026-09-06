@@ -10,7 +10,9 @@ import {
     Search,
     Filter,
     Download,
-    Loader2
+    Loader2,
+    RefreshCcw,
+    Wallet
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,15 +35,15 @@ export default function DebtCenterPage() {
     const [selectedDebtor, setSelectedDebtor] = useState(null);
     const [search, setSearch] = useState('');
 
-    const { data: overview, isLoading: isOverviewLoading } = useDebtOverview();
+    const { data: overview, isLoading: isOverviewLoading, refetch: refetchOverview, isFetching: isOverviewFetching, isError: isOverviewError, error: overviewError } = useDebtOverview();
     // For Customers: Aggregated view
-    const { data: debtorsData, isLoading: isDebtorsLoading } = useDebtors({
+    const { data: debtorsData, isLoading: isDebtorsLoading, isError: isDebtorsError, error: debtorsError, refetch: refetchDebtors, isFetching: isDebtorsFetching } = useDebtors({
         type: 'Customer',
         search: search
     });
 
     // For Suppliers: Classic Invoice view
-    const { data: debtsData, isLoading: isDebtsLoading } = useDebts({
+    const { data: debtsData, isLoading: isDebtsLoading, isError: isDebtsError, error: debtsError, refetch: refetchDebts, isFetching: isDebtsFetching } = useDebts({
         debtorType: 'Supplier',
         status: 'active,overdue'
     });
@@ -75,7 +77,7 @@ export default function DebtCenterPage() {
     };
 
     return (
-        <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
 
             {/* Header Section */}
@@ -84,9 +86,24 @@ export default function DebtCenterPage() {
                 subtitle="متابعة المستحقات والمدفوعات والتسويات المالية"
                 icon={TrendingUp}
                 actions={
-                    <Button variant="outline" className="h-14 px-8 rounded-2xl font-bold text-lg gap-3 glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg">
-                        <Download size={22} /> تصدير تقرير
-                    </Button>
+                    <div className="flex flex-wrap items-center gap-2">
+                        <Button
+                            variant="outline"
+                            className="h-12 px-5 rounded-2xl font-bold gap-2 glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg"
+                            onClick={() => {
+                                refetchOverview();
+                                refetchDebtors();
+                                refetchDebts();
+                            }}
+                            disabled={isOverviewFetching || isDebtorsFetching || isDebtsFetching}
+                        >
+                            <RefreshCcw className={cn("h-5 w-5", (isOverviewFetching || isDebtorsFetching || isDebtsFetching) && "animate-spin")} />
+                            تحديث
+                        </Button>
+                        <Button variant="outline" className="h-12 px-5 rounded-2xl font-bold gap-2 glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg">
+                            <Download size={20} /> تصدير
+                        </Button>
+                    </div>
                 }
             />
 
@@ -155,10 +172,35 @@ export default function DebtCenterPage() {
                             </div>
                         </div>
                         <div className="overflow-x-auto">
-                            {(activeTab === 'Customer' ? isDebtorsLoading : isDebtsLoading) ? (
+                            {isOverviewError || isDebtorsError || isDebtsError ? (
+                                <div className="p-12 text-center">
+                                    <div className="flex flex-col items-center gap-4">
+                                        <AlertCircle className="h-12 w-12 text-destructive" />
+                                        <div>
+                                            <h3 className="font-bold text-destructive text-lg">تعذر تحميل البيانات</h3>
+                                            <p className="text-sm text-muted-foreground mt-1">
+                                                {(overviewError?.message || debtorsError?.message || debtsError?.message) || 'حدث خطأ أثناء جلب البيانات من الخادم'}
+                                            </p>
+                                        </div>
+                                        <Button onClick={() => { refetchOverview(); refetchDebtors(); refetchDebts(); }} variant="outline" className="gap-2">
+                                            <RefreshCcw className="h-4 w-4" /> إعادة المحاولة
+                                        </Button>
+                                    </div>
+                                </div>
+                            ) : (activeTab === 'Customer' ? isDebtorsLoading : isDebtsLoading) ? (
                                 <div className="p-32 text-center">
                                     <Loader2 className="animate-spin mx-auto text-primary w-12 h-12 opacity-50" />
                                     <p className="mt-4 text-muted-foreground font-bold">جاري مزامنة الديون...</p>
+                                </div>
+                            ) : (activeTab === 'Customer' ? debtors.length === 0 : debts.length === 0) ? (
+                                <div className="p-16 text-center">
+                                    <div className="flex flex-col items-center gap-3 max-w-md mx-auto">
+                                        <Wallet className="h-12 w-12 text-muted-foreground/40" />
+                                        <h3 className="font-bold text-lg">لا توجد مديونيات حالياً</h3>
+                                        <p className="text-sm text-muted-foreground">
+                                            لم يتم تسجيل أي مديونية في هذه الفئة حتى الآن. إذا كان لديك عملاء أو موردين لديهم رصيد سابق في النظام، يمكنك استخدام زر &quot;مزامنة المديونيات&quot; أعلاه لإنشاء السجلات المناسبة.
+                                        </p>
+                                    </div>
                                 </div>
                             ) : (
                                 activeTab === 'Customer' ? (
@@ -171,10 +213,9 @@ export default function DebtCenterPage() {
                                         debts={debts.filter(d =>
                                             d.debtorId?.name?.toLowerCase().includes(search.toLowerCase())
                                         )}
-                                        // These handlers for DebtTable need to be defined or we need to ensure they are passed if we use DebtTable
                                         onRecordPayment={handleRecordPayment}
                                         onScheduleInstallment={handleScheduleInstallment}
-                                        onUnifiedCollection={() => { }} // Not applicable for suppliers yet
+                                        onUnifiedCollection={() => { }}
                                     />
                                 )
                             )}

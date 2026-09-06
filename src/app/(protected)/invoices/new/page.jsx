@@ -31,6 +31,14 @@ export default function NewInvoicePage() {
     const [customerPhone, setCustomerPhone] = useState('');
     const [currentPriceType, setCurrentPriceType] = useState('retail');
 
+    // Credit-balance handling on invoice creation. `applyCredit` means
+    // "deduct up to the customer's creditBalance from this invoice's
+    // subtotal" (the existing field `usedCreditBalance` on Invoice).
+    // When false, the full invoice amount stays as an outstanding debt
+    // on the customer account (default behavior, no extra bookkeeping).
+    const [applyCredit, setApplyCredit] = useState(false);
+    const [creditToUse, setCreditToUse] = useState(0);
+
     // Payment State
     const [paymentType, setPaymentType] = useState('cash');
     const [dueDate, setDueDate] = useState('');
@@ -74,6 +82,9 @@ export default function NewInvoicePage() {
         setCustomerName(customer.name);
         setCustomerPhone(customer.phone);
         setCurrentPriceType(customer.priceType || 'retail');
+        // Reset credit-balance handling on every customer change.
+        setApplyCredit(false);
+        setCreditToUse(0);
         toast.success(`تم اختيار العميل: ${customer.name}`);
     };
 
@@ -141,7 +152,11 @@ export default function NewInvoicePage() {
             paymentType,
             dueDate,
             shippingCompany,
-            sourceNumber
+            sourceNumber,
+            // FIN-CREDIT-CHOICE: include the credit-balance deduction only when
+            // the user explicitly opted in. Default (false) leaves the full
+            // invoice amount as an outstanding debt on the customer account.
+            usedCreditBalance: effectiveCreditUsed
         };
 
         createInvoiceMutation.mutate(invoiceData, {
@@ -174,6 +189,7 @@ export default function NewInvoicePage() {
 
     const subtotal = items.reduce((sum, item) => sum + (item.qty * item.unitPrice), 0);
     const customerCredit = selectedCustomer?.creditBalance || 0;
+    const effectiveCreditUsed = applyCredit ? Math.min(creditToUse, subtotal, customerCredit) : 0;
 
     // Default Source State (for new items)
     const [defaultSource, setDefaultSource] = useState('shop');
@@ -281,17 +297,98 @@ export default function NewInvoicePage() {
 
                         {customerCredit > 0 && (
                             <motion.div
+                                key="credit-balance-block"
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="flex justify-between items-center p-4 rounded-2xl bg-success/10 border border-success/20 text-success"
+                                className="rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-5 space-y-4"
+                                data-testid="credit-balance-block"
                             >
-                                <div className="flex items-center gap-2">
-                                    <div className="p-1.5 bg-success/20 rounded-lg">
-                                        <Wallet className="w-4 h-4" />
+                                <div className="flex justify-between items-center gap-3">
+                                    <div className="flex items-center gap-2 text-emerald-800">
+                                        <div className="p-1.5 bg-emerald-200 rounded-lg">
+                                            <Wallet className="w-4 h-4" />
+                                        </div>
+                                        <span className="font-bold">رصيد متاح للعميل:</span>
                                     </div>
-                                    <span className="font-bold">خصم رصيد سابق:</span>
+                                    <span className="font-bold text-emerald-900 text-lg">
+                                        {customerCredit.toLocaleString()} ج.م
+                                    </span>
                                 </div>
-                                <span className="font-bold">-{Math.min(subtotal, customerCredit).toLocaleString()} ج.م</span>
+
+                                <p className="text-sm text-emerald-900 leading-relaxed">
+                                    لدى العميل رصيد دائن مسجّل. اختر كيف تريد معالجة هذا الرصيد في هذه الفاتورة:
+                                </p>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {/* Option A — Deduct from balance */}
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setApplyCredit(true);
+                                            setCreditToUse(Math.min(subtotal, customerCredit));
+                                        }}
+                                        className={cn(
+                                            "text-right rounded-xl p-4 border-2 transition-all",
+                                            applyCredit
+                                                ? "bg-emerald-600 text-white border-emerald-700 shadow-lg"
+                                                : "bg-white text-emerald-900 border-emerald-200 hover:border-emerald-400"
+                                        )}
+                                        data-testid="credit-option-deduct"
+                                    >
+                                        <div className="flex items-start gap-3">
+                                            <div className={cn(
+                                                "h-5 w-5 rounded-full border-2 mt-1 flex items-center justify-center flex-shrink-0",
+                                                applyCredit ? "border-white bg-white" : "border-emerald-600"
+                                            )}>
+                                                {applyCredit && <div className="h-2 w-2 rounded-full bg-emerald-600" />}
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-base">خصم من رصيد العميل</p>
+                                                <p className={cn("text-xs mt-1 leading-relaxed", applyCredit ? "opacity-90" : "text-emerald-700")}>
+                                                    يُخصم من إجمالي الفاتورة ويُسجَّل المبلغ المتبقي (إن وُجد) كمتبقيّ للعميل. مناسب عندما تريد إغلاق جزء من الفاتورة نقداً فعلاً.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </button>
+
+                                    {/* Option B — Keep as outstanding */}
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setApplyCredit(false);
+                                            setCreditToUse(0);
+                                        }}
+                                        className={cn(
+                                            "text-right rounded-xl p-4 border-2 transition-all",
+                                            !applyCredit
+                                                ? "bg-amber-500 text-white border-amber-600 shadow-lg"
+                                                : "bg-white text-amber-900 border-amber-200 hover:border-amber-400"
+                                        )}
+                                        data-testid="credit-option-keep"
+                                    >
+                                        <div className="flex items-start gap-3">
+                                            <div className={cn(
+                                                "h-5 w-5 rounded-full border-2 mt-1 flex items-center justify-center flex-shrink-0",
+                                                !applyCredit ? "border-white bg-white" : "border-amber-600"
+                                            )}>
+                                                {!applyCredit && <div className="h-2 w-2 rounded-full bg-amber-600" />}
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-base">الإبقاء كحساب جاري</p>
+                                                <p className={cn("text-xs mt-1 leading-relaxed", !applyCredit ? "opacity-90" : "text-amber-700")}>
+                                                    الفاتورة تبقى كاملة على حساب العميل كدين مستحق. الرصيد المتاح يبقى كما هو لاستخدامه في فواتير لاحقة. مناسب لآجل الموردين.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </div>
+
+                                {applyCredit && effectiveCreditUsed > 0 && (
+                                    <div className="flex justify-between items-center pt-3 border-t border-emerald-300 text-emerald-900">
+                                        <span className="text-sm font-bold">سيتم خصم:</span>
+                                        <span className="text-xl font-bold">-{effectiveCreditUsed.toLocaleString()} ج.م</span>
+                                    </div>
+                                )}
                             </motion.div>
                         )}
 
@@ -364,7 +461,7 @@ export default function NewInvoicePage() {
                             <span className="text-2xl font-bold uppercase tracking-tight">الإجمالي النهائي:</span>
                             <div className="flex items-baseline gap-2">
                                 <span className="text-4xl font-bold text-primary tracking-tighter">
-                                    {Math.max(0, subtotal - customerCredit).toLocaleString()}
+                                    {Math.max(0, subtotal - effectiveCreditUsed).toLocaleString()}
                                 </span>
                                 <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">جنيه</span>
                             </div>

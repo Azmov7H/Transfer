@@ -127,6 +127,17 @@ export default function PhysicalInventoryDetailPage({ params }) {
         </div>
     );
 
+    // The endpoint can return null when the id is missing/invalid. Guard
+    // before accessing fields to avoid `can't access property "status",
+    // count is null`.
+    if (!count) return (
+        <div className="flex flex-col items-center justify-center p-40 gap-4">
+            <AlertTriangle className="h-16 w-16 text-muted-foreground" />
+            <p className="text-xl font-bold text-muted-foreground">جلسة الجرد غير موجودة أو تم حذفها</p>
+            <Button onClick={() => router.push('/physical-inventory')} variant="outline">العودة للمركز الرئيسي</Button>
+        </div>
+    );
+
     const isCompleted = count.status === 'completed';
     const isBlind = count.isBlind && !isCompleted;
 

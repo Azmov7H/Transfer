@@ -13,7 +13,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Search, Plus, FileEdit, Trash2, Phone, MapPin, Loader2, Wallet, Building2, Activity, CalendarClock, History } from 'lucide-react';
+import { Search, Plus, FileEdit, Trash2, Phone, MapPin, Loader2, Wallet, Building2, Activity, CalendarClock, History, RefreshCcw, AlertCircle } from 'lucide-react';
 import { cn } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { KPICard } from '@/components/dashboard/KPICard';
@@ -35,7 +35,7 @@ export default function SuppliersPage() {
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
     const [selectedSupplier, setSelectedSupplier] = useState(null);
 
-    const { data: queryData, isLoading, addMutation, updateMutation, deleteMutation } = useSuppliers({ search });
+    const { data: queryData, isLoading, isFetching, isError, error, refetch, addMutation, updateMutation, deleteMutation } = useSuppliers({ search });
     const suppliers = queryData?.suppliers || [];
 
     const handleEditClick = (supplier) => {
@@ -85,7 +85,7 @@ export default function SuppliersPage() {
     const trackedSuppliers = suppliers.filter(s => s.financialTrackingEnabled).length;
 
     return (
-        <div className="min-h-screen bg-foreground/1020 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 space-y-8 p-4 md:p-8 rounded-[2rem]" dir="rtl">
             {/* Ambient Background Effect */}
 
             {/* Header Section */}
@@ -144,26 +144,59 @@ export default function SuppliersPage() {
 
             {/* Suppliers Table Container */}
             <div className="glass-card shadow-[0_40px_80px_rgba(0,0,0,0.3)] border border-white/10 rounded-[2.5rem] overflow-hidden">
-                <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
+                <div className="p-8 border-b border-white/10 bg-white/[0.02] flex items-center justify-between gap-3 flex-wrap">
                     <div className="flex items-center gap-3">
                         <div className="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_15px_rgba(var(--primary),0.5)]" />
                         <h2 className="text-2xl font-bold tracking-tight">قائمة الموردين</h2>
+                        <span className="text-xs text-muted-foreground font-bold">
+                            ({suppliers.length} مورد)
+                        </span>
                     </div>
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        aria-label="تحديث القائمة"
+                        title="تحديث القائمة"
+                        onClick={() => refetch()}
+                        disabled={isFetching}
+                        className="h-12 w-12 rounded-2xl glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg"
+                    >
+                        <RefreshCcw className={cn("h-5 w-5 text-muted-foreground", isFetching && "animate-spin text-primary")} />
+                    </Button>
                 </div>
 
                 <div className="overflow-x-auto">
                     <Table aria-label="قائمة الموردين">
-                        <TableHeader>
-                            <TableRow className="hover:bg-transparent border-white/5 h-16 bg-white/[0.01]">
-                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-right">المورد / الحالة</TableHead>
-                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-right">الاتصال</TableHead>
-                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-center">يوم السداد</TableHead>
-                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-center">المستحقات</TableHead>
-                                <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-center">الإجراءات</TableHead>
-                            </TableRow>
-                        </TableHeader>
+<TableHeader>
+                                <TableRow className="hover:bg-transparent border-white/5 h-16 bg-white/[0.01]">
+                                    <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-right">المورد / الحالة</TableHead>
+                                    <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-right">الاتصال</TableHead>
+                                    <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-center">يوم السداد</TableHead>
+                                    <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-center">الرصيد المالي</TableHead>
+                                    <TableHead className="font-bold text-white/40 uppercase tracking-widest text-xs px-8 text-center">الإجراءات</TableHead>
+                                </TableRow>
+                            </TableHeader>
                         <TableBody>
-                            {isLoading ? (
+                            {isError ? (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="h-96 text-center border-none">
+                                        <div className="flex flex-col items-center gap-6">
+                                            <div className="p-8 bg-destructive/10 rounded-[2.5rem] border border-destructive/20 shadow-inner">
+                                                <AlertCircle size={64} className="text-destructive" />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <p className="text-2xl font-bold text-destructive">تعذر تحميل قائمة الموردين</p>
+                                                <p className="text-sm text-muted-foreground font-medium">
+                                                    {error?.message || 'حدث خطأ أثناء جلب البيانات من الخادم'}
+                                                </p>
+                                            </div>
+                                            <Button onClick={() => refetch()} variant="outline" className="gap-2">
+                                                <RefreshCcw className="h-4 w-4" /> إعادة المحاولة
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ) : isLoading ? (
                                 <TableRow>
                                     <TableCell colSpan={5} className="h-96 text-center border-none">
                                         <div className="flex flex-col items-center gap-6">
@@ -242,17 +275,7 @@ export default function SuppliersPage() {
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="text-center">
-                                            {supplier.balance > 0 ? (
-                                                <div className="flex flex-col items-center">
-                                                    <div className="flex items-center gap-2 font-bold text-destructive bg-destructive/10 px-3 py-1 rounded-xl border border-destructive/20 text-xs shadow-sm">
-                                                        <span className="font-mono">{supplier.balance.toLocaleString()}</span>
-                                                        <span className="text-xs opacity-70 italic">ج.م</span>
-                                                    </div>
-                                                    <span className="text-xs text-muted-foreground font-bold mt-1 uppercase tracking-tighter">مستحقات للمورد</span>
-                                                </div>
-                                            ) : (
-                                                <Badge variant="outline" className="opacity-50 font-bold border-dashed border-2">0.00</Badge>
-                                            )}
+                                            <SupplierBalanceCell balance={supplier.balance || 0} />
                                         </TableCell>
                                         <TableCell className="px-6">
                                             <div className="flex items-center justify-center gap-1">
@@ -339,6 +362,45 @@ export default function SuppliersPage() {
                 confirmLabel="حذف"
                 onConfirm={handleConfirmDelete}
             />
+        </div>
+    );
+}
+
+// SupplierBalanceCell — clearly distinguishes "we owe them" (positive
+// balance, payable) from "they owe us" (negative balance, receivable),
+// shows zero as a neutral dashed badge, and labels the bucket in Arabic
+// so the column is self-explanatory without hovering.
+function SupplierBalanceCell({ balance }) {
+    if (!balance) {
+        return (
+            <Badge variant="outline" className="font-bold border-dashed border-2 text-muted-foreground">
+                0.00 ج.م
+            </Badge>
+        );
+    }
+
+    if (balance > 0) {
+        return (
+            <div className="flex flex-col items-center gap-1">
+                <div className="flex items-center gap-2 font-bold text-white bg-rose-600 px-3 py-1.5 rounded-xl border border-rose-700 text-xs shadow-sm">
+                    <Wallet className="h-3.5 w-3.5" />
+                    <span className="font-mono">{balance.toLocaleString()}</span>
+                    <span className="text-xs opacity-90 italic">ج.م</span>
+                </div>
+                <span className="text-xs text-rose-700 font-bold uppercase tracking-tighter">مستحق للمورد</span>
+            </div>
+        );
+    }
+
+    // Negative — the business is owed by the supplier
+    return (
+        <div className="flex flex-col items-center gap-1">
+            <div className="flex items-center gap-2 font-bold text-white bg-emerald-600 px-3 py-1.5 rounded-xl border border-emerald-700 text-xs shadow-sm">
+                <Wallet className="h-3.5 w-3.5" />
+                <span className="font-mono">{Math.abs(balance).toLocaleString()}</span>
+                <span className="text-xs opacity-90 italic">ج.م</span>
+            </div>
+            <span className="text-xs text-emerald-700 font-bold uppercase tracking-tighter">مستحق لنا عند المورد</span>
         </div>
     );
 }

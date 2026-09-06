@@ -1,18 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { useTreasury, useAddTransaction, useDeleteTransaction } from '@/hooks/useFinancial';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
-import { Wallet, Loader2 } from 'lucide-react';
+import { Wallet, Loader2, RefreshCcw, AlertCircle } from 'lucide-react';
 import { useSuppliers } from '@/hooks/useSuppliers';
-import { addPayment as addPaymentApi } from '@/services/financeService';
+import { addPayment as addPaymentApi, getTreasuryTransactions } from '@/services/financeService';
 import { useQueryClient } from '@tanstack/react-query';
+import { cn } from '@/utils';
 import { TreasuryStatsCards } from '@/components/financial/TreasuryStatsCards';
 import { TransactionsTable } from '@/components/financial/TransactionsTable';
 import { TransactionDetailsDialog } from '@/components/financial/TransactionDetailsDialog';
@@ -28,28 +30,12 @@ export default function FinancialPage() {
     });
 
     const queryClient = useQueryClient();
-    const { data: treasuryData, isLoading } = useTreasury(getDateRange());
-    const { mutate: addTransaction, isPending } = useAddTransaction();
-    const { mutate: deleteTransaction, isPending: isDeleting } = useDeleteTransaction();
-
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [selectedTx, setSelectedTx] = useState(null);
-    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-
-    const [formData, setFormData] = useState({
-        amount: '',
-        description: '',
-        type: 'INCOME',
-        category: 'other',
-        supplierId: '',
-        method: 'cash',
-        sourceNumber: ''
-    });
-
     const { data: suppliers } = useSuppliers({ limit: 100 });
 
-    // Calculate actual dates based on period
-    function getDateRange() {
+    // Calculate actual dates based on period.
+    // NOTE: declared with useCallback so the object identity is stable
+    // across renders (it's a dependency of the useQuery below).
+    const getDateRange = useCallback(() => {
         const end = new Date();
         const start = new Date();
 
@@ -72,7 +58,53 @@ export default function FinancialPage() {
             startDate: start.toISOString().split('T')[0],
             endDate: end.toISOString().split('T')[0]
         };
-    }
+    }, [period, customDates]);
+
+    const { data: treasuryData, isLoading } = useTreasury(getDateRange());
+    const { mutate: addTransaction, isPending } = useAddTransaction();
+    const { mutate: deleteTransaction, isPending: isDeleting } = useDeleteTransaction();
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [selectedTx, setSelectedTx] = useState(null);
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+    const [formData, setFormData] = useState({
+        amount: '',
+        description: '',
+        type: 'INCOME',
+        category: 'other',
+        supplierId: '',
+        method: 'cash',
+        sourceNumber: ''
+    });
+
+    // T-PERF-03 contract: `/api/financial/treasury` only returns the most
+    // recent 20 rows. The user expects a full history, so we hit the
+    // dedicated `/api/treasury/transactions` ledger endpoint (90-day
+    // bounded range, server-side pagination) for the table below.
+    const dateRange = getDateRange();
+    const {
+        data: transactionsData,
+        isFetching: isTransactionsFetching,
+        isError: isTransactionsError,
+        error: transactionsError,
+        refetch: refetchTransactions
+    } = useQuery({
+        queryKey: ['treasury-transactions', dateRange],
+        queryFn: ({ signal }) => getTreasuryTransactions(dateRange, { signal }),
+        keepPreviousData: true,
+    });
+
+    // Client-side filtering and stats calculation.
+    // `/api/treasury/transactions` returns a bare array; tolerate the older
+    // `{ transactions: [...] }` wrapper shape too. All hooks below MUST
+    // stay above any early-return so React's Rules of Hooks are satisfied.
+    const allTransactions = useMemo(() => {
+        if (Array.isArray(transactionsData)) return transactionsData;
+        if (transactionsData?.transactions && Array.isArray(transactionsData.transactions)) return transactionsData.transactions;
+        if (transactionsData?.data && Array.isArray(transactionsData.data)) return transactionsData.data;
+        return [];
+    }, [transactionsData]);
 
     const handleSubmit = async () => {
         if (!formData.amount || !formData.description) return;
@@ -138,9 +170,6 @@ export default function FinancialPage() {
         setIsDetailsOpen(true);
     };
 
-    // Client-side filtering and stats calculation
-    const allTransactions = treasuryData?.transactions || [];
-
     const supplierPaymentsAmt = allTransactions
         .filter(tx => tx.type === 'EXPENSE' && (tx.referenceType === 'PurchaseOrder' || (tx.referenceType === 'Debt' && tx.referenceId?.debtorType === 'Supplier')))
         .reduce((sum, tx) => sum + tx.amount, 0);
@@ -166,6 +195,11 @@ export default function FinancialPage() {
         salesProfit: treasuryData?.salesProfit || 0,
         totalDebt: treasuryData?.totalOutstandingDebt || 0,
         net: treasuryData?.periodBalance || 0
+    };
+
+    const refreshAll = () => {
+        refetchTransactions();
+        queryClient.invalidateQueries({ queryKey: ['treasury'] });
     };
 
     return (
@@ -283,14 +317,68 @@ export default function FinancialPage() {
                 </div>
 
                 {/* Transactions History */}
-                <TransactionsTable
-                    transactions={filteredTransactions}
-                    typeFilter={typeFilter}
-                    onTypeFilterChange={setTypeFilter}
-                    onTxClick={handleTxClick}
-                    onDelete={handleDelete}
-                    isDeleting={isDeleting}
-                />
+                <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                            <h2 className="text-lg font-bold tracking-tight">سجل المعاملات</h2>
+                            {isTransactionsFetching && (
+                                <span className="text-xs text-muted-foreground font-medium inline-flex items-center gap-1">
+                                    <Loader2 className="h-3 w-3 animate-spin" /> جاري التحديث…
+                                </span>
+                            )}
+                            <span className="text-xs text-muted-foreground font-medium">
+                                ({allTransactions.length} معاملة)
+                            </span>
+                        </div>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={refreshAll}
+                            disabled={isTransactionsFetching}
+                            className="gap-2"
+                            aria-label="تحديث"
+                        >
+                            <RefreshCcw className={cn("h-4 w-4", isTransactionsFetching && "animate-spin")} />
+                            تحديث
+                        </Button>
+                    </div>
+
+                    {isTransactionsError ? (
+                        <Card className="p-8 border border-destructive/20 bg-destructive/5">
+                            <div className="flex flex-col items-center gap-3 text-center">
+                                <AlertCircle className="h-10 w-10 text-destructive" />
+                                <div>
+                                    <h3 className="font-bold text-destructive">تعذر تحميل المعاملات</h3>
+                                    <p className="text-sm text-muted-foreground mt-1">
+                                        {transactionsError?.message || 'حدث خطأ أثناء جلب البيانات'}
+                                    </p>
+                                </div>
+                                <Button onClick={refreshAll} variant="outline" className="gap-2">
+                                    <RefreshCcw className="h-4 w-4" /> إعادة المحاولة
+                                </Button>
+                            </div>
+                        </Card>
+                    ) : allTransactions.length === 0 && !isTransactionsFetching ? (
+                        <Card className="p-8 border-dashed">
+                            <div className="flex flex-col items-center gap-2 text-center">
+                                <Wallet className="h-10 w-10 text-muted-foreground/40" />
+                                <h3 className="font-bold">لا توجد معاملات في هذه الفترة</h3>
+                                <p className="text-sm text-muted-foreground">
+                                    جرّب توسيع نطاق التاريخ أو أضف معاملة جديدة.
+                                </p>
+                            </div>
+                        </Card>
+                    ) : (
+                        <TransactionsTable
+                            transactions={filteredTransactions}
+                            typeFilter={typeFilter}
+                            onTypeFilterChange={setTypeFilter}
+                            onTxClick={handleTxClick}
+                            onDelete={handleDelete}
+                            isDeleting={isDeleting}
+                        />
+                    )}
+                </div>
             </div>
 
             {/* Transaction Details Dialog */}

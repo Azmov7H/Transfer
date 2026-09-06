@@ -10,7 +10,7 @@ import {
     Loader2, Package, TrendingUp, TrendingDown,
     ArrowRightLeft, FileEdit, Filter, Search,
     Calendar, Layers, ArrowUpRight, ArrowDownRight,
-    ArrowLeftRight, AlertCircle, CheckCircle2, History
+    ArrowLeftRight, AlertCircle, CheckCircle2, History, RefreshCcw
 } from 'lucide-react';
 import { cn } from '@/utils';
 import { getStockMovements } from '@/services/stockService';
@@ -22,7 +22,7 @@ export default function StockMovementsPage() {
     const [searchProduct, setSearchProduct] = useState('');
     const [filterType, setFilterType] = useState('ALL'); // ALL, IN, OUT, TRANSFER, ADJUST
 
-    const { data: movementsData, isLoading } = useQuery({
+    const { data: movementsData, isLoading, isFetching, isError, error, refetch } = useQuery({
         queryKey: ['stock-movements', days],
         queryFn: async ({ signal }) => {
             const endDate = new Date();
@@ -36,7 +36,16 @@ export default function StockMovementsPage() {
         }
     });
 
-    const movements = movementsData?.movements || [];
+    // The /api/stock/movements endpoint returns a bare Array<StockMovement>
+    // (after the api client unwraps the {success, data} envelope). Older
+    // shapes wrapped it as { movements: [...] }; tolerate both so a future
+    // contract change doesn't blank the page again.
+    const movements = useMemo(() => {
+        if (Array.isArray(movementsData)) return movementsData;
+        if (movementsData?.movements && Array.isArray(movementsData.movements)) return movementsData.movements;
+        if (movementsData?.data && Array.isArray(movementsData.data)) return movementsData.data;
+        return [];
+    }, [movementsData]);
 
     // Filter Logic
     const filteredMovements = useMemo(() => {
@@ -100,31 +109,46 @@ export default function StockMovementsPage() {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="flex p-1 bg-white/5 rounded-2xl border border-white/5"
+                    className="flex items-center gap-2"
                 >
-                    {[
-                        { label: '7 أيام', val: 7 },
-                        { label: '30 يوم', val: 30 },
-                        { label: '90 يوم', val: 90 }
-                    ].map((period) => (
-                        <button
-                            key={period.val}
-                            onClick={() => setDays(period.val)}
-                            className={cn(
-                                "px-6 py-2.5 rounded-xl font-bold transition-all text-sm relative",
-                                days === period.val ? "bg-primary text-primary-foreground shadow-lg" : "text-muted-foreground hover:bg-white/5"
-                            )}
-                        >
-                            {period.label}
-                            {days === period.val && (
-                                <motion.div
-                                    layoutId="activePeriod"
-                                    className="absolute inset-0 bg-primary rounded-xl -z-10"
-                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                />
-                            )}
-                        </button>
-                    ))}
+                    <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => refetch()}
+                        disabled={isFetching}
+                        aria-label="تحديث السجل"
+                        title="تحديث السجل"
+                        className="h-12 w-12 rounded-2xl glass-card border-white/10 hover:border-primary/50 transition-all shadow-lg"
+                    >
+                        <RefreshCcw className={cn("h-5 w-5 text-muted-foreground", isFetching && "animate-spin text-primary")} />
+                    </Button>
+
+                    <div className="flex p-1 bg-white/5 rounded-2xl border border-white/5">
+                        {[
+                            { label: '7 أيام', val: 7 },
+                            { label: '30 يوم', val: 30 },
+                            { label: '90 يوم', val: 90 }
+                        ].map((period) => (
+                            <button
+                                key={period.val}
+                                onClick={() => setDays(period.val)}
+                                className={cn(
+                                    "px-6 py-2.5 rounded-xl font-bold transition-all text-sm relative",
+                                    days === period.val ? "bg-primary text-primary-foreground shadow-lg" : "text-muted-foreground hover:bg-white/5"
+                                )}
+                            >
+                                {period.label}
+                                {days === period.val && (
+                                    <motion.div
+                                        layoutId="activePeriod"
+                                        className="absolute inset-0 bg-primary rounded-xl -z-10"
+                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                    />
+                                )}
+                            </button>
+                        ))}
+                    </div>
                 </motion.div>
             </div>
 
@@ -196,9 +220,28 @@ export default function StockMovementsPage() {
                 </div>
             </motion.div>
 
-            {/* Stock Movements List */}
+{/* Stock Movements List */}
             <div className="space-y-4">
-                {isLoading ? (
+                {isError ? (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="glass-card p-12 rounded-[2.5rem] text-center border border-destructive/20 flex flex-col items-center gap-6"
+                    >
+                        <div className="h-24 w-24 bg-destructive/10 rounded-full flex items-center justify-center">
+                            <AlertCircle className="h-10 w-10 text-destructive" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-destructive">تعذر تحميل سجل الحركات</h3>
+                            <p className="text-muted-foreground mt-2 font-medium">
+                                {error?.message || 'حدث خطأ أثناء جلب البيانات من الخادم'}
+                            </p>
+                        </div>
+                        <Button onClick={() => refetch()} className="gap-2">
+                            <RefreshCcw className="h-4 w-4" /> إعادة المحاولة
+                        </Button>
+                    </motion.div>
+                ) : isLoading ? (
                     <div className="flex flex-col items-center justify-center py-24 space-y-4">
                         <Loader2 className="h-12 w-12 animate-spin text-primary" />
                         <p className="font-bold text-muted-foreground">جاري تحميل السجل...</p>
@@ -214,8 +257,11 @@ export default function StockMovementsPage() {
                         </div>
                         <div>
                             <h3 className="text-xl font-bold">لا توجد حركات مسجلة</h3>
-                            <p className="text-muted-foreground mt-2 font-medium">لم يتم العثور على أي حركات مخزنية في الفترة المحددة</p>
+                            <p className="text-muted-foreground mt-2 font-medium">لم يتم العثور على任何 حركات مخزنية في الفترة المحددة</p>
                         </div>
+                        <Button onClick={() => refetch()} variant="outline" className="gap-2">
+                            <RefreshCcw className="h-4 w-4" /> تحديث
+                        </Button>
                     </motion.div>
                 ) : (
                     <div className="grid grid-cols-1 gap-3">

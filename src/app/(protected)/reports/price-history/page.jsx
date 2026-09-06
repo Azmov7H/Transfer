@@ -12,24 +12,27 @@ import {
 } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Search, History, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { Loader2, Search, History, ArrowUpRight, ArrowDownRight, RefreshCcw, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
+import { ar } from 'date-fns/locale';
 import { ReportService } from '@/services/reportService';
 
 export default function PriceHistoryPage() {
     const [search, setSearch] = useState('');
 
-    const { data: history = [], isLoading } = useQuery({
+    const { data: history = [], isLoading, isError, error, refetch, isFetching } = useQuery({
         queryKey: ['price-history'],
         queryFn: ({ signal }) => ReportService.getAllPriceHistory({ signal })
     });
 
     // Client-side filtering
-    const filteredHistory = history.filter(item =>
-        item.productId?.name.toLowerCase().includes(search.toLowerCase()) ||
-        item.productId?.code.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredHistory = history.filter(item => {
+        const name = item.productId?.name?.toLowerCase() || '';
+        const code = item.productId?.code?.toLowerCase() || '';
+        return name.includes(search.toLowerCase()) || code.includes(search.toLowerCase());
+    });
 
     const getPriceTypeLabel = (type) => {
         const types = {
@@ -52,7 +55,7 @@ export default function PriceHistoryPage() {
 
             <Card>
                 <CardHeader>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-wrap">
                         <div className="relative flex-1 max-w-sm">
                             <Search className="absolute right-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
@@ -62,11 +65,36 @@ export default function PriceHistoryPage() {
                                 className="pr-9"
                             />
                         </div>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => refetch()}
+                            disabled={isFetching}
+                            aria-label="تحديث السجل"
+                            title="تحديث السجل"
+                        >
+                            <RefreshCcw className={isFetching ? "animate-spin" : ""} />
+                        </Button>
                     </div>
                 </CardHeader>
                 <CardContent>
-                    {isLoading ? (
-                        <div className="flex justify-center p-8"><Loader2 className="animate-spin" /></div>
+                    {isError ? (
+                        <div className="flex flex-col items-center justify-center gap-4 p-12 text-center">
+                            <AlertCircle className="w-12 h-12 text-destructive" />
+                            <div>
+                                <h3 className="font-bold text-destructive text-lg">تعذر تحميل السجل</h3>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    {error?.message || 'حدث خطأ أثناء جلب البيانات'}
+                                </p>
+                            </div>
+                            <Button onClick={() => refetch()} variant="outline" className="gap-2">
+                                <RefreshCcw className="h-4 w-4" /> إعادة المحاولة
+                            </Button>
+                        </div>
+                    ) : isLoading ? (
+                        <div className="flex justify-center p-12">
+                            <Loader2 className="animate-spin w-10 h-10 text-primary" />
+                        </div>
                     ) : (
                         <div className="border rounded-md">
                             <Table aria-label="سجل الأسعار">
@@ -86,7 +114,9 @@ export default function PriceHistoryPage() {
                                     {filteredHistory.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={8} className="text-center h-24 text-muted-foreground">
-                                                لا توجد سجلات
+                                                {history.length === 0
+                                                    ? 'لا توجد سجلات لتغيرات الأسعار بعد'
+                                                    : 'لا توجد نتائج تطابق البحث'}
                                             </TableCell>
                                         </TableRow>
                                     ) : (
@@ -96,22 +126,22 @@ export default function PriceHistoryPage() {
                                                     {format(new Date(item.date), 'dd MMMM yyyy - hh:mm a', { locale: ar })}
                                                 </TableCell>
                                                 <TableCell>
-                                                    <div className="font-medium">{item.productId?.name || 'منتج محذوف'}</div>
-                                                    <div className="text-xs text-muted-foreground">{item.productId?.code}</div>
+                                                    <div className="font-medium">{item.productId?.name || item.productName || 'منتج محذوف'}</div>
+                                                    <div className="text-xs text-muted-foreground">{item.productId?.code || item.productCode}</div>
                                                 </TableCell>
                                                 <TableCell>
                                                     <Badge variant="outline">{getPriceTypeLabel(item.priceType)}</Badge>
                                                 </TableCell>
-                                                <TableCell>{item.oldPrice?.toLocaleString()}</TableCell>
-                                                <TableCell className="font-bold">{item.newPrice?.toLocaleString()}</TableCell>
+                                                <TableCell>{Number(item.oldPrice || 0).toLocaleString()}</TableCell>
+                                                <TableCell className="font-bold">{Number(item.newPrice || 0).toLocaleString()}</TableCell>
                                                 <TableCell dir="ltr" className="text-right">
-                                                    {item.changeAmount > 0 ? (
+                                                    {(item.changeAmount || 0) > 0 ? (
                                                         <span className="text-success flex items-center justify-end gap-1">
-                                                            {item.changePercentage}% <ArrowUpRight className="h-3 w-3" />
+                                                            {Number(item.changePercentage || 0).toFixed(1)}% <ArrowUpRight className="h-3 w-3" />
                                                         </span>
                                                     ) : (
                                                         <span className="text-destructive flex items-center justify-end gap-1">
-                                                            {item.changePercentage}% <ArrowDownRight className="h-3 w-3" />
+                                                            {Number(item.changePercentage || 0).toFixed(1)}% <ArrowDownRight className="h-3 w-3" />
                                                         </span>
                                                     )}
                                                 </TableCell>
