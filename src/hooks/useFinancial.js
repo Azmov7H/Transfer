@@ -70,7 +70,10 @@ export function useAddTransaction() {
         mutationFn: (data) => addTreasuryTransaction(data),
         ...withMutationFeedback({
             successMessage: 'تم تسجيل المعاملة بنجاح',
-            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['treasury'] })
+            afterSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['treasury'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury-transactions'] });
+            }
         })
     });
 }
@@ -82,7 +85,10 @@ export function useDeleteTransaction() {
         ...withMutationFeedback({
             successMessage: 'تم التراجع عن المعاملة بنجاح',
             fallbackErrorMessage: 'فشل التراجع عن المعاملة',
-            afterSuccess: () => queryClient.invalidateQueries({ queryKey: ['treasury'] })
+            afterSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['treasury'] });
+                queryClient.invalidateQueries({ queryKey: ['treasury-transactions'] });
+            }
         })
     });
 }
